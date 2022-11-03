@@ -1027,7 +1027,7 @@ decimal precision.
                  <em>
                   str
                  </em>
-                 ) – The code of the currency to get.
+                 ) – The code of the currency.
                 </p>
                </li>
                <li>
@@ -1045,13 +1045,20 @@ decimal precision.
                  <em>
                   default False
                  </em>
-                 ) – If strict mode is enabled. If not
+                 ) – If not
                  <cite>
                   strict
                  </cite>
-                 mode then it’s very likely
-a Cryptocurrency, so for robustness will then return a new
-Cryptocurrency using the code and a default
+                 mode then an unknown currency will very likely
+be a Cryptocurrency, so for robustness will then return a new
+                 <cite>
+                  Currency
+                 </cite>
+                 object using the given
+                 <cite>
+                  code
+                 </cite>
+                 with a default
                  <cite>
                   precision
                  </cite>
@@ -1112,7 +1119,7 @@ Cryptocurrency using the code and a default
            </dt>
            <dd>
             <p>
-             Return a value indicating whether a currency with the given code is
+             Return whether a currency with the given code is
              <code class="docutils literal notranslate">
               <span class="pre">
                CRYPTO
@@ -1207,7 +1214,7 @@ Cryptocurrency using the code and a default
            </dt>
            <dd>
             <p>
-             Return a value indicating whether a currency with the given code is
+             Return whether a currency with the given code is
              <code class="docutils literal notranslate">
               <span class="pre">
                FIAT
@@ -1400,7 +1407,11 @@ Cryptocurrency using the code and a default
            </dt>
            <dd>
             <p>
-             Register the given currency.
+             Register the given
+             <cite>
+              currency
+             </cite>
+             .
             </p>
             <p>
              Will override the internal currency map.
