@@ -694,6 +694,15 @@
               <a class="md-nav__link" href="#order-types">
                Order types
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#trailing-stops">
+                  Trailing stops
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#configuration">
@@ -969,6 +978,26 @@ E.g. for Binance Futures, the said instruments symbol is
           </code>
           within the Nautilus system boundary.
          </p>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           This convention of appending
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             -PERP
+            </span>
+           </code>
+           to perpetual futures is also adopted by
+           <a class="reference internal" href="ftx.html">
+            <span class="doc std std-doc">
+             FTX
+            </span>
+           </a>
+           .
+          </p>
+         </div>
         </section>
         <section id="order-types">
          <h2 id="order-types">
@@ -1192,34 +1221,120 @@ E.g. for Binance Futures, the said instruments symbol is
             </td>
             <td>
              <p>
-              <em>
-               Not implemented
-              </em>
+              Yes
              </p>
             </td>
            </tr>
           </tbody>
          </table>
-         <div class="admonition note">
-          <p class="admonition-title">
-           Note
-          </p>
+         <section id="trailing-stops">
+          <h3 id="trailing-stops">
+           Trailing stops
+           <a class="headerlink" href="#trailing-stops" title="Permalink to this headline">
+            ¶
+           </a>
+          </h3>
           <p>
-           This convention of appending
+           Binance use the concept of an
+           <em>
+            activation price
+           </em>
+           for trailing stops (
+           <a class="reference external" href="https://www.binance.com/en-AU/support/faq/what-is-a-trailing-stop-order-360042299292">
+            see docs
+           </a>
+           ).
+To get trailing stop orders working for Binance we need to use the
            <code class="docutils literal notranslate">
             <span class="pre">
-             -PERP
+             trigger_price
             </span>
            </code>
-           to perpetual futures is also adopted by
-           <a class="reference internal" href="ftx.html">
-            <span class="doc std std-doc">
-             FTX
-            </span>
-           </a>
+           value to set the
+           <em>
+            activation price
+           </em>
            .
           </p>
-         </div>
+          <p>
+           For
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             TRAILING_STOP_MARKET
+            </span>
+           </code>
+           orders to be submitted successfully, you must define the following:
+          </p>
+          <ul class="simple">
+           <li>
+            <p>
+             Specify a
+             <code class="docutils literal notranslate">
+              <span class="pre">
+               trailing_offet_type
+              </span>
+             </code>
+             of either
+             <code class="docutils literal notranslate">
+              <span class="pre">
+               DEFAULT
+              </span>
+             </code>
+             or
+             <code class="docutils literal notranslate">
+              <span class="pre">
+               BASIS_POINTS
+              </span>
+             </code>
+            </p>
+           </li>
+           <li>
+            <p>
+             Specify the
+             <code class="docutils literal notranslate">
+              <span class="pre">
+               trailing_offset
+              </span>
+             </code>
+             in basis points (% * 100) e.g. for a callback rate of 1% use 100
+            </p>
+           </li>
+          </ul>
+          <p>
+           You must also have at least
+           <em>
+            one
+           </em>
+           of the following:
+          </p>
+          <ul class="simple">
+           <li>
+            <p>
+             The
+             <code class="docutils literal notranslate">
+              <span class="pre">
+               trigger_price
+              </span>
+             </code>
+             for the order is set (this will act as the Binance
+             <em>
+              activation_price
+             </em>
+             )
+            </p>
+           </li>
+           <li>
+            <p>
+             You have subscribed to quote ticks for the instrument you’re submitting the order for (used to infer activation price)
+            </p>
+           </li>
+           <li>
+            <p>
+             You have subscribed to trade ticks for the instrument you’re submitting the order for (used to infer activation price)
+            </p>
+           </li>
+          </ul>
+         </section>
         </section>
         <section id="configuration">
          <h2 id="configuration">
