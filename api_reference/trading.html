@@ -10130,14 +10130,15 @@ then the component state will not change, and an error will be logged.
             </dt>
             <dd>
              <p>
-              Submit the given order with optional position ID and routing instructions.
+              Submit the given order with optional position ID, executionm algorithm
+and routing instructions.
              </p>
              <p>
               A
               <cite>
                SubmitOrder
               </cite>
-              command will be created and then sent to the
+              command will be created and sent to the
               <cite>
                RiskEngine
               </cite>
@@ -10233,6 +10234,13 @@ yet exist, then any position opened will have this identifier assigned.
                    optional
                   </em>
                   ) – The execution algorithm parameters for the order (must be serializable primitives).
+If
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  then no parameters will be passed to any execution algorithm.
                  </p>
                 </li>
                 <li>
@@ -10366,6 +10374,39 @@ not be what you intended.
              <em class="sig-param">
               <span class="n">
                <span class="pre">
+                PositionId
+               </span>
+               <span class="pre">
+                position_id=None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                dict
+               </span>
+               <span class="pre">
+                exec_algorithm_ids=None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                dict
+               </span>
+               <span class="pre">
+                exec_algorithm_params=None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
                 ClientId
                </span>
                <span class="pre">
@@ -10392,7 +10433,8 @@ not be what you intended.
             </dt>
             <dd>
              <p>
-              Submit the given order list.
+              Submit the given order list with optional position ID, execution algorithm
+and routing instructions.
              </p>
              <p>
               A
@@ -10401,7 +10443,7 @@ not be what you intended.
               </cite>
               command with be created and sent to the
               <cite>
-               ExecutionEngine
+               RiskEngine
               </cite>
               .
              </p>
@@ -10423,6 +10465,119 @@ not be what you intended.
                    </em>
                   </a>
                   ) – The order list to submit.
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   position_id
+                  </strong>
+                  (
+                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.PositionId" title="nautilus_trader.model.identifiers.PositionId">
+                   <em>
+                    PositionId
+                   </em>
+                  </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
+                  ) – The position ID to submit the order against. If a position does not
+yet exist, then any position opened will have this identifier assigned.
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   exec_algorithm_ids
+                  </strong>
+                  (
+                  <em>
+                   dict
+                  </em>
+                  <em>
+                   [
+                  </em>
+                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientOrderId" title="nautilus_trader.model.identifiers.ClientOrderId">
+                   <em>
+                    ClientOrderId
+                   </em>
+                  </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   str
+                  </em>
+                  <em>
+                   ]
+                  </em>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
+                  ) – The execution algorithm IDs for the orders.
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   exec_algorithm_params
+                  </strong>
+                  (
+                  <em>
+                   dict
+                  </em>
+                  <em>
+                   [
+                  </em>
+                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientOrderId" title="nautilus_trader.model.identifiers.ClientOrderId">
+                   <em>
+                    ClientOrderId
+                   </em>
+                  </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   dict
+                  </em>
+                  <em>
+                   [
+                  </em>
+                  <em>
+                   str
+                  </em>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   Any
+                  </em>
+                  <em>
+                   ]
+                  </em>
+                  <em>
+                   ]
+                  </em>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
+                  ) – The execution algorithm parameters for the orders (must be serializable primitives).
+If
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  then no parameters will be passed to any execution algorithm.
                  </p>
                 </li>
                 <li>
@@ -10454,7 +10609,116 @@ If
                 </li>
                </ul>
               </dd>
+              <dt class="field-even">
+               Raises
+              </dt>
+              <dd class="field-even">
+               <ul class="simple">
+                <li>
+                 <p>
+                  <strong>
+                   ValueError
+                  </strong>
+                  – If
+                  <cite>
+                   exec_algorithm_ids
+                  </cite>
+                  is not
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  and a client order ID key is
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  .
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   ValueError
+                  </strong>
+                  – If
+                  <cite>
+                   exec_algorithm_ids
+                  </cite>
+                  is not
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  and a value is not a valid string.
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   ValueError
+                  </strong>
+                  – If
+                  <cite>
+                   exec_algorithm_params
+                  </cite>
+                  is not
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  a client order ID key is
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  .
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   ValueError
+                  </strong>
+                  – If
+                  <cite>
+                   exec_algorithm_params
+                  </cite>
+                  is not
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    None
+                   </span>
+                  </code>
+                  a matching client order ID key is not in
+                  <cite>
+                   exec_algorithm_ids
+                  </cite>
+                  .
+                 </p>
+                </li>
+               </ul>
+              </dd>
              </dl>
+             <div class="admonition warning">
+              <p class="admonition-title">
+               Warning
+              </p>
+              <p>
+               If a
+               <cite>
+                position_id
+               </cite>
+               is passed and a position does not yet exist, then any
+position opened by the order will have this position ID assigned. This may
+not be what you intended.
+              </p>
+             </div>
             </dd>
            </dl>
            <dl class="py method">
