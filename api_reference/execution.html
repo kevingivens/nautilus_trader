@@ -10373,41 +10373,13 @@ then the component state will not change, and an error will be logged.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              unicode
+              ExecAlgorithmSpecification
              </span>
              <span class="pre">
-              exec_algorithm_id:
+              exec_algorithm_spec:
              </span>
              <span class="pre">
-              Optional[str]
-             </span>
-             <span class="pre">
-              =
-             </span>
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              dict
-             </span>
-             <span class="pre">
-              exec_algorithm_params:
-             </span>
-             <span class="pre">
-              Optional[dict[str
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              Any]]
+              Optional[ExecAlgorithmSpecification]
              </span>
              <span class="pre">
               =
@@ -10546,11 +10518,11 @@ then the component state will not change, and an error will be logged.
               <li>
                <p>
                 <strong>
-                 exec_algorithm_id
+                 exec_algorithm_spec
                 </strong>
                 (
                 <em>
-                 str
+                 ExecAlgorithmSpecification
                 </em>
                 <em>
                  ,
@@ -10558,40 +10530,7 @@ then the component state will not change, and an error will be logged.
                 <em>
                  optional
                 </em>
-                ) – The execution algorithm ID for the order.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 exec_algorithm_params
-                </strong>
-                (
-                <em>
-                 dict
-                </em>
-                <em>
-                 [
-                </em>
-                <em>
-                 str
-                </em>
-                <em>
-                 ,
-                </em>
-                <em>
-                 Any
-                </em>
-                <em>
-                 ]
-                </em>
-                <em>
-                 ,
-                </em>
-                <em>
-                 optional
-                </em>
-                ) – The execution algorithm parameters for the order (must be serializable primitives).
+                ) – The execution algorithm specification for the order.
                </p>
               </li>
               <li>
@@ -10612,59 +10551,6 @@ then the component state will not change, and an error will be logged.
                  optional
                 </em>
                 ) – The execution client ID for the command.
-               </p>
-              </li>
-             </ul>
-            </dd>
-            <dt class="field-even">
-             Raises
-            </dt>
-            <dd class="field-even">
-             <ul class="simple">
-              <li>
-               <p>
-                <strong>
-                 ValueError
-                </strong>
-                – If
-                <cite>
-                 exec_algorithm_id
-                </cite>
-                is not
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                and not a valid string.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 ValueError
-                </strong>
-                – If
-                <cite>
-                 exec_algorithm_params
-                </cite>
-                is not
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                and
-                <cite>
-                 exec_algorithm_id
-                </cite>
-                is
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                .
                </p>
               </li>
              </ul>
@@ -10743,19 +10629,19 @@ then the component state will not change, and an error will be logged.
             </dd>
            </dl>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.execution.messages.SubmitOrder.exec_algorithm_id">
+            <dt class="sig sig-object py" id="nautilus_trader.execution.messages.SubmitOrder.exec_algorithm_spec">
              <span class="sig-name descname">
               <span class="pre">
-               exec_algorithm_id
+               exec_algorithm_spec
               </span>
              </span>
-             <a class="headerlink" href="#nautilus_trader.execution.messages.SubmitOrder.exec_algorithm_id" title="Permalink to this definition">
+             <a class="headerlink" href="#nautilus_trader.execution.messages.SubmitOrder.exec_algorithm_spec" title="Permalink to this definition">
               ¶
              </a>
             </dt>
             <dd>
              <p>
-              The execution algorithm ID for the order.
+              The execution algorithm specification for the order.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -10764,42 +10650,7 @@ then the component state will not change, and an error will be logged.
               <dd class="field-odd">
                <p>
                 <cite>
-                 str
-                </cite>
-                or
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.execution.messages.SubmitOrder.exec_algorithm_params">
-             <span class="sig-name descname">
-              <span class="pre">
-               exec_algorithm_params
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.execution.messages.SubmitOrder.exec_algorithm_params" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The execution algorithm parameters for the order.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 dict[str, Any]
+                 ExecAlgorithmSpecification
                 </cite>
                 or
                 <code class="docutils literal notranslate">
@@ -11264,57 +11115,13 @@ then the component state will not change, and an error will be logged.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              dict
+              list
              </span>
              <span class="pre">
-              exec_algorithm_ids:
+              exec_algorithm_specs:
              </span>
              <span class="pre">
-              Optional[dict[ClientOrderId
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              str]]
-             </span>
-             <span class="pre">
-              =
-             </span>
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              dict
-             </span>
-             <span class="pre">
-              exec_algorithm_params:
-             </span>
-             <span class="pre">
-              Optional[dict[ClientOrderId
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              dict[str
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              Any]]]
+              Optional[list[ExecAlgorithmSpecification]]
              </span>
              <span class="pre">
               =
@@ -11462,25 +11269,17 @@ protocol.
               <li>
                <p>
                 <strong>
-                 exec_algorithm_ids
+                 exec_algorithm_specs
                 </strong>
                 (
                 <em>
-                 dict
+                 list
                 </em>
                 <em>
                  [
                 </em>
-                <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientOrderId" title="nautilus_trader.model.identifiers.ClientOrderId">
-                 <em>
-                  ClientOrderId
-                 </em>
-                </a>
                 <em>
-                 ,
-                </em>
-                <em>
-                 str
+                 ExecAlgorithmSpecification
                 </em>
                 <em>
                  ]
@@ -11491,64 +11290,7 @@ protocol.
                 <em>
                  optional
                 </em>
-                ) – The execution algorithm IDs for the orders.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 exec_algorithm_params
-                </strong>
-                (
-                <em>
-                 dict
-                </em>
-                <em>
-                 [
-                </em>
-                <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientOrderId" title="nautilus_trader.model.identifiers.ClientOrderId">
-                 <em>
-                  ClientOrderId
-                 </em>
-                </a>
-                <em>
-                 ,
-                </em>
-                <em>
-                 dict
-                </em>
-                <em>
-                 [
-                </em>
-                <em>
-                 str
-                </em>
-                <em>
-                 ,
-                </em>
-                <em>
-                 Any
-                </em>
-                <em>
-                 ]
-                </em>
-                <em>
-                 ]
-                </em>
-                <em>
-                 ,
-                </em>
-                <em>
-                 optional
-                </em>
-                ) – The execution algorithm parameters for the orders (must be serializable primitives).
-If
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                then no parameters will be passed to any execution algorithm.
+                ) – The execution algorithm specifications for the orders.
                </p>
               </li>
               <li>
@@ -11569,101 +11311,6 @@ If
                  optional
                 </em>
                 ) – The execution client ID for the command.
-               </p>
-              </li>
-             </ul>
-            </dd>
-            <dt class="field-even">
-             Raises
-            </dt>
-            <dd class="field-even">
-             <ul class="simple">
-              <li>
-               <p>
-                <strong>
-                 ValueError
-                </strong>
-                – If
-                <cite>
-                 exec_algorithm_ids
-                </cite>
-                is not
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                and a client order ID key is
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                .
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 ValueError
-                </strong>
-                – If
-                <cite>
-                 exec_algorithm_ids
-                </cite>
-                is not
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                and a value is not a valid string.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 ValueError
-                </strong>
-                – If
-                <cite>
-                 exec_algorithm_params
-                </cite>
-                is not
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                a client order ID key is
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                .
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 ValueError
-                </strong>
-                – If
-                <cite>
-                 exec_algorithm_params
-                </cite>
-                is not
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-                a matching client order ID key is not in
-                <cite>
-                 exec_algorithm_ids
-                </cite>
-                .
                </p>
               </li>
              </ul>
@@ -11742,19 +11389,19 @@ If
             </dd>
            </dl>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.execution.messages.SubmitOrderList.exec_algorithm_ids">
+            <dt class="sig sig-object py" id="nautilus_trader.execution.messages.SubmitOrderList.exec_algorithm_specs">
              <span class="sig-name descname">
               <span class="pre">
-               exec_algorithm_ids
+               exec_algorithm_specs
               </span>
              </span>
-             <a class="headerlink" href="#nautilus_trader.execution.messages.SubmitOrderList.exec_algorithm_ids" title="Permalink to this definition">
+             <a class="headerlink" href="#nautilus_trader.execution.messages.SubmitOrderList.exec_algorithm_specs" title="Permalink to this definition">
               ¶
              </a>
             </dt>
             <dd>
              <p>
-              The execution algorithm IDs for the orders.
+              The execution algorithm specifications for the orders.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -11763,42 +11410,7 @@ If
               <dd class="field-odd">
                <p>
                 <cite>
-                 dict[ClientOrderId, str]
-                </cite>
-                or
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  None
-                 </span>
-                </code>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.execution.messages.SubmitOrderList.exec_algorithm_params">
-             <span class="sig-name descname">
-              <span class="pre">
-               exec_algorithm_params
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.execution.messages.SubmitOrderList.exec_algorithm_params" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The execution algorithm parameters for the orders.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 dict[ClientOrderId, dict[str, Any]]
+                 list[ExecAlgorithmSpecification]
                 </cite>
                 or
                 <code class="docutils literal notranslate">
@@ -11976,7 +11588,7 @@ If
             </dt>
             <dd>
              <p>
-              The order list for submission.
+              The order list to submit.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">

@@ -10082,21 +10082,10 @@ then the component state will not change, and an error will be logged.
              <em class="sig-param">
               <span class="n">
                <span class="pre">
-                unicode
+                ExecAlgorithmSpecification
                </span>
                <span class="pre">
-                exec_algorithm_id=None
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                dict
-               </span>
-               <span class="pre">
-                exec_algorithm_params=None
+                exec_algorithm_spec=None
                </span>
               </span>
              </em>
@@ -10130,7 +10119,7 @@ then the component state will not change, and an error will be logged.
             </dt>
             <dd>
              <p>
-              Submit the given order with optional position ID, executionm algorithm
+              Submit the given order with optional position ID, execution algorithm
 and routing instructions.
              </p>
              <p>
@@ -10188,7 +10177,7 @@ yet exist, then any position opened will have this identifier assigned.
                 <li>
                  <p>
                   <strong>
-                   exec_algorithm_id
+                   exec_algorithm_spec
                   </strong>
                   (
                   <em>
@@ -10200,47 +10189,7 @@ yet exist, then any position opened will have this identifier assigned.
                   <em>
                    optional
                   </em>
-                  ) – The execution algorithm ID for the order.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   exec_algorithm_params
-                  </strong>
-                  (
-                  <em>
-                   dict
-                  </em>
-                  <em>
-                   [
-                  </em>
-                  <em>
-                   str
-                  </em>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   Any
-                  </em>
-                  <em>
-                   ]
-                  </em>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   optional
-                  </em>
-                  ) – The execution algorithm parameters for the order (must be serializable primitives).
-If
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  then no parameters will be passed to any execution algorithm.
+                  ) – The execution algorithm specification for the order.
                  </p>
                 </li>
                 <li>
@@ -10268,59 +10217,6 @@ If
                    </span>
                   </code>
                   then will be inferred from the venue in the instrument ID.
-                 </p>
-                </li>
-               </ul>
-              </dd>
-              <dt class="field-even">
-               Raises
-              </dt>
-              <dd class="field-even">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   exec_algorithm_id
-                  </cite>
-                  is not
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  and not a valid string.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   exec_algorithm_params
-                  </cite>
-                  is not
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   exec_algorithm_id
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  .
                  </p>
                 </li>
                </ul>
@@ -10388,18 +10284,7 @@ not be what you intended.
                 dict
                </span>
                <span class="pre">
-                exec_algorithm_ids=None
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                dict
-               </span>
-               <span class="pre">
-                exec_algorithm_params=None
+                exec_algorithm_specs=None
                </span>
               </span>
              </em>
@@ -10491,25 +10376,17 @@ yet exist, then any position opened will have this identifier assigned.
                 <li>
                  <p>
                   <strong>
-                   exec_algorithm_ids
+                   exec_algorithm_specs
                   </strong>
                   (
                   <em>
-                   dict
+                   list
                   </em>
                   <em>
                    [
                   </em>
-                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientOrderId" title="nautilus_trader.model.identifiers.ClientOrderId">
-                   <em>
-                    ClientOrderId
-                   </em>
-                  </a>
                   <em>
-                   ,
-                  </em>
-                  <em>
-                   str
+                   ExecAlgorithmSpecification
                   </em>
                   <em>
                    ]
@@ -10520,64 +10397,7 @@ yet exist, then any position opened will have this identifier assigned.
                   <em>
                    optional
                   </em>
-                  ) – The execution algorithm IDs for the orders.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   exec_algorithm_params
-                  </strong>
-                  (
-                  <em>
-                   dict
-                  </em>
-                  <em>
-                   [
-                  </em>
-                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientOrderId" title="nautilus_trader.model.identifiers.ClientOrderId">
-                   <em>
-                    ClientOrderId
-                   </em>
-                  </a>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   dict
-                  </em>
-                  <em>
-                   [
-                  </em>
-                  <em>
-                   str
-                  </em>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   Any
-                  </em>
-                  <em>
-                   ]
-                  </em>
-                  <em>
-                   ]
-                  </em>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   optional
-                  </em>
-                  ) – The execution algorithm parameters for the orders (must be serializable primitives).
-If
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  then no parameters will be passed to any execution algorithm.
+                  ) – The execution algorithm specifications for the orders.
                  </p>
                 </li>
                 <li>
@@ -10605,101 +10425,6 @@ If
                    </span>
                   </code>
                   then will be inferred from the venue in the instrument ID.
-                 </p>
-                </li>
-               </ul>
-              </dd>
-              <dt class="field-even">
-               Raises
-              </dt>
-              <dd class="field-even">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   exec_algorithm_ids
-                  </cite>
-                  is not
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  and a client order ID key is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   exec_algorithm_ids
-                  </cite>
-                  is not
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  and a value is not a valid string.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   exec_algorithm_params
-                  </cite>
-                  is not
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  a client order ID key is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   exec_algorithm_params
-                  </cite>
-                  is not
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  a matching client order ID key is not in
-                  <cite>
-                   exec_algorithm_ids
-                  </cite>
-                  .
                  </p>
                 </li>
                </ul>
