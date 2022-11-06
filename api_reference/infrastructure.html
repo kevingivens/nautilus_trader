@@ -1324,7 +1324,7 @@ per the default implementations for both
             </dt>
             <dd>
              <p>
-              Add the given command to the database.
+              Add the given submit order command to the database.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -1339,6 +1339,76 @@ per the default implementations for both
                 <a class="reference internal" href="execution.html#nautilus_trader.execution.messages.SubmitOrder" title="nautilus_trader.execution.messages.SubmitOrder">
                  <em>
                   SubmitOrder
+                 </em>
+                </a>
+                ) – The command to add.
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.infrastructure.cache.RedisCacheDatabase.add_submit_order_list_command">
+             <span class="sig-name descname">
+              <span class="pre">
+               add_submit_order_list_command
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                SubmitOrderList
+               </span>
+               <span class="pre">
+                command
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                void
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.infrastructure.cache.RedisCacheDatabase.add_submit_order_list_command" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Add the given submit order list command to the database.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <strong>
+                 command
+                </strong>
+                (
+                <a class="reference internal" href="execution.html#nautilus_trader.execution.messages.SubmitOrderList" title="nautilus_trader.execution.messages.SubmitOrderList">
+                 <em>
+                  SubmitOrderList
                  </em>
                 </a>
                 ) – The command to add.
@@ -2340,7 +2410,7 @@ per the default implementations for both
             </dt>
             <dd>
              <p>
-              Load all commands from the database.
+              Load all submit order commands from the database.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -2350,6 +2420,143 @@ per the default implementations for both
                <p>
                 <em>
                  dict[ClientOrderId, SubmitOrder]
+                </em>
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.infrastructure.cache.RedisCacheDatabase.load_submit_order_list_command">
+             <span class="sig-name descname">
+              <span class="pre">
+               load_submit_order_list_command
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                OrderListId
+               </span>
+               <span class="pre">
+                order_list_id
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <a class="reference internal" href="execution.html#nautilus_trader.execution.messages.SubmitOrderList" title="nautilus_trader.execution.messages.SubmitOrderList">
+                <span class="pre">
+                 SubmitOrderList
+                </span>
+               </a>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.infrastructure.cache.RedisCacheDatabase.load_submit_order_list_command" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Load the command associated with the given order list ID (if found).
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <strong>
+                 order_list_id
+                </strong>
+                (
+                <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.OrderListId" title="nautilus_trader.model.identifiers.OrderListId">
+                 <em>
+                  OrderListId
+                 </em>
+                </a>
+                ) – The order list ID for the command to load.
+               </p>
+              </dd>
+              <dt class="field-even">
+               Returns
+              </dt>
+              <dd class="field-even">
+               <p>
+                SubmitOrderList or
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  None
+                 </span>
+                </code>
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.infrastructure.cache.RedisCacheDatabase.load_submit_order_list_commands">
+             <span class="sig-name descname">
+              <span class="pre">
+               load_submit_order_list_commands
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                dict
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.infrastructure.cache.RedisCacheDatabase.load_submit_order_list_commands" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Load all submit order list commands from the database.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 dict[OrderListId, SubmitOrderList]
                 </em>
                </p>
               </dd>
