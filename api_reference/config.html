@@ -24918,11 +24918,13 @@ the new model: you should trust this data
           <dd>
            <p>
             Bases:
-            <code class="xref py py-class docutils literal notranslate">
-             <span class="pre">
-              object
-             </span>
-            </code>
+            <a class="reference internal" href="#nautilus_trader.config.common.NautilusConfig" title="nautilus_trader.config.common.NautilusConfig">
+             <code class="xref py py-class docutils literal notranslate">
+              <span class="pre">
+               nautilus_trader.config.common.NautilusConfig
+              </span>
+             </code>
+            </a>
            </p>
            <p>
             The abstract base class for all partialable configurations.
@@ -24997,6 +24999,1457 @@ the new model: you should trust this data
              </p>
             </dd>
            </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.Partialable.construct">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               construct
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                _fields_set
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                SetStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                values
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.Partialable.construct" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if
+              <cite>
+               Config.extra = ‘allow’
+              </cite>
+              was set since it adds all passed values
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.Partialable.copy">
+             <span class="sig-name descname">
+              <span class="pre">
+               copy
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                update
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                DictStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                deep
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.Partialable.copy" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Duplicate a model, optionally choose which fields to include, exclude and change.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+              </dt>
+              <dd class="field-odd">
+               <ul class="simple">
+                <li>
+                 <p>
+                  <strong>
+                   include
+                  </strong>
+                  – fields to include in new model
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   exclude
+                  </strong>
+                  – fields to exclude from new model, as with values this takes precedence over include
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   update
+                  </strong>
+                  – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   deep
+                  </strong>
+                  – set to
+                  <cite>
+                   True
+                  </cite>
+                  to make a deep copy of the model
+                 </p>
+                </li>
+               </ul>
+              </dd>
+              <dt class="field-even">
+               Returns
+              </dt>
+              <dd class="field-even">
+               <p>
+                new model instance
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.Partialable.dict">
+             <span class="sig-name descname">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                DictStrAny
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.Partialable.dict" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.Partialable.fully_qualified_name">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               fully_qualified_name
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                str
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.Partialable.fully_qualified_name" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Return the fully qualified name for the
+              <cite>
+               NautilusConfig
+              </cite>
+              class.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 str
+                </em>
+               </p>
+              </dd>
+             </dl>
+             <p class="rubric">
+              References
+             </p>
+             <p>
+              <a class="reference external" href="https://www.python.org/dev/peps/pep-3155/">
+               https://www.python.org/dev/peps/pep-3155/
+              </a>
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.Partialable.json">
+             <span class="sig-name descname">
+              <span class="pre">
+               json
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                encoder
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Callable
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                models_as_dict
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                True
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                dumps_kwargs
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                unicode
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.Partialable.json" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a JSON representation of the model,
+              <cite>
+               include
+              </cite>
+              and
+              <cite>
+               exclude
+              </cite>
+              arguments as per
+              <cite>
+               dict()
+              </cite>
+              .
+             </p>
+             <p>
+              <cite>
+               encoder
+              </cite>
+              is an optional function to supply as
+              <cite>
+               default
+              </cite>
+              to json.dumps(), other arguments as per
+              <cite>
+               json.dumps()
+              </cite>
+              .
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.Partialable.update_forward_refs">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               update_forward_refs
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                localns
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.Partialable.update_forward_refs" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Try to update ForwardRefs on fields based on this Model, globalns and localns.
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py class">
@@ -25016,6 +26469,14 @@ the new model: you should trust this data
            <span class="sig-paren">
             (
            </span>
+           <em class="sig-param">
+            <span class="o">
+             <span class="pre">
+              *
+             </span>
+            </span>
+           </em>
+           ,
            <em class="sig-param">
             <span class="n">
              <span class="pre">
@@ -25417,6 +26878,1393 @@ the new model: you should trust this data
             Represents a venue configuration for one specific backtest engine.
            </p>
            <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.construct">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               construct
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                _fields_set
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                SetStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                values
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestVenueConfig.construct" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if
+              <cite>
+               Config.extra = ‘allow’
+              </cite>
+              was set since it adds all passed values
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.copy">
+             <span class="sig-name descname">
+              <span class="pre">
+               copy
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                update
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                DictStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                deep
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestVenueConfig.copy" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Duplicate a model, optionally choose which fields to include, exclude and change.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+              </dt>
+              <dd class="field-odd">
+               <ul class="simple">
+                <li>
+                 <p>
+                  <strong>
+                   include
+                  </strong>
+                  – fields to include in new model
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   exclude
+                  </strong>
+                  – fields to exclude from new model, as with values this takes precedence over include
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   update
+                  </strong>
+                  – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   deep
+                  </strong>
+                  – set to
+                  <cite>
+                   True
+                  </cite>
+                  to make a deep copy of the model
+                 </p>
+                </li>
+               </ul>
+              </dd>
+              <dt class="field-even">
+               Returns
+              </dt>
+              <dd class="field-even">
+               <p>
+                new model instance
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.dict">
+             <span class="sig-name descname">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                DictStrAny
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestVenueConfig.dict" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.fully_qualified_name">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               fully_qualified_name
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                str
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestVenueConfig.fully_qualified_name" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Return the fully qualified name for the
+              <cite>
+               NautilusConfig
+              </cite>
+              class.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 str
+                </em>
+               </p>
+              </dd>
+             </dl>
+             <p class="rubric">
+              References
+             </p>
+             <p>
+              <a class="reference external" href="https://www.python.org/dev/peps/pep-3155/">
+               https://www.python.org/dev/peps/pep-3155/
+              </a>
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.json">
+             <span class="sig-name descname">
+              <span class="pre">
+               json
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                encoder
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Callable
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                models_as_dict
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                True
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                dumps_kwargs
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                unicode
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestVenueConfig.json" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a JSON representation of the model,
+              <cite>
+               include
+              </cite>
+              and
+              <cite>
+               exclude
+              </cite>
+              arguments as per
+              <cite>
+               dict()
+              </cite>
+              .
+             </p>
+             <p>
+              <cite>
+               encoder
+              </cite>
+              is an optional function to supply as
+              <cite>
+               default
+              </cite>
+              to json.dumps(), other arguments as per
+              <cite>
+               json.dumps()
+              </cite>
+              .
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
             <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.replace">
              <span class="sig-name descname">
               <span class="pre">
@@ -25486,6 +28334,70 @@ the new model: you should trust this data
              </p>
             </dd>
            </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestVenueConfig.update_forward_refs">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               update_forward_refs
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                localns
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestVenueConfig.update_forward_refs" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Try to update ForwardRefs on fields based on this Model, globalns and localns.
+             </p>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py class">
@@ -25505,6 +28417,14 @@ the new model: you should trust this data
            <span class="sig-paren">
             (
            </span>
+           <em class="sig-param">
+            <span class="o">
+             <span class="pre">
+              *
+             </span>
+            </span>
+           </em>
+           ,
            <em class="sig-param">
             <span class="n">
              <span class="pre">
@@ -25548,7 +28468,30 @@ the new model: you should trust this data
               </span>
              </span>
              <span class="pre">
+              Union
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              type
+             </span>
+             <span class="p">
+              <span class="pre">
+               ,
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="pre">
               str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
              </span>
              <span class="p">
               <span class="pre">
@@ -26035,6 +28978,1393 @@ the new model: you should trust this data
             Represents the data configuration for one specific backtest run.
            </p>
            <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.construct">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               construct
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                _fields_set
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                SetStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                values
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestDataConfig.construct" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if
+              <cite>
+               Config.extra = ‘allow’
+              </cite>
+              was set since it adds all passed values
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.copy">
+             <span class="sig-name descname">
+              <span class="pre">
+               copy
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                update
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                DictStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                deep
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestDataConfig.copy" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Duplicate a model, optionally choose which fields to include, exclude and change.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+              </dt>
+              <dd class="field-odd">
+               <ul class="simple">
+                <li>
+                 <p>
+                  <strong>
+                   include
+                  </strong>
+                  – fields to include in new model
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   exclude
+                  </strong>
+                  – fields to exclude from new model, as with values this takes precedence over include
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   update
+                  </strong>
+                  – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   deep
+                  </strong>
+                  – set to
+                  <cite>
+                   True
+                  </cite>
+                  to make a deep copy of the model
+                 </p>
+                </li>
+               </ul>
+              </dd>
+              <dt class="field-even">
+               Returns
+              </dt>
+              <dd class="field-even">
+               <p>
+                new model instance
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.dict">
+             <span class="sig-name descname">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                DictStrAny
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestDataConfig.dict" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.fully_qualified_name">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               fully_qualified_name
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                str
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestDataConfig.fully_qualified_name" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Return the fully qualified name for the
+              <cite>
+               NautilusConfig
+              </cite>
+              class.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 str
+                </em>
+               </p>
+              </dd>
+             </dl>
+             <p class="rubric">
+              References
+             </p>
+             <p>
+              <a class="reference external" href="https://www.python.org/dev/peps/pep-3155/">
+               https://www.python.org/dev/peps/pep-3155/
+              </a>
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.json">
+             <span class="sig-name descname">
+              <span class="pre">
+               json
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                encoder
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Callable
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                models_as_dict
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                True
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                dumps_kwargs
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                unicode
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestDataConfig.json" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a JSON representation of the model,
+              <cite>
+               include
+              </cite>
+              and
+              <cite>
+               exclude
+              </cite>
+              arguments as per
+              <cite>
+               dict()
+              </cite>
+              .
+             </p>
+             <p>
+              <cite>
+               encoder
+              </cite>
+              is an optional function to supply as
+              <cite>
+               default
+              </cite>
+              to json.dumps(), other arguments as per
+              <cite>
+               json.dumps()
+              </cite>
+              .
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
             <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.replace">
              <span class="sig-name descname">
               <span class="pre">
@@ -26101,6 +30431,70 @@ the new model: you should trust this data
             <dd>
              <p>
               Update attributes on this instance.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestDataConfig.update_forward_refs">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               update_forward_refs
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                localns
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestDataConfig.update_forward_refs" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Try to update ForwardRefs on fields based on this Model, globalns and localns.
              </p>
             </dd>
            </dl>
@@ -28680,6 +33074,14 @@ the new model: you should trust this data
             (
            </span>
            <em class="sig-param">
+            <span class="o">
+             <span class="pre">
+              *
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
              <span class="pre">
               engine
@@ -29011,7 +33413,7 @@ external inputs of venues and data.
             </dd>
            </dl>
            <dl class="py method">
-            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.parse_raw">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.construct">
              <em class="property">
               <span class="pre">
                classmethod
@@ -29021,7 +33423,7 @@ external inputs of venues and data.
              </em>
              <span class="sig-name descname">
               <span class="pre">
-               parse_raw
+               construct
               </span>
              </span>
              <span class="sig-paren">
@@ -29030,7 +33432,7 @@ external inputs of venues and data.
              <em class="sig-param">
               <span class="n">
                <span class="pre">
-                raw
+                _fields_set
                </span>
               </span>
               <span class="p">
@@ -29042,6 +33444,132 @@ external inputs of venues and data.
               </span>
               <span class="n">
                <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                SetStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                values
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.construct" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
+Default values are respected, but no other validation is performed.
+Behaves as if
+              <cite>
+               Config.extra = ‘allow’
+              </cite>
+              was set since it adds all passed values
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.copy">
+             <span class="sig-name descname">
+              <span class="pre">
+               copy
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
                 Union
                </span>
                <span class="p">
@@ -29050,7 +33578,7 @@ external inputs of venues and data.
                 </span>
                </span>
                <span class="pre">
-                str
+                AbstractSetIntStr
                </span>
                <span class="p">
                 <span class="pre">
@@ -29060,7 +33588,12 @@ external inputs of venues and data.
                <span class="w">
                </span>
                <span class="pre">
-                bytes
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
                </span>
                <span class="p">
                 <span class="pre">
@@ -29068,21 +33601,1201 @@ external inputs of venues and data.
                 </span>
                </span>
               </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                update
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                DictStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                deep
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
              </em>
              <span class="sig-paren">
               )
              </span>
-             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.parse_raw" title="Permalink to this definition">
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                Model
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.copy" title="Permalink to this definition">
               ¶
              </a>
             </dt>
             <dd>
              <p>
-              Overloaded so that
+              Duplicate a model, optionally choose which fields to include, exclude and change.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+              </dt>
+              <dd class="field-odd">
+               <ul class="simple">
+                <li>
+                 <p>
+                  <strong>
+                   include
+                  </strong>
+                  – fields to include in new model
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   exclude
+                  </strong>
+                  – fields to exclude from new model, as with values this takes precedence over include
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   update
+                  </strong>
+                  – values to change/add in the new model. Note: the data is not validated before creating
+the new model: you should trust this data
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   deep
+                  </strong>
+                  – set to
+                  <cite>
+                   True
+                  </cite>
+                  to make a deep copy of the model
+                 </p>
+                </li>
+               </ul>
+              </dd>
+              <dt class="field-even">
+               Returns
+              </dt>
+              <dd class="field-even">
+               <p>
+                new model instance
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.dict">
+             <span class="sig-name descname">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                DictStrAny
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.dict" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.fully_qualified_name">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               fully_qualified_name
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                str
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.fully_qualified_name" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Return the fully qualified name for the
               <cite>
-               Partialable
+               NautilusConfig
               </cite>
-              base class is explicitly set
+              class.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 str
+                </em>
+               </p>
+              </dd>
+             </dl>
+             <p class="rubric">
+              References
+             </p>
+             <p>
+              <a class="reference external" href="https://www.python.org/dev/peps/pep-3155/">
+               https://www.python.org/dev/peps/pep-3155/
+              </a>
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.json">
+             <span class="sig-name descname">
+              <span class="pre">
+               json
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                *
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                include
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Union
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                AbstractSetIntStr
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                MappingIntStrAny
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                by_alias
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                skip_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                bool
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_unset
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_defaults
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                exclude_none
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                encoder
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Optional
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Callable
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 [
+                </span>
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ,
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="pre">
+                Any
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 ]
+                </span>
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                models_as_dict
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="o">
+               <span class="pre">
+                =
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="default_value">
+               <span class="pre">
+                True
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                dumps_kwargs
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                unicode
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.json" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Generate a JSON representation of the model,
+              <cite>
+               include
+              </cite>
+              and
+              <cite>
+               exclude
+              </cite>
+              arguments as per
+              <cite>
+               dict()
+              </cite>
+              .
+             </p>
+             <p>
+              <cite>
+               encoder
+              </cite>
+              is an optional function to supply as
+              <cite>
+               default
+              </cite>
+              to json.dumps(), other arguments as per
+              <cite>
+               json.dumps()
+              </cite>
+              .
              </p>
             </dd>
            </dl>
@@ -29153,6 +34866,70 @@ external inputs of venues and data.
             <dd>
              <p>
               Update attributes on this instance.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.config.backtest.BacktestRunConfig.update_forward_refs">
+             <em class="property">
+              <span class="pre">
+               classmethod
+              </span>
+              <span class="w">
+              </span>
+             </em>
+             <span class="sig-name descname">
+              <span class="pre">
+               update_forward_refs
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="o">
+               <span class="pre">
+                **
+               </span>
+              </span>
+              <span class="n">
+               <span class="pre">
+                localns
+               </span>
+              </span>
+              <span class="p">
+               <span class="pre">
+                :
+               </span>
+              </span>
+              <span class="w">
+              </span>
+              <span class="n">
+               <span class="pre">
+                Any
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                None
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.config.backtest.BacktestRunConfig.update_forward_refs" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Try to update ForwardRefs on fields based on this Model, globalns and localns.
              </p>
             </dd>
            </dl>
