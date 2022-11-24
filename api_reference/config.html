@@ -5737,6 +5737,53 @@ the new model: you should trust this data
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              filter_callable
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               log_warnings
              </span>
             </span>
@@ -5865,6 +5912,29 @@ the new model: you should trust this data
                  optional
                 </em>
                 ) – The venue specific instrument loading filters to apply.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 filter_callable
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 optional
+                </em>
+                ) – A fully qualified path to a callable that takes a single argument,
+                <cite>
+                 instrument
+                </cite>
+                and returns a bool, indicating
+whether the instrument should be loaded
                </p>
               </li>
               <li>
@@ -43363,6 +43433,9 @@ the new model: you should trust this data
               filters=None,
              </span>
              <span class="pre">
+              filter_callable=None,
+             </span>
+             <span class="pre">
               log_warnings=True)
              </span>
             </span>
@@ -45076,6 +45149,9 @@ the new model: you should trust this data
              </span>
              <span class="pre">
               filters=None,
+             </span>
+             <span class="pre">
+              filter_callable=None,
              </span>
              <span class="pre">
               log_warnings=True)
