@@ -832,10 +832,10 @@ currently a number of subclasses representing a range of
            </span>
           </code>
           , which is made up of both the native symbol, and venue ID, separated by a period.
-For example, on the FTX crypto exchange, the Ethereum Perpetual Futures Contract has the instrument ID
+For example, on the Binance Futures crypto exchange, the Ethereum Perpetual Futures Contract has the instrument ID
           <code class="docutils literal notranslate">
            <span class="pre">
-            ETH-PERP.FTX
+            ETHUSDT-PERP.BINANCE
            </span>
           </code>
           .
@@ -982,7 +982,7 @@ get instruments in exactly the same way through the central cache:
           <div class="highlight">
            <pre><span></span><span class="kn">from</span> <span class="nn">nautilus_trader.model.identifiers</span> <span class="kn">import</span> <span class="n">InstrumentId</span>
 
-<span class="n">instrument_id</span> <span class="o">=</span> <span class="n">InstrumentId</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="s2">"ETH/USD.FTX"</span><span class="p">)</span>
+<span class="n">instrument_id</span> <span class="o">=</span> <span class="n">InstrumentId</span><span class="o">.</span><span class="n">from_str</span><span class="p">(</span><span class="s2">"ETHUSDT-PERP.BINANCE"</span><span class="p">)</span>
 <span class="n">instrument</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">instrument</span><span class="p">(</span><span class="n">instrument_id</span><span class="p">)</span>
 </pre>
           </div>
@@ -1003,8 +1003,8 @@ get instruments in exactly the same way through the central cache:
           <div class="highlight">
            <pre><span></span><span class="kn">from</span> <span class="nn">nautilus_trader.model.identifiers</span> <span class="kn">import</span> <span class="n">Venue</span>
 
-<span class="n">ftx</span> <span class="o">=</span> <span class="n">Venue</span><span class="p">(</span><span class="s2">"FTX"</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">subscribe_instruments</span><span class="p">(</span><span class="n">ftx</span><span class="p">)</span>
+<span class="n">binance</span> <span class="o">=</span> <span class="n">Venue</span><span class="p">(</span><span class="s2">"BINANCE"</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">subscribe_instruments</span><span class="p">(</span><span class="n">binance</span><span class="p">)</span>
 </pre>
           </div>
          </div>
