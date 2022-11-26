@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -669,101 +673,1629 @@
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.analyzer">
                Portfolio Analyzer
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioAnalyzer
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.register_statistic">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.register_statistic()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.deregister_statistic">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.deregister_statistic()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.deregister_statistics">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.deregister_statistics()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.reset">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.reset()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.currencies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.currencies
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.statistic">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.statistic()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.calculate_statistics">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.calculate_statistics()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.add_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_trade">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.add_trade()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_return">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.add_return()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.total_pnl">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.total_pnl()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.total_pnl_percentage">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.total_pnl_percentage()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.get_performance_stats_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.get_performance_stats_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_general">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.get_performance_stats_general()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_pnls_formatted">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.get_stats_pnls_formatted()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_returns_formatted">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.get_stats_returns_formatted()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_general_formatted">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioAnalyzer.get_stats_general_formatted()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.reporter">
                Report Provider
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReportProvider
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_orders_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReportProvider.generate_orders_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_order_fills_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReportProvider.generate_order_fills_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_positions_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReportProvider.generate_positions_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_account_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReportProvider.generate_account_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistic">
                Portfolio Statistic
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioStatistic.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioStatistic.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioStatistic.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioStatistic.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioStatistic.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       PortfolioStatistic.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.expectancy">
                Expectancy
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Expectancy.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Expectancy.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Expectancy.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Expectancy.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Expectancy.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Expectancy.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.long_ratio">
                Long Ratio
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LongRatio.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LongRatio.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LongRatio.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LongRatio.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LongRatio.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LongRatio.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_avg">
                Average Loser
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgLoser.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgLoser.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgLoser.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgLoser.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgLoser.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgLoser.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_max">
                Max Loser
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxLoser.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxLoser.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxLoser.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxLoser.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxLoser.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxLoser.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_min">
                Min Loser
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinLoser.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinLoser.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinLoser.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinLoser.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinLoser.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinLoser.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.profit_factor">
                Profit Factor
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ProfitFactor.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ProfitFactor.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ProfitFactor.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ProfitFactor.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ProfitFactor.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ProfitFactor.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg">
                Average (Returns)
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverage.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverage.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverage.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverage.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverage.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverage.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg_loss">
                Average Loss (Returns)
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageLoss.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageLoss.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageLoss.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageLoss.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageLoss.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageLoss.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg_win">
                Average Win (Returns)
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageWin.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageWin.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageWin.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageWin.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageWin.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsAverageWin.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_volatility">
                Returns Volatility
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsVolatility.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsVolatility.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsVolatility.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsVolatility.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsVolatility.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ReturnsVolatility.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.risk_return_ratio">
                Risk Return Ratio
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RiskReturnRatio.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RiskReturnRatio.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RiskReturnRatio.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RiskReturnRatio.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RiskReturnRatio.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RiskReturnRatio.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.sharpe_ratio">
                Sharpe Ratio
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SharpeRatio.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SharpeRatio.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SharpeRatio.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SharpeRatio.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SharpeRatio.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SharpeRatio.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.sortino_ratio">
                Sortino Ratio
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SortinoRatio.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SortinoRatio.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SortinoRatio.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SortinoRatio.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SortinoRatio.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       SortinoRatio.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.win_rate">
                Win Rate
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       WinRate.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       WinRate.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       WinRate.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       WinRate.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       WinRate.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       WinRate.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_avg">
                Average Winner
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgWinner.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgWinner.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgWinner.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgWinner.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgWinner.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AvgWinner.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_max">
                Average Max
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxWinner.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxWinner.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxWinner.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxWinner.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxWinner.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MaxWinner.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_min">
                Average Min
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_realized_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinWinner.calculate_from_realized_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinWinner.calculate_from_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinWinner.calculate_from_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_returns">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinWinner.calculate_from_returns()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinWinner.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MinWinner.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -780,7 +2312,7 @@
         </span>
         <h1 id="api-reference-analysis--page-root">
          Analysis
-         <a class="headerlink" href="#api-reference-analysis--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-analysis--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -796,7 +2328,7 @@
          </span>
          <h2 id="module-nautilus_trader.analysis.analyzer">
           Portfolio Analyzer
-          <a class="headerlink" href="#module-nautilus_trader.analysis.analyzer" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.analyzer" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -857,7 +2389,7 @@ performance metrics and statistics.
               <span class="n">
                <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
                 <span class="pre">
-                 nautilus_trader.analysis.statistic.PortfolioStatistic
+                 PortfolioStatistic
                 </span>
                </a>
               </span>
@@ -886,6 +2418,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -930,7 +2465,7 @@ performance metrics and statistics.
               <span class="n">
                <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
                 <span class="pre">
-                 nautilus_trader.analysis.statistic.PortfolioStatistic
+                 PortfolioStatistic
                 </span>
                </a>
               </span>
@@ -1052,6 +2587,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1110,7 +2648,7 @@ performance metrics and statistics.
                </span>
                <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
                 <span class="pre">
-                 nautilus_trader.analysis.statistic.PortfolioStatistic
+                 PortfolioStatistic
                 </span>
                </a>
                <span class="p">
@@ -1131,6 +2669,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1164,7 +2705,7 @@ performance metrics and statistics.
               </span>
               <span class="sig-return-typehint">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </span>
@@ -1179,6 +2720,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1215,7 +2759,7 @@ performance metrics and statistics.
               </span>
               <span class="n">
                <span class="pre">
-                nautilus_trader.accounting.accounts.base.Account
+                Account
                </span>
               </span>
              </em>
@@ -1278,6 +2822,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1389,6 +2936,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1442,7 +2992,7 @@ performance metrics and statistics.
               <span class="n">
                <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.PositionId" title="nautilus_trader.model.identifiers.PositionId">
                 <span class="pre">
-                 nautilus_trader.model.identifiers.PositionId
+                 PositionId
                 </span>
                </a>
               </span>
@@ -1464,7 +3014,7 @@ performance metrics and statistics.
               <span class="n">
                <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Money" title="nautilus_trader.model.objects.Money">
                 <span class="pre">
-                 nautilus_trader.model.objects.Money
+                 Money
                 </span>
                </a>
               </span>
@@ -1493,6 +3043,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1554,7 +3107,7 @@ performance metrics and statistics.
               </span>
               <span class="n">
                <span class="pre">
-                datetime.datetime
+                datetime
                </span>
               </span>
              </em>
@@ -1602,6 +3155,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1668,7 +3224,7 @@ performance metrics and statistics.
                </span>
                <a class="reference internal" href="model/currency.html#nautilus_trader.model.currency.Currency" title="nautilus_trader.model.currency.Currency">
                 <span class="pre">
-                 nautilus_trader.model.currency.Currency
+                 Currency
                 </span>
                </a>
                <span class="p">
@@ -1709,7 +3265,7 @@ performance metrics and statistics.
                 </span>
                </span>
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
                <span class="p">
                 <span class="pre">
@@ -1732,6 +3288,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1755,6 +3314,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1768,6 +3330,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1824,7 +3389,7 @@ performance metrics and statistics.
                </span>
                <a class="reference internal" href="model/currency.html#nautilus_trader.model.currency.Currency" title="nautilus_trader.model.currency.Currency">
                 <span class="pre">
-                 nautilus_trader.model.currency.Currency
+                 Currency
                 </span>
                </a>
                <span class="p">
@@ -1875,6 +3440,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1898,6 +3466,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1908,6 +3479,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1980,7 +3554,7 @@ performance metrics and statistics.
                </span>
                <a class="reference internal" href="model/currency.html#nautilus_trader.model.currency.Currency" title="nautilus_trader.model.currency.Currency">
                 <span class="pre">
-                 nautilus_trader.model.currency.Currency
+                 Currency
                 </span>
                </a>
                <span class="p">
@@ -2031,6 +3605,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2054,6 +3631,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2064,6 +3644,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2136,7 +3719,7 @@ performance metrics and statistics.
                </span>
                <a class="reference internal" href="model/currency.html#nautilus_trader.model.currency.Currency" title="nautilus_trader.model.currency.Currency">
                 <span class="pre">
-                 nautilus_trader.model.currency.Currency
+                 Currency
                 </span>
                </a>
                <span class="p">
@@ -2214,6 +3797,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2231,6 +3817,9 @@ performance metrics and statistics.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2303,6 +3892,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2375,6 +3967,9 @@ performance metrics and statistics.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2420,7 +4015,7 @@ performance metrics and statistics.
                </span>
                <a class="reference internal" href="model/currency.html#nautilus_trader.model.currency.Currency" title="nautilus_trader.model.currency.Currency">
                 <span class="pre">
-                 nautilus_trader.model.currency.Currency
+                 Currency
                 </span>
                </a>
                <span class="p">
@@ -2482,6 +4077,9 @@ for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2499,6 +4097,9 @@ for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2558,6 +4159,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2617,6 +4221,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2636,7 +4243,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.reporter">
           Report Provider
-          <a class="headerlink" href="#module-nautilus_trader.analysis.reporter" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.reporter" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -2730,7 +4337,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="sig-return-typehint">
                <span class="pre">
-                pandas.core.frame.DataFrame
+                DataFrame
                </span>
               </span>
              </span>
@@ -2745,6 +4352,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2771,6 +4381,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2842,7 +4455,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="sig-return-typehint">
                <span class="pre">
-                pandas.core.frame.DataFrame
+                DataFrame
                </span>
               </span>
              </span>
@@ -2857,6 +4470,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2883,6 +4499,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2954,7 +4573,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="sig-return-typehint">
                <span class="pre">
-                pandas.core.frame.DataFrame
+                DataFrame
                </span>
               </span>
              </span>
@@ -2969,6 +4588,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2995,6 +4617,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3038,7 +4663,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                nautilus_trader.accounting.accounts.base.Account
+                Account
                </span>
               </span>
              </em>
@@ -3051,7 +4676,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="sig-return-typehint">
                <span class="pre">
-                pandas.core.frame.DataFrame
+                DataFrame
                </span>
               </span>
              </span>
@@ -3066,6 +4691,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3081,6 +4709,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3100,7 +4731,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistic">
           Portfolio Statistic
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistic" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistic" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -3185,6 +4816,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3241,6 +4875,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3277,7 +4914,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -3318,6 +4955,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3333,6 +4973,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3373,7 +5016,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -3414,6 +5057,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3429,6 +5075,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3525,6 +5174,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3551,6 +5203,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3647,6 +5302,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3673,6 +5331,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3696,7 +5357,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.expectancy">
           Expectancy
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.expectancy" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.expectancy" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -3724,7 +5385,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -3757,7 +5418,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -3798,6 +5459,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3813,6 +5477,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3909,6 +5576,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3935,6 +5605,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4031,6 +5704,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4057,6 +5733,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4097,7 +5776,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -4138,6 +5817,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4153,6 +5835,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4213,6 +5898,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4269,6 +5957,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4288,7 +5979,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.long_ratio">
           Long Ratio
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.long_ratio" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.long_ratio" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -4355,7 +6046,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -4366,6 +6057,9 @@ formatted for printing in the backtest run footer.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -4467,6 +6161,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4493,6 +6190,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4589,6 +6289,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4615,6 +6318,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4655,7 +6361,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -4696,6 +6402,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4711,6 +6420,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4751,7 +6463,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -4792,6 +6504,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4807,6 +6522,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4867,6 +6585,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4923,6 +6644,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4942,7 +6666,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.loser_avg">
           Average Loser
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.loser_avg" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.loser_avg" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -4970,7 +6694,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -5003,7 +6727,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -5044,6 +6768,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5059,6 +6786,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5155,6 +6885,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5181,6 +6914,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5277,6 +7013,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5303,6 +7042,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5343,7 +7085,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -5384,6 +7126,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5399,6 +7144,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5459,6 +7207,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5515,6 +7266,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5534,7 +7288,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.loser_max">
           Max Loser
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.loser_max" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.loser_max" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -5562,7 +7316,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -5595,7 +7349,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -5636,6 +7390,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5651,6 +7408,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5747,6 +7507,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5773,6 +7536,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5869,6 +7635,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5895,6 +7664,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5935,7 +7707,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -5976,6 +7748,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5991,6 +7766,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6051,6 +7829,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6107,6 +7888,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6126,7 +7910,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.loser_min">
           Min Loser
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.loser_min" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.loser_min" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -6154,7 +7938,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -6187,7 +7971,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -6228,6 +8012,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6243,6 +8030,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6339,6 +8129,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6365,6 +8158,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6461,6 +8257,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6487,6 +8286,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6527,7 +8329,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -6568,6 +8370,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6583,6 +8388,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6643,6 +8451,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6699,6 +8510,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6718,7 +8532,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.profit_factor">
           Profit Factor
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.profit_factor" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.profit_factor" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -6746,7 +8560,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -6779,7 +8593,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -6820,6 +8634,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6835,6 +8652,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6931,6 +8751,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6957,6 +8780,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7053,6 +8879,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7079,6 +8908,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7119,7 +8951,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -7160,6 +8992,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7175,6 +9010,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7235,6 +9073,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7291,6 +9132,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7310,7 +9154,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.returns_avg">
           Average (Returns)
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_avg" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_avg" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -7338,7 +9182,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -7383,6 +9227,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7419,7 +9266,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -7460,6 +9307,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7475,6 +9325,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7571,6 +9424,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7597,6 +9453,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7693,6 +9552,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7719,6 +9581,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7759,7 +9624,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -7800,6 +9665,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7815,6 +9683,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7875,6 +9746,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7902,7 +9776,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.returns_avg_loss">
           Average Loss (Returns)
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_avg_loss" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_avg_loss" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -7930,7 +9804,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -7975,6 +9849,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8011,7 +9888,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -8052,6 +9929,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8067,6 +9947,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8163,6 +10046,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8189,6 +10075,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8285,6 +10174,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8311,6 +10203,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8351,7 +10246,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -8392,6 +10287,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8407,6 +10305,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8467,6 +10368,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8494,7 +10398,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.returns_avg_win">
           Average Win (Returns)
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_avg_win" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_avg_win" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -8522,7 +10426,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -8567,6 +10471,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8603,7 +10510,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -8644,6 +10551,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8659,6 +10569,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8755,6 +10668,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8781,6 +10697,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8877,6 +10796,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8903,6 +10825,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8943,7 +10868,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -8984,6 +10909,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8999,6 +10927,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9059,6 +10990,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9086,7 +11020,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.returns_volatility">
           Returns Volatility
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_volatility" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.returns_volatility" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -9153,7 +11087,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -9167,6 +11101,9 @@ formatted for printing in the backtest run footer.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -9224,6 +11161,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9260,7 +11200,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -9301,6 +11241,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9316,6 +11259,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9412,6 +11358,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9438,6 +11387,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9534,6 +11486,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9560,6 +11515,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9600,7 +11558,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -9641,6 +11599,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9656,6 +11617,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9716,6 +11680,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9743,7 +11710,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.risk_return_ratio">
           Risk Return Ratio
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.risk_return_ratio" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.risk_return_ratio" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -9771,7 +11738,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -9804,7 +11771,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -9845,6 +11812,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9860,6 +11830,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9956,6 +11929,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9982,6 +11958,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10078,6 +12057,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10104,6 +12086,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10144,7 +12129,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -10185,6 +12170,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10200,6 +12188,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10260,6 +12251,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10316,6 +12310,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10335,7 +12332,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.sharpe_ratio">
           Sharpe Ratio
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.sharpe_ratio" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.sharpe_ratio" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -10402,7 +12399,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -10416,6 +12413,9 @@ formatted for printing in the backtest run footer.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -10473,6 +12473,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10509,7 +12512,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -10550,6 +12553,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10565,6 +12571,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10661,6 +12670,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10687,6 +12699,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10783,6 +12798,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10809,6 +12827,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10849,7 +12870,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -10890,6 +12911,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10905,6 +12929,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10965,6 +12992,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10992,7 +13022,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.sortino_ratio">
           Sortino Ratio
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.sortino_ratio" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.sortino_ratio" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -11059,7 +13089,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -11073,6 +13103,9 @@ formatted for printing in the backtest run footer.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -11130,6 +13163,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11166,7 +13202,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -11207,6 +13243,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11222,6 +13261,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11318,6 +13360,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11344,6 +13389,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11440,6 +13488,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11466,6 +13517,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11506,7 +13560,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -11547,6 +13601,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11562,6 +13619,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11622,6 +13682,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11649,7 +13712,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.win_rate">
           Win Rate
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.win_rate" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.win_rate" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -11677,7 +13740,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -11710,7 +13773,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -11751,6 +13814,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11766,6 +13832,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11862,6 +13931,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11888,6 +13960,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11984,6 +14059,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12010,6 +14088,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -12050,7 +14131,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -12091,6 +14172,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12106,6 +14190,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -12166,6 +14253,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12222,6 +14312,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12241,7 +14334,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.winner_avg">
           Average Winner
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.winner_avg" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.winner_avg" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -12269,7 +14362,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -12302,7 +14395,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -12343,6 +14436,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12358,6 +14454,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -12454,6 +14553,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12480,6 +14582,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -12576,6 +14681,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12602,6 +14710,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -12642,7 +14753,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -12683,6 +14794,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12698,6 +14812,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -12758,6 +14875,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12814,6 +14934,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12833,7 +14956,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.winner_max">
           Average Max
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.winner_max" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.winner_max" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -12861,7 +14984,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -12894,7 +15017,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -12935,6 +15058,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12950,6 +15076,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13046,6 +15175,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13072,6 +15204,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13168,6 +15303,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13194,6 +15332,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13234,7 +15375,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -13275,6 +15416,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13290,6 +15434,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13350,6 +15497,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13406,6 +15556,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13425,7 +15578,7 @@ formatted for printing in the backtest run footer.
          </span>
          <h2 id="module-nautilus_trader.analysis.statistics.winner_min">
           Average Min
-          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.winner_min" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.analysis.statistics.winner_min" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -13453,7 +15606,7 @@ formatted for printing in the backtest run footer.
             <a class="reference internal" href="#nautilus_trader.analysis.statistic.PortfolioStatistic" title="nautilus_trader.analysis.statistic.PortfolioStatistic">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.analysis.statistic.PortfolioStatistic
+               PortfolioStatistic
               </span>
              </code>
             </a>
@@ -13486,7 +15639,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -13527,6 +15680,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13542,6 +15698,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13638,6 +15797,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13664,6 +15826,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13760,6 +15925,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13786,6 +15954,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13826,7 +15997,7 @@ formatted for printing in the backtest run footer.
               </span>
               <span class="n">
                <span class="pre">
-                pandas.core.series.Series
+                Series
                </span>
               </span>
              </em>
@@ -13867,6 +16038,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13882,6 +16056,9 @@ formatted for printing in the backtest run footer.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -13942,6 +16119,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13998,6 +16178,9 @@ formatted for printing in the backtest run footer.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>

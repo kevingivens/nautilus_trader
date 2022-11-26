@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -675,11 +679,145 @@
                  <a class="md-nav__link" href="#module-nautilus_trader.persistence.external.core">
                   Core
                  </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.RawFile">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RawFile
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.split_and_serialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       split_and_serialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.dicts_to_dataframes">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       dicts_to_dataframes()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.determine_partition_cols">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       determine_partition_cols()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.merge_existing_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       merge_existing_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.write_tables">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       write_tables()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.write_parquet">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       write_parquet()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.core.read_progress">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       read_progress()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
                 </li>
                 <li class="md-nav__item">
                  <a class="md-nav__link" href="#module-nautilus_trader.persistence.external.readers">
                   Readers
                  </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.readers.LinePreprocessor">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       LinePreprocessor
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.readers.Reader">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Reader
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.readers.ByteReader">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ByteReader
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.readers.TextReader">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       TextReader
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.readers.CSVReader">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CSVReader
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.external.readers.ParquetReader">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ParquetReader
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
                 </li>
                </ul>
               </nav>
@@ -688,16 +826,198 @@
               <a class="md-nav__link" href="#module-nautilus_trader.persistence.batching">
                Batching
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    FileMeta
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.client_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.client_id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.datatype">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.datatype
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.end">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.end
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.filename">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.filename
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.index">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.index()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.instrument_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.instrument_id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.batching.FileMeta.start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FileMeta.start
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.persistence.batching.extract_generic_data_client_ids">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    extract_generic_data_client_ids()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.persistence.catalog">
                Catalog
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.persistence.catalog.BaseDataCatalog">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    BaseDataCatalog
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.persistence.catalog.ParquetDataCatalog">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ParquetDataCatalog
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.persistence.streaming">
                Streaming
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.persistence.streaming.StreamingFeatherWriter">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    StreamingFeatherWriter
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.streaming.StreamingFeatherWriter.write">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       StreamingFeatherWriter.write()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.streaming.StreamingFeatherWriter.check_flush">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       StreamingFeatherWriter.check_flush()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.streaming.StreamingFeatherWriter.flush">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       StreamingFeatherWriter.flush()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.persistence.streaming.StreamingFeatherWriter.close">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       StreamingFeatherWriter.close()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.persistence.streaming.generate_signal_class">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    generate_signal_class()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -714,7 +1034,7 @@
         </span>
         <h1 id="api-reference-persistence--page-root">
          Persistence
-         <a class="headerlink" href="#api-reference-persistence--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-persistence--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -728,7 +1048,7 @@
         <section id="external">
          <h2 id="external">
           External
-          <a class="headerlink" href="#external" title="Permalink to this headline">
+          <a class="headerlink" href="#external" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -737,7 +1057,7 @@
           </span>
           <h3 id="module-nautilus_trader.persistence.external.core">
            Core
-           <a class="headerlink" href="#module-nautilus_trader.persistence.external.core" title="Permalink to this headline">
+           <a class="headerlink" href="#module-nautilus_trader.persistence.external.core" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -773,7 +1093,7 @@
              </span>
              <span class="n">
               <span class="pre">
-               fsspec.core.OpenFile
+               OpenFile
               </span>
              </span>
             </em>
@@ -1226,7 +1546,7 @@
              <span class="n">
               <a class="reference internal" href="#nautilus_trader.persistence.catalog.BaseDataCatalog" title="nautilus_trader.persistence.catalog.base.BaseDataCatalog">
                <span class="pre">
-                nautilus_trader.persistence.catalog.base.BaseDataCatalog
+                BaseDataCatalog
                </span>
               </a>
              </span>
@@ -1267,7 +1587,7 @@
              </span>
              <span class="n">
               <span class="pre">
-               pandas.core.frame.DataFrame
+               DataFrame
               </span>
              </span>
             </em>
@@ -1280,7 +1600,7 @@
              </span>
              <span class="sig-return-typehint">
               <span class="pre">
-               pandas.core.frame.DataFrame
+               DataFrame
               </span>
              </span>
             </span>
@@ -1324,7 +1644,7 @@ For all other classes, simply return data unchanged.
              <span class="n">
               <a class="reference internal" href="#nautilus_trader.persistence.catalog.ParquetDataCatalog" title="nautilus_trader.persistence.catalog.parquet.ParquetDataCatalog">
                <span class="pre">
-                nautilus_trader.persistence.catalog.parquet.ParquetDataCatalog
+                ParquetDataCatalog
                </span>
               </a>
              </span>
@@ -1446,7 +1766,7 @@ For all other classes, simply return data unchanged.
              </span>
              <span class="n">
               <span class="pre">
-               fsspec.spec.AbstractFileSystem
+               AbstractFileSystem
               </span>
              </span>
             </em>
@@ -1466,7 +1786,7 @@ For all other classes, simply return data unchanged.
              </span>
              <span class="n">
               <span class="pre">
-               pathlib.Path
+               Path
               </span>
              </span>
             </em>
@@ -1486,7 +1806,7 @@ For all other classes, simply return data unchanged.
              </span>
              <span class="n">
               <span class="pre">
-               pandas.core.frame.DataFrame
+               DataFrame
               </span>
              </span>
             </em>
@@ -1552,7 +1872,7 @@ For all other classes, simply return data unchanged.
              </span>
              <span class="n">
               <span class="pre">
-               pyarrow.lib.Schema
+               Schema
               </span>
              </span>
             </em>
@@ -1626,7 +1946,7 @@ For all other classes, simply return data unchanged.
           </span>
           <h3 id="module-nautilus_trader.persistence.external.readers">
            Readers
-           <a class="headerlink" href="#module-nautilus_trader.persistence.external.readers" title="Permalink to this headline">
+           <a class="headerlink" href="#module-nautilus_trader.persistence.external.readers" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1749,7 +2069,7 @@ this instance, you could use something like:
               </span>
               <a class="reference internal" href="common.html#nautilus_trader.common.providers.InstrumentProvider" title="nautilus_trader.common.providers.InstrumentProvider">
                <span class="pre">
-                nautilus_trader.common.providers.InstrumentProvider
+                InstrumentProvider
                </span>
               </a>
               <span class="p">
@@ -1902,7 +2222,7 @@ this instance, you could use something like:
               </span>
               <a class="reference internal" href="common.html#nautilus_trader.common.providers.InstrumentProvider" title="nautilus_trader.common.providers.InstrumentProvider">
                <span class="pre">
-                nautilus_trader.common.providers.InstrumentProvider
+                InstrumentProvider
                </span>
               </a>
               <span class="p">
@@ -1986,7 +2306,7 @@ this instance, you could use something like:
              <a class="reference internal" href="#nautilus_trader.persistence.external.readers.Reader" title="nautilus_trader.persistence.external.readers.Reader">
               <code class="xref py py-class docutils literal notranslate">
                <span class="pre">
-                nautilus_trader.persistence.external.readers.Reader
+                Reader
                </span>
               </code>
              </a>
@@ -2002,6 +2322,9 @@ passed a blocks of raw bytes.
             <dl class="field-list simple">
              <dt class="field-odd">
               Parameters
+              <span class="colon">
+               :
+              </span>
              </dt>
              <dd class="field-odd">
               <ul class="simple">
@@ -2125,7 +2448,7 @@ passed a blocks of raw bytes.
               </span>
               <a class="reference internal" href="#nautilus_trader.persistence.external.readers.LinePreprocessor" title="nautilus_trader.persistence.external.readers.LinePreprocessor">
                <span class="pre">
-                nautilus_trader.persistence.external.readers.LinePreprocessor
+                LinePreprocessor
                </span>
               </a>
               <span class="p">
@@ -2174,7 +2497,7 @@ passed a blocks of raw bytes.
               </span>
               <a class="reference internal" href="common.html#nautilus_trader.common.providers.InstrumentProvider" title="nautilus_trader.common.providers.InstrumentProvider">
                <span class="pre">
-                nautilus_trader.common.providers.InstrumentProvider
+                InstrumentProvider
                </span>
               </a>
               <span class="p">
@@ -2292,7 +2615,7 @@ passed a blocks of raw bytes.
              <a class="reference internal" href="#nautilus_trader.persistence.external.readers.ByteReader" title="nautilus_trader.persistence.external.readers.ByteReader">
               <code class="xref py py-class docutils literal notranslate">
                <span class="pre">
-                nautilus_trader.persistence.external.readers.ByteReader
+                ByteReader
                </span>
               </code>
              </a>
@@ -2308,6 +2631,9 @@ be passed a single row of bytes.
             <dl class="field-list simple">
              <dt class="field-odd">
               Parameters
+              <span class="colon">
+               :
+              </span>
              </dt>
              <dd class="field-odd">
               <ul class="simple">
@@ -2470,7 +2796,7 @@ be known ahead of parsing).
               </span>
               <a class="reference internal" href="common.html#nautilus_trader.common.providers.InstrumentProvider" title="nautilus_trader.common.providers.InstrumentProvider">
                <span class="pre">
-                nautilus_trader.common.providers.InstrumentProvider
+                InstrumentProvider
                </span>
               </a>
               <span class="p">
@@ -2784,7 +3110,7 @@ be known ahead of parsing).
              <a class="reference internal" href="#nautilus_trader.persistence.external.readers.Reader" title="nautilus_trader.persistence.external.readers.Reader">
               <code class="xref py py-class docutils literal notranslate">
                <span class="pre">
-                nautilus_trader.persistence.external.readers.Reader
+                Reader
                </span>
               </code>
              </a>
@@ -2795,6 +3121,9 @@ be known ahead of parsing).
             <dl class="field-list simple">
              <dt class="field-odd">
               Parameters
+              <span class="colon">
+               :
+              </span>
              </dt>
              <dd class="field-odd">
               <ul class="simple">
@@ -3012,7 +3341,7 @@ passed will potentially contain many lines (a block).
               </span>
               <a class="reference internal" href="common.html#nautilus_trader.common.providers.InstrumentProvider" title="nautilus_trader.common.providers.InstrumentProvider">
                <span class="pre">
-                nautilus_trader.common.providers.InstrumentProvider
+                InstrumentProvider
                </span>
               </a>
               <span class="p">
@@ -3096,7 +3425,7 @@ passed will potentially contain many lines (a block).
              <a class="reference internal" href="#nautilus_trader.persistence.external.readers.ByteReader" title="nautilus_trader.persistence.external.readers.ByteReader">
               <code class="xref py py-class docutils literal notranslate">
                <span class="pre">
-                nautilus_trader.persistence.external.readers.ByteReader
+                ByteReader
                </span>
               </code>
              </a>
@@ -3107,6 +3436,9 @@ passed will potentially contain many lines (a block).
             <dl class="field-list simple">
              <dt class="field-odd">
               Parameters
+              <span class="colon">
+               :
+              </span>
              </dt>
              <dd class="field-odd">
               <ul class="simple">
@@ -3176,7 +3508,7 @@ passed will potentially contain many lines (a block).
          </span>
          <h2 id="module-nautilus_trader.persistence.batching">
           Batching
-          <a class="headerlink" href="#module-nautilus_trader.persistence.batching" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.persistence.batching" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -3563,7 +3895,7 @@ correctly loaded.
          </span>
          <h2 id="module-nautilus_trader.persistence.catalog">
           Catalog
-          <a class="headerlink" href="#module-nautilus_trader.persistence.catalog" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.persistence.catalog" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -3621,7 +3953,7 @@ correctly loaded.
             Bases:
             <code class="xref py py-class docutils literal notranslate">
              <span class="pre">
-              abc.ABC
+              ABC
              </span>
             </code>
            </p>
@@ -3685,7 +4017,7 @@ correctly loaded.
             <a class="reference internal" href="#nautilus_trader.persistence.catalog.BaseDataCatalog" title="nautilus_trader.persistence.catalog.base.BaseDataCatalog">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.persistence.catalog.base.BaseDataCatalog
+               BaseDataCatalog
               </span>
              </code>
             </a>
@@ -3696,6 +4028,9 @@ correctly loaded.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -3758,7 +4093,7 @@ correctly loaded.
          </span>
          <h2 id="module-nautilus_trader.persistence.streaming">
           Streaming
-          <a class="headerlink" href="#module-nautilus_trader.persistence.streaming" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.persistence.streaming" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -3815,7 +4150,7 @@ correctly loaded.
             <span class="n">
              <a class="reference internal" href="common.html#nautilus_trader.common.logging.LoggerAdapter" title="nautilus_trader.common.logging.LoggerAdapter">
               <span class="pre">
-               nautilus_trader.common.logging.LoggerAdapter
+               LoggerAdapter
               </span>
              </a>
             </span>
@@ -4017,6 +4352,9 @@ correctly loaded.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -4164,6 +4502,9 @@ correctly loaded.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4179,6 +4520,9 @@ correctly loaded.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>

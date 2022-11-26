@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -669,31 +673,627 @@
               <a class="md-nav__link" href="#module-nautilus_trader.core.collections">
                Collections
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.collections.bisect_left">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    bisect_left()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.collections.bisect_right">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    bisect_right()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.core.datetime">
                Datetime
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.as_utc_index">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    as_utc_index()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.as_utc_timestamp">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    as_utc_timestamp()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.dt_to_unix_nanos">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    dt_to_unix_nanos()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.format_iso8601">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    format_iso8601()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.is_datetime_utc">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    is_datetime_utc()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.is_tz_aware">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    is_tz_aware()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.is_tz_naive">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    is_tz_naive()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.maybe_dt_to_unix_nanos">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    maybe_dt_to_unix_nanos()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.maybe_unix_nanos_to_dt">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    maybe_unix_nanos_to_dt()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.micros_to_nanos">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    micros_to_nanos()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.millis_to_nanos">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    millis_to_nanos()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.nanos_to_micros">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    nanos_to_micros()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.nanos_to_millis">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    nanos_to_millis()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.nanos_to_secs">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    nanos_to_secs()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.secs_to_millis">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    secs_to_millis()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.secs_to_nanos">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    secs_to_nanos()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.datetime.unix_nanos_to_dt">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    unix_nanos_to_dt()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.core.fsm">
                Finite-State Machine (FSM)
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.fsm.FiniteStateMachine">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    FiniteStateMachine
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.fsm.FiniteStateMachine.state">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FiniteStateMachine.state
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.fsm.FiniteStateMachine.state_string">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FiniteStateMachine.state_string
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.fsm.FiniteStateMachine.trigger">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       FiniteStateMachine.trigger()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.fsm.InvalidStateTrigger">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    InvalidStateTrigger
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.fsm.InvalidStateTrigger.with_traceback">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       InvalidStateTrigger.with_traceback()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.core.message">
                Message
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.message.Command">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Command
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Command.category">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Command.category
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Command.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Command.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Command.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Command.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.message.Document">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Document
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Document.category">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Document.category
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Document.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Document.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Document.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Document.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.message.Event">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Event
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Event.category">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Event.category
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Event.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Event.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Event.ts_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Event.ts_event
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Event.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Event.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.message.Message">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Message
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Message.category">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Message.category
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Message.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Message.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Message.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Message.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.message.Request">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Request
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Request.callback">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Request.callback
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Request.category">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Request.category
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Request.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Request.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Request.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Request.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.message.Response">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Response
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Response.category">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Response.category
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Response.correlation_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Response.correlation_id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Response.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Response.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.core.message.Response.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Response.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.core.stats">
                Stats
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.basis_points_as_percentage">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    basis_points_as_percentage()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.fast_mad">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    fast_mad()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.fast_mad_with_mean">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    fast_mad_with_mean()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.fast_mean">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    fast_mean()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.fast_mean_iterated">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    fast_mean_iterated()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.fast_std">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    fast_std()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.stats.fast_std_with_mean">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    fast_std_with_mean()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.core.uuid">
                UUID
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.core.uuid.UUID4">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    UUID4
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -710,7 +1310,7 @@
         </span>
         <h1 id="api-reference-core--page-root">
          Core
-         <a class="headerlink" href="#api-reference-core--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-core--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -739,7 +1339,7 @@ state transitions for both domain entities and more complex components.
          </span>
          <h2 id="module-nautilus_trader.core.collections">
           Collections
-          <a class="headerlink" href="#module-nautilus_trader.core.collections" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.core.collections" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -822,6 +1422,9 @@ slice of a to be searched.
            <dl class="field-list simple">
             <dt class="field-odd">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -832,6 +1435,9 @@ slice of a to be searched.
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -923,6 +1529,9 @@ slice of a to be searched.
            <dl class="field-list simple">
             <dt class="field-odd">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -933,6 +1542,9 @@ slice of a to be searched.
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -951,7 +1563,7 @@ slice of a to be searched.
          </span>
          <h2 id="module-nautilus_trader.core.datetime">
           Datetime
-          <a class="headerlink" href="#module-nautilus_trader.core.datetime" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.core.datetime" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -1004,6 +1616,9 @@ slice of a to be searched.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1025,6 +1640,9 @@ slice of a to be searched.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1083,6 +1701,9 @@ slice of a to be searched.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1098,6 +1719,9 @@ slice of a to be searched.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1152,6 +1776,9 @@ slice of a to be searched.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1173,6 +1800,9 @@ slice of a to be searched.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1248,6 +1878,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1263,6 +1896,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1319,6 +1955,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1334,6 +1973,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1387,6 +2029,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1420,6 +2065,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1473,6 +2121,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1500,6 +2151,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1570,6 +2224,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1591,6 +2248,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1673,6 +2333,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1694,6 +2357,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1752,6 +2418,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1767,6 +2436,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1822,6 +2494,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1837,6 +2512,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1892,6 +2570,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1907,6 +2588,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -1962,6 +2646,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -1977,6 +2664,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -2032,6 +2722,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -2047,6 +2740,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -2102,6 +2798,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -2117,6 +2816,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -2172,6 +2874,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -2187,6 +2892,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -2232,6 +2940,9 @@ string.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -2247,6 +2958,9 @@ string.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -2264,7 +2978,7 @@ string.
          </span>
          <h2 id="module-nautilus_trader.core.fsm">
           Finite-State Machine (FSM)
-          <a class="headerlink" href="#module-nautilus_trader.core.fsm" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.core.fsm" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -2371,6 +3085,9 @@ deterministic state value.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -2381,7 +3098,13 @@ deterministic state value.
                 </strong>
                 (
                 <em>
-                 dict of tuples and states
+                 dict
+                </em>
+                <em>
+                 of
+                </em>
+                <em>
+                 tuples and states
                 </em>
                 ) – The state-transition table for the FSM consisting of a tuple of
 starting state and trigger as keys, and resulting states as values.
@@ -2495,6 +3218,9 @@ If
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <ul class="simple">
@@ -2587,6 +3313,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2616,6 +3345,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2680,6 +3412,9 @@ the FSMs current state.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2696,6 +3431,9 @@ the transition table lookup.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2778,7 +3516,7 @@ set self.__traceback__ to tb and return self.
          </span>
          <h2 id="module-nautilus_trader.core.message">
           Message
-          <a class="headerlink" href="#module-nautilus_trader.core.message" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.core.message" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -2833,7 +3571,7 @@ set self.__traceback__ to tb and return self.
             <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.core.message.Message
+               Message
               </span>
              </code>
             </a>
@@ -2844,6 +3582,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -2902,6 +3643,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2931,6 +3675,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2960,6 +3707,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3024,7 +3774,7 @@ set self.__traceback__ to tb and return self.
             <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.core.message.Message
+               Message
               </span>
              </code>
             </a>
@@ -3035,6 +3785,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -3093,6 +3846,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3122,6 +3878,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3151,6 +3910,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3226,7 +3988,7 @@ set self.__traceback__ to tb and return self.
             <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.core.message.Message
+               Message
               </span>
              </code>
             </a>
@@ -3237,6 +3999,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -3307,6 +4072,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3336,6 +4104,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3365,6 +4136,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3394,6 +4168,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3478,6 +4255,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -3548,6 +4328,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3577,6 +4360,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3606,6 +4392,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3672,7 +4461,7 @@ set self.__traceback__ to tb and return self.
             <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.core.message.Message
+               Message
               </span>
              </code>
             </a>
@@ -3683,6 +4472,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -3774,6 +4566,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3803,6 +4598,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3832,6 +4630,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3861,6 +4662,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3936,7 +4740,7 @@ set self.__traceback__ to tb and return self.
             <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.core.message.Message
+               Message
               </span>
              </code>
             </a>
@@ -3947,6 +4751,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -4019,6 +4826,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4048,6 +4858,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4077,6 +4890,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4106,6 +4922,9 @@ set self.__traceback__ to tb and return self.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4125,7 +4944,7 @@ set self.__traceback__ to tb and return self.
          </span>
          <h2 id="module-nautilus_trader.core.stats">
           Stats
-          <a class="headerlink" href="#module-nautilus_trader.core.stats" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.core.stats" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -4173,6 +4992,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -4188,6 +5010,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4249,6 +5074,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -4264,6 +5092,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4330,6 +5161,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -4361,6 +5195,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4416,6 +5253,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -4431,6 +5271,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4540,6 +5383,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -4617,6 +5463,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4682,6 +5531,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -4697,6 +5549,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4773,6 +5628,9 @@ set self.__traceback__ to tb and return self.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -4804,6 +5662,9 @@ set self.__traceback__ to tb and return self.
             </dd>
             <dt class="field-even">
              Returns
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -4831,7 +5692,7 @@ set self.__traceback__ to tb and return self.
          </span>
          <h2 id="module-nautilus_trader.core.uuid">
           UUID
-          <a class="headerlink" href="#module-nautilus_trader.core.uuid" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.core.uuid" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -4885,6 +5746,9 @@ based on a 128-bit label as specified in RFC 4122.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -669,26 +673,858 @@
               <a class="md-nav__link" href="#module-nautilus_trader.accounting.accounts.cash">
                Cash Account
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    CashAccount
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.apply">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.apply()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balance">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balance()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balance_free">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balance_free()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balance_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balance_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balance_total">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balance_total()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balances">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balances()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balances_free">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balances_free()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balances_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balances_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.balances_total">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.balances_total()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.base_currency">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.base_currency
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.calculate_account_state">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.calculate_account_state
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.calculate_balance_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.calculate_balance_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.calculate_commission">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.calculate_commission()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.calculate_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.calculate_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.clear_balance_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.clear_balance_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.commission">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.commission()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.commissions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.commissions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.currencies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.currencies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.event_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.event_count
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.events">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.events
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.is_cash_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.is_cash_account
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.is_margin_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.is_margin_account
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.is_unleveraged">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.is_unleveraged()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.last_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.last_event
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.starting_balances">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.starting_balances()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.type">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.type
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.update_balance_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.update_balance_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.update_balances">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.update_balances()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.cash.CashAccount.update_commissions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CashAccount.update_commissions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.accounting.accounts.margin">
                Margin Account
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MarginAccount
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.apply">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.apply()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balance">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balance()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balance_free">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balance_free()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balance_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balance_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balance_total">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balance_total()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balances">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balances()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balances_free">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balances_free()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balances_locked">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balances_locked()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.balances_total">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.balances_total()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.base_currency">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.base_currency
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.calculate_account_state">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.calculate_account_state
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.calculate_commission">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.calculate_commission()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.calculate_margin_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.calculate_margin_init()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.calculate_margin_maint">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.calculate_margin_maint()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.calculate_pnls">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.calculate_pnls()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.clear_margin">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.clear_margin()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.clear_margin_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.clear_margin_init()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.clear_margin_maint">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.clear_margin_maint()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.commission">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.commission()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.commissions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.commissions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.currencies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.currencies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.default_leverage">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.default_leverage
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.event_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.event_count
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.events">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.events
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.is_cash_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.is_cash_account
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.is_margin_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.is_margin_account
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.is_unleveraged">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.is_unleveraged()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.last_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.last_event
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.leverage">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.leverage()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.leverages">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.leverages()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.margin">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.margin()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.margin_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.margin_init()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.margin_maint">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.margin_maint()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.margins">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.margins()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.margins_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.margins_init()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.margins_maint">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.margins_maint()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.set_default_leverage">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.set_default_leverage()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.set_leverage">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.set_leverage()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.starting_balances">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.starting_balances()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.type">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.type
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.update_balances">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.update_balances()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.update_commissions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.update_commissions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.update_margin">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.update_margin()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.update_margin_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.update_margin_init()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.accounts.margin.MarginAccount.update_margin_maint">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MarginAccount.update_margin_maint()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.accounting.calculators">
                Calculators
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.accounting.calculators.ExchangeRateCalculator">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ExchangeRateCalculator
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.calculators.ExchangeRateCalculator.get_rate">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ExchangeRateCalculator.get_rate()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.accounting.calculators.RolloverInterestCalculator">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RolloverInterestCalculator
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.calculators.RolloverInterestCalculator.calc_overnight_rate">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RolloverInterestCalculator.calc_overnight_rate()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.calculators.RolloverInterestCalculator.get_rate_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       RolloverInterestCalculator.get_rate_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.accounting.factory">
                Factory
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.accounting.factory.AccountFactory">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AccountFactory
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.factory.AccountFactory.create">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AccountFactory.create()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.factory.AccountFactory.register_account_type">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AccountFactory.register_account_type()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.accounting.factory.AccountFactory.register_calculated_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       AccountFactory.register_calculated_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.accounting.manager">
                Manager
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.accounting.manager.AccountsManager">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AccountsManager
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -705,7 +1541,7 @@
         </span>
         <h1 id="api-reference-accounting--page-root">
          Accounting
-         <a class="headerlink" href="#api-reference-accounting--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-accounting--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -749,7 +1585,7 @@ account types can be registered with the factory and will then be instantiated w
          </span>
          <h2 id="module-nautilus_trader.accounting.accounts.cash">
           Cash Account
-          <a class="headerlink" href="#module-nautilus_trader.accounting.accounts.cash" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.accounting.accounts.cash" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -803,7 +1639,7 @@ account types can be registered with the factory and will then be instantiated w
             Bases:
             <code class="xref py py-class docutils literal notranslate">
              <span class="pre">
-              nautilus_trader.accounting.accounts.base.Account
+              Account
              </span>
             </code>
            </p>
@@ -813,6 +1649,9 @@ account types can be registered with the factory and will then be instantiated w
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -852,6 +1691,9 @@ account types can be registered with the factory and will then be instantiated w
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -924,6 +1766,9 @@ account types can be registered with the factory and will then be instantiated w
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -941,6 +1786,9 @@ account types can be registered with the factory and will then be instantiated w
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <ul class="simple">
@@ -1062,6 +1910,9 @@ account types can be registered with the factory and will then be instantiated w
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1092,6 +1943,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1105,6 +1959,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1213,6 +2070,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1243,6 +2103,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1256,6 +2119,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1364,6 +2230,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1394,6 +2263,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1407,6 +2279,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1515,6 +2390,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1545,6 +2423,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1558,6 +2439,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1650,6 +2534,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1702,6 +2589,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1754,6 +2644,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1806,6 +2699,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1841,6 +2737,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1876,6 +2775,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1989,6 +2891,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2070,6 +2975,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2184,6 +3092,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2265,6 +3176,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2275,6 +3189,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2383,6 +3300,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2438,6 +3358,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2504,6 +3427,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2576,6 +3502,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2593,6 +3522,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2688,6 +3620,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2717,6 +3652,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2746,6 +3684,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2775,6 +3716,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2898,6 +3842,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2950,6 +3897,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2979,6 +3929,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3053,6 +4006,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3088,6 +4044,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3179,6 +4138,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3227,6 +4189,9 @@ given balances, therefore we only update included balances.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3298,6 +4263,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3332,7 +4300,7 @@ given balances, therefore we only update included balances.
          </span>
          <h2 id="module-nautilus_trader.accounting.accounts.margin">
           Margin Account
-          <a class="headerlink" href="#module-nautilus_trader.accounting.accounts.margin" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.accounting.accounts.margin" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -3386,7 +4354,7 @@ given balances, therefore we only update included balances.
             Bases:
             <code class="xref py py-class docutils literal notranslate">
              <span class="pre">
-              nautilus_trader.accounting.accounts.base.Account
+              Account
              </span>
             </code>
            </p>
@@ -3396,6 +4364,9 @@ given balances, therefore we only update included balances.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -3435,6 +4406,9 @@ given balances, therefore we only update included balances.
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -3507,6 +4481,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3524,6 +4501,9 @@ given balances, therefore we only update included balances.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <ul class="simple">
@@ -3645,6 +4625,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3675,6 +4658,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3688,6 +4674,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3796,6 +4785,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3826,6 +4818,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3839,6 +4834,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3947,6 +4945,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3977,6 +4978,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3990,6 +4994,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4098,6 +5105,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4128,6 +5138,9 @@ currency (if set).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4141,6 +5154,9 @@ currency (if set).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4233,6 +5249,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4285,6 +5304,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4337,6 +5359,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4389,6 +5414,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4424,6 +5452,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4459,6 +5490,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4573,6 +5607,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -4654,6 +5691,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4664,6 +5704,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4771,6 +5814,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -4832,6 +5878,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4945,6 +5994,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -5026,6 +6078,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5123,6 +6178,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -5178,6 +6236,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5244,6 +6305,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5322,6 +6386,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5400,6 +6467,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5480,6 +6550,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5497,6 +6570,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5592,6 +6668,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5621,6 +6700,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5650,6 +6732,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5679,6 +6764,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5708,6 +6796,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5831,6 +6922,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5884,6 +6978,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5901,6 +6998,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5956,6 +7056,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6021,6 +7124,9 @@ currency for inverse instruments.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6038,6 +7144,9 @@ currency for inverse instruments.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6125,6 +7234,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6142,6 +7254,9 @@ rather than
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6229,6 +7344,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6246,6 +7364,9 @@ rather than
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6320,6 +7441,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6372,6 +7496,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6424,6 +7551,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6496,6 +7626,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6511,6 +7644,9 @@ rather than
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6604,6 +7740,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -6637,6 +7776,9 @@ rather than
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6708,6 +7850,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6737,6 +7882,9 @@ rather than
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6815,6 +7963,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -6863,6 +8014,9 @@ given balances, therefore we only update included balances.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6934,6 +8088,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7012,6 +8169,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7101,6 +8261,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7136,6 +8299,9 @@ given balances, therefore we only update included balances.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7223,6 +8389,9 @@ given balances, therefore we only update included balances.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7258,6 +8427,9 @@ given balances, therefore we only update included balances.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7290,7 +8462,7 @@ given balances, therefore we only update included balances.
          </span>
          <h2 id="module-nautilus_trader.accounting.calculators">
           Calculators
-          <a class="headerlink" href="#module-nautilus_trader.accounting.calculators" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.accounting.calculators" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -7424,6 +8596,9 @@ given dictionary of bid and ask quotes.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7495,6 +8670,9 @@ given dictionary of bid and ask quotes.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7505,6 +8683,9 @@ given dictionary of bid and ask quotes.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7617,6 +8798,9 @@ interest rate data csv (data since 1956).
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -7684,6 +8868,9 @@ interest rate data csv (data since 1956).
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7717,6 +8904,9 @@ interest rate data csv (data since 1956).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7727,6 +8917,9 @@ interest rate data csv (data since 1956).
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7780,6 +8973,9 @@ interest rate data csv (data since 1956).
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7799,7 +8995,7 @@ interest rate data csv (data since 1956).
          </span>
          <h2 id="module-nautilus_trader.accounting.factory">
           Factory
-          <a class="headerlink" href="#module-nautilus_trader.accounting.factory" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.accounting.factory" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -7884,6 +9080,9 @@ interest rate data csv (data since 1956).
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7901,6 +9100,9 @@ interest rate data csv (data since 1956).
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7964,6 +9166,9 @@ interest rate data csv (data since 1956).
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7995,6 +9200,9 @@ interest rate data csv (data since 1956).
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8053,6 +9261,9 @@ order fills.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8068,6 +9279,9 @@ order fills.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8092,7 +9306,7 @@ order fills.
          </span>
          <h2 id="module-nautilus_trader.accounting.manager">
           Manager
-          <a class="headerlink" href="#module-nautilus_trader.accounting.manager" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.accounting.manager" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -8167,6 +9381,9 @@ order fills.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">

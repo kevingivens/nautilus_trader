@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -791,7 +795,7 @@
        <section class="tex2jax_ignore mathjax_ignore" id="orders">
         <h1 id="user-guide-orders--page-root">
          Orders
-         <a class="headerlink" href="#user-guide-orders--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#user-guide-orders--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -809,7 +813,7 @@ order execution and management, which allows essentially any type of trading str
         <section id="overview">
          <h2 id="overview">
           Overview
-          <a class="headerlink" href="#overview" title="Permalink to this headline">
+          <a class="headerlink" href="#overview" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -937,7 +941,7 @@ a clear explanatory message.
         <section id="execution-instructions">
          <h2 id="execution-instructions">
           Execution Instructions
-          <a class="headerlink" href="#execution-instructions" title="Permalink to this headline">
+          <a class="headerlink" href="#execution-instructions" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -949,7 +953,7 @@ summary of the different execution instructions available.
          <section id="time-in-force">
           <h3 id="time-in-force">
            Time In Force
-           <a class="headerlink" href="#time-in-force" title="Permalink to this headline">
+           <a class="headerlink" href="#time-in-force" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1041,7 +1045,7 @@ or active, before any remaining quantity is canceled.
          <section id="expire-time">
           <h3 id="expire-time">
            Expire Time
-           <a class="headerlink" href="#expire-time" title="Permalink to this headline">
+           <a class="headerlink" href="#expire-time" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1059,7 +1063,7 @@ at which the order will expire and be removed from the exchanges order book (or 
          <section id="post-only">
           <h3 id="post-only">
            Post Only
-           <a class="headerlink" href="#post-only" title="Permalink to this headline">
+           <a class="headerlink" href="#post-only" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1082,7 +1086,7 @@ important for market makers, or traders seeking to restrict the order to a liqui
          <section id="reduce-only">
           <h3 id="reduce-only">
            Reduce Only
-           <a class="headerlink" href="#reduce-only" title="Permalink to this headline">
+           <a class="headerlink" href="#reduce-only" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1119,7 +1123,7 @@ exchanges, however the behaviour as per the Nautilus
          <section id="display-quantity">
           <h3 id="display-quantity">
            Display Quantity
-           <a class="headerlink" href="#display-quantity" title="Permalink to this headline">
+           <a class="headerlink" href="#display-quantity" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1148,7 +1152,7 @@ Specifying a display quantity of zero is also equivalent to setting an order as
          <section id="trigger-type">
           <h3 id="trigger-type">
            Trigger Type
-           <a class="headerlink" href="#trigger-type" title="Permalink to this headline">
+           <a class="headerlink" href="#trigger-type" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1325,7 +1329,7 @@ Specifying a display quantity of zero is also equivalent to setting an order as
          <section id="trigger-offset-type">
           <h3 id="trigger-offset-type">
            Trigger Offset Type
-           <a class="headerlink" href="#trigger-offset-type" title="Permalink to this headline">
+           <a class="headerlink" href="#trigger-offset-type" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1395,7 +1399,7 @@ of the stop price based on the offset from the ‘market’ (bid, ask or last pr
          <section id="contingency-orders">
           <h3 id="contingency-orders">
            Contingency Orders
-           <a class="headerlink" href="#contingency-orders" title="Permalink to this headline">
+           <a class="headerlink" href="#contingency-orders" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1415,7 +1419,7 @@ contingent on each other. More documentation for these options can be found in t
         <section id="order-factory">
          <h2 id="order-factory">
           Order Factory
-          <a class="headerlink" href="#order-factory" title="Permalink to this headline">
+          <a class="headerlink" href="#order-factory" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -1471,14 +1475,14 @@ examples will leverage an
         <section id="order-types">
          <h2 id="order-types">
           Order Types
-          <a class="headerlink" href="#order-types" title="Permalink to this headline">
+          <a class="headerlink" href="#order-types" title="Permalink to this heading">
            ¶
           </a>
          </h2>
          <section id="market">
           <h3 id="market">
            Market
-           <a class="headerlink" href="#market" title="Permalink to this headline">
+           <a class="headerlink" href="#market" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1526,7 +1530,7 @@ to BUY 100,000 AUD using USD:
          <section id="limit">
           <h3 id="limit">
            Limit
-           <a class="headerlink" href="#limit" title="Permalink to this headline">
+           <a class="headerlink" href="#limit" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1572,7 +1576,7 @@ contracts at a limit price of 5000 USDT, as a market maker.
          <section id="stop-market">
           <h3 id="stop-market">
            Stop-Market
-           <a class="headerlink" href="#stop-market" title="Permalink to this headline">
+           <a class="headerlink" href="#stop-market" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1622,7 +1626,7 @@ to SELL 1 BTC at a trigger price of 100,000 USDT, active until further notice:
          <section id="stop-limit">
           <h3 id="stop-limit">
            Stop-Limit
-           <a class="headerlink" href="#stop-limit" title="Permalink to this headline">
+           <a class="headerlink" href="#stop-limit" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1673,7 +1677,7 @@ once the market hits the trigger price of 1.30010 USD, active until midday 6th J
          <section id="market-to-limit">
           <h3 id="market-to-limit">
            Market-To-Limit
-           <a class="headerlink" href="#market-to-limit" title="Permalink to this headline">
+           <a class="headerlink" href="#market-to-limit" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1725,7 +1729,7 @@ to BUY 200,000 USD using JPY:
          <section id="market-if-touched">
           <h3 id="market-if-touched">
            Market-If-Touched
-           <a class="headerlink" href="#market-if-touched" title="Permalink to this headline">
+           <a class="headerlink" href="#market-if-touched" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1776,7 +1780,7 @@ to SELL 10 ETHUSDT-PERP Perpetual Futures contracts at a trigger price of 10,000
          <section id="limit-if-touched">
           <h3 id="limit-if-touched">
            Limit-If-Touched
-           <a class="headerlink" href="#limit-if-touched" title="Permalink to this headline">
+           <a class="headerlink" href="#limit-if-touched" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1828,7 +1832,7 @@ active until midday 6th June, 2022 (UTC):
          <section id="trailing-stop-market">
           <h3 id="trailing-stop-market">
            Trailing-Stop-Market
-           <a class="headerlink" href="#trailing-stop-market" title="Permalink to this headline">
+           <a class="headerlink" href="#trailing-stop-market" title="Permalink to this heading">
             ¶
            </a>
           </h3>
@@ -1880,7 +1884,7 @@ Perpetual Futures Contracts activating at a trigger price of 5000 USD, then trai
          <section id="trailing-stop-limit">
           <h3 id="trailing-stop-limit">
            Trailing-Stop-Limit
-           <a class="headerlink" href="#trailing-stop-limit" title="Permalink to this headline">
+           <a class="headerlink" href="#trailing-stop-limit" title="Permalink to this heading">
             ¶
            </a>
           </h3>

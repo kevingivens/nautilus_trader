@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -669,11 +673,135 @@
               <a class="md-nav__link" href="#module-nautilus_trader.serialization.msgpack.serializer">
                MsgPack
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.msgpack.serializer.MsgPackSerializer">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MsgPackSerializer
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.msgpack.serializer.MsgPackSerializer.deserialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MsgPackSerializer.deserialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.msgpack.serializer.MsgPackSerializer.serialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MsgPackSerializer.serialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.msgpack.serializer.MsgPackSerializer.timestamps_as_str">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       MsgPackSerializer.timestamps_as_str
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.serialization.arrow.serializer">
                Arrow
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.ParquetSerializer">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ParquetSerializer
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.ParquetSerializer.deserialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ParquetSerializer.deserialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.ParquetSerializer.serialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ParquetSerializer.serialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.get_cls_table">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    get_cls_table()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.get_partition_keys">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    get_partition_keys()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.get_schema">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    get_schema()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.list_schemas">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    list_schemas()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.arrow.serializer.register_parquet">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    register_parquet()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#json">
@@ -684,6 +812,50 @@
               <a class="md-nav__link" href="#module-nautilus_trader.serialization.base">
                Base
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.base.Serializer">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Serializer
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.base.Serializer.deserialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Serializer.deserialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.serialization.base.Serializer.serialize">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Serializer.serialize()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.serialization.base.register_serializable_object">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    register_serializable_object()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -700,7 +872,7 @@
         </span>
         <h1 id="api-reference-serialization--page-root">
          Serialization
-         <a class="headerlink" href="#api-reference-serialization--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-serialization--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -720,7 +892,7 @@ beside the built-in specification serializers.
          </span>
          <h2 id="module-nautilus_trader.serialization.msgpack.serializer">
           MsgPack
-          <a class="headerlink" href="#module-nautilus_trader.serialization.msgpack.serializer" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.serialization.msgpack.serializer" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -764,7 +936,7 @@ beside the built-in specification serializers.
             <a class="reference internal" href="#nautilus_trader.serialization.base.Serializer" title="nautilus_trader.serialization.base.Serializer">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.serialization.base.Serializer
+               Serializer
               </span>
              </code>
             </a>
@@ -779,6 +951,9 @@ beside the built-in specification serializers.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -852,6 +1027,9 @@ and back to
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -867,6 +1045,9 @@ and back to
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -877,6 +1058,9 @@ and back to
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -946,6 +1130,9 @@ and back to
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -961,6 +1148,9 @@ and back to
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -971,6 +1161,9 @@ and back to
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1005,6 +1198,9 @@ and back to
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1024,7 +1220,7 @@ and back to
          </span>
          <h2 id="module-nautilus_trader.serialization.arrow.serializer">
           Arrow
-          <a class="headerlink" href="#module-nautilus_trader.serialization.arrow.serializer" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.serialization.arrow.serializer" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -1115,6 +1311,9 @@ and back to
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1146,6 +1345,9 @@ and back to
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1156,6 +1358,9 @@ and back to
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1214,6 +1419,9 @@ and back to
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1229,6 +1437,9 @@ and back to
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1239,6 +1450,9 @@ and back to
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1491,6 +1705,9 @@ and back to
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -1647,7 +1864,7 @@ its own. (for example,
         <section id="json">
          <h2 id="json">
           JSON
-          <a class="headerlink" href="#json" title="Permalink to this headline">
+          <a class="headerlink" href="#json" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -1657,7 +1874,7 @@ its own. (for example,
          </span>
          <h2 id="module-nautilus_trader.serialization.base">
           Base
-          <a class="headerlink" href="#module-nautilus_trader.serialization.base" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.serialization.base" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -1983,6 +2200,9 @@ its own. (for example,
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -2098,6 +2318,9 @@ its own. (for example,
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <ul class="simple">

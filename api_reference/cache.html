@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -669,16 +673,1993 @@
               <a class="md-nav__link" href="#id1">
                Cache
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Cache
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.account_for_venue">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.account_for_venue()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.account_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.account_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.accounts">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.accounts()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_bar">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_bar()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_currency">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_currency()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_position_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_position_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_quote_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_quote_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_submit_order_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_submit_order_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_submit_order_list_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_submit_order_list_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_trade_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_trade_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.add_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.bar">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.bar()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.bar_capacity">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.bar_capacity
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.bar_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.bar_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.book_update_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.book_update_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.build_index">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.build_index()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_accounts">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.cache_accounts()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_commands">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.cache_commands()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_currencies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.cache_currencies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.cache_instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.cache_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.cache_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.check_integrity">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.check_integrity()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.check_residuals">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.check_residuals()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.clear_cache">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.clear_cache()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.clear_index">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.clear_index()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.client_order_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.client_order_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.client_order_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.client_order_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.client_order_ids_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.client_order_ids_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.client_order_ids_emulated">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.client_order_ids_emulated()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.client_order_ids_inflight">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.client_order_ids_inflight()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.client_order_ids_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.client_order_ids_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.delete_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.delete_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.flush_db">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.flush_db()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.get_xrate">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.get_xrate()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.has_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.has_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.has_order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.has_order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.has_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.has_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.has_tickers">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.has_tickers()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.has_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.has_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.instrument_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.instrument_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.is_order_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.is_order_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.is_order_emulated">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.is_order_emulated()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.is_order_inflight">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.is_order_inflight()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.is_order_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.is_order_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.is_position_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.is_position_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.is_position_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.is_position_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_submit_order_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_submit_order_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_submit_order_list_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.load_submit_order_list_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.order_exists">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.order_exists()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_closed_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_closed_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_emulated">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_emulated()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_emulated_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_emulated_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_for_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_for_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_inflight">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_inflight()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_inflight_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_inflight_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_open_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_open_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.orders_total_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.orders_total_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_closed_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_closed_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_exists">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_exists()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_for_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_for_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_open_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_open_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.position_snapshots">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.position_snapshots()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.positions_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.positions_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.positions_closed_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.positions_closed_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.positions_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.positions_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.positions_open_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.positions_open_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.positions_total_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.positions_total_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.price">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.price()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.quote_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.quote_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.quote_tick_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.quote_tick_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.reset">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.reset()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.snapshot_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.snapshot_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.strategy_id_for_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.strategy_id_for_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.strategy_id_for_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.strategy_id_for_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.strategy_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.strategy_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.tick_capacity">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.tick_capacity
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.ticker_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.ticker_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.tickers">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.tickers()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.trade_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.trade_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.trade_tick_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.trade_tick_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.update_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.update_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.update_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.update_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.update_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.update_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.update_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.update_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.venue_order_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Cache.venue_order_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.cache.database">
                Database
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    CacheDatabase
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_currency">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_currency()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_submit_order_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_submit_order_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_submit_order_list_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.add_submit_order_list_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.delete_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.delete_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.flush">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.flush()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_accounts">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_accounts()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_currencies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_currencies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_currency">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_currency()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_submit_order_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_submit_order_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_submit_order_commands">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_submit_order_commands()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_submit_order_list_command">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_submit_order_list_command()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_submit_order_list_commands">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.load_submit_order_list_commands()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.update_account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.update_account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.update_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.update_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.update_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.update_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.update_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheDatabase.update_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.cache.base">
                Base
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    CacheFacade
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.account">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.account()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.account_for_venue">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.account_for_venue()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.account_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.account_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.accounts">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.accounts()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.bar">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.bar()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.bar_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.bar_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.book_update_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.book_update_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.client_order_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.client_order_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.client_order_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.client_order_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.client_order_ids_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.client_order_ids_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.client_order_ids_emulated">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.client_order_ids_emulated()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.client_order_ids_inflight">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.client_order_ids_inflight()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.client_order_ids_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.client_order_ids_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.get_xrate">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.get_xrate()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.has_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.has_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.has_order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.has_order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.has_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.has_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.has_tickers">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.has_tickers()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.has_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.has_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.instrument_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.instrument_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.is_order_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.is_order_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.is_order_emulated">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.is_order_emulated()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.is_order_inflight">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.is_order_inflight()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.is_order_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.is_order_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.is_position_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.is_position_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.is_position_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.is_position_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.order_exists">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.order_exists()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_closed_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_closed_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_emulated">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_emulated()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_emulated_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_emulated_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_for_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_for_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_inflight">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_inflight()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_inflight_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_inflight_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_open_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_open_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.orders_total_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.orders_total_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_closed_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_closed_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_exists">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_exists()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_for_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_for_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_open_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_open_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.position_snapshots">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.position_snapshots()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.positions_closed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.positions_closed()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.positions_closed_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.positions_closed_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.positions_open">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.positions_open()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.positions_open_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.positions_open_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.positions_total_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.positions_total_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.price">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.price()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.quote_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.quote_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.quote_tick_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.quote_tick_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.strategy_id_for_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.strategy_id_for_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.strategy_id_for_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.strategy_id_for_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.strategy_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.strategy_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.ticker_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.ticker_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.tickers">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.tickers()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.trade_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.trade_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.trade_tick_count">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.trade_tick_count()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.venue_order_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       CacheFacade.venue_order_id()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -695,7 +2676,7 @@
         </span>
         <h1 id="api-reference-cache--page-root">
          Cache
-         <a class="headerlink" href="#api-reference-cache--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-cache--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -713,7 +2694,7 @@ accessed by many components.
         <section id="id1">
          <h2 id="id1">
           Cache
-          <a class="headerlink" href="#id1" title="Permalink to this headline">
+          <a class="headerlink" href="#id1" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -796,7 +2777,7 @@ accessed by many components.
             <a class="reference internal" href="#nautilus_trader.cache.base.CacheFacade" title="nautilus_trader.cache.base.CacheFacade">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.cache.base.CacheFacade
+               CacheFacade
               </span>
              </code>
             </a>
@@ -807,6 +2788,9 @@ accessed by many components.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -874,6 +2858,9 @@ accessed by many components.
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -944,6 +2931,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -961,6 +2951,9 @@ accessed by many components.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1027,6 +3020,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1044,6 +3040,9 @@ accessed by many components.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1112,6 +3111,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1129,6 +3131,9 @@ accessed by many components.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1184,6 +3189,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1247,6 +3255,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1262,6 +3273,9 @@ accessed by many components.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1330,6 +3344,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1400,6 +3417,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1479,6 +3499,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1549,6 +3572,9 @@ accessed by many components.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1642,6 +3668,9 @@ ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1697,6 +3726,9 @@ being released and transformed into another type.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1765,6 +3797,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1846,6 +3881,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1879,6 +3917,9 @@ being released and transformed into another type.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1990,6 +4031,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2106,6 +4150,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2176,6 +4223,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2255,6 +4305,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2325,6 +4378,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2395,6 +4451,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2465,6 +4524,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2535,6 +4597,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2630,6 +4695,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2669,6 +4737,9 @@ being released and transformed into another type.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2714,6 +4785,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2777,6 +4851,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2794,6 +4871,9 @@ being released and transformed into another type.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2857,6 +4937,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2874,6 +4957,9 @@ being released and transformed into another type.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -2940,6 +5026,9 @@ being released and transformed into another type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2957,6 +5046,9 @@ being released and transformed into another type.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3298,6 +5390,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3354,6 +5449,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3505,6 +5603,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3522,6 +5623,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3610,6 +5714,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3677,6 +5784,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3762,6 +5872,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3829,6 +5942,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -3914,6 +6030,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3981,6 +6100,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4066,6 +6188,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -4133,6 +6258,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4218,6 +6346,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -4285,6 +6416,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4348,6 +6482,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4365,6 +6502,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4514,6 +6654,9 @@ error is found then a log error message will also be produced.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -4575,6 +6718,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4585,6 +6731,9 @@ error is found then a log error message will also be produced.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4660,6 +6809,9 @@ type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4677,6 +6829,9 @@ type.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4741,6 +6896,9 @@ for the given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4758,6 +6916,9 @@ for the given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4822,6 +6983,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4839,6 +7003,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4903,6 +7070,9 @@ instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4920,6 +7090,9 @@ instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -4984,6 +7157,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5001,6 +7177,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5066,6 +7245,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5083,6 +7265,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5149,6 +7334,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5172,6 +7360,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5235,6 +7426,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5258,6 +7452,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5321,6 +7518,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5338,6 +7538,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5401,6 +7604,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5418,6 +7624,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5481,6 +7690,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5498,6 +7710,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5561,6 +7776,9 @@ given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5578,6 +7796,9 @@ given instrument ID.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5642,6 +7863,9 @@ and is closed.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5659,6 +7883,9 @@ and is closed.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5723,6 +7950,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5740,6 +7970,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5803,6 +8036,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5820,6 +8056,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5888,6 +8127,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5905,6 +8147,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5973,6 +8218,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5990,6 +8238,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6058,6 +8309,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6075,6 +8329,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6141,6 +8398,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6213,6 +8473,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6230,6 +8493,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6298,6 +8564,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6315,6 +8584,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6383,6 +8655,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6451,6 +8726,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6468,6 +8746,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6534,6 +8815,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6551,6 +8835,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6647,6 +8934,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -6728,6 +9018,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -6824,6 +9117,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -6905,6 +9201,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7001,6 +9300,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7082,6 +9384,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7178,6 +9483,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7259,6 +9567,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7355,6 +9666,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7436,6 +9750,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7499,6 +9816,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7516,6 +9836,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7612,6 +9935,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7693,6 +10019,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7789,6 +10118,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7870,6 +10202,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -7966,6 +10301,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8047,6 +10385,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8143,6 +10484,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8224,6 +10568,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8320,6 +10667,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8401,6 +10751,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8466,6 +10819,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8483,6 +10839,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8571,6 +10930,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8638,6 +11000,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8701,6 +11066,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8718,6 +11086,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8783,6 +11154,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8800,6 +11174,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8868,6 +11245,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8885,6 +11265,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8973,6 +11356,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9040,6 +11426,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9125,6 +11514,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9192,6 +11584,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9255,6 +11650,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9278,6 +11676,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9374,6 +11775,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9455,6 +11859,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9540,6 +11947,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9607,6 +12017,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9692,6 +12105,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9759,6 +12175,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -9855,6 +12274,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9936,6 +12358,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10032,6 +12457,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10113,6 +12541,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10209,6 +12640,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10290,6 +12724,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10366,6 +12803,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10399,6 +12839,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10481,6 +12924,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10520,6 +12966,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10599,6 +13048,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10616,6 +13068,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10679,6 +13134,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10696,6 +13154,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10805,6 +13266,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10877,6 +13341,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10894,6 +13361,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -10962,6 +13432,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10979,6 +13452,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11034,6 +13510,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11063,6 +13542,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11142,6 +13624,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11181,6 +13666,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11260,6 +13748,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11277,6 +13768,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11340,6 +13834,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11357,6 +13854,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11436,6 +13936,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11475,6 +13978,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11554,6 +14060,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11571,6 +14080,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11634,6 +14146,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11651,6 +14166,9 @@ and is open.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -11714,6 +14232,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11794,6 +14315,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11864,6 +14388,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -11934,6 +14461,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12006,6 +14536,9 @@ and is open.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12028,7 +14561,7 @@ and is open.
          </span>
          <h2 id="module-nautilus_trader.cache.database">
           Database
-          <a class="headerlink" href="#module-nautilus_trader.cache.database" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.cache.database" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -12081,6 +14614,9 @@ and is open.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -13465,7 +16001,7 @@ and is open.
          </span>
          <h2 id="module-nautilus_trader.cache.base">
           Base
-          <a class="headerlink" href="#module-nautilus_trader.cache.base" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.cache.base" title="Permalink to this heading">
            ¶
           </a>
          </h2>

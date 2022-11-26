@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Docutils 0.17.1: http://docutils.sourceforge.net/" name="generator"/>
+  <meta content="Docutils 0.19: https://docutils.sourceforge.io/" name="generator"/>
   <meta content="width=device-width,initial-scale=1" name="viewport"/>
   <meta content="ie=edge" http-equiv="x-ua-compatible"/>
   <meta content="Copy to clipboard" name="lang:clipboard.copy"/>
@@ -65,7 +65,11 @@
   </script>
   <script src="../_static/underscore.js">
   </script>
+  <script src="../_static/_sphinx_javascript_frameworks_compat.js">
+  </script>
   <script src="../_static/doctools.js">
+  </script>
+  <script src="../_static/sphinx_highlight.js">
   </script>
   <script src="../_static/clipboard.min.js">
   </script>
@@ -669,16 +673,1650 @@
               <a class="md-nav__link" href="#module-nautilus_trader.trading.filters">
                Filters
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    EconomicNewsEventFilter
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter.currencies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       EconomicNewsEventFilter.currencies
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter.impacts">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       EconomicNewsEventFilter.impacts
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter.next_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       EconomicNewsEventFilter.next_event()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter.prev_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       EconomicNewsEventFilter.prev_event()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter.unfiltered_data_end">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       EconomicNewsEventFilter.unfiltered_data_end
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.EconomicNewsEventFilter.unfiltered_data_start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       EconomicNewsEventFilter.unfiltered_data_start
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSession">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ForexSession
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSessionFilter">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ForexSessionFilter
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSessionFilter.local_from_utc">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ForexSessionFilter.local_from_utc()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSessionFilter.next_end">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ForexSessionFilter.next_end()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSessionFilter.next_start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ForexSessionFilter.next_start()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSessionFilter.prev_end">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ForexSessionFilter.prev_end()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.ForexSessionFilter.prev_start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       ForexSessionFilter.prev_start()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    NewsEvent
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent.currency">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       NewsEvent.currency
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       NewsEvent.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent.impact">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       NewsEvent.impact
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent.name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       NewsEvent.name
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent.ts_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       NewsEvent.ts_event
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsEvent.ts_init">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       NewsEvent.ts_init
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.filters.NewsImpact">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    NewsImpact
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.trading.strategy">
                Strategy
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Strategy
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.cache">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.cache
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.cancel_all_orders">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.cancel_all_orders()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.cancel_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.cancel_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.clock">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.clock
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.close_all_positions">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.close_all_positions()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.close_position">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.close_position()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.degrade">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.degrade()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.deregister_warning_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.deregister_warning_event()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.dispose">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.dispose()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.fault">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.fault()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_bar">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_bar()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_event()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_historical_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_historical_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_instrument_close_price">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_instrument_close_price()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_instrument_status_update">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_instrument_status_update()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_order_book_delta">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_order_book_delta()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_quote_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_quote_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_trade_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_trade_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.handle_venue_status_update">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.handle_venue_status_update()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.indicators_initialized">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.indicators_initialized()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.is_degraded">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.is_degraded
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.is_disposed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.is_disposed
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.is_faulted">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.is_faulted
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.is_initialized">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.is_initialized
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.is_running">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.is_running
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.is_stopped">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.is_stopped
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.load">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.load()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.log">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.log
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.modify_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.modify_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.msgbus">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.msgbus
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.oms_type">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.oms_type
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_bar">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_bar()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_degrade">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_degrade()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_dispose">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_dispose()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_event()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_fault">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_fault()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_historical_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_historical_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_instrument_close_price">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_instrument_close_price()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_instrument_status_update">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_instrument_status_update()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_load">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_load()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_order_book">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_order_book()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_order_book_delta">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_order_book_delta()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_quote_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_quote_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_reset">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_reset()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_resume">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_resume()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_save">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_save()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_start()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_stop">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_stop()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_trade_tick">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_trade_tick()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.on_venue_status_update">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.on_venue_status_update()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.order_factory">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.order_factory
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.order_id_tag">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.order_id_tag
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.portfolio">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.portfolio
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.publish_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.publish_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.publish_signal">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.publish_signal()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.query_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.query_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.register">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.register()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.register_base">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.register_base()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.register_indicator_for_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.register_indicator_for_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.register_indicator_for_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.register_indicator_for_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.register_indicator_for_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.register_indicator_for_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.register_warning_event">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.register_warning_event()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.registered_indicators">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.registered_indicators
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.request_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.request_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.request_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.request_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.request_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.request_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.request_instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.request_instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.request_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.request_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.request_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.request_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.reset">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.reset()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.resume">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.resume()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.save">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.save()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.start()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.state">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.state
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.stop">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.stop()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.submit_order">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.submit_order()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.submit_order_list">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.submit_order_list()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_instrument_close_prices">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_instrument_close_prices()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_instrument_status_updates">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_instrument_status_updates()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_order_book_deltas">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_order_book_deltas()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_order_book_snapshots">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_order_book_snapshots()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.subscribe_venue_status_updates">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.subscribe_venue_status_updates()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.to_importable_config">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.to_importable_config()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.trader_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.trader_id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.type">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.type
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_bars">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_bars()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_data">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_data()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_instrument">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_instrument()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_instruments">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_instruments()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_order_book_deltas">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_order_book_deltas()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_order_book_snapshots">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_order_book_snapshots()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_quote_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_quote_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_ticker">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_ticker()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_trade_ticks">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_trade_ticks()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.strategy.Strategy.unsubscribe_venue_status_updates">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Strategy.unsubscribe_venue_status_updates()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
              <li class="md-nav__item">
               <a class="md-nav__link" href="#module-nautilus_trader.trading.trader">
                Trader
               </a>
+              <nav class="md-nav">
+               <ul class="md-nav__list">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Trader
+                   </span>
+                  </code>
+                 </a>
+                 <nav class="md-nav">
+                  <ul class="md-nav__list">
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.actor_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.actor_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.actor_states">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.actor_states()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.actors">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.actors()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.add_actor">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.add_actor()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.add_actors">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.add_actors()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.add_strategies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.add_strategies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.add_strategy">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.add_strategy()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.check_residuals">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.check_residuals()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.clear_actors">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.clear_actors()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.clear_strategies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.clear_strategies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.degrade">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.degrade()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.dispose">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.dispose()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.fault">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.fault()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.fully_qualified_name">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.fully_qualified_name()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.generate_account_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.generate_account_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.generate_order_fills_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.generate_order_fills_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.generate_orders_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.generate_orders_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.generate_positions_report">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.generate_positions_report()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.is_degraded">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.is_degraded
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.is_disposed">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.is_disposed
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.is_faulted">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.is_faulted
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.is_initialized">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.is_initialized
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.is_running">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.is_running
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.is_stopped">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.is_stopped
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.load">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.load()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.reset">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.reset()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.resume">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.resume()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.save">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.save()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.start">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.start()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.state">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.state
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.stop">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.stop()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.strategies">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.strategies()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.strategy_ids">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.strategy_ids()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.strategy_states">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.strategy_states()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.subscribe">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.subscribe()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.trader_id">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.trader_id
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.type">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.type
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                   <li class="md-nav__item">
+                    <a class="md-nav__link" href="#nautilus_trader.trading.trader.Trader.unsubscribe">
+                     <code class="docutils literal notranslate">
+                      <span class="pre">
+                       Trader.unsubscribe()
+                      </span>
+                     </code>
+                    </a>
+                   </li>
+                  </ul>
+                 </nav>
+                </li>
+               </ul>
+              </nav>
              </li>
             </ul>
            </nav>
@@ -695,7 +2333,7 @@
         </span>
         <h1 id="api-reference-trading--page-root">
          Trading
-         <a class="headerlink" href="#api-reference-trading--page-root" title="Permalink to this headline">
+         <a class="headerlink" href="#api-reference-trading--page-root" title="Permalink to this heading">
           ¶
          </a>
         </h1>
@@ -719,7 +2357,7 @@ framework. Custom trading strategies can be implemented by inheriting from the
          </span>
          <h2 id="module-nautilus_trader.trading.filters">
           Filters
-          <a class="headerlink" href="#module-nautilus_trader.trading.filters" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.trading.filters" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -794,6 +2432,9 @@ framework. Custom trading strategies can be implemented by inheriting from the
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -872,6 +2513,9 @@ framework. Custom trading strategies can be implemented by inheriting from the
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -901,6 +2545,9 @@ framework. Custom trading strategies can be implemented by inheriting from the
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -967,6 +2614,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -982,6 +2632,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -996,6 +2649,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1103,6 +2759,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1118,6 +2777,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1132,6 +2794,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1202,6 +2867,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1231,6 +2899,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1280,7 +2951,7 @@ Will return None if no news events match the filter conditions.
             Bases:
             <code class="xref py py-class docutils literal notranslate">
              <span class="pre">
-              enum.Enum
+              Enum
              </span>
             </code>
            </p>
@@ -1382,6 +3053,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1415,6 +3089,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1426,6 +3103,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1520,6 +3200,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1553,6 +3236,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1563,6 +3249,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1657,6 +3346,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1690,6 +3382,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1700,6 +3395,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1794,6 +3492,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1827,6 +3528,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1837,6 +3541,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -1931,6 +3638,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -1964,6 +3674,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-even">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -1974,6 +3687,9 @@ Will return None if no news events match the filter conditions.
               </dd>
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2075,7 +3791,7 @@ Will return None if no news events match the filter conditions.
             Bases:
             <code class="xref py py-class docutils literal notranslate">
              <span class="pre">
-              nautilus_trader.core.data.Data
+              Data
              </span>
             </code>
            </p>
@@ -2085,6 +3801,9 @@ Will return None if no news events match the filter conditions.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -2173,6 +3892,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2239,6 +3961,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2276,6 +4001,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2305,6 +4033,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2334,6 +4065,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2363,6 +4097,9 @@ Will return None if no news events match the filter conditions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2412,7 +4149,7 @@ Will return None if no news events match the filter conditions.
             Bases:
             <code class="xref py py-class docutils literal notranslate">
              <span class="pre">
-              enum.Enum
+              Enum
              </span>
             </code>
            </p>
@@ -2427,7 +4164,7 @@ Will return None if no news events match the filter conditions.
          </span>
          <h2 id="module-nautilus_trader.trading.strategy">
           Strategy
-          <a class="headerlink" href="#module-nautilus_trader.trading.strategy" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.trading.strategy" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -2535,7 +4272,7 @@ fully “wired” into the platform. Exceptions will be raised if a
             <a class="reference internal" href="common.html#nautilus_trader.common.actor.Actor" title="nautilus_trader.common.actor.Actor">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.common.actor.Actor
+               Actor
               </span>
              </code>
             </a>
@@ -2601,6 +4338,9 @@ per instrument. The position ID will be
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <p>
@@ -2624,6 +4364,9 @@ per instrument. The position ID will be
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <p>
@@ -2668,6 +4411,9 @@ per instrument. The position ID will be
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -2753,6 +4499,9 @@ per instrument. The position ID will be
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2897,6 +4646,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -2964,6 +4716,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3060,6 +4815,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3231,6 +4989,9 @@ to the
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -3416,6 +5177,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3619,6 +5383,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3703,6 +5470,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3781,6 +5551,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3881,6 +5654,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -3970,6 +5746,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4061,6 +5840,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4150,6 +5932,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4241,6 +6026,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4332,6 +6120,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4410,6 +6201,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4510,6 +6304,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4601,6 +6398,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4708,6 +6508,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4786,6 +6589,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4886,6 +6692,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -4977,6 +6786,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5055,6 +6867,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5155,6 +6970,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5199,6 +7017,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5251,6 +7072,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5287,6 +7111,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5322,6 +7149,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5357,6 +7187,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5392,6 +7225,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5427,6 +7263,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5462,6 +7301,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5532,6 +7374,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5562,6 +7407,9 @@ then the component state will not change, and an error will be logged.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5604,6 +7452,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5733,6 +7584,9 @@ original
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -5841,6 +7695,9 @@ If
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -5899,6 +7756,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5934,6 +7794,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -5997,6 +7860,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6075,6 +7941,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6256,6 +8125,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6388,6 +8260,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6464,6 +8339,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6543,6 +8421,9 @@ price update.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6622,6 +8503,9 @@ update.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6762,6 +8646,9 @@ update.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6840,6 +8727,9 @@ update.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -6934,6 +8824,9 @@ update.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7103,6 +8996,9 @@ update.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7287,6 +9183,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7365,6 +9264,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7443,6 +9345,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7487,6 +9392,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7516,6 +9424,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7545,6 +9456,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -7619,6 +9533,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7728,6 +9645,9 @@ when initially starting.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -7866,6 +9786,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8022,6 +9945,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8218,6 +10144,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8368,6 +10297,9 @@ given bar type.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8468,6 +10400,9 @@ data for the given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8568,6 +10503,9 @@ data for the given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8654,6 +10592,9 @@ data for the given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8688,6 +10629,9 @@ data for the given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -8801,6 +10745,9 @@ data for the given instrument ID.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -8892,6 +10839,9 @@ If
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -8985,6 +10935,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9088,6 +11041,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9204,6 +11160,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9355,6 +11314,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9559,6 +11521,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -9844,6 +11809,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -9952,6 +11920,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -10126,6 +12097,9 @@ and routing instructions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10325,6 +12299,9 @@ and routing instructions.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10503,6 +12480,9 @@ not be what you intended.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10615,6 +12595,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10729,6 +12712,9 @@ sent to the corresponding data client.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10841,6 +12827,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -10953,6 +12942,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11069,6 +13061,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11218,6 +13213,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11449,6 +13447,9 @@ as per the last subscription request (this will also affect all subscribers).
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11571,6 +13572,9 @@ If
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <ul class="simple">
@@ -11670,6 +13674,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11786,6 +13793,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -11902,6 +13912,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12014,6 +14027,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12106,6 +14122,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12135,6 +14154,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12164,6 +14186,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -12242,6 +14267,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12354,6 +14382,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12468,6 +14499,9 @@ be sent to the data client.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12584,6 +14618,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12696,6 +14733,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12822,6 +14862,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -12950,6 +14993,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -13066,6 +15112,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -13182,6 +15231,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -13294,6 +15346,9 @@ If
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -13351,7 +15406,7 @@ If
          </span>
          <h2 id="module-nautilus_trader.trading.trader">
           Trader
-          <a class="headerlink" href="#module-nautilus_trader.trading.trader" title="Permalink to this headline">
+          <a class="headerlink" href="#module-nautilus_trader.trading.trader" title="Permalink to this heading">
            ¶
           </a>
          </h2>
@@ -13526,7 +15581,7 @@ a running instance of the platform.
             <a class="reference internal" href="common.html#nautilus_trader.common.component.Component" title="nautilus_trader.common.component.Component">
              <code class="xref py py-class docutils literal notranslate">
               <span class="pre">
-               nautilus_trader.common.component.Component
+               Component
               </span>
              </code>
             </a>
@@ -13537,6 +15592,9 @@ a running instance of the platform.
            <dl class="field-list simple">
             <dt class="field-odd">
              Parameters
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-odd">
              <ul class="simple">
@@ -13715,6 +15773,9 @@ a running instance of the platform.
             </dd>
             <dt class="field-even">
              Raises
+             <span class="colon">
+              :
+             </span>
             </dt>
             <dd class="field-even">
              <ul class="simple">
@@ -13824,6 +15885,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13876,6 +15940,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13928,6 +15995,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -13991,6 +16061,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14008,6 +16081,9 @@ a running instance of the platform.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <ul class="simple">
@@ -14100,6 +16176,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14124,6 +16203,9 @@ a running instance of the platform.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -14194,6 +16276,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14218,6 +16303,9 @@ a running instance of the platform.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <p>
@@ -14292,6 +16380,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14309,6 +16400,9 @@ a running instance of the platform.
               </dd>
               <dt class="field-even">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-even">
                <ul class="simple">
@@ -14434,6 +16528,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14493,6 +16590,9 @@ a running instance of the platform.
              <dl class="field-list simple">
               <dt class="field-odd">
                Raises
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14764,6 +16864,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14825,6 +16928,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14867,6 +16973,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14909,6 +17018,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14951,6 +17063,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -14980,6 +17095,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15015,6 +17133,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15050,6 +17171,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15085,6 +17209,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15120,6 +17247,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15155,6 +17285,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15190,6 +17323,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15500,6 +17636,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15618,6 +17757,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15670,6 +17812,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15722,6 +17867,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15787,6 +17935,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
@@ -15858,6 +18009,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15887,6 +18041,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Returns
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <p>
@@ -15952,6 +18109,9 @@ then the component state will not change, and an error will be logged.
              <dl class="field-list simple">
               <dt class="field-odd">
                Parameters
+               <span class="colon">
+                :
+               </span>
               </dt>
               <dd class="field-odd">
                <ul class="simple">
