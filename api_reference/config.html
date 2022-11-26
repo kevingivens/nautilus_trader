@@ -9060,7 +9060,75 @@ the new model: you should trust this data
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_order_rate
+              deny_modify_pending_update
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_submit_rate
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              pydantic.types.ConstrainedStr
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              '100/00:00:01'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_modify_rate
              </span>
             </span>
             <span class="p">
@@ -9223,13 +9291,45 @@ the new model: you should trust this data
                 <em>
                  bool
                 </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default False
+                </em>
                 ) – If True then all risk checks are bypassed (will still check for duplicate IDs).
                </p>
               </li>
               <li>
                <p>
                 <strong>
-                 max_order_rate
+                 deny_modify_pending_update
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default True
+                </em>
+                ) – If deny
+                <cite>
+                 ModifyOrder
+                </cite>
+                commands when an order is in a
+                <cite>
+                 PENDING_UPDATE
+                </cite>
+                state.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 max_order_submit_rate
                 </strong>
                 (
                 <em>
@@ -9241,7 +9341,25 @@ the new model: you should trust this data
                 <em>
                  default 100/00:00:01
                 </em>
-                ) – The maximum order rate per timedelta.
+                ) – The maximum rate of submit order commands per timedelta.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 max_order_modify_rate
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default 100/00:00:01
+                </em>
+                ) – The maximum rate of modify order commands per timedelta.
                </p>
               </li>
               <li>
@@ -30878,7 +30996,13 @@ the new model: you should trust this data
               RiskEngineConfig(bypass=False,
              </span>
              <span class="pre">
-              max_order_rate='100/00:00:01',
+              deny_modify_pending_update=True,
+             </span>
+             <span class="pre">
+              max_order_submit_rate='100/00:00:01',
+             </span>
+             <span class="pre">
+              max_order_modify_rate='100/00:00:01',
              </span>
              <span class="pre">
               max_notional_per_order={},
@@ -38125,7 +38249,75 @@ the new model: you should trust this data
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_order_rate
+              deny_modify_pending_update
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_submit_rate
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              pydantic.types.ConstrainedStr
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              '100/00:00:01'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_modify_rate
              </span>
             </span>
             <span class="p">
@@ -47015,7 +47207,13 @@ the new model: you should trust this data
               LiveRiskEngineConfig(bypass=False,
              </span>
              <span class="pre">
-              max_order_rate='100/00:00:01',
+              deny_modify_pending_update=True,
+             </span>
+             <span class="pre">
+              max_order_submit_rate='100/00:00:01',
+             </span>
+             <span class="pre">
+              max_order_modify_rate='100/00:00:01',
              </span>
              <span class="pre">
               max_notional_per_order={},

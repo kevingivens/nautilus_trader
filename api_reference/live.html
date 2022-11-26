@@ -19552,6 +19552,43 @@ then the component state will not change, and an error will be logged.
              </div>
             </dd>
            </dl>
+           <dl class="py attribute">
+            <dt class="sig sig-object py" id="nautilus_trader.live.risk_engine.LiveRiskEngine.deny_modify_pending_update">
+             <span class="sig-name descname">
+              <span class="pre">
+               deny_modify_pending_update
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.live.risk_engine.LiveRiskEngine.deny_modify_pending_update" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              If deny
+              <cite>
+               ModifyOrder
+              </cite>
+              commands when an order is in a
+              <cite>
+               PENDING_UPDATE
+              </cite>
+              state.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <cite>
+                 bool
+                </cite>
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
            <dl class="py method">
             <dt class="sig sig-object py" id="nautilus_trader.live.risk_engine.LiveRiskEngine.dispose">
              <span class="sig-name descname">
@@ -19996,7 +20033,7 @@ then the component state will not change, and an error will be logged.
             </dt>
             <dd>
              <p>
-              If the risk engine is completely bypassed..
+              If the risk engine is completely bypassed.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -20365,10 +20402,10 @@ then the component state will not change, and an error will be logged.
             </dd>
            </dl>
            <dl class="py method">
-            <dt class="sig sig-object py" id="nautilus_trader.live.risk_engine.LiveRiskEngine.max_order_rate">
+            <dt class="sig sig-object py" id="nautilus_trader.live.risk_engine.LiveRiskEngine.max_order_modify_rate">
              <span class="sig-name descname">
               <span class="pre">
-               max_order_rate
+               max_order_modify_rate
               </span>
              </span>
              <span class="sig-paren">
@@ -20394,13 +20431,66 @@ then the component state will not change, and an error will be logged.
                </span>
               </span>
              </span>
-             <a class="headerlink" href="#nautilus_trader.live.risk_engine.LiveRiskEngine.max_order_rate" title="Permalink to this definition">
+             <a class="headerlink" href="#nautilus_trader.live.risk_engine.LiveRiskEngine.max_order_modify_rate" title="Permalink to this definition">
               ¶
              </a>
             </dt>
             <dd>
              <p>
-              Return the current maximum order rate limit setting.
+              Return the current maximum order modify rate limit setting.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 (int, timedelta)
+                </em>
+                – The limit per timedelta interval.
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.live.risk_engine.LiveRiskEngine.max_order_submit_rate">
+             <span class="sig-name descname">
+              <span class="pre">
+               max_order_submit_rate
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                tuple
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.live.risk_engine.LiveRiskEngine.max_order_submit_rate" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Return the current maximum order submit rate limit setting.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
