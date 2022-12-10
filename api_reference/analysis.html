@@ -667,1638 +667,1720 @@
            <a class="md-nav__link" href="#api-reference-analysis--page-root">
             Analysis
            </a>
-           <nav class="md-nav">
-            <ul class="md-nav__list">
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.analyzer">
-               Portfolio Analyzer
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
+           <span class="arrow">
+            <i class="fa-solid fa-chevron-right">
+            </i>
+           </span>
+           <ul class="submenu">
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.analyzer">
+              Portfolio Analyzer
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  PortfolioAnalyzer
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.register_statistic">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    PortfolioAnalyzer
+                    PortfolioAnalyzer.register_statistic()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.register_statistic">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.register_statistic()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.deregister_statistic">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.deregister_statistic()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.deregister_statistics">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.deregister_statistics()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.reset">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.reset()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.currencies">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.currencies
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.statistic">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.statistic()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.calculate_statistics">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.calculate_statistics()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.add_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_trade">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.add_trade()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_return">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.add_return()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.total_pnl">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.total_pnl()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.total_pnl_percentage">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.total_pnl_percentage()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.get_performance_stats_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.get_performance_stats_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_general">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.get_performance_stats_general()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_pnls_formatted">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.get_stats_pnls_formatted()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_returns_formatted">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.get_stats_returns_formatted()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_general_formatted">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioAnalyzer.get_stats_general_formatted()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.reporter">
-               Report Provider
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.deregister_statistic">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    ReportProvider
+                    PortfolioAnalyzer.deregister_statistic()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_orders_report">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReportProvider.generate_orders_report()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_order_fills_report">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReportProvider.generate_order_fills_report()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_positions_report">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReportProvider.generate_positions_report()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_account_report">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReportProvider.generate_account_report()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistic">
-               Portfolio Statistic
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.deregister_statistics">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    PortfolioStatistic
+                    PortfolioAnalyzer.deregister_statistics()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioStatistic.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioStatistic.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioStatistic.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioStatistic.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioStatistic.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       PortfolioStatistic.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.expectancy">
-               Expectancy
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.reset">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    Expectancy
+                    PortfolioAnalyzer.reset()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       Expectancy.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       Expectancy.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       Expectancy.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       Expectancy.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       Expectancy.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       Expectancy.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.long_ratio">
-               Long Ratio
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.currencies">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    LongRatio
+                    PortfolioAnalyzer.currencies
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       LongRatio.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       LongRatio.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       LongRatio.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       LongRatio.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       LongRatio.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       LongRatio.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_avg">
-               Average Loser
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.statistic">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    AvgLoser
+                    PortfolioAnalyzer.statistic()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgLoser.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgLoser.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgLoser.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgLoser.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgLoser.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgLoser.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_max">
-               Max Loser
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.returns">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    MaxLoser
+                    PortfolioAnalyzer.returns()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxLoser.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxLoser.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxLoser.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxLoser.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxLoser.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxLoser.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_min">
-               Min Loser
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.calculate_statistics">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    MinLoser
+                    PortfolioAnalyzer.calculate_statistics()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinLoser.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinLoser.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinLoser.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinLoser.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinLoser.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinLoser.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.profit_factor">
-               Profit Factor
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_positions">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    ProfitFactor
+                    PortfolioAnalyzer.add_positions()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ProfitFactor.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ProfitFactor.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ProfitFactor.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ProfitFactor.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ProfitFactor.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ProfitFactor.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg">
-               Average (Returns)
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_trade">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    ReturnsAverage
+                    PortfolioAnalyzer.add_trade()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverage.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverage.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverage.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverage.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverage.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverage.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg_loss">
-               Average Loss (Returns)
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.add_return">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    ReturnsAverageLoss
+                    PortfolioAnalyzer.add_return()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageLoss.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageLoss.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageLoss.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageLoss.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageLoss.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageLoss.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg_win">
-               Average Win (Returns)
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.realized_pnls">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    ReturnsAverageWin
+                    PortfolioAnalyzer.realized_pnls()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageWin.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageWin.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageWin.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageWin.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageWin.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsAverageWin.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_volatility">
-               Returns Volatility
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.total_pnl">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    ReturnsVolatility
+                    PortfolioAnalyzer.total_pnl()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsVolatility.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsVolatility.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsVolatility.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsVolatility.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsVolatility.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       ReturnsVolatility.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.risk_return_ratio">
-               Risk Return Ratio
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.total_pnl_percentage">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    RiskReturnRatio
+                    PortfolioAnalyzer.total_pnl_percentage()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       RiskReturnRatio.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       RiskReturnRatio.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       RiskReturnRatio.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       RiskReturnRatio.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       RiskReturnRatio.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       RiskReturnRatio.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.sharpe_ratio">
-               Sharpe Ratio
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_pnls">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    SharpeRatio
+                    PortfolioAnalyzer.get_performance_stats_pnls()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SharpeRatio.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SharpeRatio.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SharpeRatio.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SharpeRatio.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SharpeRatio.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SharpeRatio.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.sortino_ratio">
-               Sortino Ratio
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_returns">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    SortinoRatio
+                    PortfolioAnalyzer.get_performance_stats_returns()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SortinoRatio.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SortinoRatio.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SortinoRatio.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SortinoRatio.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SortinoRatio.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       SortinoRatio.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.win_rate">
-               Win Rate
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_performance_stats_general">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    WinRate
+                    PortfolioAnalyzer.get_performance_stats_general()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       WinRate.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       WinRate.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       WinRate.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       WinRate.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       WinRate.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       WinRate.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_avg">
-               Average Winner
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_pnls_formatted">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    AvgWinner
+                    PortfolioAnalyzer.get_stats_pnls_formatted()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgWinner.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgWinner.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgWinner.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgWinner.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgWinner.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       AvgWinner.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_max">
-               Average Max
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_returns_formatted">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    MaxWinner
+                    PortfolioAnalyzer.get_stats_returns_formatted()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxWinner.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxWinner.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxWinner.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxWinner.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxWinner.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MaxWinner.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
-               </ul>
-              </nav>
-             </li>
-             <li class="md-nav__item">
-              <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_min">
-               Average Min
-              </a>
-              <nav class="md-nav">
-               <ul class="md-nav__list">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.analyzer.PortfolioAnalyzer.get_stats_general_formatted">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    MinWinner
+                    PortfolioAnalyzer.get_stats_general_formatted()
                    </span>
                   </code>
                  </a>
-                 <nav class="md-nav">
-                  <ul class="md-nav__list">
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_realized_pnls">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinWinner.calculate_from_realized_pnls()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_orders">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinWinner.calculate_from_orders()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_positions">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinWinner.calculate_from_positions()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_returns">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinWinner.calculate_from_returns()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.fully_qualified_name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinWinner.fully_qualified_name()
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                   <li class="md-nav__item">
-                    <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.name">
-                     <code class="docutils literal notranslate">
-                      <span class="pre">
-                       MinWinner.name
-                      </span>
-                     </code>
-                    </a>
-                   </li>
-                  </ul>
-                 </nav>
                 </li>
                </ul>
-              </nav>
-             </li>
-            </ul>
-           </nav>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.reporter">
+              Report Provider
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  ReportProvider
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_orders_report">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReportProvider.generate_orders_report()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_order_fills_report">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReportProvider.generate_order_fills_report()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_positions_report">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReportProvider.generate_positions_report()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.reporter.ReportProvider.generate_account_report">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReportProvider.generate_account_report()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistic">
+              Portfolio Statistic
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  PortfolioStatistic
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistic.PortfolioStatistic.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    PortfolioStatistic.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.expectancy">
+              Expectancy
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Expectancy
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.expectancy.Expectancy.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    Expectancy.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.long_ratio">
+              Long Ratio
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LongRatio
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.long_ratio.LongRatio.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LongRatio.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_avg">
+              Average Loser
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  AvgLoser
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_avg.AvgLoser.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgLoser.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_max">
+              Max Loser
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  MaxLoser
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_max.MaxLoser.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxLoser.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.loser_min">
+              Min Loser
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  MinLoser
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.loser_min.MinLoser.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinLoser.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.profit_factor">
+              Profit Factor
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  ProfitFactor
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.profit_factor.ProfitFactor.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ProfitFactor.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg">
+              Average (Returns)
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  ReturnsAverage
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg.ReturnsAverage.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverage.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg_loss">
+              Average Loss (Returns)
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  ReturnsAverageLoss
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_loss.ReturnsAverageLoss.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageLoss.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_avg_win">
+              Average Win (Returns)
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  ReturnsAverageWin
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_avg_win.ReturnsAverageWin.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsAverageWin.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.returns_volatility">
+              Returns Volatility
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  ReturnsVolatility
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.returns_volatility.ReturnsVolatility.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    ReturnsVolatility.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.risk_return_ratio">
+              Risk Return Ratio
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  RiskReturnRatio
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.risk_return_ratio.RiskReturnRatio.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    RiskReturnRatio.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.sharpe_ratio">
+              Sharpe Ratio
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SharpeRatio
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sharpe_ratio.SharpeRatio.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SharpeRatio.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.sortino_ratio">
+              Sortino Ratio
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SortinoRatio
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.sortino_ratio.SortinoRatio.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    SortinoRatio.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.win_rate">
+              Win Rate
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  WinRate
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.win_rate.WinRate.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    WinRate.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_avg">
+              Average Winner
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  AvgWinner
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_avg.AvgWinner.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    AvgWinner.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_max">
+              Average Max
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  MaxWinner
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_max.MaxWinner.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MaxWinner.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#module-nautilus_trader.analysis.statistics.winner_min">
+              Average Min
+             </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  MinWinner
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_realized_pnls">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner.calculate_from_realized_pnls()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_orders">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner.calculate_from_orders()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_positions">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner.calculate_from_positions()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.calculate_from_returns">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner.calculate_from_returns()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.fully_qualified_name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner.fully_qualified_name()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.analysis.statistics.winner_min.MinWinner.name">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MinWinner.name
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
+              </li>
+             </ul>
+            </li>
+           </ul>
           </li>
          </ul>
         </nav>
