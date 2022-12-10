@@ -670,11 +670,6 @@
            <nav class="md-nav">
             <ul class="md-nav__list">
              <li class="md-nav__item">
-              <a class="md-nav__link" href="#nox">
-               Nox
-              </a>
-             </li>
-             <li class="md-nav__item">
               <a class="md-nav__link" href="#mocks">
                Mocks
               </a>
@@ -735,15 +730,11 @@
          The performance tests exist to aid development of performance-critical components.
         </p>
         <p>
-         Tests can be run using either
+         Tests can be run using
          <a class="reference external" href="https://docs.pytest.org">
           Pytest
          </a>
-         or the
-         <a class="reference external" href="https://nox.thea.codes/en/stable/">
-          Nox
-         </a>
-         tool.
+         .
         </p>
         <p>
          If you’re using PyCharm then tests should run directly by right clicking on the respective folder (or top-level tests folder) and clicking ‘Run pytest’.
@@ -760,59 +751,6 @@
          </code>
          command from the root level tests directory, or the other subdirectories.
         </p>
-        <section id="nox">
-         <h2 id="nox">
-          Nox
-          <a class="headerlink" href="#nox" title="Permalink to this heading">
-           ¶
-          </a>
-         </h2>
-         <p>
-          Nox sessions are defined within the
-          <code class="docutils literal notranslate">
-           <span class="pre">
-            noxfile.py
-           </span>
-          </code>
-          , to run various test collections.
-         </p>
-         <p>
-          To run unit tests with nox:
-         </p>
-         <div class="highlight-none notranslate">
-          <div class="highlight">
-           <pre><span></span>nox -s tests
-</pre>
-          </div>
-         </div>
-         <p>
-          If you have a redis-server up you can run integration tests with nox:
-         </p>
-         <div class="highlight-none notranslate">
-          <div class="highlight">
-           <pre><span></span>nox -s tests_integration
-</pre>
-          </div>
-         </div>
-         <p>
-          Or run the performance tests:
-         </p>
-         <div class="highlight-none notranslate">
-          <div class="highlight">
-           <pre><span></span>nox -s tests_performance
-</pre>
-          </div>
-         </div>
-         <p>
-          Or run the entire test suite:
-         </p>
-         <div class="highlight-none notranslate">
-          <div class="highlight">
-           <pre><span></span>nox -s tests_all
-</pre>
-          </div>
-         </div>
-        </section>
         <section id="mocks">
          <h2 id="mocks">
           Mocks
