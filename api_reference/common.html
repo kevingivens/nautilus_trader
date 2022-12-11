@@ -2709,28 +2709,10 @@
                </span>
                <ul class="submenu">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.bracket_limit_entry">
+                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.bracket">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    OrderFactory.bracket_limit_entry()
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.bracket_market_entry">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    OrderFactory.bracket_market_entry()
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.bracket_stop_limit_entry_stop_limit_tp">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    OrderFactory.bracket_stop_limit_entry_stop_limit_tp()
+                    OrderFactory.bracket()
                    </span>
                   </code>
                  </a>
@@ -21816,10 +21798,10 @@ IDs generated.
             </dd>
            </dl>
            <dl class="py method">
-            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.bracket_limit_entry">
+            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.bracket">
              <span class="sig-name descname">
               <span class="pre">
-               bracket_limit_entry
+               bracket
               </span>
              </span>
              <span class="sig-paren">
@@ -21872,7 +21854,7 @@ IDs generated.
                 Price
                </span>
                <span class="pre">
-                entry_price
+                entry_trigger_price=None
                </span>
               </span>
              </em>
@@ -21883,7 +21865,7 @@ IDs generated.
                 Price
                </span>
                <span class="pre">
-                sl_trigger_price
+                entry_price=None
                </span>
               </span>
              </em>
@@ -21894,7 +21876,51 @@ IDs generated.
                 Price
                </span>
                <span class="pre">
-                tp_price
+                sl_trigger_price=None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                Price
+               </span>
+               <span class="pre">
+                tp_trigger_price=None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                Price
+               </span>
+               <span class="pre">
+                tp_price=None
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                OrderType
+               </span>
+               <span class="pre">
+                entry_order_type=OrderType.MARKET
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                OrderType
+               </span>
+               <span class="pre">
+                tp_order_type=OrderType.LIMIT
                </span>
               </span>
              </em>
@@ -21968,1004 +21994,23 @@ IDs generated.
                </a>
               </span>
              </span>
-             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.bracket_limit_entry" title="Permalink to this definition">
+             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.bracket" title="Permalink to this definition">
               ¶
              </a>
             </dt>
             <dd>
-             <dl class="simple">
-              <dt>
-               Create a bracket order with the following types:
-              </dt>
-              <dd>
-               <ul class="simple">
-                <li>
-                 <p>
-                  <cite>
-                   Limit
-                  </cite>
-                  parent entry order
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <cite>
-                   StopMarket
-                  </cite>
-                  child stop-loss order
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <cite>
-                   Limit
-                  </cite>
-                  child take-profit order
-                 </p>
-                </li>
-               </ul>
-              </dd>
-             </dl>
              <p>
-              The bracketing stop-loss and take-profit orders will have a time in force
-of
+              Create a bracket order with optional entry of take-profit order types.
+             </p>
+             <p>
+              The stop-loss order will always be
               <code class="docutils literal notranslate">
                <span class="pre">
-                GTC
+                STOP_MARKET
                </span>
               </code>
               .
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Parameters
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   instrument_id
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
-                   <em>
-                    InstrumentId
-                   </em>
-                  </a>
-                  ) – The orders instrument ID.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   order_side
-                  </strong>
-                  (OrderSide {
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  ,
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  }) – The entry orders side.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   quantity
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Quantity" title="nautilus_trader.model.objects.Quantity">
-                   <em>
-                    Quantity
-                   </em>
-                  </a>
-                  ) – The entry orders quantity (&gt; 0).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   entry_price
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Price" title="nautilus_trader.model.objects.Price">
-                   <em>
-                    Price
-                   </em>
-                  </a>
-                  ) – The entry order price (LIMIT).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   sl_trigger_price
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Price" title="nautilus_trader.model.objects.Price">
-                   <em>
-                    Price
-                   </em>
-                  </a>
-                  ) – The stop-loss child order trigger price (STOP).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   tp_price
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Price" title="nautilus_trader.model.objects.Price">
-                   <em>
-                    Price
-                   </em>
-                  </a>
-                  ) – The take-profit child order price (LIMIT).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   time_in_force
-                  </strong>
-                  (TimeInForce {
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    DAY
-                   </span>
-                  </code>
-                  ,
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    GTC
-                   </span>
-                  </code>
-                  }, optional) – The entry orders time in force.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   expire_time
-                  </strong>
-                  (
-                  <em>
-                   datetime
-                  </em>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   optional
-                  </em>
-                  ) – The order expiration (for
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    GTD
-                   </span>
-                  </code>
-                  orders).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   post_only
-                  </strong>
-                  (
-                  <em>
-                   bool
-                  </em>
-                  <em>
-                   ,
-                  </em>
-                  <em>
-                   default False
-                  </em>
-                  ) – If the entry order will only provide liquidity (make a market).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   emulation_trigger
-                  </strong>
-                  (TriggerType, default
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    NONE
-                   </span>
-                  </code>
-                  ) – The emulation trigger type for the entry, as well as the TP and SL bracket orders.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   contingency_type
-                  </strong>
-                  (ContingencyType, default
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    OUO
-                   </span>
-                  </code>
-                  ) – The contingency type for the TP and SL bracket orders.
-                 </p>
-                </li>
-               </ul>
-              </dd>
-              <dt class="field-even">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-even">
-               <p>
-                <em>
-                 OrderList
-                </em>
-               </p>
-              </dd>
-              <dt class="field-odd">
-               Raises
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    NONE
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   tif
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    GTD
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   expire_time
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &lt;=
-                  <cite>
-                   sl_trigger_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &gt;=
-                  <cite>
-                   tp_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &gt;=
-                  <cite>
-                   sl_trigger_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &lt;=
-                  <cite>
-                   tp_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-               </ul>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py method">
-            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.bracket_market_entry">
-             <span class="sig-name descname">
-              <span class="pre">
-               bracket_market_entry
-              </span>
-             </span>
-             <span class="sig-paren">
-              (
-             </span>
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                self
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                InstrumentId
-               </span>
-               <span class="pre">
-                instrument_id
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                OrderSide
-               </span>
-               <span class="pre">
-                order_side
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Quantity
-               </span>
-               <span class="pre">
-                quantity
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                sl_trigger_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                tp_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                TriggerType
-               </span>
-               <span class="pre">
-                emulation_trigger=TriggerType.NONE
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                ContingencyType
-               </span>
-               <span class="pre">
-                contingency_type=ContingencyType.OUO
-               </span>
-              </span>
-             </em>
-             <span class="sig-paren">
-              )
-             </span>
-             <span class="sig-return">
-              <span class="sig-return-icon">
-               →
-              </span>
-              <span class="sig-return-typehint">
-               <a class="reference internal" href="model/orders.html#nautilus_trader.model.orders.list.OrderList" title="nautilus_trader.model.orders.list.OrderList">
-                <span class="pre">
-                 OrderList
-                </span>
-               </a>
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.bracket_market_entry" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <dl class="simple">
-              <dt>
-               Create a bracket order with the following types:
-              </dt>
-              <dd>
-               <ul class="simple">
-                <li>
-                 <p>
-                  <cite>
-                   Market
-                  </cite>
-                  parent entry order
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <cite>
-                   StopMarket
-                  </cite>
-                  child stop-loss order
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <cite>
-                   Limit
-                  </cite>
-                  child take-profit order
-                 </p>
-                </li>
-               </ul>
-              </dd>
-             </dl>
-             <p>
-              The bracketing stop-loss and take-profit orders will have a time in force
-of
-              <code class="docutils literal notranslate">
-               <span class="pre">
-                GTC
-               </span>
-              </code>
-              .
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Parameters
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   instrument_id
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
-                   <em>
-                    InstrumentId
-                   </em>
-                  </a>
-                  ) – The orders instrument ID.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   order_side
-                  </strong>
-                  (OrderSide {
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  ,
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  }) – The entry orders side.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   quantity
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Quantity" title="nautilus_trader.model.objects.Quantity">
-                   <em>
-                    Quantity
-                   </em>
-                  </a>
-                  ) – The entry orders quantity (&gt; 0).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   sl_trigger_price
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Price" title="nautilus_trader.model.objects.Price">
-                   <em>
-                    Price
-                   </em>
-                  </a>
-                  ) – The stop-loss child order trigger price (STOP).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   tp_price
-                  </strong>
-                  (
-                  <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Price" title="nautilus_trader.model.objects.Price">
-                   <em>
-                    Price
-                   </em>
-                  </a>
-                  ) – The take-profit child order price (LIMIT).
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   emulation_trigger
-                  </strong>
-                  (TriggerType, default
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    NONE
-                   </span>
-                  </code>
-                  ) – The emulation trigger type for the TP and SL bracket orders.
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   contingency_type
-                  </strong>
-                  (ContingencyType, default
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    OUO
-                   </span>
-                  </code>
-                  ) – The contingency type for the TP and SL bracket orders.
-                 </p>
-                </li>
-               </ul>
-              </dd>
-              <dt class="field-even">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-even">
-               <p>
-                <em>
-                 OrderList
-                </em>
-               </p>
-              </dd>
-              <dt class="field-odd">
-               Raises
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    NONE
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   sl_trigger_price
-                  </cite>
-                  &gt;=
-                  <cite>
-                   tp_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   sl_trigger_price
-                  </cite>
-                  &lt;=
-                  <cite>
-                   tp_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-               </ul>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py method">
-            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.bracket_stop_limit_entry_stop_limit_tp">
-             <span class="sig-name descname">
-              <span class="pre">
-               bracket_stop_limit_entry_stop_limit_tp
-              </span>
-             </span>
-             <span class="sig-paren">
-              (
-             </span>
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                self
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                InstrumentId
-               </span>
-               <span class="pre">
-                instrument_id
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                OrderSide
-               </span>
-               <span class="pre">
-                order_side
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Quantity
-               </span>
-               <span class="pre">
-                quantity
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                entry_trigger_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                entry_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                sl_trigger_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                tp_trigger_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                Price
-               </span>
-               <span class="pre">
-                tp_price
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                TimeInForce
-               </span>
-               <span class="pre">
-                time_in_force=TimeInForce.GTC
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                datetime
-               </span>
-               <span class="pre">
-                expire_time=None
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                bool
-               </span>
-               <span class="pre">
-                post_only=False
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                TriggerType
-               </span>
-               <span class="pre">
-                emulation_trigger=TriggerType.NONE
-               </span>
-              </span>
-             </em>
-             ,
-             <em class="sig-param">
-              <span class="n">
-               <span class="pre">
-                ContingencyType
-               </span>
-               <span class="pre">
-                contingency_type=ContingencyType.OUO
-               </span>
-              </span>
-             </em>
-             <span class="sig-paren">
-              )
-             </span>
-             <span class="sig-return">
-              <span class="sig-return-icon">
-               →
-              </span>
-              <span class="sig-return-typehint">
-               <a class="reference internal" href="model/orders.html#nautilus_trader.model.orders.list.OrderList" title="nautilus_trader.model.orders.list.OrderList">
-                <span class="pre">
-                 OrderList
-                </span>
-               </a>
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.bracket_stop_limit_entry_stop_limit_tp" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <dl class="simple">
-              <dt>
-               Create a bracket order with the following types:
-              </dt>
-              <dd>
-               <ul class="simple">
-                <li>
-                 <p>
-                  <cite>
-                   StopLimit
-                  </cite>
-                  parent entry order
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <cite>
-                   StopMarket
-                  </cite>
-                  child stop-loss order
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <cite>
-                   StopLimit
-                  </cite>
-                  child take-profit order
-                 </p>
-                </li>
-               </ul>
-              </dd>
-             </dl>
-             <p>
-              The bracketing stop-loss and take-profit orders will have a time in force
+The bracketing stop-loss and take-profit orders will have a time in force
 of
               <code class="docutils literal notranslate">
                <span class="pre">
@@ -23042,6 +22087,12 @@ of
                     Price
                    </em>
                   </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
                   ) – The entry order trigger price (STOP).
                  </p>
                 </li>
@@ -23056,6 +22107,12 @@ of
                     Price
                    </em>
                   </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
                   ) – The entry order price (LIMIT).
                  </p>
                 </li>
@@ -23070,6 +22127,12 @@ of
                     Price
                    </em>
                   </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
                   ) – The stop-loss child order trigger price (STOP).
                  </p>
                 </li>
@@ -23084,6 +22147,12 @@ of
                     Price
                    </em>
                   </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
                   ) – The take-profit child order trigger price (STOP).
                  </p>
                 </li>
@@ -23098,7 +22167,83 @@ of
                     Price
                    </em>
                   </a>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   optional
+                  </em>
                   ) – The take-profit child order price (LIMIT).
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   entry_order_type
+                  </strong>
+                  (OrderType {
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MARKET
+                   </span>
+                  </code>
+                  ,
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LIMIT
+                   </span>
+                  </code>
+                  ,
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LIMIT_IF_TOUCHED
+                   </span>
+                  </code>
+                  ,
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MARKET_IF_TOUCHED
+                   </span>
+                  </code>
+                  }, default
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MARKET
+                   </span>
+                  </code>
+                  ) – The entry order type.
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   tp_order_type
+                  </strong>
+                  (OrderType {
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LIMIT
+                   </span>
+                  </code>
+                  ,
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LIMIT_IF_TOUCHED
+                   </span>
+                  </code>
+                  ,
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    MARKET_IF_TOUCHED
+                   </span>
+                  </code>
+                  }, default
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    LIMIT
+                   </span>
+                  </code>
+                  ) – The take-profit order type.
                  </p>
                 </li>
                 <li>
@@ -23205,166 +22350,6 @@ of
                  OrderList
                 </em>
                </p>
-              </dd>
-              <dt class="field-odd">
-               Raises
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <ul class="simple">
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    NONE
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If
-                  <cite>
-                   tif
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    GTD
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   expire_time
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    None
-                   </span>
-                  </code>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &lt;=
-                  <cite>
-                   sl_trigger_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    BUY
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &gt;=
-                  <cite>
-                   tp_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &gt;=
-                  <cite>
-                   sl_trigger_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-                <li>
-                 <p>
-                  <strong>
-                   ValueError
-                  </strong>
-                  – If entry
-                  <cite>
-                   order_side
-                  </cite>
-                  is
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    SELL
-                   </span>
-                  </code>
-                  and
-                  <cite>
-                   entry_price
-                  </cite>
-                  &lt;=
-                  <cite>
-                   tp_price
-                  </cite>
-                  .
-                 </p>
-                </li>
-               </ul>
               </dd>
              </dl>
             </dd>
@@ -23561,9 +22546,11 @@ of
             <dd>
              <p>
               Create a new
-              <cite>
-               Limit
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                LIMIT
+               </span>
+              </code>
               order.
              </p>
              <dl class="field-list simple">
@@ -24066,9 +23053,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Limit-If-Touched
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                LIMIT_IF_TOUCHED
+               </span>
+              </code>
               (LIT) conditional order.
              </p>
              <dl class="field-list simple">
@@ -24552,9 +23541,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Market
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                MARKET
+               </span>
+              </code>
               order.
              </p>
              <dl class="field-list simple">
@@ -24908,9 +23899,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Market-If-Touched
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                MARKET_IF_TOUCHED
+               </span>
+              </code>
               (MIT) conditional order.
              </p>
              <dl class="field-list simple">
@@ -25348,9 +24341,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Market
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                MARKET
+               </span>
+              </code>
               order.
              </p>
              <dl class="field-list simple">
@@ -25897,9 +24892,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Stop-Limit
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                STOP_LIMIT
+               </span>
+              </code>
               conditional order.
              </p>
              <dl class="field-list simple">
@@ -26427,9 +25424,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Stop-Market
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                STOP_MARKET
+               </span>
+              </code>
               conditional order.
              </p>
              <dl class="field-list simple">
@@ -27019,9 +26018,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Trailing-Stop-Limit
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                TRAILING_STOP_LIMIT
+               </span>
+              </code>
               conditional order.
              </p>
              <dl class="field-list simple">
@@ -27661,9 +26662,11 @@ contain any arbitrary delimiter if required.
             <dd>
              <p>
               Create a new
-              <cite>
-               Trailing-Stop-Market
-              </cite>
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                TRAILING_STOP_MARKET
+               </span>
+              </code>
               conditional order.
              </p>
              <dl class="field-list simple">
