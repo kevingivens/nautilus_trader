@@ -6957,6 +6957,13 @@
            </cite>
            order.
           </p>
+          <p>
+           A Market order is an order to BUY (or SELL) at the market bid or offer price.
+A market order may increase the likelihood of a fill and the speed of
+execution, but unlike the Limit order - a Market order provides no price
+protection and may fill at a price far lower/higher than the top of book
+bid/ask.
+          </p>
           <ul class="simple">
            <li>
             <p>
@@ -7345,6 +7352,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/market.php">
+            https://www.interactivebrokers.com/en/trading/orders/market.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.market.MarketOrder.account_id">
             <span class="sig-name descname">
@@ -10234,6 +10249,11 @@ in full.
            </cite>
            order.
           </p>
+          <p>
+           A Limit order is an order to BUY (or SELL) at a specified price or better.
+The Limit order ensures that if the order fills, it will not fill at a price
+less favorable than your limit price, but it does not guarantee a fill.
+          </p>
           <ul class="simple">
            <li>
             <p>
@@ -10727,6 +10747,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/limit.php">
+            https://www.interactivebrokers.com/en/trading/orders/limit.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.limit.LimitOrder.account_id">
             <span class="sig-name descname">
@@ -13742,6 +13770,20 @@ in full.
            </cite>
            conditional order.
           </p>
+          <p>
+           A Stop-Market order is an instruction to submit a BUY (or SELL) market order
+if and when the specified stop trigger price is attained or penetrated.
+A Stop-Market order is not guaranteed a specific execution price and may execute
+significantly away from its stop price.
+          </p>
+          <p>
+           A SELL Stop-Market order is always placed below the current market price,
+and is typically used to limit a loss or protect a profit on a long position.
+          </p>
+          <p>
+           A BUY Stop-Market order is always placed above the current market price,
+and is typically used to limit a loss or protect a profit on a short position.
+          </p>
           <dl class="field-list simple">
            <dt class="field-odd">
             Parameters
@@ -14205,6 +14247,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/stop.php">
+            https://www.interactivebrokers.com/en/trading/orders/stop.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.stop_market.StopMarketOrder.account_id">
             <span class="sig-name descname">
@@ -17247,6 +17297,19 @@ in full.
            </cite>
            conditional order.
           </p>
+          <p>
+           A Stop-Limit order is an instruction to submit a BUY (or SELL) limit order
+when the specified stop trigger price is attained or penetrated. The
+order has two basic components: the stop price and the limit price. When a
+trade has occurred at or through the stop price, the order becomes executable
+and enters the market as a limit order, which is an order to BUY (or SELL)
+at a specified price or better.
+          </p>
+          <p>
+           A Stop-Limit eliminates the price risk associated with a stop order where
+the execution price cannot be guaranteed, but exposes the trader to the
+risk that the order may never fill, even if the stop price is reached.
+          </p>
           <dl class="field-list simple">
            <dt class="field-odd">
             Parameters
@@ -17782,6 +17845,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/stop-limit.php">
+            https://www.interactivebrokers.com/en/trading/orders/stop-limit.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.stop_limit.StopLimitOrder.account_id">
             <span class="sig-name descname">
@@ -20907,7 +20978,14 @@ in full.
            <cite>
             Market-To-Limit
            </cite>
-           order.
+           (MTL) order.
+          </p>
+          <p>
+           A Market-to-Limit (MTL) order is submitted as a market order to execute at
+the current best market price. If the order is only partially filled, the
+remainder of the order is canceled and re-submitted as a Limit order with
+the limit price equal to the price at which the filled portion of the order
+executed.
           </p>
           <dl class="field-list simple">
            <dt class="field-odd">
@@ -21312,6 +21390,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/mtl.php">
+            https://www.interactivebrokers.com/en/trading/orders/mtl.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.market_to_limit.MarketToLimitOrder.account_id">
             <span class="sig-name descname">
@@ -24333,6 +24419,13 @@ in full.
            </cite>
            (MIT) conditional order.
           </p>
+          <p>
+           A Market-If-Touched (MIT) is an order to BUY (or SELL) an instrument below
+(or above) the market. This order is held in the system until the trigger
+price is touched, and is then submitted as a market order. An MIT order is
+similar to a Stop-Order, except that an MIT SELL order is placed above the
+current market price, and a stop SELL order is placed below.
+          </p>
           <dl class="field-list simple">
            <dt class="field-odd">
             Parameters
@@ -24782,6 +24875,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/mit.php">
+            https://www.interactivebrokers.com/en/trading/orders/mit.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.market_if_touched.MarketIfTouchedOrder.account_id">
             <span class="sig-name descname">
@@ -27824,6 +27925,17 @@ in full.
            </cite>
            (LIT) conditional order.
           </p>
+          <p>
+           A Limit-If-Touched (LIT) is an order to BUY (or SELL) an instrument at a
+specified price or better, below (or above) the market. This order is held
+in the system until the trigger price is touched. A LIT order is similar to
+a Stop-Limit order, except that a LIT SELL order is placed above the current
+market price, and a Stop-Limit SELL order is placed below.
+          </p>
+          <p>
+           Using a LIT order helps to ensure that, if the order does execute, the order
+will not execute at a price less favorable than the limit price.
+          </p>
           <dl class="field-list simple">
            <dt class="field-odd">
             Parameters
@@ -28359,6 +28471,14 @@ contain any arbitrary delimiter if required.
             </ul>
            </dd>
           </dl>
+          <p class="rubric">
+           References
+          </p>
+          <p>
+           <a class="reference external" href="https://www.interactivebrokers.com/en/trading/orders/lit.php">
+            https://www.interactivebrokers.com/en/trading/orders/lit.php
+           </a>
+          </p>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.limit_if_touched.LimitIfTouchedOrder.account_id">
             <span class="sig-name descname">
