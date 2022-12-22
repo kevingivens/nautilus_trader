@@ -5921,40 +5921,6 @@ The value should be a valid decimal format.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              allow_cash_positions
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              True
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
               debug
              </span>
             </span>
@@ -5982,6 +5948,40 @@ The value should be a valid decimal format.
             <span class="default_value">
              <span class="pre">
               False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              allow_cash_positions
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
              </span>
             </span>
            </em>
@@ -6042,6 +6042,18 @@ The value should be a valid decimal format.
               <li>
                <p>
                 <strong>
+                 debug
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                ) – If debug mode is active (will provide extra debug logging).
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
                  allow_cash_positions
                 </strong>
                 (
@@ -6055,18 +6067,6 @@ The value should be a valid decimal format.
                  default True
                 </em>
                 ) – If unleveraged spot/cash assets should generate positions.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 debug
-                </strong>
-                (
-                <em>
-                 bool
-                </em>
-                ) – If debug mode is active (will provide extra debug logging).
                </p>
               </li>
              </ul>
@@ -8824,6 +8824,40 @@ The value should be a valid decimal format.
              </span>
             </span>
            </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              manage_gtd_expiry
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
            <span class="sig-paren">
             )
            </span>
@@ -8912,6 +8946,24 @@ how the
                  ExecutionEngine
                 </cite>
                 handles position IDs (see docs).
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 manage_gtd_expiry
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default False
+                </em>
+                ) – If GTD time in force order expiry should be managed by the strategy.
                </p>
               </li>
              </ul>
@@ -14148,10 +14200,10 @@ how the
               ExecEngineConfig(load_cache=True,
              </span>
              <span class="pre">
-              allow_cash_positions=True,
+              debug=False,
              </span>
              <span class="pre">
-              debug=False)
+              allow_cash_positions=True)
              </span>
             </span>
            </em>
@@ -17166,40 +17218,6 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              allow_cash_positions
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              True
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
               debug
              </span>
             </span>
@@ -17227,6 +17245,40 @@ external inputs of venues and data.
             <span class="default_value">
              <span class="pre">
               False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              allow_cash_positions
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
              </span>
             </span>
            </em>
@@ -19823,10 +19875,10 @@ is checked with the venue.
               LiveExecEngineConfig(load_cache=True,
              </span>
              <span class="pre">
-              allow_cash_positions=True,
+              debug=False,
              </span>
              <span class="pre">
-              debug=False,
+              allow_cash_positions=True,
              </span>
              <span class="pre">
               reconciliation=True,
