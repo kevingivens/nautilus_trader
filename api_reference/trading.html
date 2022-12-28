@@ -4490,11 +4490,11 @@ determines how positions are handled by the
               <p>
                <code class="docutils literal notranslate">
                 <span class="pre">
-                 NONE
+                 UNSPECIFIED
                 </span>
                </code>
-               : No specific type has been configured, will therefore default to
-the native OMS type for each venue.
+               : No specific type has been configured, will therefore
+default to the native OMS type for each venue.
               </p>
              </li>
              <li>
@@ -4515,8 +4515,8 @@ is opened per instrument.
                  NETTING
                 </span>
                </code>
-               : There will only ever be a single position for the strategy
-per instrument. The position ID will be
+               : There will only be a single position for the strategy per
+instrument. The position ID naming convention is
                <cite>
                 {instrument_id}-{strategy_id}
                </cite>
@@ -4651,7 +4651,7 @@ per instrument. The position ID will be
                OrderSide
               </span>
               <span class="pre">
-               order_side=OrderSide.NONE
+               order_side=OrderSide.NO_ORDER_SIDE
               </span>
              </span>
             </em>
@@ -8025,7 +8025,7 @@ then the command will not be generated, and a warning will be logged.
              <dd class="field-odd">
               <p>
                <cite>
-                OMSType
+                OmsType
                </cite>
               </p>
              </dd>
