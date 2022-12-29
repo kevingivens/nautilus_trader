@@ -686,6 +686,11 @@
                 Multiple strategies
                </a>
               </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#managed-gtd-expiry">
+                Managed GTD expiry
+               </a>
+              </li>
              </ul>
             </li>
            </ul>
@@ -930,6 +935,57 @@ example the above config would result in a strategy ID of
             </a>
             for further details.
            </p>
+          </div>
+         </section>
+         <section id="managed-gtd-expiry">
+          <h3 id="managed-gtd-expiry">
+           Managed GTD expiry
+           <a class="headerlink" href="#managed-gtd-expiry" title="Permalink to this heading">
+            ¶
+           </a>
+          </h3>
+          <p>
+           It’s possible for the strategy to manage expiry for orders with a time in force of GTD (
+           <em>
+            Good ‘till Date
+           </em>
+           ).
+This may be desirable if the exchange/broker does not support this time in force option, or for any
+reason you prefer the strategy to manage this.
+          </p>
+          <p>
+           Simply set the
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             manage_gtd_expiry
+            </span>
+           </code>
+           boolean flag on the
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             submit_order()
+            </span>
+           </code>
+           or
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             submit_order_list()
+            </span>
+           </code>
+           methods
+to
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             True
+            </span>
+           </code>
+           . This will then start a timer, when the timer expires the order will be canceled (if not already closed).
+          </p>
+          <div class="highlight-python notranslate">
+           <div class="highlight">
+            <pre><span></span><span class="n">strategy</span><span class="o">.</span><span class="n">submit_order</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">manage_gtd_expiry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre>
+           </div>
           </div>
          </section>
         </section>

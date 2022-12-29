@@ -2450,6 +2450,15 @@
                 </code>
                </a>
               </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.exchange.SimulatedExchange.support_gtd_orders">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulatedExchange.support_gtd_orders
+                 </span>
+                </code>
+               </a>
+              </li>
              </ul>
             </li>
             <li class="md-nav__item">
@@ -11349,179 +11358,188 @@ a venue with a
              (
             </span>
             <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               self
-              </span>
+             <span class="pre">
+              self,
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               Venue
-              </span>
-              <span class="pre">
-               venue
-              </span>
+             <span class="pre">
+              Venue
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               OmsType
-              </span>
-              <span class="pre">
-               oms_type
-              </span>
+             <span class="pre">
+              venue:
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               AccountType
-              </span>
-              <span class="pre">
-               account_type
-              </span>
+             <span class="pre">
+              Venue,
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               Currency
-              </span>
-              <span class="pre">
-               base_currency
-              </span>
+             <span class="pre">
+              OmsType
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               list
-              </span>
-              <span class="pre">
-               starting_balances
-              </span>
+             <span class="pre">
+              oms_type:
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               default_leverage=None
-              </span>
+             <span class="pre">
+              OmsType,
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               dict
-              </span>
-              <span class="pre">
-               leverages=None
-              </span>
+             <span class="pre">
+              AccountType
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               list
-              </span>
-              <span class="pre">
-               modules=None
-              </span>
+             <span class="pre">
+              account_type:
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               FillModel
-              </span>
-              <span class="pre">
-               fill_model=None
-              </span>
+             <span class="pre">
+              AccountType,
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               LatencyModel
-              </span>
-              <span class="pre">
-               latency_model=None
-              </span>
+             <span class="pre">
+              starting_balances:
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               BookType
-              </span>
-              <span class="pre">
-               book_type=BookType.L1_TBBO
-              </span>
+             <span class="pre">
+              list[Money],
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               bool
-              </span>
-              <span class="pre">
-               routing:
-              </span>
-              <span class="pre">
-               bool
-              </span>
-              <span class="pre">
-               =
-              </span>
-              <span class="pre">
-               False
-              </span>
+             <span class="pre">
+              Currency
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               bool
-              </span>
-              <span class="pre">
-               frozen_account=False
-              </span>
+             <span class="pre">
+              base_currency:
              </span>
-            </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               bool
-              </span>
-              <span class="pre">
-               reject_stop_orders:
-              </span>
-              <span class="pre">
-               bool
-              </span>
-              <span class="pre">
-               =
-              </span>
-              <span class="pre">
-               True
-              </span>
+             <span class="pre">
+              Optional[Currency]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None,
+             </span>
+             <span class="pre">
+              default_leverage:
+             </span>
+             <span class="pre">
+              Optional[Decimal]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None,
+             </span>
+             <span class="pre">
+              leverages:
+             </span>
+             <span class="pre">
+              Optional[dict[InstrumentId,
+             </span>
+             <span class="pre">
+              Decimal]]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None,
+             </span>
+             <span class="pre">
+              modules:
+             </span>
+             <span class="pre">
+              Optional[list[SimulationModule]]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None,
+             </span>
+             <span class="pre">
+              FillModel
+             </span>
+             <span class="pre">
+              fill_model:
+             </span>
+             <span class="pre">
+              Optional[FillModel]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None,
+             </span>
+             <span class="pre">
+              LatencyModel
+             </span>
+             <span class="pre">
+              latency_model:
+             </span>
+             <span class="pre">
+              Optional[LatencyModel]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None,
+             </span>
+             <span class="pre">
+              BookType
+             </span>
+             <span class="pre">
+              book_type:
+             </span>
+             <span class="pre">
+              BookType
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              BookType.L1_TBBO,
+             </span>
+             <span class="pre">
+              routing:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False,
+             </span>
+             <span class="pre">
+              frozen_account:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False,
+             </span>
+             <span class="pre">
+              reject_stop_orders:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              True,
+             </span>
+             <span class="pre">
+              support_gtd_orders:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              True
              </span>
             </em>
             <span class="sig-paren">
@@ -11614,6 +11632,29 @@ generate new position IDs.
                <li>
                 <p>
                  <strong>
+                  starting_balances
+                 </strong>
+                 (
+                 <em>
+                  list
+                 </em>
+                 <em>
+                  [
+                 </em>
+                 <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Money" title="nautilus_trader.model.objects.Money">
+                  <em>
+                   Money
+                  </em>
+                 </a>
+                 <em>
+                  ]
+                 </em>
+                 ) – The starting account balances (specify one for a single asset account).
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
                   base_currency
                  </strong>
                  (
@@ -11635,29 +11676,6 @@ generate new position IDs.
                   </span>
                  </code>
                  for multi-currency accounts.
-                </p>
-               </li>
-               <li>
-                <p>
-                 <strong>
-                  starting_balances
-                 </strong>
-                 (
-                 <em>
-                  list
-                 </em>
-                 <em>
-                  [
-                 </em>
-                 <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Money" title="nautilus_trader.model.objects.Money">
-                  <em>
-                   Money
-                  </em>
-                 </a>
-                 <em>
-                  ]
-                 </em>
-                 ) – The starting account balances (specify one for a single asset account).
                 </p>
                </li>
                <li>
@@ -11704,6 +11722,12 @@ generate new position IDs.
                  <em>
                   ]
                  </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
                  ) – The instrument specific leverage configuration (for margin accounts).
                 </p>
                </li>
@@ -11724,6 +11748,9 @@ generate new position IDs.
                    SimulationModule
                   </em>
                  </a>
+                 <em>
+                  ]
+                 </em>
                  <em>
                   ,
                  </em>
@@ -11839,6 +11866,24 @@ generate new position IDs.
                   default True
                  </em>
                  ) – If stop orders are rejected on submission if trigger price is in the market.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  support_gtd_orders
+                 </strong>
+                 (
+                 <em>
+                  bool
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  default True
+                 </em>
+                 ) – If orders with GTD time in force will be supported by the venue.
                 </p>
                </li>
               </ul>
@@ -13626,6 +13671,12 @@ to the end of the data.
             account_type,
            </span>
            <span class="pre">
+            list
+           </span>
+           <span class="pre">
+            starting_balances,
+           </span>
+           <span class="pre">
             Currency
            </span>
            <span class="pre">
@@ -13633,12 +13684,6 @@ to the end of the data.
            </span>
            <span class="pre">
             Optional[Currency],
-           </span>
-           <span class="pre">
-            list
-           </span>
-           <span class="pre">
-            starting_balances,
            </span>
            <span class="pre">
             default_leverage:
@@ -13719,7 +13764,13 @@ to the end of the data.
             bool
            </span>
            <span class="pre">
-            reject_stop_orders=True
+            reject_stop_orders=True,
+           </span>
+           <span class="pre">
+            bool
+           </span>
+           <span class="pre">
+            support_gtd_orders=True
            </span>
           </em>
           <span class="sig-paren">
@@ -13799,6 +13850,29 @@ to the end of the data.
              <li>
               <p>
                <strong>
+                starting_balances
+               </strong>
+               (
+               <em>
+                list
+               </em>
+               <em>
+                [
+               </em>
+               <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Money" title="nautilus_trader.model.objects.Money">
+                <em>
+                 Money
+                </em>
+               </a>
+               <em>
+                ]
+               </em>
+               ) – The starting balances for the exchange.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
                 base_currency
                </strong>
                (
@@ -13820,29 +13894,6 @@ to the end of the data.
                 </span>
                </code>
                for multi-currency accounts.
-              </p>
-             </li>
-             <li>
-              <p>
-               <strong>
-                starting_balances
-               </strong>
-               (
-               <em>
-                list
-               </em>
-               <em>
-                [
-               </em>
-               <a class="reference internal" href="model/objects.html#nautilus_trader.model.objects.Money" title="nautilus_trader.model.objects.Money">
-                <em>
-                 Money
-                </em>
-               </a>
-               <em>
-                ]
-               </em>
-               ) – The starting balances for the exchange.
               </p>
              </li>
              <li>
@@ -14022,6 +14073,24 @@ to the end of the data.
                 default True
                </em>
                ) – If stop orders are rejected on submission if in the market.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                support_gtd_orders
+               </strong>
+               (
+               <em>
+                bool
+               </em>
+               <em>
+                ,
+               </em>
+               <em>
+                default True
+               </em>
+               ) – If orders with GTD time in force will be supported by the venue.
               </p>
              </li>
             </ul>
@@ -16295,6 +16364,38 @@ to the end of the data.
            <dd>
             <p>
              The account starting balances for each backtest run.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <cite>
+                bool
+               </cite>
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py attribute">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.exchange.SimulatedExchange.support_gtd_orders">
+            <span class="sig-name descname">
+             <span class="pre">
+              support_gtd_orders
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.exchange.SimulatedExchange.support_gtd_orders" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             If orders with GTD time in force will be supported by the venue.
             </p>
             <dl class="field-list simple">
              <dt class="field-odd">
