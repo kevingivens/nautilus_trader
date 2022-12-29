@@ -4692,6 +4692,40 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              build_time_bars_with_no_updates
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               debug
              </span>
             </span>
@@ -4757,16 +4791,44 @@ whether the instrument should be loaded
              </span>
             </dt>
             <dd class="field-odd">
-             <p>
-              <strong>
-               debug
-              </strong>
-              (
-              <em>
-               bool
-              </em>
-              ) – If debug mode is active (will provide extra debug logging).
-             </p>
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 build_time_bars_with_no_updates
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default True
+                </em>
+                ) – If time bar aggregators will build and emit bars with no new market updates.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 debug
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default False
+                </em>
+                ) – If debug mode is active (will provide extra debug logging).
+               </p>
+              </li>
+             </ul>
             </dd>
            </dl>
            <dl class="py method">
@@ -5500,6 +5562,12 @@ whether the instrument should be loaded
                 <em>
                  ]
                 </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default empty dict
+                </em>
                 ) – The maximum notional value of an order per instrument ID.
 The value should be a valid decimal format.
                </p>
@@ -5512,6 +5580,12 @@ The value should be a valid decimal format.
                 (
                 <em>
                  bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default False
                 </em>
                 ) – If debug mode is active (will provide extra debug logging).
                </p>
@@ -5921,40 +5995,6 @@ The value should be a valid decimal format.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              debug
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
               allow_cash_positions
              </span>
             </span>
@@ -5982,6 +6022,40 @@ The value should be a valid decimal format.
             <span class="default_value">
              <span class="pre">
               True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              False
              </span>
             </span>
            </em>
@@ -6042,18 +6116,6 @@ The value should be a valid decimal format.
               <li>
                <p>
                 <strong>
-                 debug
-                </strong>
-                (
-                <em>
-                 bool
-                </em>
-                ) – If debug mode is active (will provide extra debug logging).
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
                  allow_cash_positions
                 </strong>
                 (
@@ -6067,6 +6129,24 @@ The value should be a valid decimal format.
                  default True
                 </em>
                 ) – If unleveraged spot/cash assets should generate positions.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 debug
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default False
+                </em>
+                ) – If debug mode is active (will provide extra debug logging).
                </p>
               </li>
              </ul>
@@ -14058,7 +14138,10 @@ how the
             </span>
             <span class="default_value">
              <span class="pre">
-              DataEngineConfig(debug=False)
+              DataEngineConfig(build_time_bars_with_no_updates=True,
+             </span>
+             <span class="pre">
+              debug=False)
              </span>
             </span>
            </em>
@@ -14148,10 +14231,10 @@ how the
               ExecEngineConfig(load_cache=True,
              </span>
              <span class="pre">
-              debug=False,
+              allow_cash_positions=True,
              </span>
              <span class="pre">
-              allow_cash_positions=True)
+              debug=False)
              </span>
             </span>
            </em>
@@ -15969,6 +16052,40 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              build_time_bars_with_no_updates
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               debug
              </span>
             </span>
@@ -17166,40 +17283,6 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              debug
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
               allow_cash_positions
              </span>
             </span>
@@ -17227,6 +17310,40 @@ external inputs of venues and data.
             <span class="default_value">
              <span class="pre">
               True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              False
              </span>
             </span>
            </em>
@@ -19727,7 +19844,10 @@ is checked with the venue.
             </span>
             <span class="default_value">
              <span class="pre">
-              LiveDataEngineConfig(debug=False,
+              LiveDataEngineConfig(build_time_bars_with_no_updates=True,
+             </span>
+             <span class="pre">
+              debug=False,
              </span>
              <span class="pre">
               qsize=10000)
@@ -19823,10 +19943,10 @@ is checked with the venue.
               LiveExecEngineConfig(load_cache=True,
              </span>
              <span class="pre">
-              debug=False,
+              allow_cash_positions=True,
              </span>
              <span class="pre">
-              allow_cash_positions=True,
+              debug=False,
              </span>
              <span class="pre">
               reconciliation=True,

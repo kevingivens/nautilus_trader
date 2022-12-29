@@ -4126,7 +4126,13 @@ specification, then a bar is created and sent to the handler.
              Logger
             </span>
             <span class="pre">
-             logger
+             logger,
+            </span>
+            <span class="pre">
+             bool
+            </span>
+            <span class="pre">
+             build_bars_with_no_updates=True
             </span>
            </em>
            <span class="sig-paren">
@@ -4252,6 +4258,24 @@ a bar is created and sent to the handler.
                  </em>
                 </a>
                 ) – The logger for the aggregator.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 build_bars_with_no_updates
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default True
+                </em>
+                ) – If build and emit bars with no new market updates.
                </p>
               </li>
              </ul>
