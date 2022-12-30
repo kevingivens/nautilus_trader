@@ -5284,6 +5284,40 @@ If
              </span>
             </span>
            </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              warn_gtd_to_gtc
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
            <span class="sig-paren">
             )
            </span>
@@ -5427,7 +5461,7 @@ If
               <li>
                <p>
                 <strong>
-                 base_ws_http
+                 base_url_ws
                 </strong>
                 (
                 <em>
@@ -5502,12 +5536,30 @@ If
                 <em>
                  )
                 </em>
-                ) – The intervel (seconds) between syncing the Nautilus clock with the Binance server(s) clock.
+                ) – The interval (seconds) between syncing the Nautilus clock with the Binance server(s) clock.
 If zero, then will
                 <em>
                  not
                 </em>
                 perform syncing.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 warn_gtd_to_gtc
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default True
+                </em>
+                ) – If log warning for GTD time in force transformed to GTC.
                </p>
               </li>
              </ul>
@@ -17900,6 +17952,40 @@ then the component state will not change, and an error will be logged.
               </span>
              </span>
             </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               warn_gtd_to_gtc
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               bool
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               True
+              </span>
+             </span>
+            </em>
             <span class="sig-paren">
              )
             </span>
@@ -18081,6 +18167,24 @@ If zero, then will
                   not
                  </em>
                  perform syncing.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  warn_gtd_to_gtc
+                 </strong>
+                 (
+                 <em>
+                  bool
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  default True
+                 </em>
+                 ) – If log warning for GTD time in force transformed to GTC.
                 </p>
                </li>
               </ul>
@@ -32477,6 +32581,40 @@ then the component state will not change, and an error will be logged.
               </span>
              </span>
             </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               warn_gtd_to_gtc
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               bool
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               True
+              </span>
+             </span>
+            </em>
             <span class="sig-paren">
              )
             </span>
@@ -32656,6 +32794,24 @@ If zero, then will
                   not
                  </em>
                  perform syncing.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  warn_gtd_to_gtc
+                 </strong>
+                 (
+                 <em>
+                  bool
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  default True
+                 </em>
+                 ) – If log warning for GTD time in force transformed to GTC.
                 </p>
                </li>
               </ul>
