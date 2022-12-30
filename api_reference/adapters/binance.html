@@ -11893,19 +11893,22 @@ cached client will be returned.
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 self
-                </span>
-               </span>
-              </em>
-              ,
-              <em class="sig-param">
-               <span class="n">
-                <span class="pre">
-                 DataType
-                </span>
-                <span class="pre">
                  data_type
                 </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../model/data.html#nautilus_trader.model.data.base.DataType" title="nautilus_trader.model.data.base.DataType">
+                 <span class="pre">
+                  DataType
+                 </span>
+                </a>
                </span>
               </em>
               <span class="sig-paren">
@@ -11917,7 +11920,7 @@ cached client will be returned.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 void
+                 None
                 </span>
                </span>
               </span>
@@ -11927,7 +11930,7 @@ cached client will be returned.
              </dt>
              <dd>
               <p>
-               Subscribe to data for the given data type.
+               Execute the given command asynchronously.
               </p>
               <dl class="field-list simple">
                <dt class="field-odd">
@@ -11947,7 +11950,7 @@ cached client will be returned.
                    DataType
                   </em>
                  </a>
-                 ) – The data type for the subscription.
+                 ) – The data type to subscribe to.
                 </p>
                </dd>
               </dl>
@@ -12731,19 +12734,22 @@ cached client will be returned.
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 self
-                </span>
-               </span>
-              </em>
-              ,
-              <em class="sig-param">
-               <span class="n">
-                <span class="pre">
-                 DataType
-                </span>
-                <span class="pre">
                  data_type
                 </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../model/data.html#nautilus_trader.model.data.base.DataType" title="nautilus_trader.model.data.base.DataType">
+                 <span class="pre">
+                  DataType
+                 </span>
+                </a>
                </span>
               </em>
               <span class="sig-paren">
@@ -12755,7 +12761,7 @@ cached client will be returned.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 void
+                 None
                 </span>
                </span>
               </span>
@@ -12765,7 +12771,7 @@ cached client will be returned.
              </dt>
              <dd>
               <p>
-               Unsubscribe from data for the given data type.
+               Execute the given command asynchronously.
               </p>
               <dl class="field-list simple">
                <dt class="field-odd">
@@ -12785,7 +12791,7 @@ cached client will be returned.
                    DataType
                   </em>
                  </a>
-                 ) – The data type for the subscription.
+                 ) – The data type to unsubscribe from.
                 </p>
                </dd>
               </dl>
@@ -14862,30 +14868,44 @@ then the component state will not change, and an error will be logged.
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 self
-                </span>
-               </span>
-              </em>
-              ,
-              <em class="sig-param">
-               <span class="n">
-                <span class="pre">
-                 DataType
-                </span>
-                <span class="pre">
                  data_type
                 </span>
                </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../model/data.html#nautilus_trader.model.data.base.DataType" title="nautilus_trader.model.data.base.DataType">
+                 <span class="pre">
+                  DataType
+                 </span>
+                </a>
+               </span>
               </em>
               ,
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 UUID4
-                </span>
-                <span class="pre">
                  correlation_id
                 </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../core.html#nautilus_trader.core.uuid.UUID4" title="nautilus_trader.core.uuid.UUID4">
+                 <span class="pre">
+                  UUID4
+                 </span>
+                </a>
                </span>
               </em>
               <span class="sig-paren">
@@ -14897,7 +14917,7 @@ then the component state will not change, and an error will be logged.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 void
+                 None
                 </span>
                </span>
               </span>
@@ -14907,7 +14927,7 @@ then the component state will not change, and an error will be logged.
              </dt>
              <dd>
               <p>
-               Request data for the given data type.
+               Execute the given command asynchronously.
               </p>
               <dl class="field-list simple">
                <dt class="field-odd">
@@ -14929,7 +14949,7 @@ then the component state will not change, and an error will be logged.
                      DataType
                     </em>
                    </a>
-                   ) – The data type for the subscription.
+                   ) – The data type for the request.
                   </p>
                  </li>
                  <li>
@@ -14943,7 +14963,7 @@ then the component state will not change, and an error will be logged.
                      UUID4
                     </em>
                    </a>
-                   ) – The correlation ID for the response.
+                   ) – The correlation ID for the request.
                   </p>
                  </li>
                 </ul>
@@ -27017,19 +27037,22 @@ applying the given filters.
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 self
-                </span>
-               </span>
-              </em>
-              ,
-              <em class="sig-param">
-               <span class="n">
-                <span class="pre">
-                 DataType
-                </span>
-                <span class="pre">
                  data_type
                 </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../model/data.html#nautilus_trader.model.data.base.DataType" title="nautilus_trader.model.data.base.DataType">
+                 <span class="pre">
+                  DataType
+                 </span>
+                </a>
                </span>
               </em>
               <span class="sig-paren">
@@ -27041,7 +27064,7 @@ applying the given filters.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 void
+                 None
                 </span>
                </span>
               </span>
@@ -27051,7 +27074,7 @@ applying the given filters.
              </dt>
              <dd>
               <p>
-               Subscribe to data for the given data type.
+               Execute the given command asynchronously.
               </p>
               <dl class="field-list simple">
                <dt class="field-odd">
@@ -27071,7 +27094,7 @@ applying the given filters.
                    DataType
                   </em>
                  </a>
-                 ) – The data type for the subscription.
+                 ) – The data type to subscribe to.
                 </p>
                </dd>
               </dl>
@@ -29913,30 +29936,44 @@ then the component state will not change, and an error will be logged.
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 self
-                </span>
-               </span>
-              </em>
-              ,
-              <em class="sig-param">
-               <span class="n">
-                <span class="pre">
-                 DataType
-                </span>
-                <span class="pre">
                  data_type
                 </span>
                </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../model/data.html#nautilus_trader.model.data.base.DataType" title="nautilus_trader.model.data.base.DataType">
+                 <span class="pre">
+                  DataType
+                 </span>
+                </a>
+               </span>
               </em>
               ,
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 UUID4
-                </span>
-                <span class="pre">
                  correlation_id
                 </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../core.html#nautilus_trader.core.uuid.UUID4" title="nautilus_trader.core.uuid.UUID4">
+                 <span class="pre">
+                  UUID4
+                 </span>
+                </a>
                </span>
               </em>
               <span class="sig-paren">
@@ -29948,7 +29985,7 @@ then the component state will not change, and an error will be logged.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 void
+                 None
                 </span>
                </span>
               </span>
@@ -29958,7 +29995,7 @@ then the component state will not change, and an error will be logged.
              </dt>
              <dd>
               <p>
-               Request data for the given data type.
+               Execute the given command asynchronously.
               </p>
               <dl class="field-list simple">
                <dt class="field-odd">
@@ -29980,7 +30017,7 @@ then the component state will not change, and an error will be logged.
                      DataType
                     </em>
                    </a>
-                   ) – The data type for the subscription.
+                   ) – The data type for the request.
                   </p>
                  </li>
                  <li>
@@ -29994,7 +30031,7 @@ then the component state will not change, and an error will be logged.
                      UUID4
                     </em>
                    </a>
-                   ) – The correlation ID for the response.
+                   ) – The correlation ID for the request.
                   </p>
                  </li>
                 </ul>
@@ -31188,19 +31225,22 @@ then the component state will not change, and an error will be logged.
               <em class="sig-param">
                <span class="n">
                 <span class="pre">
-                 self
-                </span>
-               </span>
-              </em>
-              ,
-              <em class="sig-param">
-               <span class="n">
-                <span class="pre">
-                 DataType
-                </span>
-                <span class="pre">
                  data_type
                 </span>
+               </span>
+               <span class="p">
+                <span class="pre">
+                 :
+                </span>
+               </span>
+               <span class="w">
+               </span>
+               <span class="n">
+                <a class="reference internal" href="../model/data.html#nautilus_trader.model.data.base.DataType" title="nautilus_trader.model.data.base.DataType">
+                 <span class="pre">
+                  DataType
+                 </span>
+                </a>
                </span>
               </em>
               <span class="sig-paren">
@@ -31212,7 +31252,7 @@ then the component state will not change, and an error will be logged.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 void
+                 None
                 </span>
                </span>
               </span>
@@ -31222,7 +31262,7 @@ then the component state will not change, and an error will be logged.
              </dt>
              <dd>
               <p>
-               Unsubscribe from data for the given data type.
+               Execute the given command asynchronously.
               </p>
               <dl class="field-list simple">
                <dt class="field-odd">
@@ -31242,7 +31282,7 @@ then the component state will not change, and an error will be logged.
                    DataType
                   </em>
                  </a>
-                 ) – The data type for the subscription.
+                 ) – The data type to unsubscribe from.
                 </p>
                </dd>
               </dl>
