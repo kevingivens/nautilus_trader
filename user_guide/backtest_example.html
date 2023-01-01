@@ -1073,11 +1073,11 @@
     <span class="n">ImportableStrategyConfig</span><span class="p">(</span>
         <span class="n">strategy_path</span><span class="o">=</span><span class="s2">"nautilus_trader.examples.strategies.ema_cross:EMACross"</span><span class="p">,</span>
         <span class="n">config_path</span><span class="o">=</span><span class="s2">"nautilus_trader.examples.strategies.ema_cross:EMACrossConfig"</span><span class="p">,</span>
-        <span class="n">config</span><span class="o">=</span><span class="n">EMACrossConfig</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
             <span class="n">instrument_id</span><span class="o">=</span><span class="n">instrument</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="n">bar_type</span><span class="o">=</span><span class="s2">"EUR/USD.SIM-15-MINUTE-BID-INTERNAL"</span><span class="p">,</span>
-            <span class="n">fast_ema</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
-            <span class="n">slow_ema</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+            <span class="n">fast_ema_period</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">slow_ema_period</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
             <span class="n">trade_size</span><span class="o">=</span><span class="n">Decimal</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">),</span>
         <span class="p">),</span>
     <span class="p">),</span>
