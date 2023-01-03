@@ -841,6 +841,22 @@ You’ll also need the latest stable
           to compile the Rust libraries.
          </p>
          <p>
+          For MacBook Pro M1/M2, make sure your Python installed using pyenv is configured with –enable-shared:
+         </p>
+         <div class="highlight-none notranslate">
+          <div class="highlight">
+           <pre><span></span>PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install &lt;python_version&gt;
+</pre>
+          </div>
+         </div>
+         <p>
+          See
+          <a class="reference external" href="https://pyo3.rs/v0.17.3/getting_started#virtualenvs">
+           https://pyo3.rs/v0.17.3/getting_started#virtualenvs
+          </a>
+          .
+         </p>
+         <p>
           It’s possible to install from source using
           <code class="docutils literal notranslate">
            <span class="pre">
