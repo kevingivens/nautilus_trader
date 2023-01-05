@@ -18937,7 +18937,18 @@ then the component state will not change, and an error will be logged.
                 bool
                </span>
                <span class="pre">
-                post_only=False
+                post_only_entry=False
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                bool
+               </span>
+               <span class="pre">
+                post_only_tp=True
                </span>
               </span>
              </em>
@@ -19277,7 +19288,7 @@ of
                 <li>
                  <p>
                   <strong>
-                   post_only
+                   post_only_entry
                   </strong>
                   (
                   <em>
@@ -19290,6 +19301,24 @@ of
                    default False
                   </em>
                   ) – If the entry order will only provide liquidity (make a market).
+                 </p>
+                </li>
+                <li>
+                 <p>
+                  <strong>
+                   post_only_tp
+                  </strong>
+                  (
+                  <em>
+                   bool
+                  </em>
+                  <em>
+                   ,
+                  </em>
+                  <em>
+                   default False
+                  </em>
+                  ) – If the take-profit order will only provide liquidity (make a market).
                  </p>
                 </li>
                 <li>
