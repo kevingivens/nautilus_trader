@@ -2240,15 +2240,6 @@
                  </a>
                 </li>
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.count">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    OrderFactory.count
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
                  <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.limit">
                   <code class="docutils literal notranslate">
                    <span class="pre">
@@ -2303,10 +2294,19 @@
                  </a>
                 </li>
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.set_count">
+                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.set_order_id_count">
                   <code class="docutils literal notranslate">
                    <span class="pre">
-                    OrderFactory.set_count()
+                    OrderFactory.set_order_id_count()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.common.factories.OrderFactory.set_order_list_id_count">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    OrderFactory.set_order_list_id_count()
                    </span>
                   </code>
                  </a>
@@ -2437,6 +2437,57 @@
                  </span>
                 </code>
                </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.common.generators.OrderListIdGenerator">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  OrderListIdGenerator
+                 </span>
+                </code>
+               </a>
+               <span class="arrow">
+                <i class="fa-solid fa-chevron-right">
+                </i>
+               </span>
+               <ul class="submenu">
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.common.generators.OrderListIdGenerator.count">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    OrderListIdGenerator.count
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.common.generators.OrderListIdGenerator.generate">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    OrderListIdGenerator.generate()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.common.generators.OrderListIdGenerator.reset">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    OrderListIdGenerator.reset()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.common.generators.OrderListIdGenerator.set_count">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    OrderListIdGenerator.set_count()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+               </ul>
               </li>
               <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.common.generators.PositionIdGenerator">
@@ -3735,12 +3786,12 @@ ID cache is implemented, a base
          <cite>
           Identifier
          </cite>
-         objects.
-Common logging components. A high performance
+         objects,
+common logging components, a high performance
          <cite>
           Queue
          </cite>
-         . Common
+         and
          <cite>
           UUID4
          </cite>
@@ -18657,7 +18708,18 @@ then the component state will not change, and an error will be logged.
               int
              </span>
              <span class="pre">
-              initial_count=0
+              initial_order_id_count=0
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              int
+             </span>
+             <span class="pre">
+              initial_order_list_id_count=0
              </span>
             </span>
            </em>
@@ -18745,7 +18807,7 @@ then the component state will not change, and an error will be logged.
               <li>
                <p>
                 <strong>
-                 initial_count
+                 initial_order_id_count
                 </strong>
                 (
                 <em>
@@ -18757,7 +18819,25 @@ then the component state will not change, and an error will be logged.
                 <em>
                  optional
                 </em>
-                ) – The initial order count for the factory.
+                ) – The initial order ID count for the factory.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 initial_order_list_id_count
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 optional
+                </em>
+                ) – The initial order list ID count for the factory.
                </p>
               </li>
              </ul>
@@ -18769,16 +18849,32 @@ then the component state will not change, and an error will be logged.
              </span>
             </dt>
             <dd class="field-even">
-             <p>
-              <strong>
-               ValueError
-              </strong>
-              – If
-              <cite>
-               initial_count
-              </cite>
-              is negative (&lt; 0).
-             </p>
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 ValueError
+                </strong>
+                – If
+                <cite>
+                 initial_order_id_count
+                </cite>
+                is negative (&lt; 0).
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 ValueError
+                </strong>
+                – If
+                <cite>
+                 initial_order_list_id_count
+                </cite>
+                is negative (&lt; 0).
+               </p>
+              </li>
+             </ul>
             </dd>
            </dl>
            <dl class="py method">
@@ -19361,38 +19457,6 @@ of
                <p>
                 <em>
                  OrderList
-                </em>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.count">
-             <span class="sig-name descname">
-              <span class="pre">
-               count
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.count" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              Return the count of IDs generated.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <em>
-                 int
                 </em>
                </p>
               </dd>
@@ -21645,10 +21709,10 @@ contain any arbitrary delimiter if required.
             </dd>
            </dl>
            <dl class="py method">
-            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.set_count">
+            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.set_order_id_count">
              <span class="sig-name descname">
               <span class="pre">
-               set_count
+               set_order_id_count
               </span>
              </span>
              <span class="sig-paren">
@@ -21685,13 +21749,92 @@ contain any arbitrary delimiter if required.
                </span>
               </span>
              </span>
-             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.set_count" title="Permalink to this definition">
+             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.set_order_id_count" title="Permalink to this definition">
               ¶
              </a>
             </dt>
             <dd>
              <p>
               Set the internal order ID generator count to the given count.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+               <span class="colon">
+                :
+               </span>
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <strong>
+                 count
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – The count to set.
+               </p>
+              </dd>
+             </dl>
+             <div class="admonition warning">
+              <p class="admonition-title">
+               Warning
+              </p>
+              <p>
+               System method (not intended to be called by user code).
+              </p>
+             </div>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.common.factories.OrderFactory.set_order_list_id_count">
+             <span class="sig-name descname">
+              <span class="pre">
+               set_order_list_id_count
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                int
+               </span>
+               <span class="pre">
+                count
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                void
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.common.factories.OrderFactory.set_order_list_id_count" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Set the internal order list ID generator count to the given count.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -24496,6 +24639,382 @@ contain any arbitrary delimiter if required.
            <p>
             Provides a generator for unique ID strings.
            </p>
+          </dd>
+         </dl>
+         <dl class="py class">
+          <dt class="sig sig-object py" id="nautilus_trader.common.generators.OrderListIdGenerator">
+           <em class="property">
+            <span class="pre">
+             class
+            </span>
+            <span class="w">
+            </span>
+           </em>
+           <span class="sig-name descname">
+            <span class="pre">
+             OrderListIdGenerator
+            </span>
+           </span>
+           <span class="sig-paren">
+            (
+           </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              TraderId
+             </span>
+             <span class="pre">
+              trader_id
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              StrategyId
+             </span>
+             <span class="pre">
+              strategy_id
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              Clock
+             </span>
+             <span class="pre">
+              clock
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              int
+             </span>
+             <span class="pre">
+              initial_count=0
+             </span>
+            </span>
+           </em>
+           <span class="sig-paren">
+            )
+           </span>
+           <a class="headerlink" href="#nautilus_trader.common.generators.OrderListIdGenerator" title="Permalink to this definition">
+            ¶
+           </a>
+          </dt>
+          <dd>
+           <p>
+            Bases:
+            <a class="reference internal" href="#nautilus_trader.common.generators.IdentifierGenerator" title="nautilus_trader.common.generators.IdentifierGenerator">
+             <code class="xref py py-class docutils literal notranslate">
+              <span class="pre">
+               IdentifierGenerator
+              </span>
+             </code>
+            </a>
+           </p>
+           <p>
+            Provides a generator for unique
+            <a href="#id3">
+             <span class="problematic" id="id4">
+              `
+             </span>
+            </a>
+            OrderListId`(s).
+           </p>
+           <dl class="field-list simple">
+            <dt class="field-odd">
+             Parameters
+             <span class="colon">
+              :
+             </span>
+            </dt>
+            <dd class="field-odd">
+             <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 trader_id
+                </strong>
+                (
+                <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.TraderId" title="nautilus_trader.model.identifiers.TraderId">
+                 <em>
+                  TraderId
+                 </em>
+                </a>
+                ) – The trader ID for the generator.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 strategy_id
+                </strong>
+                (
+                <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.StrategyId" title="nautilus_trader.model.identifiers.StrategyId">
+                 <em>
+                  StrategyId
+                 </em>
+                </a>
+                ) – The strategy ID for the generator.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 clock
+                </strong>
+                (
+                <a class="reference internal" href="#nautilus_trader.common.clock.Clock" title="nautilus_trader.common.clock.Clock">
+                 <em>
+                  Clock
+                 </em>
+                </a>
+                ) – The clock for the generator.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 initial_count
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – The initial count for the generator.
+               </p>
+              </li>
+             </ul>
+            </dd>
+            <dt class="field-even">
+             Raises
+             <span class="colon">
+              :
+             </span>
+            </dt>
+            <dd class="field-even">
+             <p>
+              <strong>
+               ValueError
+              </strong>
+              – If
+              <cite>
+               initial_count
+              </cite>
+              is negative (&lt; 0).
+             </p>
+            </dd>
+           </dl>
+           <dl class="py attribute">
+            <dt class="sig sig-object py" id="nautilus_trader.common.generators.OrderListIdGenerator.count">
+             <span class="sig-name descname">
+              <span class="pre">
+               count
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.common.generators.OrderListIdGenerator.count" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              The count of IDs generated.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+               <span class="colon">
+                :
+               </span>
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <cite>
+                 int
+                </cite>
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.common.generators.OrderListIdGenerator.generate">
+             <span class="sig-name descname">
+              <span class="pre">
+               generate
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.OrderListId" title="nautilus_trader.model.identifiers.OrderListId">
+                <span class="pre">
+                 OrderListId
+                </span>
+               </a>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.common.generators.OrderListIdGenerator.generate" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Return a unique order list ID.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Returns
+               <span class="colon">
+                :
+               </span>
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <em>
+                 OrderListId
+                </em>
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.common.generators.OrderListIdGenerator.reset">
+             <span class="sig-name descname">
+              <span class="pre">
+               reset
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                void
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.common.generators.OrderListIdGenerator.reset" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Reset the ID generator.
+             </p>
+             <p>
+              All stateful fields are reset to their initial value.
+             </p>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.common.generators.OrderListIdGenerator.set_count">
+             <span class="sig-name descname">
+              <span class="pre">
+               set_count
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                int
+               </span>
+               <span class="pre">
+                count
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                void
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.common.generators.OrderListIdGenerator.set_count" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Set the internal counter to the given count.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+               <span class="colon">
+                :
+               </span>
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <strong>
+                 count
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                ) – The count to set.
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
           </dd>
          </dl>
          <dl class="py class">
