@@ -58,7 +58,7 @@ cpdef Price float_to_price(double raw) except *:
 cdef Price price_to_probability_slow(Price price) except *:
     """  This is likely a trade tick that has been currency adjusted, simply return the nearest price """
     cdef Price probability
-    Condition.true(price.raw_int64_c() >= 1010000000, "Price should be greater than 1.01")
+    Condition.true(price.raw_int64_c() >= 0, "Price should be greater than 1.01")
     Condition.true(price.raw_int64_c() <= 1000000000000, "Price should be less than 1000")
 
     probability = Price(PRICE_ONE / price, BETFAIR_PRICE_PRECISION)
