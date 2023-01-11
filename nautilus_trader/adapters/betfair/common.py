@@ -50,17 +50,6 @@ N2B_TIME_IN_FORCE = {
     TimeInForce.FOK: "FILL_OR_KILL",
 }
 
-B2N_MARKET_STREAM_SIDE = {
-    "atb": OrderSide.SELL,  # Available to Back / Sell order
-    "batb": OrderSide.SELL,  # Best available to Back / Sell order
-    "bdatb": OrderSide.SELL,  # Best display to Back / Sell order
-    "atl": OrderSide.BUY,  # Available to Lay / Buy order
-    "batl": OrderSide.BUY,  # Best available to Lay / Buy order
-    "bdatl": OrderSide.BUY,  # Best display available to Lay / Buy order
-    "spb": OrderSide.SELL,  # Starting Price Back
-    "spl": OrderSide.BUY,  # Starting Price LAY
-}
-
 B_BID_KINDS = ("atb", "batb", "bdatb")
 B_ASK_KINDS = ("atl", "batl", "bdatl")
 B_SIDE_KINDS = B_BID_KINDS + B_ASK_KINDS

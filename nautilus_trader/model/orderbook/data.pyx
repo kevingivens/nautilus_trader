@@ -15,8 +15,6 @@
 
 from libc.stdint cimport uint64_t
 
-import uuid
-
 import msgspec
 
 from nautilus_trader.core.correctness cimport Condition
@@ -30,6 +28,8 @@ from nautilus_trader.model.enums_c cimport book_type_from_str
 from nautilus_trader.model.enums_c cimport book_type_to_str
 from nautilus_trader.model.enums_c cimport order_side_from_str
 from nautilus_trader.model.enums_c cimport order_side_to_str
+
+from nautilus_trader.core.uuid import UUID4
 
 
 cdef class OrderBookData(Data):
@@ -468,7 +468,7 @@ cdef class BookOrder:
         self.price = price
         self.size = size
         self.side = side
-        self.id = id or str(uuid.uuid4())
+        self.id = id or UUID4().value
 
     def __eq__(self, BookOrder other) -> bool:
         return self.id == other.id
