@@ -681,6 +681,24 @@
              </span>
              <ul class="submenu">
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.live.data_client.LiveDataClient.run_after_delay">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LiveDataClient.run_after_delay()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.live.data_client.LiveDataClient.create_task">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LiveDataClient.create_task()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.live.data_client.LiveDataClient.connect">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -929,6 +947,24 @@
               </i>
              </span>
              <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.live.data_client.LiveMarketDataClient.run_after_delay">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LiveMarketDataClient.run_after_delay()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.live.data_client.LiveMarketDataClient.create_task">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LiveMarketDataClient.create_task()
+                 </span>
+                </code>
+               </a>
+              </li>
               <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.live.data_client.LiveMarketDataClient.connect">
                 <code class="docutils literal notranslate">
@@ -1967,6 +2003,24 @@
               </i>
              </span>
              <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.live.execution_client.LiveExecutionClient.run_after_delay">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LiveExecutionClient.run_after_delay()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.live.execution_client.LiveExecutionClient.create_task">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LiveExecutionClient.create_task()
+                 </span>
+                </code>
+               </a>
+              </li>
               <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.live.execution_client.LiveExecutionClient.connect">
                 <code class="docutils literal notranslate">
@@ -3932,6 +3986,393 @@ could also be possible to write clients for specialized data publishers.
            </p>
           </div>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.live.data_client.LiveDataClient.run_after_delay">
+            <em class="property">
+             <span class="pre">
+              async
+             </span>
+             <span class="w">
+             </span>
+            </em>
+            <span class="sig-name descname">
+             <span class="pre">
+              run_after_delay
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               delay
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               float
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               coro
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Coroutine
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.live.data_client.LiveDataClient.run_after_delay" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Run the given coroutine after a delay.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  delay
+                 </strong>
+                 (
+                 <em>
+                  float
+                 </em>
+                 ) – The delay (seconds) before running the coroutine.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  coro
+                 </strong>
+                 (
+                 <em>
+                  Coroutine
+                 </em>
+                 ) – The coroutine to run after the initial delay.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.live.data_client.LiveDataClient.create_task">
+            <span class="sig-name descname">
+             <span class="pre">
+              create_task
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               coro
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Coroutine
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               log_msg
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               str
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               actions
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               Callable
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               success
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               str
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.live.data_client.LiveDataClient.create_task" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Run the given coroutine with error handling and optional callback
+actions when done.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  coro
+                 </strong>
+                 (
+                 <em>
+                  Coroutine
+                 </em>
+                 ) – The coroutine to run.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  log_msg
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The log message for the task.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  actions
+                 </strong>
+                 (
+                 <em>
+                  Callable
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The actions callback to run when the coroutine is done.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  success
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The log message to write on actions success.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.live.data_client.LiveDataClient.connect">
             <span class="sig-name descname">
              <span class="pre">
@@ -5733,6 +6174,393 @@ then the component state will not change, and an error will be logged.
             This class should not be used directly, but through a concrete subclass.
            </p>
           </div>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.live.data_client.LiveMarketDataClient.run_after_delay">
+            <em class="property">
+             <span class="pre">
+              async
+             </span>
+             <span class="w">
+             </span>
+            </em>
+            <span class="sig-name descname">
+             <span class="pre">
+              run_after_delay
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               delay
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               float
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               coro
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Coroutine
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.live.data_client.LiveMarketDataClient.run_after_delay" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Run the given coroutine after a delay.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  delay
+                 </strong>
+                 (
+                 <em>
+                  float
+                 </em>
+                 ) – The delay (seconds) before running the coroutine.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  coro
+                 </strong>
+                 (
+                 <em>
+                  Coroutine
+                 </em>
+                 ) – The coroutine to run after the initial delay.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.live.data_client.LiveMarketDataClient.create_task">
+            <span class="sig-name descname">
+             <span class="pre">
+              create_task
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               coro
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Coroutine
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               log_msg
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               str
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               actions
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               Callable
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               success
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               str
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.live.data_client.LiveMarketDataClient.create_task" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Run the given coroutine with error handling and optional callback
+actions when done.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  coro
+                 </strong>
+                 (
+                 <em>
+                  Coroutine
+                 </em>
+                 ) – The coroutine to run.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  log_msg
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The log message for the task.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  actions
+                 </strong>
+                 (
+                 <em>
+                  Callable
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The actions callback to run when the coroutine is done.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  success
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The log message to write on actions success.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
           <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.live.data_client.LiveMarketDataClient.connect">
             <span class="sig-name descname">
@@ -13649,6 +14477,393 @@ API which may be presented directly by an exchange, or broker intermediary.
             This class should not be used directly, but through a concrete subclass.
            </p>
           </div>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.live.execution_client.LiveExecutionClient.run_after_delay">
+            <em class="property">
+             <span class="pre">
+              async
+             </span>
+             <span class="w">
+             </span>
+            </em>
+            <span class="sig-name descname">
+             <span class="pre">
+              run_after_delay
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               delay
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               float
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               coro
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Coroutine
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.live.execution_client.LiveExecutionClient.run_after_delay" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Run the given coroutine after a delay.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  delay
+                 </strong>
+                 (
+                 <em>
+                  float
+                 </em>
+                 ) – The delay (seconds) before running the coroutine.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  coro
+                 </strong>
+                 (
+                 <em>
+                  Coroutine
+                 </em>
+                 ) – The coroutine to run after the initial delay.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.live.execution_client.LiveExecutionClient.create_task">
+            <span class="sig-name descname">
+             <span class="pre">
+              create_task
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               coro
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Coroutine
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               log_msg
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               str
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               actions
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               Callable
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               success
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               :
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="n">
+              <span class="pre">
+               Optional
+              </span>
+              <span class="p">
+               <span class="pre">
+                [
+               </span>
+              </span>
+              <span class="pre">
+               str
+              </span>
+              <span class="p">
+               <span class="pre">
+                ]
+               </span>
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="o">
+              <span class="pre">
+               =
+              </span>
+             </span>
+             <span class="w">
+             </span>
+             <span class="default_value">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               None
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.live.execution_client.LiveExecutionClient.create_task" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Run the given coroutine with error handling and optional callback
+actions when done.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  coro
+                 </strong>
+                 (
+                 <em>
+                  Coroutine
+                 </em>
+                 ) – The coroutine to run.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  log_msg
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The log message for the task.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  actions
+                 </strong>
+                 (
+                 <em>
+                  Callable
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The actions callback to run when the coroutine is done.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  success
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The log message to write on actions success.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
           <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.live.execution_client.LiveExecutionClient.connect">
             <span class="sig-name descname">
