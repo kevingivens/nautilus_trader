@@ -4726,6 +4726,40 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              handle_revised_bars
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               debug
              </span>
             </span>
@@ -4808,6 +4842,24 @@ whether the instrument should be loaded
                  default True
                 </em>
                 ) – If time bar aggregators will build and emit bars with no new market updates.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 handle_revised_bars
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default True
+                </em>
+                ) – If revised bars older than the latest should be handled by the engine.
                </p>
               </li>
               <li>
@@ -14141,6 +14193,9 @@ how the
               DataEngineConfig(build_time_bars_with_no_updates=True,
              </span>
              <span class="pre">
+              handle_revised_bars=True,
+             </span>
+             <span class="pre">
               debug=False)
              </span>
             </span>
@@ -16053,6 +16108,40 @@ external inputs of venues and data.
             <span class="n">
              <span class="pre">
               build_time_bars_with_no_updates
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              handle_revised_bars
              </span>
             </span>
             <span class="p">
@@ -19845,6 +19934,9 @@ is checked with the venue.
             <span class="default_value">
              <span class="pre">
               LiveDataEngineConfig(build_time_bars_with_no_updates=True,
+             </span>
+             <span class="pre">
+              handle_revised_bars=True,
              </span>
              <span class="pre">
               debug=False,
