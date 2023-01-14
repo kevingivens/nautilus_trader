@@ -3393,7 +3393,20 @@
             </span>
             <span class="n">
              <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
               int
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
              </span>
             </span>
             <span class="w">
@@ -3407,7 +3420,101 @@
             </span>
             <span class="default_value">
              <span class="pre">
-              6379
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              username
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              password
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
              </span>
             </span>
            </em>
@@ -3526,7 +3633,7 @@
                 <em>
                  default 'localhost'
                 </em>
-                ) – The database host address (default for Redis).
+                ) – The database host address.
                </p>
               </li>
               <li>
@@ -3542,9 +3649,45 @@
                  ,
                 </em>
                 <em>
-                 default 6379
+                 optional
                 </em>
-                ) – The database port (default for Redis).
+                ) – The database port.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 username
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 optional
+                </em>
+                ) – The account username for the database connection.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 password
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 optional
+                </em>
+                ) – The account password for the database connection.
                </p>
               </li>
               <li>
