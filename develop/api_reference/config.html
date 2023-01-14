@@ -4726,7 +4726,7 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              handle_revised_bars
+              validate_data_sequence
              </span>
             </span>
             <span class="p">
@@ -4847,7 +4847,7 @@ whether the instrument should be loaded
               <li>
                <p>
                 <strong>
-                 handle_revised_bars
+                 validate_data_sequence
                 </strong>
                 (
                 <em>
@@ -4857,9 +4857,9 @@ whether the instrument should be loaded
                  ,
                 </em>
                 <em>
-                 default True
+                 default False
                 </em>
-                ) – If revised bars older than the latest should be handled by the engine.
+                ) – If data objects timestamp sequencing will be validated and handled.
                </p>
               </li>
               <li>
@@ -14193,7 +14193,7 @@ how the
               DataEngineConfig(build_time_bars_with_no_updates=True,
              </span>
              <span class="pre">
-              handle_revised_bars=True,
+              validate_data_sequence=True,
              </span>
              <span class="pre">
               debug=False)
@@ -16141,7 +16141,7 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              handle_revised_bars
+              validate_data_sequence
              </span>
             </span>
             <span class="p">
@@ -19936,7 +19936,7 @@ is checked with the venue.
               LiveDataEngineConfig(build_time_bars_with_no_updates=True,
              </span>
              <span class="pre">
-              handle_revised_bars=True,
+              validate_data_sequence=True,
              </span>
              <span class="pre">
               debug=False,
