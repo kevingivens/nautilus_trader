@@ -1172,6 +1172,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.model.orders.market.MarketOrder.transform_py">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  MarketOrder.transform_py()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.model.orders.market.MarketOrder.ts_init">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1758,6 +1767,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   LimitOrder.trader_id
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.model.orders.limit.LimitOrder.transform_py">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  LimitOrder.transform_py()
                  </span>
                 </code>
                </a>
@@ -6158,6 +6176,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.model.orders.list.OrderList.strategy_id">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  OrderList.strategy_id
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.model.orders.list.OrderList.ts_init">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -9691,6 +9718,66 @@ The possible statuses of closed orders include;
             </dl>
            </dd>
           </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.model.orders.market.MarketOrder.transform_py">
+            <em class="property">
+             <span class="pre">
+              static
+             </span>
+             <span class="w">
+             </span>
+            </em>
+            <span class="sig-name descname">
+             <span class="pre">
+              transform_py
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Order
+              </span>
+              <span class="pre">
+               order
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               uint64_t
+              </span>
+              <span class="pre">
+               ts_init
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <a class="reference internal" href="#nautilus_trader.model.orders.market.MarketOrder" title="nautilus_trader.model.orders.market.MarketOrder">
+               <span class="pre">
+                MarketOrder
+               </span>
+              </a>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.model.orders.market.MarketOrder.transform_py" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+           </dd>
+          </dl>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.market.MarketOrder.ts_init">
             <span class="sig-name descname">
@@ -13221,6 +13308,66 @@ The possible statuses of closed orders include;
               </p>
              </dd>
             </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.model.orders.limit.LimitOrder.transform_py">
+            <em class="property">
+             <span class="pre">
+              static
+             </span>
+             <span class="w">
+             </span>
+            </em>
+            <span class="sig-name descname">
+             <span class="pre">
+              transform_py
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Order
+              </span>
+              <span class="pre">
+               order
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               uint64_t
+              </span>
+              <span class="pre">
+               ts_init
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <a class="reference internal" href="#nautilus_trader.model.orders.limit.LimitOrder" title="nautilus_trader.model.orders.limit.LimitOrder">
+               <span class="pre">
+                LimitOrder
+               </span>
+              </a>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.model.orders.limit.LimitOrder.transform_py" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
            </dd>
           </dl>
           <dl class="py attribute">
@@ -38996,6 +39143,38 @@ in full.
            </dd>
           </dl>
           <dl class="py attribute">
+           <dt class="sig sig-object py" id="nautilus_trader.model.orders.list.OrderList.strategy_id">
+            <span class="sig-name descname">
+             <span class="pre">
+              strategy_id
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.model.orders.list.OrderList.strategy_id" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             The strategy ID associated with the list.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <cite>
+                StrategyId
+               </cite>
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.model.orders.list.OrderList.ts_init">
             <span class="sig-name descname">
              <span class="pre">
@@ -41776,7 +41955,7 @@ in full.
     <div class="md-footer-meta__inner md-grid">
      <div class="md-footer-copyright">
       <div class="md-footer-copyright__highlight">
-       © Copyright 2015-2022 Nautech Systems Pty Ltd.
+       © Copyright 2015-2023 Nautech Systems Pty Ltd.
       </div>
      </div>
     </div>

@@ -668,6 +668,33 @@
            </span>
            <ul class="submenu">
             <li class="md-nav__item">
+             <a class="md-nav__link" href="#nautilus_trader.backtest.auction.default_auction_match">
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                default_auction_match()
+               </span>
+              </code>
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#nautilus_trader.backtest.auction.volume_traded_at_price">
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                volume_traded_at_price()
+               </span>
+              </code>
+             </a>
+            </li>
+            <li class="md-nav__item">
+             <a class="md-nav__link" href="#nautilus_trader.backtest.auction.find_trades_for_volume">
+              <code class="docutils literal notranslate">
+               <span class="pre">
+                find_trades_for_volume()
+               </span>
+              </code>
+             </a>
+            </li>
+            <li class="md-nav__item">
              <a class="md-nav__link" href="#nautilus_trader.backtest.data.loaders.CSVTickDataLoader">
               <code class="docutils literal notranslate">
                <span class="pre">
@@ -2361,6 +2388,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.exchange.SimulatedExchange.process_instrument_status">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulatedExchange.process_instrument_status()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.exchange.SimulatedExchange.process_order_book">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -2383,6 +2419,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   SimulatedExchange.process_trade_tick()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.exchange.SimulatedExchange.process_venue_status">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulatedExchange.process_venue_status()
                  </span>
                 </code>
                </a>
@@ -3188,6 +3233,302 @@
          </cite>
          subpackage groups components relating to backtesting.
         </p>
+        <span class="target" id="module-nautilus_trader.backtest.auction">
+        </span>
+        <dl class="py function">
+         <dt class="sig sig-object py" id="nautilus_trader.backtest.auction.default_auction_match">
+          <span class="sig-name descname">
+           <span class="pre">
+            default_auction_match
+           </span>
+          </span>
+          <span class="sig-paren">
+           (
+          </span>
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             left
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <a class="reference internal" href="model/orderbook.html#nautilus_trader.model.orderbook.ladder.Ladder" title="nautilus_trader.model.orderbook.ladder.Ladder">
+             <span class="pre">
+              Ladder
+             </span>
+            </a>
+           </span>
+          </em>
+          ,
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             right
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <a class="reference internal" href="model/orderbook.html#nautilus_trader.model.orderbook.ladder.Ladder" title="nautilus_trader.model.orderbook.ladder.Ladder">
+             <span class="pre">
+              Ladder
+             </span>
+            </a>
+           </span>
+          </em>
+          <span class="sig-paren">
+           )
+          </span>
+          <span class="sig-return">
+           <span class="sig-return-icon">
+            →
+           </span>
+           <span class="sig-return-typehint">
+            <span class="pre">
+             tuple
+            </span>
+            <span class="p">
+             <span class="pre">
+              [
+             </span>
+            </span>
+            <span class="pre">
+             list
+            </span>
+            <span class="p">
+             <span class="pre">
+              ,
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="pre">
+             list
+            </span>
+            <span class="p">
+             <span class="pre">
+              ]
+             </span>
+            </span>
+           </span>
+          </span>
+          <a class="headerlink" href="#nautilus_trader.backtest.auction.default_auction_match" title="Permalink to this definition">
+           ¶
+          </a>
+         </dt>
+         <dd>
+          <p>
+           Match bid/ask Ladders as default auction match function.
+          </p>
+         </dd>
+        </dl>
+        <dl class="py function">
+         <dt class="sig sig-object py" id="nautilus_trader.backtest.auction.volume_traded_at_price">
+          <span class="sig-name descname">
+           <span class="pre">
+            volume_traded_at_price
+           </span>
+          </span>
+          <span class="sig-paren">
+           (
+          </span>
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             ladder
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <a class="reference internal" href="model/orderbook.html#nautilus_trader.model.orderbook.ladder.Ladder" title="nautilus_trader.model.orderbook.ladder.Ladder">
+             <span class="pre">
+              Ladder
+             </span>
+            </a>
+           </span>
+          </em>
+          ,
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             price
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <span class="pre">
+             float
+            </span>
+           </span>
+          </em>
+          ,
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             side
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <span class="pre">
+             OrderSide
+            </span>
+           </span>
+          </em>
+          <span class="sig-paren">
+           )
+          </span>
+          <span class="sig-return">
+           <span class="sig-return-icon">
+            →
+           </span>
+           <span class="sig-return-typehint">
+            <span class="pre">
+             float
+            </span>
+           </span>
+          </span>
+          <a class="headerlink" href="#nautilus_trader.backtest.auction.volume_traded_at_price" title="Permalink to this definition">
+           ¶
+          </a>
+         </dt>
+         <dd>
+          <p>
+           Determine the total volume available to trade in
+           <cite>
+            ladder
+           </cite>
+           up to a certain
+           <cite>
+            price
+           </cite>
+           .
+          </p>
+         </dd>
+        </dl>
+        <dl class="py function">
+         <dt class="sig sig-object py" id="nautilus_trader.backtest.auction.find_trades_for_volume">
+          <span class="sig-name descname">
+           <span class="pre">
+            find_trades_for_volume
+           </span>
+          </span>
+          <span class="sig-paren">
+           (
+          </span>
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             ladder
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <a class="reference internal" href="model/orderbook.html#nautilus_trader.model.orderbook.ladder.Ladder" title="nautilus_trader.model.orderbook.ladder.Ladder">
+             <span class="pre">
+              Ladder
+             </span>
+            </a>
+           </span>
+          </em>
+          ,
+          <em class="sig-param">
+           <span class="n">
+            <span class="pre">
+             target_volume
+            </span>
+           </span>
+           <span class="p">
+            <span class="pre">
+             :
+            </span>
+           </span>
+           <span class="w">
+           </span>
+           <span class="n">
+            <span class="pre">
+             float
+            </span>
+           </span>
+          </em>
+          <span class="sig-paren">
+           )
+          </span>
+          <span class="sig-return">
+           <span class="sig-return-icon">
+            →
+           </span>
+           <span class="sig-return-typehint">
+            <span class="pre">
+             list
+            </span>
+            <span class="p">
+             <span class="pre">
+              [
+             </span>
+            </span>
+            <a class="reference internal" href="model/orderbook.html#nautilus_trader.model.orderbook.data.BookOrder" title="nautilus_trader.model.orderbook.data.BookOrder">
+             <span class="pre">
+              nautilus_trader.model.orderbook.data.BookOrder
+             </span>
+            </a>
+            <span class="p">
+             <span class="pre">
+              ]
+             </span>
+            </span>
+           </span>
+          </span>
+          <a class="headerlink" href="#nautilus_trader.backtest.auction.find_trades_for_volume" title="Permalink to this definition">
+           ¶
+          </a>
+         </dt>
+         <dd>
+          <p>
+           Assuming
+           <cite>
+            target_volume
+           </cite>
+           size has traded, find all trades up to that volume.
+          </p>
+         </dd>
+        </dl>
         <span class="target" id="module-nautilus_trader.backtest.data.loaders">
         </span>
         <dl class="py class">
@@ -15759,6 +16100,79 @@ to the end of the data.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.exchange.SimulatedExchange.process_instrument_status">
+            <span class="sig-name descname">
+             <span class="pre">
+              process_instrument_status
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               InstrumentStatusUpdate
+              </span>
+              <span class="pre">
+               update
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.exchange.SimulatedExchange.process_instrument_status" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Process a specific instrument status.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                update
+               </strong>
+               (
+               <a class="reference internal" href="model/data.html#nautilus_trader.model.data.venue.VenueStatusUpdate" title="nautilus_trader.model.data.venue.VenueStatusUpdate">
+                <em>
+                 VenueStatusUpdate
+                </em>
+               </a>
+               ) – The status to process.
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.exchange.SimulatedExchange.process_order_book">
             <span class="sig-name descname">
              <span class="pre">
@@ -15978,6 +16392,79 @@ to the end of the data.
                 </em>
                </a>
                ) – The tick to process.
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.exchange.SimulatedExchange.process_venue_status">
+            <span class="sig-name descname">
+             <span class="pre">
+              process_venue_status
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               VenueStatusUpdate
+              </span>
+              <span class="pre">
+               update
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.exchange.SimulatedExchange.process_venue_status" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Process the exchange for the given status.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                update
+               </strong>
+               (
+               <a class="reference internal" href="model/data.html#nautilus_trader.model.data.venue.VenueStatusUpdate" title="nautilus_trader.model.data.venue.VenueStatusUpdate">
+                <em>
+                 VenueStatusUpdate
+                </em>
+               </a>
+               ) – The status to process.
               </p>
              </dd>
             </dl>
@@ -23255,7 +23742,7 @@ of fills and slippage by order type.
     <div class="md-footer-meta__inner md-grid">
      <div class="md-footer-copyright">
       <div class="md-footer-copyright__highlight">
-       © Copyright 2015-2022 Nautech Systems Pty Ltd.
+       © Copyright 2015-2023 Nautech Systems Pty Ltd.
       </div>
      </div>
     </div>

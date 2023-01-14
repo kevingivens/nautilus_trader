@@ -755,7 +755,7 @@ format (Parquet) for this guide.
           </a>
          </h2>
          <p>
-          A self-contained dockerized jupyter notebook server is available for download, which does not require any setup or
+          ~~A self-contained dockerized jupyter notebook server is available for download, which does not require any setup or
 installation. This is the fastest way to get up and running to try out Nautilus. Bear in mind that any data will be
 deleted when the container is deleted.
          </p>
@@ -838,14 +838,25 @@ deleted when the container is deleted.
            <ul>
             <li>
              <p>
-              <a class="reference external" href="https://localhost:8889">
-               https://localhost:8889
-              </a>
+              https://localhost:8889~~
              </p>
             </li>
            </ul>
           </li>
          </ul>
+         <p>
+          <strong>
+           NautilusTrader is not currently functional when run under JupyterLab, with logging enabled.
+The backtest example in the
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             examples/backtest_example.ipynb
+            </span>
+           </code>
+           hangs indefinitely shortly after starting.
+The cause of this is still being determined.
+          </strong>
+         </p>
         </section>
         <section id="getting-the-sample-data">
          <h2 id="getting-the-sample-data">
@@ -860,8 +871,8 @@ First, download and load the data by running the next cell (this should take ~ 1
          </p>
          <div class="highlight-bash notranslate">
           <div class="highlight">
-           <pre><span></span>!apt-get update <span class="o">&amp;&amp;</span> apt-get install curl -y
-!curl https://raw.githubusercontent.com/nautechsystems/nautilus_data/main/scripts/hist_data_to_catalog.py <span class="p">|</span> python - 
+           <pre><span></span>!apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>curl<span class="w"> </span>-y
+!curl<span class="w"> </span>https://raw.githubusercontent.com/nautechsystems/nautilus_data/main/scripts/hist_data_to_catalog.py<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>-<span class="w"> </span>
 </pre>
           </div>
          </div>
@@ -918,7 +929,8 @@ registering indicators to receive certain data types, however in this example we
          </p>
          <div class="highlight-python notranslate">
           <div class="highlight">
-           <pre><span></span><span class="kn">from</span> <span class="nn">nautilus_trader.trading.strategy</span> <span class="kn">import</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">StrategyConfig</span>
+           <pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">nautilus_trader.trading.strategy</span> <span class="kn">import</span> <span class="n">Strategy</span><span class="p">,</span> <span class="n">StrategyConfig</span>
 <span class="kn">from</span> <span class="nn">nautilus_trader.indicators.macd</span> <span class="kn">import</span> <span class="n">MovingAverageConvergenceDivergence</span>
 <span class="kn">from</span> <span class="nn">nautilus_trader.model.data.tick</span> <span class="kn">import</span> <span class="n">QuoteTick</span>
 <span class="kn">from</span> <span class="nn">nautilus_trader.model.enums</span> <span class="kn">import</span> <span class="n">PriceType</span>
@@ -927,7 +939,6 @@ registering indicators to receive certain data types, however in this example we
 <span class="kn">from</span> <span class="nn">nautilus_trader.model.identifiers</span> <span class="kn">import</span> <span class="n">InstrumentId</span>
 <span class="kn">from</span> <span class="nn">nautilus_trader.model.objects</span> <span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">from</span> <span class="nn">nautilus_trader.model.position</span> <span class="kn">import</span> <span class="n">Position</span>
-
 
 
 <span class="k">class</span> <span class="nc">MACDConfig</span><span class="p">(</span><span class="n">StrategyConfig</span><span class="p">):</span>
@@ -1393,7 +1404,7 @@ parameters or batches of data). We are now ready to run some backtests!
     <div class="md-footer-meta__inner md-grid">
      <div class="md-footer-copyright">
       <div class="md-footer-copyright__highlight">
-       © Copyright 2015-2022 Nautech Systems Pty Ltd.
+       © Copyright 2015-2023 Nautech Systems Pty Ltd.
       </div>
      </div>
     </div>
