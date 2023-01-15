@@ -179,19 +179,14 @@
        </a>
       </div>
      </div>
-     <div class="md-flex__cell md-flex__cell--shrink dropdown">
-      <button class="dropdownbutton">
-       Versions
-      </button>
-      <div class="dropdown-content md-hero">
-       <a href="https://docs.nautilustrader.io/develop" title="1.166.0 (develop)">
-        1.166.0 (develop)
-       </a>
-       <a href="https://docs.nautilustrader.io" title="1.165.0 (latest)">
-        1.165.0 (latest)
-       </a>
-      </div>
-     </div>
+     <script src="_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = "_static/version.json",
+        target_loc = "../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
     </div>
    </nav>
   </header>

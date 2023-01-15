@@ -180,19 +180,14 @@
        </a>
       </div>
      </div>
-     <div class="md-flex__cell md-flex__cell--shrink dropdown">
-      <button class="dropdownbutton">
-       Versions
-      </button>
-      <div class="dropdown-content md-hero">
-       <a href="https://docs.nautilustrader.io/develop" title="1.166.0 (develop)">
-        1.166.0 (develop)
-       </a>
-       <a href="https://docs.nautilustrader.io" title="1.165.0 (latest)">
-        1.165.0 (latest)
-       </a>
-      </div>
-     </div>
+     <script src="../_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = "../_static/version.json",
+        target_loc = "../../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
     </div>
    </nav>
   </header>
@@ -755,7 +750,7 @@ format (Parquet) for this guide.
           </a>
          </h2>
          <p>
-          ~~A self-contained dockerized jupyter notebook server is available for download, which does not require any setup or
+          A self-contained dockerized jupyter notebook server is available for download, which does not require any setup or
 installation. This is the fastest way to get up and running to try out Nautilus. Bear in mind that any data will be
 deleted when the container is deleted.
          </p>
@@ -838,7 +833,9 @@ deleted when the container is deleted.
            <ul>
             <li>
              <p>
-              https://localhost:8889~~
+              <a class="reference external" href="https://localhost:8889">
+               https://localhost:8889
+              </a>
              </p>
             </li>
            </ul>
