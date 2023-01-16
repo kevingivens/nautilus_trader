@@ -15498,29 +15498,59 @@ to the end of the data.
              If more data than can fit in memory is to be run through the backtest
 engine, then streaming mode can be utilized. The expected sequence is as
 follows:
-- Add initial data batch and strategies.
-- Call
-             <cite>
-              run_streaming()
-             </cite>
-             .
-- Call
-             <cite>
-              clear_data()
-             </cite>
-             .
-- Add next batch of data stream.
-- Call
-             <cite>
-              run_streaming()
-             </cite>
-             .
-- Call
-             <cite>
-              end_streaming()
-             </cite>
-             when there is no more data to run on.
             </p>
+            <blockquote>
+             <div>
+              <ul class="simple">
+               <li>
+                <p>
+                 Add initial data batch and strategies.
+                </p>
+               </li>
+               <li>
+                <p>
+                 Call
+                 <cite>
+                  run_streaming()
+                 </cite>
+                 .
+                </p>
+               </li>
+               <li>
+                <p>
+                 Call
+                 <cite>
+                  clear_data()
+                 </cite>
+                 .
+                </p>
+               </li>
+               <li>
+                <p>
+                 Add next batch of data stream.
+                </p>
+               </li>
+               <li>
+                <p>
+                 Call
+                 <cite>
+                  run_streaming()
+                 </cite>
+                 .
+                </p>
+               </li>
+               <li>
+                <p>
+                 Call
+                 <cite>
+                  end_streaming()
+                 </cite>
+                 when there is no more data to run on.
+                </p>
+               </li>
+              </ul>
+             </div>
+            </blockquote>
             <dl class="field-list simple">
              <dt class="field-odd">
               Parameters
