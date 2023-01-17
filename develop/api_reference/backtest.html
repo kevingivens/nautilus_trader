@@ -1561,6 +1561,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.subscribe_venue_status_updates">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  BacktestMarketDataClient.subscribe_venue_status_updates()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.subscribed_bars">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1763,6 +1772,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   BacktestMarketDataClient.unsubscribe_trade_ticks()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.unsubscribe_venue_status_updates">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  BacktestMarketDataClient.unsubscribe_venue_status_updates()
                  </span>
                 </code>
                </a>
@@ -3907,6 +3925,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.unsubscribe_instrument_status_updates">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  FXRolloverInterestModule.unsubscribe_instrument_status_updates()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.unsubscribe_instruments">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -4781,6 +4808,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   SimulationModule.unsubscribe_instrument()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.unsubscribe_instrument_status_updates">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulationModule.unsubscribe_instrument_status_updates()
                  </span>
                 </code>
                </a>
@@ -11081,6 +11117,17 @@ then the component state will not change, and an error will be logged.
               </span>
              </span>
             </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               ClientId
+              </span>
+              <span class="pre">
+               client_id=None
+              </span>
+             </span>
+            </em>
             <span class="sig-paren">
              )
             </span>
@@ -11438,6 +11485,54 @@ then the component state will not change, and an error will be logged.
              </span>
             </span>
             <a class="headerlink" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.subscribe_trade_ticks" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.data_client.BacktestMarketDataClient.subscribe_venue_status_updates">
+            <span class="sig-name descname">
+             <span class="pre">
+              subscribe_venue_status_updates
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Venue
+              </span>
+              <span class="pre">
+               venue
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.subscribe_venue_status_updates" title="Permalink to this definition">
              ¶
             </a>
            </dt>
@@ -12303,6 +12398,17 @@ then the component state will not change, and an error will be logged.
               </span>
              </span>
             </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               ClientId
+              </span>
+              <span class="pre">
+               client_id=None
+              </span>
+             </span>
+            </em>
             <span class="sig-paren">
              )
             </span>
@@ -12594,6 +12700,54 @@ then the component state will not change, and an error will be logged.
              </span>
             </span>
             <a class="headerlink" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.unsubscribe_trade_ticks" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.data_client.BacktestMarketDataClient.unsubscribe_venue_status_updates">
+            <span class="sig-name descname">
+             <span class="pre">
+              unsubscribe_venue_status_updates
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Venue
+              </span>
+              <span class="pre">
+               venue
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.data_client.BacktestMarketDataClient.unsubscribe_venue_status_updates" title="Permalink to this definition">
              ¶
             </a>
            </dt>
@@ -32369,6 +32523,121 @@ If
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.unsubscribe_instrument_status_updates">
+            <span class="sig-name descname">
+             <span class="pre">
+              unsubscribe_instrument_status_updates
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               InstrumentId
+              </span>
+              <span class="pre">
+               instrument_id
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               ClientId
+              </span>
+              <span class="pre">
+               client_id=None
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.unsubscribe_instrument_status_updates" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Unsubscribe to status updates of the given venue.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  instrument_id
+                 </strong>
+                 (
+                 <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
+                  <em>
+                   InstrumentId
+                  </em>
+                 </a>
+                 ) – The instrument to unsubscribe to status updates for.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  client_id
+                 </strong>
+                 (
+                 <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientId" title="nautilus_trader.model.identifiers.ClientId">
+                  <em>
+                   ClientId
+                  </em>
+                 </a>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The specific client ID for the command.
+If
+                 <code class="docutils literal notranslate">
+                  <span class="pre">
+                   None
+                  </span>
+                 </code>
+                 then will be inferred from the venue.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.unsubscribe_instruments">
             <span class="sig-name descname">
              <span class="pre">
@@ -33180,7 +33449,7 @@ If
                    Venue
                   </em>
                  </a>
-                 ) – The venue to subscribe to.
+                 ) – The venue to unsubscribe to.
                 </p>
                </li>
                <li>
@@ -41113,6 +41382,121 @@ If
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.unsubscribe_instrument_status_updates">
+            <span class="sig-name descname">
+             <span class="pre">
+              unsubscribe_instrument_status_updates
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               InstrumentId
+              </span>
+              <span class="pre">
+               instrument_id
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               ClientId
+              </span>
+              <span class="pre">
+               client_id=None
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.SimulationModule.unsubscribe_instrument_status_updates" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Unsubscribe to status updates of the given venue.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  instrument_id
+                 </strong>
+                 (
+                 <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
+                  <em>
+                   InstrumentId
+                  </em>
+                 </a>
+                 ) – The instrument to unsubscribe to status updates for.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  client_id
+                 </strong>
+                 (
+                 <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.ClientId" title="nautilus_trader.model.identifiers.ClientId">
+                  <em>
+                   ClientId
+                  </em>
+                 </a>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  optional
+                 </em>
+                 ) – The specific client ID for the command.
+If
+                 <code class="docutils literal notranslate">
+                  <span class="pre">
+                   None
+                  </span>
+                 </code>
+                 then will be inferred from the venue.
+                </p>
+               </li>
+              </ul>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.unsubscribe_instruments">
             <span class="sig-name descname">
              <span class="pre">
@@ -41924,7 +42308,7 @@ If
                    Venue
                   </em>
                  </a>
-                 ) – The venue to subscribe to.
+                 ) – The venue to unsubscribe to.
                 </p>
                </li>
                <li>

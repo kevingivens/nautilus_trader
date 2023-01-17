@@ -1050,6 +1050,15 @@
                  </a>
                 </li>
                 <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.adapters.betfair.data.BetfairDataClient.subscribe_venue_status_updates">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    BetfairDataClient.subscribe_venue_status_updates()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
                  <a class="md-nav__link" href="#nautilus_trader.adapters.betfair.data.BetfairDataClient.subscribed_bars">
                   <code class="docutils literal notranslate">
                    <span class="pre">
@@ -1234,6 +1243,15 @@
                   <code class="docutils literal notranslate">
                    <span class="pre">
                     BetfairDataClient.unsubscribe_trade_ticks()
+                   </span>
+                  </code>
+                 </a>
+                </li>
+                <li class="md-nav__item">
+                 <a class="md-nav__link" href="#nautilus_trader.adapters.betfair.data.BetfairDataClient.unsubscribe_venue_status_updates">
+                  <code class="docutils literal notranslate">
+                   <span class="pre">
+                    BetfairDataClient.unsubscribe_venue_status_updates()
                    </span>
                   </code>
                  </a>
@@ -3625,6 +3643,17 @@
                </span>
                <span class="pre">
                 instrument_id
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                ClientId
+               </span>
+               <span class="pre">
+                client_id=None
                </span>
               </span>
              </em>
@@ -6661,6 +6690,83 @@ then the component state will not change, and an error will be logged.
             </dd>
            </dl>
            <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.adapters.betfair.data.BetfairDataClient.subscribe_venue_status_updates">
+             <span class="sig-name descname">
+              <span class="pre">
+               subscribe_venue_status_updates
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                Venue
+               </span>
+               <span class="pre">
+                venue
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                void
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.adapters.betfair.data.BetfairDataClient.subscribe_venue_status_updates" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Subscribe to
+              <cite>
+               InstrumentStatusUpdates
+              </cite>
+              data for the given instrument ID.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+               <span class="colon">
+                :
+               </span>
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <strong>
+                 instrument_id
+                </strong>
+                (
+                <a class="reference internal" href="../model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
+                 <em>
+                  InstrumentId
+                 </em>
+                </a>
+                ) – The tick instrument to subscribe to.
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
             <dt class="sig sig-object py" id="nautilus_trader.adapters.betfair.data.BetfairDataClient.subscribed_bars">
              <span class="sig-name descname">
               <span class="pre">
@@ -7606,6 +7712,17 @@ then the component state will not change, and an error will be logged.
                </span>
               </span>
              </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                ClientId
+               </span>
+               <span class="pre">
+                client_id=None
+               </span>
+              </span>
+             </em>
              <span class="sig-paren">
               )
              </span>
@@ -7903,6 +8020,83 @@ then the component state will not change, and an error will be logged.
               Unsubscribe from
               <cite>
                TradeTick
+              </cite>
+              data for the given instrument ID.
+             </p>
+             <dl class="field-list simple">
+              <dt class="field-odd">
+               Parameters
+               <span class="colon">
+                :
+               </span>
+              </dt>
+              <dd class="field-odd">
+               <p>
+                <strong>
+                 instrument_id
+                </strong>
+                (
+                <a class="reference internal" href="../model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
+                 <em>
+                  InstrumentId
+                 </em>
+                </a>
+                ) – The tick instrument to unsubscribe from.
+               </p>
+              </dd>
+             </dl>
+            </dd>
+           </dl>
+           <dl class="py method">
+            <dt class="sig sig-object py" id="nautilus_trader.adapters.betfair.data.BetfairDataClient.unsubscribe_venue_status_updates">
+             <span class="sig-name descname">
+              <span class="pre">
+               unsubscribe_venue_status_updates
+              </span>
+             </span>
+             <span class="sig-paren">
+              (
+             </span>
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                self
+               </span>
+              </span>
+             </em>
+             ,
+             <em class="sig-param">
+              <span class="n">
+               <span class="pre">
+                Venue
+               </span>
+               <span class="pre">
+                venue
+               </span>
+              </span>
+             </em>
+             <span class="sig-paren">
+              )
+             </span>
+             <span class="sig-return">
+              <span class="sig-return-icon">
+               →
+              </span>
+              <span class="sig-return-typehint">
+               <span class="pre">
+                void
+               </span>
+              </span>
+             </span>
+             <a class="headerlink" href="#nautilus_trader.adapters.betfair.data.BetfairDataClient.unsubscribe_venue_status_updates" title="Permalink to this definition">
+              ¶
+             </a>
+            </dt>
+            <dd>
+             <p>
+              Unsubscribe from
+              <cite>
+               InstrumentStatusUpdates
               </cite>
               data for the given instrument ID.
              </p>
