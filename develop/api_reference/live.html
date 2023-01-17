@@ -7532,17 +7532,6 @@ actions when done.
               </span>
              </span>
             </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               ClientId
-              </span>
-              <span class="pre">
-               client_id=None
-              </span>
-             </span>
-            </em>
             <span class="sig-paren">
              )
             </span>
@@ -8353,17 +8342,6 @@ actions when done.
               </span>
              </span>
             </em>
-            ,
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               ClientId
-              </span>
-              <span class="pre">
-               client_id=None
-              </span>
-             </span>
-            </em>
             <span class="sig-paren">
              )
             </span>
@@ -8385,7 +8363,7 @@ actions when done.
             <p>
              Unsubscribe from
              <cite>
-              InstrumentStatusUpdates
+              InstrumentStatusUpdate
              </cite>
              data for the given instrument ID.
             </p>
@@ -8407,7 +8385,7 @@ actions when done.
                  InstrumentId
                 </em>
                </a>
-               ) – The tick instrument to unsubscribe from.
+               ) – The instrument status updates to unsubscribe from.
               </p>
              </dd>
             </dl>
@@ -10301,9 +10279,9 @@ then the component state will not change, and an error will be logged.
             <p>
              Subscribe to
              <cite>
-              InstrumentStatusUpdates
+              InstrumentStatusUpdate
              </cite>
-             data for the given instrument ID.
+             data for the venue.
             </p>
             <dl class="field-list simple">
              <dt class="field-odd">
@@ -10315,15 +10293,15 @@ then the component state will not change, and an error will be logged.
              <dd class="field-odd">
               <p>
                <strong>
-                instrument_id
+                venue
                </strong>
                (
-               <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
+               <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.Venue" title="nautilus_trader.model.identifiers.Venue">
                 <em>
-                 InstrumentId
+                 Venue
                 </em>
                </a>
-               ) – The tick instrument to subscribe to.
+               ) – The venue to subscribe to.
               </p>
              </dd>
             </dl>
@@ -10992,9 +10970,9 @@ then the component state will not change, and an error will be logged.
             <p>
              Unsubscribe from
              <cite>
-              InstrumentStatusUpdates
+              InstrumentStatusUpdate
              </cite>
-             data for the given instrument ID.
+             data for the given venue.
             </p>
             <dl class="field-list simple">
              <dt class="field-odd">
@@ -11006,15 +10984,15 @@ then the component state will not change, and an error will be logged.
              <dd class="field-odd">
               <p>
                <strong>
-                instrument_id
+                venue
                </strong>
                (
-               <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.InstrumentId" title="nautilus_trader.model.identifiers.InstrumentId">
+               <a class="reference internal" href="model/identifiers.html#nautilus_trader.model.identifiers.Venue" title="nautilus_trader.model.identifiers.Venue">
                 <em>
-                 InstrumentId
+                 Venue
                 </em>
                </a>
-               ) – The tick instrument to unsubscribe from.
+               ) – The venue to unsubscribe from.
               </p>
              </dd>
             </dl>
