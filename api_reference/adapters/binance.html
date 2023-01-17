@@ -180,19 +180,14 @@
        </a>
       </div>
      </div>
-     <div class="md-flex__cell md-flex__cell--shrink dropdown">
-      <button class="dropdownbutton">
-       Versions
-      </button>
-      <div class="dropdown-content md-hero">
-       <a href="https://docs.nautilustrader.io/develop" title="1.165.0 (develop)">
-        1.165.0 (develop)
-       </a>
-       <a href="https://docs.nautilustrader.io" title="1.164.0 (latest)">
-        1.164.0 (latest)
-       </a>
-      </div>
-     </div>
+     <script src="../../_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = "../../_static/version.json",
+        target_loc = "../../../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
     </div>
    </nav>
   </header>
@@ -1558,6 +1553,15 @@
                    </a>
                   </li>
                   <li class="md-nav__item">
+                   <a class="md-nav__link" href="#nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.subscribe_venue_status_updates">
+                    <code class="docutils literal notranslate">
+                     <span class="pre">
+                      BinanceFuturesDataClient.subscribe_venue_status_updates()
+                     </span>
+                    </code>
+                   </a>
+                  </li>
+                  <li class="md-nav__item">
                    <a class="md-nav__link" href="#nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.subscribed_bars">
                     <code class="docutils literal notranslate">
                      <span class="pre">
@@ -1760,6 +1764,15 @@
                     <code class="docutils literal notranslate">
                      <span class="pre">
                       BinanceFuturesDataClient.unsubscribe_trade_ticks()
+                     </span>
+                    </code>
+                   </a>
+                  </li>
+                  <li class="md-nav__item">
+                   <a class="md-nav__link" href="#nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.unsubscribe_venue_status_updates">
+                    <code class="docutils literal notranslate">
+                     <span class="pre">
+                      BinanceFuturesDataClient.unsubscribe_venue_status_updates()
                      </span>
                     </code>
                    </a>
@@ -2998,6 +3011,15 @@
                    </a>
                   </li>
                   <li class="md-nav__item">
+                   <a class="md-nav__link" href="#nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.subscribe_venue_status_updates">
+                    <code class="docutils literal notranslate">
+                     <span class="pre">
+                      BinanceSpotDataClient.subscribe_venue_status_updates()
+                     </span>
+                    </code>
+                   </a>
+                  </li>
+                  <li class="md-nav__item">
                    <a class="md-nav__link" href="#nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.subscribed_bars">
                     <code class="docutils literal notranslate">
                      <span class="pre">
@@ -3200,6 +3222,15 @@
                     <code class="docutils literal notranslate">
                      <span class="pre">
                       BinanceSpotDataClient.unsubscribe_trade_ticks()
+                     </span>
+                    </code>
+                   </a>
+                  </li>
+                  <li class="md-nav__item">
+                   <a class="md-nav__link" href="#nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.unsubscribe_venue_status_updates">
+                    <code class="docutils literal notranslate">
+                     <span class="pre">
+                      BinanceSpotDataClient.unsubscribe_venue_status_updates()
                      </span>
                     </code>
                    </a>
@@ -4013,6 +4044,40 @@
            <span class="sig-paren">
             (
            </span>
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              handle_revised_bars
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
            <em class="sig-param">
             <span class="n">
              <span class="pre">
@@ -12209,7 +12274,7 @@ cached client will be returned.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 None
+                 Task
                 </span>
                </span>
               </span>
@@ -12298,6 +12363,19 @@ actions when done.
                   </p>
                  </li>
                 </ul>
+               </dd>
+               <dt class="field-even">
+                Returns
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-even">
+                <p>
+                 <em>
+                  asyncio.Task
+                 </em>
+                </p>
                </dd>
               </dl>
              </dd>
@@ -15205,6 +15283,83 @@ then the component state will not change, and an error will be logged.
              </dd>
             </dl>
             <dl class="py method">
+             <dt class="sig sig-object py" id="nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.subscribe_venue_status_updates">
+              <span class="sig-name descname">
+               <span class="pre">
+                subscribe_venue_status_updates
+               </span>
+              </span>
+              <span class="sig-paren">
+               (
+              </span>
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 self
+                </span>
+               </span>
+              </em>
+              ,
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 Venue
+                </span>
+                <span class="pre">
+                 venue
+                </span>
+               </span>
+              </em>
+              <span class="sig-paren">
+               )
+              </span>
+              <span class="sig-return">
+               <span class="sig-return-icon">
+                →
+               </span>
+               <span class="sig-return-typehint">
+                <span class="pre">
+                 void
+                </span>
+               </span>
+              </span>
+              <a class="headerlink" href="#nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.subscribe_venue_status_updates" title="Permalink to this definition">
+               ¶
+              </a>
+             </dt>
+             <dd>
+              <p>
+               Subscribe to
+               <cite>
+                InstrumentStatusUpdate
+               </cite>
+               data for the venue.
+              </p>
+              <dl class="field-list simple">
+               <dt class="field-odd">
+                Parameters
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-odd">
+                <p>
+                 <strong>
+                  venue
+                 </strong>
+                 (
+                 <a class="reference internal" href="../model/identifiers.html#nautilus_trader.model.identifiers.Venue" title="nautilus_trader.model.identifiers.Venue">
+                  <em>
+                   Venue
+                  </em>
+                 </a>
+                 ) – The venue to subscribe to.
+                </p>
+               </dd>
+              </dl>
+             </dd>
+            </dl>
+            <dl class="py method">
              <dt class="sig sig-object py" id="nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.subscribed_bars">
               <span class="sig-name descname">
                <span class="pre">
@@ -16171,7 +16326,7 @@ then the component state will not change, and an error will be logged.
               <p>
                Unsubscribe from
                <cite>
-                InstrumentStatusUpdates
+                InstrumentStatusUpdate
                </cite>
                data for the given instrument ID.
               </p>
@@ -16193,7 +16348,7 @@ then the component state will not change, and an error will be logged.
                    InstrumentId
                   </em>
                  </a>
-                 ) – The tick instrument to unsubscribe from.
+                 ) – The instrument status updates to unsubscribe from.
                 </p>
                </dd>
               </dl>
@@ -16623,6 +16778,83 @@ then the component state will not change, and an error will be logged.
                   </em>
                  </a>
                  ) – The tick instrument to unsubscribe from.
+                </p>
+               </dd>
+              </dl>
+             </dd>
+            </dl>
+            <dl class="py method">
+             <dt class="sig sig-object py" id="nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.unsubscribe_venue_status_updates">
+              <span class="sig-name descname">
+               <span class="pre">
+                unsubscribe_venue_status_updates
+               </span>
+              </span>
+              <span class="sig-paren">
+               (
+              </span>
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 self
+                </span>
+               </span>
+              </em>
+              ,
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 Venue
+                </span>
+                <span class="pre">
+                 venue
+                </span>
+               </span>
+              </em>
+              <span class="sig-paren">
+               )
+              </span>
+              <span class="sig-return">
+               <span class="sig-return-icon">
+                →
+               </span>
+               <span class="sig-return-typehint">
+                <span class="pre">
+                 void
+                </span>
+               </span>
+              </span>
+              <a class="headerlink" href="#nautilus_trader.adapters.binance.futures.data.BinanceFuturesDataClient.unsubscribe_venue_status_updates" title="Permalink to this definition">
+               ¶
+              </a>
+             </dt>
+             <dd>
+              <p>
+               Unsubscribe from
+               <cite>
+                InstrumentStatusUpdate
+               </cite>
+               data for the given venue.
+              </p>
+              <dl class="field-list simple">
+               <dt class="field-odd">
+                Parameters
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-odd">
+                <p>
+                 <strong>
+                  venue
+                 </strong>
+                 (
+                 <a class="reference internal" href="../model/identifiers.html#nautilus_trader.model.identifiers.Venue" title="nautilus_trader.model.identifiers.Venue">
+                  <em>
+                   Venue
+                  </em>
+                 </a>
+                 ) – The venue to unsubscribe from.
                 </p>
                </dd>
               </dl>
@@ -20365,7 +20597,7 @@ If zero, then will
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 None
+                 Task
                 </span>
                </span>
               </span>
@@ -20454,6 +20686,19 @@ actions when done.
                   </p>
                  </li>
                 </ul>
+               </dd>
+               <dt class="field-even">
+                Returns
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-even">
+                <p>
+                 <em>
+                  asyncio.Task
+                 </em>
+                </p>
                </dd>
               </dl>
              </dd>
@@ -28093,7 +28338,7 @@ applying the given filters.
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 None
+                 Task
                 </span>
                </span>
               </span>
@@ -28182,6 +28427,19 @@ actions when done.
                   </p>
                  </li>
                 </ul>
+               </dd>
+               <dt class="field-even">
+                Returns
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-even">
+                <p>
+                 <em>
+                  asyncio.Task
+                 </em>
+                </p>
                </dd>
               </dl>
              </dd>
@@ -31089,6 +31347,83 @@ then the component state will not change, and an error will be logged.
              </dd>
             </dl>
             <dl class="py method">
+             <dt class="sig sig-object py" id="nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.subscribe_venue_status_updates">
+              <span class="sig-name descname">
+               <span class="pre">
+                subscribe_venue_status_updates
+               </span>
+              </span>
+              <span class="sig-paren">
+               (
+              </span>
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 self
+                </span>
+               </span>
+              </em>
+              ,
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 Venue
+                </span>
+                <span class="pre">
+                 venue
+                </span>
+               </span>
+              </em>
+              <span class="sig-paren">
+               )
+              </span>
+              <span class="sig-return">
+               <span class="sig-return-icon">
+                →
+               </span>
+               <span class="sig-return-typehint">
+                <span class="pre">
+                 void
+                </span>
+               </span>
+              </span>
+              <a class="headerlink" href="#nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.subscribe_venue_status_updates" title="Permalink to this definition">
+               ¶
+              </a>
+             </dt>
+             <dd>
+              <p>
+               Subscribe to
+               <cite>
+                InstrumentStatusUpdate
+               </cite>
+               data for the venue.
+              </p>
+              <dl class="field-list simple">
+               <dt class="field-odd">
+                Parameters
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-odd">
+                <p>
+                 <strong>
+                  venue
+                 </strong>
+                 (
+                 <a class="reference internal" href="../model/identifiers.html#nautilus_trader.model.identifiers.Venue" title="nautilus_trader.model.identifiers.Venue">
+                  <em>
+                   Venue
+                  </em>
+                 </a>
+                 ) – The venue to subscribe to.
+                </p>
+               </dd>
+              </dl>
+             </dd>
+            </dl>
+            <dl class="py method">
              <dt class="sig sig-object py" id="nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.subscribed_bars">
               <span class="sig-name descname">
                <span class="pre">
@@ -32055,7 +32390,7 @@ then the component state will not change, and an error will be logged.
               <p>
                Unsubscribe from
                <cite>
-                InstrumentStatusUpdates
+                InstrumentStatusUpdate
                </cite>
                data for the given instrument ID.
               </p>
@@ -32077,7 +32412,7 @@ then the component state will not change, and an error will be logged.
                    InstrumentId
                   </em>
                  </a>
-                 ) – The tick instrument to unsubscribe from.
+                 ) – The instrument status updates to unsubscribe from.
                 </p>
                </dd>
               </dl>
@@ -32507,6 +32842,83 @@ then the component state will not change, and an error will be logged.
                   </em>
                  </a>
                  ) – The tick instrument to unsubscribe from.
+                </p>
+               </dd>
+              </dl>
+             </dd>
+            </dl>
+            <dl class="py method">
+             <dt class="sig sig-object py" id="nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.unsubscribe_venue_status_updates">
+              <span class="sig-name descname">
+               <span class="pre">
+                unsubscribe_venue_status_updates
+               </span>
+              </span>
+              <span class="sig-paren">
+               (
+              </span>
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 self
+                </span>
+               </span>
+              </em>
+              ,
+              <em class="sig-param">
+               <span class="n">
+                <span class="pre">
+                 Venue
+                </span>
+                <span class="pre">
+                 venue
+                </span>
+               </span>
+              </em>
+              <span class="sig-paren">
+               )
+              </span>
+              <span class="sig-return">
+               <span class="sig-return-icon">
+                →
+               </span>
+               <span class="sig-return-typehint">
+                <span class="pre">
+                 void
+                </span>
+               </span>
+              </span>
+              <a class="headerlink" href="#nautilus_trader.adapters.binance.spot.data.BinanceSpotDataClient.unsubscribe_venue_status_updates" title="Permalink to this definition">
+               ¶
+              </a>
+             </dt>
+             <dd>
+              <p>
+               Unsubscribe from
+               <cite>
+                InstrumentStatusUpdate
+               </cite>
+               data for the given venue.
+              </p>
+              <dl class="field-list simple">
+               <dt class="field-odd">
+                Parameters
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-odd">
+                <p>
+                 <strong>
+                  venue
+                 </strong>
+                 (
+                 <a class="reference internal" href="../model/identifiers.html#nautilus_trader.model.identifiers.Venue" title="nautilus_trader.model.identifiers.Venue">
+                  <em>
+                   Venue
+                  </em>
+                 </a>
+                 ) – The venue to unsubscribe from.
                 </p>
                </dd>
               </dl>
@@ -35752,7 +36164,7 @@ If zero, then will
                </span>
                <span class="sig-return-typehint">
                 <span class="pre">
-                 None
+                 Task
                 </span>
                </span>
               </span>
@@ -35841,6 +36253,19 @@ actions when done.
                   </p>
                  </li>
                 </ul>
+               </dd>
+               <dt class="field-even">
+                Returns
+                <span class="colon">
+                 :
+                </span>
+               </dt>
+               <dd class="field-even">
+                <p>
+                 <em>
+                  asyncio.Task
+                 </em>
+                </p>
                </dd>
               </dl>
              </dd>

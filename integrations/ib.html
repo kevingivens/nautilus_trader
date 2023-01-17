@@ -180,19 +180,14 @@
        </a>
       </div>
      </div>
-     <div class="md-flex__cell md-flex__cell--shrink dropdown">
-      <button class="dropdownbutton">
-       Versions
-      </button>
-      <div class="dropdown-content md-hero">
-       <a href="https://docs.nautilustrader.io/develop" title="1.165.0 (develop)">
-        1.165.0 (develop)
-       </a>
-       <a href="https://docs.nautilustrader.io" title="1.164.0 (latest)">
-        1.164.0 (latest)
-       </a>
-      </div>
-     </div>
+     <script src="../_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = "../_static/version.json",
+        target_loc = "../../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
     </div>
    </nav>
   </header>
@@ -732,26 +727,43 @@
           Note
          </strong>
          : If you are planning on using the built-in docker TWS Gateway when using the Interactive Brokers adapter,
-you must manually install
+you must ensure the
          <code class="docutils literal notranslate">
           <span class="pre">
            docker
           </span>
          </code>
-         (due to current build issues). Run a manual
+         package is installed. Run
          <code class="docutils literal notranslate">
           <span class="pre">
-           pip
+           poetry
           </span>
           <span class="pre">
            install
           </span>
           <span class="pre">
-           docker
+           --extras
+          </span>
+          <span class="pre">
+           "ib
+          </span>
+          <span class="pre">
+           docker"
           </span>
          </code>
-         inside your
-environment to ensure the Gateway can be run.
+         or
+         <code class="docutils literal notranslate">
+          <span class="pre">
+           poetry
+          </span>
+          <span class="pre">
+           install
+          </span>
+          <span class="pre">
+           --all-extras
+          </span>
+         </code>
+         inside your environment to ensure the necessary packages are installed.
         </p>
         <section id="overview">
          <h2 id="overview">
@@ -842,7 +854,7 @@ configuration to the
             InstrumentProviderConfig
            </span>
           </code>
-          ),
+          ).
          </p>
          <p>
           At a minimum, you must specify the
@@ -875,10 +887,11 @@ queries below for common use cases
     <span class="n">data_clients</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">"IB"</span><span class="p">:</span> <span class="n">InteractiveBrokersDataClientConfig</span><span class="p">(</span>
             <span class="n">instrument_provider</span><span class="o">=</span><span class="n">InstrumentProviderConfig</span><span class="p">(</span>
-                <span class="n">load_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">filters</span><span class="o">=</span><span class="nb">tuple</span><span class="p">({</span><span class="s2">"secType"</span><span class="p">:</span> <span class="s2">"CASH"</span><span class="p">,</span> <span class="s2">"symbol"</span><span class="p">:</span> <span class="s2">"EUR"</span><span class="p">,</span> <span class="s2">"currecy"</span><span class="p">:</span> <span class="s2">"USD"</span><span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-            <span class="p">)</span>
+            <span class="n">load_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">filters</span><span class="o">=</span><span class="nb">tuple</span><span class="p">({</span><span class="s2">"secType"</span><span class="p">:</span> <span class="s2">"CASH"</span><span class="p">,</span> <span class="s2">"symbol"</span><span class="p">:</span> <span class="s2">"EUR"</span><span class="p">,</span> <span class="s2">"currency"</span><span class="p">:</span> <span class="s2">"USD"</span><span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
         <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="o">...</span>
 <span class="p">)</span>
 </pre>
           </div>
@@ -1160,36 +1173,33 @@ queries below for common use cases
            </span>
           </code>
           to include Interactive Brokers
-data and execution clients. To achieve this, add a
+data and execution clients. To achieve this, add an
           <code class="docutils literal notranslate">
            <span class="pre">
             IB
            </span>
           </code>
           section to your client
-configuration(s) and
-          <em>
-           set the name of the environment variables
-          </em>
-          containing your TWS
-(Traders Workstation) credentials:
+configuration(s) and set the environment variables to your TWS (Traders Workstation) credentials:
          </p>
          <div class="highlight-python notranslate">
           <div class="highlight">
-           <pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">TradingNodeConfig</span><span class="p">(</span>
-    <span class="o">...</span><span class="p">,</span>  <span class="c1"># Omitted </span>
+           <pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="n">TradingNodeConfig</span><span class="p">(</span>
     <span class="n">data_clients</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"IB"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"TWS_USERNAME"</span><span class="p">,</span>
-            <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"TWS_PASSWORD"</span><span class="p">,</span>
-        <span class="p">},</span>
+        <span class="s2">"IB"</span><span class="p">:</span> <span class="n">InteractiveBrokersDataClientConfig</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"TWS_USERNAME"</span><span class="p">),</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"TWS_PASSWORD"</span><span class="p">),</span>
+            <span class="o">...</span>  <span class="c1"># Omitted</span>
     <span class="p">},</span>
-    <span class="n">exec_clients</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"IB"</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"TWS_USERNAME"</span><span class="p">,</span>
-            <span class="s2">"password"</span><span class="p">:</span> <span class="s2">"TWS_PASSWORD"</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">}</span>
+    <span class="n">exec_clients</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"IB"</span><span class="p">:</span> <span class="n">InteractiveBrokersExecutionClientConfig</span><span class="p">(</span>
+            <span class="n">username</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"TWS_USERNAME"</span><span class="p">),</span>
+            <span class="n">password</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">"TWS_PASSWORD"</span><span class="p">),</span>
+            <span class="o">...</span>  <span class="c1"># Omitted</span>
+    <span class="p">},</span>
+    <span class="o">...</span>  <span class="c1"># Omitted</span>
 <span class="p">)</span>
 </pre>
           </div>
@@ -1225,7 +1235,7 @@ configuration(s) and
            </a>
           </h3>
           <p>
-           There are two options for supplying your credentials to the Betfair clients.
+           There are two options for supplying your credentials to the Interactive Brokers clients.
 Either pass the corresponding
            <code class="docutils literal notranslate">
             <span class="pre">

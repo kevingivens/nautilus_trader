@@ -180,19 +180,14 @@
        </a>
       </div>
      </div>
-     <div class="md-flex__cell md-flex__cell--shrink dropdown">
-      <button class="dropdownbutton">
-       Versions
-      </button>
-      <div class="dropdown-content md-hero">
-       <a href="https://docs.nautilustrader.io/develop" title="1.165.0 (develop)">
-        1.165.0 (develop)
-       </a>
-       <a href="https://docs.nautilustrader.io" title="1.164.0 (latest)">
-        1.164.0 (latest)
-       </a>
-      </div>
-     </div>
+     <script src="../_static/javascripts/version_dropdown.js">
+     </script>
+     <script>
+      var json_loc = "../_static/version.json",
+        target_loc = "../../",
+        text = "Versions";
+    $( document ).ready( add_version_dropdown(json_loc, target_loc, text));
+     </script>
     </div>
    </nav>
   </header>
@@ -3393,7 +3388,20 @@
             </span>
             <span class="n">
              <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
               int
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
              </span>
             </span>
             <span class="w">
@@ -3407,7 +3415,101 @@
             </span>
             <span class="default_value">
              <span class="pre">
-              6379
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              username
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              password
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              str
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
              </span>
             </span>
            </em>
@@ -3526,7 +3628,7 @@
                 <em>
                  default 'localhost'
                 </em>
-                ) – The database host address (default for Redis).
+                ) – The database host address.
                </p>
               </li>
               <li>
@@ -3542,9 +3644,45 @@
                  ,
                 </em>
                 <em>
-                 default 6379
+                 optional
                 </em>
-                ) – The database port (default for Redis).
+                ) – The database port.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 username
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 optional
+                </em>
+                ) – The account username for the database connection.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 password
+                </strong>
+                (
+                <em>
+                 str
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 optional
+                </em>
+                ) – The account password for the database connection.
                </p>
               </li>
               <li>
@@ -12713,6 +12851,68 @@ how the
              </span>
             </span>
            </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              modules
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              Optional
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <span class="pre">
+              list
+             </span>
+             <span class="p">
+              <span class="pre">
+               [
+              </span>
+             </span>
+             <a class="reference internal" href="#nautilus_trader.config.common.ImportableConfig" title="nautilus_trader.config.common.ImportableConfig">
+              <span class="pre">
+               nautilus_trader.config.common.ImportableConfig
+              </span>
+             </a>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+             <span class="p">
+              <span class="pre">
+               ]
+              </span>
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
            <span class="sig-paren">
             )
            </span>
@@ -18656,6 +18856,40 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              handle_revised_bars
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               instrument_provider
              </span>
             </span>
@@ -18775,6 +19009,18 @@ is checked with the venue.
             </dt>
             <dd class="field-odd">
              <ul class="simple">
+              <li>
+               <p>
+                <strong>
+                 handle_revised_bars
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                ) – If DataClient will emit bar updates as soon new bar opens.
+               </p>
+              </li>
               <li>
                <p>
                 <strong>
