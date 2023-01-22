@@ -676,6 +676,27 @@
              <a class="md-nav__link" href="#contingency-types">
               Contingency Types
              </a>
+             <span class="arrow">
+              <i class="fa-solid fa-chevron-right">
+              </i>
+             </span>
+             <ul class="submenu">
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#one-triggers-the-other-oto">
+                One Triggers the Other (OTO)
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#one-cancels-the-other-oco">
+                One Cancels the Other (OCO)
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#one-updates-the-other-ouo">
+                One Updates the Other (OUO)
+               </a>
+              </li>
+             </ul>
             </li>
             <li class="md-nav__item">
              <a class="md-nav__link" href="#bracket-orders">
@@ -710,14 +731,13 @@ involving these order types, lists/groups and execution instructions (such as fo
           </a>
          </h2>
          <p>
-          Larger order bulks can be grouped together into a list with a common
+          Combinations of contingent orders, or larger order bulks can be grouped together into a list with a common
           <code class="docutils literal notranslate">
            <span class="pre">
             order_list_id
            </span>
           </code>
-          .
-The orders contained in this bulk may or may not have a contingent relationship with
+          . The orders contained in this list may or may not have a contingent relationship with
 each other, as this is specific to how the orders themselves are constructed, and the
 specific exchange they are being routed to.
          </p>
@@ -753,10 +773,85 @@ specific exchange they are being routed to.
               linked_order_ids
              </span>
             </code>
-            which are contingent on the others remaining quantity (one-cancels/reduces-other).
+            which are contingent on the other(s) (one-cancels-other when triggered).
+           </p>
+          </li>
+          <li>
+           <p>
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              OUO
+             </span>
+            </code>
+            are linked orders with
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              linked_order_ids
+             </span>
+            </code>
+            which are contingent on the other(s) (one-updates-other when triggered or modified).
            </p>
           </li>
          </ul>
+         <div class="admonition note">
+          <p class="admonition-title">
+           Note
+          </p>
+          <p>
+           These contingency types relate to FIX tag &lt;1385&gt;
+           <code class="docutils literal notranslate">
+            <span class="pre">
+             ContingencyType
+            </span>
+           </code>
+           <a class="reference external" href="https://www.onixs.biz/fix-dictionary/5.0.sp2/tagnum_1385.html">
+            https://www.onixs.biz/fix-dictionary/5.0.sp2/tagnum_1385.html
+           </a>
+           .
+          </p>
+         </div>
+         <section id="one-triggers-the-other-oto">
+          <h3 id="one-triggers-the-other-oto">
+           One Triggers the Other (OTO)
+           <a class="headerlink" href="#one-triggers-the-other-oto" title="Permalink to this heading">
+            ¶
+           </a>
+          </h3>
+          <p>
+           An OTO orders involves two orders—a parent order and a child order. The parent order is a live
+marketplace order. The child order, held in a separate order file, is not. If the parent order
+executes in full, the child order is released to the marketplace and becomes live.
+An OTO order can be made up of stock orders, option orders, or a combination of both.
+          </p>
+         </section>
+         <section id="one-cancels-the-other-oco">
+          <h3 id="one-cancels-the-other-oco">
+           One Cancels the Other (OCO)
+           <a class="headerlink" href="#one-cancels-the-other-oco" title="Permalink to this heading">
+            ¶
+           </a>
+          </h3>
+          <p>
+           An OCO order is an order whose execution results in the immediate cancellation of another order
+linked to it. Cancellation of the Contingent Order happens on a best efforts basis.
+In an OCO order, both orders are live in the marketplace at the same time. The execution of either
+order triggers an attempt to cancel the unexecuted order. Partial executions will also trigger an attempt to cancel the other order.
+          </p>
+         </section>
+         <section id="one-updates-the-other-ouo">
+          <h3 id="one-updates-the-other-ouo">
+           One Updates the Other (OUO)
+           <a class="headerlink" href="#one-updates-the-other-ouo" title="Permalink to this heading">
+            ¶
+           </a>
+          </h3>
+          <p>
+           An OUO order is an order whose execution results in the immediate reduction of quantity in another
+order linked to it. The quantity reduction happens on a best effort basis. In an OUO order both
+orders are live in the marketplace at the same time. The execution of either order triggers an
+attempt to reduce the remaining quantity of the other order, partial executions included.
+          </p>
+         </section>
         </section>
         <section id="bracket-orders">
          <h2 id="bracket-orders">
