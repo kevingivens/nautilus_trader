@@ -798,12 +798,7 @@ specific exchange they are being routed to.
            Note
           </p>
           <p>
-           These contingency types relate to FIX tag &lt;1385&gt;
-           <code class="docutils literal notranslate">
-            <span class="pre">
-             ContingencyType
-            </span>
-           </code>
+           These contingency types relate to ContingencyType FIX tag &lt;1385&gt;
            <a class="reference external" href="https://www.onixs.biz/fix-dictionary/5.0.sp2/tagnum_1385.html">
             https://www.onixs.biz/fix-dictionary/5.0.sp2/tagnum_1385.html
            </a>
@@ -861,25 +856,42 @@ attempt to reduce the remaining quantity of the other order, partial executions 
           </a>
          </h2>
          <p>
-          Is a group of orders including some entry order bracketed by two child orders being a take-profit
+          Bracket orders are a type of advanced order that allows traders to set a take-profit and stop-loss
+level for a position at the same time. This is typically done by placing a parent order
+(also known as the entry order) and two child orders: a take-profit
           <code class="docutils literal notranslate">
            <span class="pre">
             LIMIT
            </span>
           </code>
-          order and stop-loss
+          order and a stop-loss
           <code class="docutils literal notranslate">
            <span class="pre">
             STOP_MARKET
            </span>
           </code>
           order.
-The best way to build this group is via the
+When the parent order is executed, the two child orders are also placed in the market.
+If the market moves in favor of the trade, the take-profit order will be filled, closing the position and locking in profits.
+If the market moves against the trade, the stop-loss order will be filled, closing the position and limiting losses.
+         </p>
+         <p>
+          Bracket orders can be created using the
           <a class="reference external" href="https://docs.nautilustrader.io/api_reference/common.html#module-nautilus_trader.common.factories">
            OrderFactory
           </a>
-          .
+          class in the Nautilus Trader API.
+This allows for easy and efficient creation of bracket orders, with different order types, parameters and instructions.
          </p>
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           The trader must be aware of the margin requirements of the trades, as bracketing a trade will consume
+more margin than a single trade, and they must also be aware of the fill rules of the venue.
+          </p>
+         </div>
         </section>
        </section>
       </article>
