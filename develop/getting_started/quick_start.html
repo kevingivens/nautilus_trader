@@ -850,11 +850,11 @@ deleted when the container is deleted.
 this is why
            <code class="docutils literal notranslate">
             <span class="pre">
-             bypass_logging
+             log_level
             </span>
            </code>
-           in the examples is set to True. If you remove this bypass to see
-logging then the notebook will hang during cell execution. A fix is currently
+           in the examples is set to “ERROR”. If you lower this level to see
+more logging then the notebook will hang during cell execution. A fix is currently
 being investigated which involves either raising the configured rate limits for
 Jupyter, or throttling the log flushing from Nautilus.
            <a class="reference external" href="https://github.com/jupyterlab/jupyterlab/issues/12845">
@@ -899,7 +899,7 @@ First, download and load the data by running the next cell (this should take ~ 1
           <div class="highlight">
            <pre><span></span><span class="kn">from</span> <span class="nn">nautilus_trader.persistence.catalog</span> <span class="kn">import</span> <span class="n">ParquetDataCatalog</span>
 
-<span class="n">catalog</span> <span class="o">=</span> <span class="n">ParquetDataCatalog</span><span class="p">(</span><span class="s2">"./"</span><span class="p">)</span>
+<span class="n">catalog</span> <span class="o">=</span> <span class="n">ParquetDataCatalog</span><span class="p">(</span><span class="s2">"./catalog"</span><span class="p">)</span>
 <span class="n">catalog</span><span class="o">.</span><span class="n">instruments</span><span class="p">()</span>
 </pre>
           </div>
@@ -915,7 +915,9 @@ First, download and load the data by running the next cell (this should take ~ 1
          <p>
           NautilusTrader includes a handful of indicators built-in, in this example we will use a MACD indicator to
 build a simple trading strategy.
-You can read more about
+         </p>
+         <p>
+          You can read more about
           <a class="reference external" href="https://www.investopedia.com/terms/m/macd.asp">
            MACD here
           </a>
@@ -975,6 +977,9 @@ registering indicators to receive certain data types, however in this example we
     <span class="k">def</span> <span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subscribe_quote_ticks</span><span class="p">(</span><span class="n">instrument_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instrument_id</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unsubscribe_quote_ticks</span><span class="p">(</span><span class="n">instrument_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">instrument_id</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">on_quote_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tick</span><span class="p">:</span> <span class="n">QuoteTick</span><span class="p">):</span>
         <span class="c1"># Update our MACD</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">macd</span><span class="o">.</span><span class="n">handle_quote_tick</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
@@ -1023,6 +1028,9 @@ registering indicators to receive certain data types, however in this example we
                 <span class="n">quantity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">submit_order</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_dispose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>  <span class="c1"># Do nothing else</span>
 </pre>
           </div>
          </div>
@@ -1316,11 +1324,15 @@ configuration and execution is the
            </span>
           </code>
           allows running multiple configurations (different
-parameters or batches of data). We are now ready to run some backtests!
+parameters or batches of data).
+         </p>
+         <p>
+          We are now ready to run some backtests!
          </p>
          <div class="highlight-python notranslate">
           <div class="highlight">
            <pre><span></span><span class="kn">from</span> <span class="nn">nautilus_trader.backtest.node</span> <span class="kn">import</span> <span class="n">BacktestNode</span>
+<span class="kn">from</span> <span class="nn">nautilus_trader.backtest.results</span> <span class="kn">import</span> <span class="n">BacktestResult</span>
 
 
 <span class="n">node</span> <span class="o">=</span> <span class="n">BacktestNode</span><span class="p">(</span><span class="n">configs</span><span class="o">=</span><span class="p">[</span><span class="n">config</span><span class="p">])</span>
@@ -1343,7 +1355,10 @@ parameters or batches of data). We are now ready to run some backtests!
             BacktestNode
            </span>
           </code>
-          by using the run configs ID. The engine(s) can provide additional reports and information.
+          by using the run configs ID.
+         </p>
+         <p>
+          The engine(s) can provide additional reports and information.
          </p>
          <div class="highlight-python notranslate">
           <div class="highlight">
