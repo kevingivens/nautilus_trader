@@ -795,7 +795,7 @@ deleted when the container is deleted.
           </li>
           <li>
            <p>
-            Run the docker container, exposing the jupyter port (recommended 8889 in case another jupyter server is running):
+            Run the docker container, exposing the jupyter port:
            </p>
            <ul>
             <li>
@@ -811,7 +811,7 @@ deleted when the container is deleted.
                 -p
                </span>
                <span class="pre">
-                8889:8888
+                8888:8888
                </span>
                <span class="pre">
                 ghcr.io/nautechsystems/jupyterlab:develop
@@ -833,27 +833,38 @@ deleted when the container is deleted.
            <ul>
             <li>
              <p>
-              <a class="reference external" href="https://localhost:8889">
-               https://localhost:8889
+              <a class="reference external" href="https://localhost:8888">
+               https://localhost:8888
               </a>
              </p>
             </li>
            </ul>
           </li>
          </ul>
-         <p>
-          <strong>
-           NautilusTrader is not currently functional when run under JupyterLab, with logging enabled.
-The backtest example in the
+         <div class="admonition warning">
+          <p class="admonition-title">
+           Warning
+          </p>
+          <p>
+           NautilusTrader currently exceeds the rate limit for Jupyter notebook logging,
+this is why
            <code class="docutils literal notranslate">
             <span class="pre">
-             examples/backtest_example.ipynb
+             bypass_logging
             </span>
            </code>
-           hangs indefinitely shortly after starting.
-The cause of this is still being determined.
-          </strong>
-         </p>
+           is set to True. If you remove this bypass to see
+logging then the notebook will hang during cell execution. A fix is currently
+being investigated which involves either raising the configured rate limits for
+Jupyter, or throttling the log flushing from Nautilus.
+           <a class="reference external" href="https://github.com/jupyterlab/jupyterlab/issues/12845">
+            https://github.com/jupyterlab/jupyterlab/issues/12845
+           </a>
+           <a class="reference external" href="https://github.com/deshaw/jupyterlab-limit-output">
+            https://github.com/deshaw/jupyterlab-limit-output
+           </a>
+          </p>
+         </div>
         </section>
         <section id="getting-the-sample-data">
          <h2 id="getting-the-sample-data">
