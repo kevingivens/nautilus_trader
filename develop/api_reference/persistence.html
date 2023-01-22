@@ -3861,7 +3861,7 @@ correctly loaded.
            </a>
           </p>
           <p>
-           Provides a queryable data catalog persisted to file in parquet format.
+           Provides a queryable data catalog persisted to files in parquet format.
           </p>
           <dl class="field-list simple">
            <dt class="field-odd">
@@ -3923,6 +3923,14 @@ correctly loaded.
             </ul>
            </dd>
           </dl>
+          <div class="admonition warning">
+           <p class="admonition-title">
+            Warning
+           </p>
+           <p>
+            The catalog is not threadsafe.
+           </p>
+          </div>
          </dd>
         </dl>
         <span class="target" id="module-nautilus_trader.persistence.streaming">
