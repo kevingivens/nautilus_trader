@@ -703,6 +703,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.msgbus.bus.MessageBus.is_subscribed">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  MessageBus.is_subscribed()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.msgbus.bus.MessageBus.pub_count">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1520,6 +1529,136 @@ If
                </strong>
                topics.
               </p>
+             </dd>
+             <dt class="field-even">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-even">
+              <p>
+               <em>
+                bool
+               </em>
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.msgbus.bus.MessageBus.is_subscribed">
+            <span class="sig-name descname">
+             <span class="pre">
+              is_subscribed
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="pre">
+              self,
+             </span>
+             <span class="pre">
+              unicode
+             </span>
+             <span class="pre">
+              topic,
+             </span>
+             <span class="pre">
+              handler:
+             </span>
+             <span class="pre">
+              Callable[[Any],
+             </span>
+             <span class="pre">
+              None]
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               bool
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.msgbus.bus.MessageBus.is_subscribed" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Return if topic and handler is subscribed to the message bus.
+            </p>
+            <p>
+             Does not consider any previous
+             <cite>
+              priority
+             </cite>
+             .
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  topic
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 ) – The topic of the subscription.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  handler
+                 </strong>
+                 (
+                 <em>
+                  Callable
+                 </em>
+                 <em>
+                  [
+                 </em>
+                 <em>
+                  [
+                 </em>
+                 <em>
+                  Any
+                 </em>
+                 <em>
+                  ]
+                 </em>
+                 <em>
+                  ,
+                 </em>
+                 <em>
+                  None
+                 </em>
+                 <em>
+                  ]
+                 </em>
+                 ) – The handler of the subscription.
+                </p>
+               </li>
+              </ul>
              </dd>
              <dt class="field-even">
               Returns
@@ -2971,11 +3110,9 @@ topics and their subscribers.
                <em>
                 [
                </em>
-               <a class="reference internal" href="core.html#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
-                <em>
-                 Message
-                </em>
-               </a>
+               <em>
+                Message
+               </em>
                <em>
                 ]
                </em>

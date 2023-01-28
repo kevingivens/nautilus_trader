@@ -935,15 +935,6 @@
                </span>
                <ul class="submenu">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Command.category">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Command.category
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
                  <a class="md-nav__link" href="#nautilus_trader.core.message.Command.id">
                   <code class="docutils literal notranslate">
                    <span class="pre">
@@ -976,15 +967,6 @@
                 </i>
                </span>
                <ul class="submenu">
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Document.category">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Document.category
-                   </span>
-                  </code>
-                 </a>
-                </li>
                 <li class="md-nav__item">
                  <a class="md-nav__link" href="#nautilus_trader.core.message.Document.id">
                   <code class="docutils literal notranslate">
@@ -1019,15 +1001,6 @@
                </span>
                <ul class="submenu">
                 <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Event.category">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Event.category
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
                  <a class="md-nav__link" href="#nautilus_trader.core.message.Event.id">
                   <code class="docutils literal notranslate">
                    <span class="pre">
@@ -1057,48 +1030,6 @@
                </ul>
               </li>
               <li class="md-nav__item">
-               <a class="md-nav__link" href="#nautilus_trader.core.message.Message">
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  Message
-                 </span>
-                </code>
-               </a>
-               <span class="arrow">
-                <i class="fa-solid fa-chevron-right">
-                </i>
-               </span>
-               <ul class="submenu">
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Message.category">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Message.category
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Message.id">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Message.id
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Message.ts_init">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Message.ts_init
-                   </span>
-                  </code>
-                 </a>
-                </li>
-               </ul>
-              </li>
-              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.core.message.Request">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1116,15 +1047,6 @@
                   <code class="docutils literal notranslate">
                    <span class="pre">
                     Request.callback
-                   </span>
-                  </code>
-                 </a>
-                </li>
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Request.category">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Request.category
                    </span>
                   </code>
                  </a>
@@ -1162,15 +1084,6 @@
                 </i>
                </span>
                <ul class="submenu">
-                <li class="md-nav__item">
-                 <a class="md-nav__link" href="#nautilus_trader.core.message.Response.category">
-                  <code class="docutils literal notranslate">
-                   <span class="pre">
-                    Response.category
-                   </span>
-                  </code>
-                 </a>
-                </li>
                 <li class="md-nav__item">
                  <a class="md-nav__link" href="#nautilus_trader.core.message.Response.correlation_id">
                   <code class="docutils literal notranslate">
@@ -1324,7 +1237,7 @@
         <p>
          The main focus here is on efficiency and re-usability as this forms the base
 layer of the entire framework. Message passing is a core design philosophy and
-the message base types are contained here.
+the base massage types are contained here.
         </p>
         <p>
          A generic
@@ -3368,16 +3281,14 @@ set self.__traceback__ to tb and return self.
           <dd>
            <p>
             Bases:
-            <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
-             <code class="xref py py-class docutils literal notranslate">
-              <span class="pre">
-               Message
-              </span>
-             </code>
-            </a>
+            <code class="xref py py-class docutils literal notranslate">
+             <span class="pre">
+              object
+             </span>
+            </code>
            </p>
            <p>
-            The base class for all commands.
+            The base class for all command messages.
            </p>
            <dl class="field-list simple">
             <dt class="field-odd">
@@ -3426,38 +3337,6 @@ set self.__traceback__ to tb and return self.
             </p>
            </div>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Command.category">
-             <span class="sig-name descname">
-              <span class="pre">
-               category
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Command.category" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message category.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 MessageCategory
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
             <dt class="sig sig-object py" id="nautilus_trader.core.message.Command.id">
              <span class="sig-name descname">
               <span class="pre">
@@ -3470,7 +3349,7 @@ set self.__traceback__ to tb and return self.
             </dt>
             <dd>
              <p>
-              The message ID.
+              The command message ID.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -3571,16 +3450,14 @@ set self.__traceback__ to tb and return self.
           <dd>
            <p>
             Bases:
-            <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
-             <code class="xref py py-class docutils literal notranslate">
-              <span class="pre">
-               Message
-              </span>
-             </code>
-            </a>
+            <code class="xref py py-class docutils literal notranslate">
+             <span class="pre">
+              object
+             </span>
+            </code>
            </p>
            <p>
-            The base class for all documents.
+            The base class for all document messages.
            </p>
            <dl class="field-list simple">
             <dt class="field-odd">
@@ -3602,7 +3479,7 @@ set self.__traceback__ to tb and return self.
                   UUID4
                  </em>
                 </a>
-                ) – The document ID.
+                ) – The command ID.
                </p>
               </li>
               <li>
@@ -3629,38 +3506,6 @@ set self.__traceback__ to tb and return self.
             </p>
            </div>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Document.category">
-             <span class="sig-name descname">
-              <span class="pre">
-               category
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Document.category" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message category.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 MessageCategory
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
             <dt class="sig sig-object py" id="nautilus_trader.core.message.Document.id">
              <span class="sig-name descname">
               <span class="pre">
@@ -3673,7 +3518,7 @@ set self.__traceback__ to tb and return self.
             </dt>
             <dd>
              <p>
-              The message ID.
+              The document message ID.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -3785,16 +3630,14 @@ set self.__traceback__ to tb and return self.
           <dd>
            <p>
             Bases:
-            <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
-             <code class="xref py py-class docutils literal notranslate">
-              <span class="pre">
-               Message
-              </span>
-             </code>
-            </a>
+            <code class="xref py py-class docutils literal notranslate">
+             <span class="pre">
+              object
+             </span>
+            </code>
            </p>
            <p>
-            The base class for all events.
+            The base class for all event messages.
            </p>
            <dl class="field-list simple">
             <dt class="field-odd">
@@ -3855,38 +3698,6 @@ set self.__traceback__ to tb and return self.
             </p>
            </div>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Event.category">
-             <span class="sig-name descname">
-              <span class="pre">
-               category
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Event.category" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message category.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 MessageCategory
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
             <dt class="sig sig-object py" id="nautilus_trader.core.message.Event.id">
              <span class="sig-name descname">
               <span class="pre">
@@ -3899,7 +3710,7 @@ set self.__traceback__ to tb and return self.
             </dt>
             <dd>
              <p>
-              The message ID.
+              The event message ID.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -3985,230 +3796,6 @@ set self.__traceback__ to tb and return self.
           </dd>
          </dl>
          <dl class="py class">
-          <dt class="sig sig-object py" id="nautilus_trader.core.message.Message">
-           <em class="property">
-            <span class="pre">
-             class
-            </span>
-            <span class="w">
-            </span>
-           </em>
-           <span class="sig-name descname">
-            <span class="pre">
-             Message
-            </span>
-           </span>
-           <span class="sig-paren">
-            (
-           </span>
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              MessageCategory
-             </span>
-             <span class="pre">
-              category
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              UUID4
-             </span>
-             <span class="pre">
-              message_id
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              uint64_t
-             </span>
-             <span class="pre">
-              ts_init
-             </span>
-            </span>
-           </em>
-           <span class="sig-paren">
-            )
-           </span>
-           <a class="headerlink" href="#nautilus_trader.core.message.Message" title="Permalink to this definition">
-            ¶
-           </a>
-          </dt>
-          <dd>
-           <p>
-            Bases:
-            <code class="xref py py-class docutils literal notranslate">
-             <span class="pre">
-              object
-             </span>
-            </code>
-           </p>
-           <p>
-            The base class for all messages.
-           </p>
-           <dl class="field-list simple">
-            <dt class="field-odd">
-             Parameters
-             <span class="colon">
-              :
-             </span>
-            </dt>
-            <dd class="field-odd">
-             <ul class="simple">
-              <li>
-               <p>
-                <strong>
-                 category
-                </strong>
-                (
-                <em>
-                 MessageCategory
-                </em>
-                ) – The message category.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 message_id
-                </strong>
-                (
-                <a class="reference internal" href="#nautilus_trader.core.uuid.UUID4" title="nautilus_trader.core.uuid.UUID4">
-                 <em>
-                  UUID4
-                 </em>
-                </a>
-                ) – The message ID.
-               </p>
-              </li>
-              <li>
-               <p>
-                <strong>
-                 ts_init
-                </strong>
-                (
-                <em>
-                 uint64_t
-                </em>
-                ) – The UNIX timestamp (nanoseconds) when the object was initialized.
-               </p>
-              </li>
-             </ul>
-            </dd>
-           </dl>
-           <div class="admonition warning">
-            <p class="admonition-title">
-             Warning
-            </p>
-            <p>
-             This class should not be used directly, but through a concrete subclass.
-            </p>
-           </div>
-           <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Message.category">
-             <span class="sig-name descname">
-              <span class="pre">
-               category
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Message.category" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message category.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 MessageCategory
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Message.id">
-             <span class="sig-name descname">
-              <span class="pre">
-               id
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Message.id" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message ID.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 UUID4
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Message.ts_init">
-             <span class="sig-name descname">
-              <span class="pre">
-               ts_init
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Message.ts_init" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The UNIX timestamp (nanoseconds) when the object was initialized.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 uint64_t
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-          </dd>
-         </dl>
-         <dl class="py class">
           <dt class="sig sig-object py" id="nautilus_trader.core.message.Request">
            <em class="property">
             <span class="pre">
@@ -4258,16 +3845,14 @@ set self.__traceback__ to tb and return self.
           <dd>
            <p>
             Bases:
-            <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
-             <code class="xref py py-class docutils literal notranslate">
-              <span class="pre">
-               Message
-              </span>
-             </code>
-            </a>
+            <code class="xref py py-class docutils literal notranslate">
+             <span class="pre">
+              object
+             </span>
+            </code>
            </p>
            <p>
-            The base class for all requests.
+            The base class for all request messages.
            </p>
            <dl class="field-list simple">
             <dt class="field-odd">
@@ -4381,38 +3966,6 @@ set self.__traceback__ to tb and return self.
             </dd>
            </dl>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Request.category">
-             <span class="sig-name descname">
-              <span class="pre">
-               category
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Request.category" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message category.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 MessageCategory
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
             <dt class="sig sig-object py" id="nautilus_trader.core.message.Request.id">
              <span class="sig-name descname">
               <span class="pre">
@@ -4425,7 +3978,7 @@ set self.__traceback__ to tb and return self.
             </dt>
             <dd>
              <p>
-              The message ID.
+              The request message ID.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">
@@ -4537,16 +4090,14 @@ set self.__traceback__ to tb and return self.
           <dd>
            <p>
             Bases:
-            <a class="reference internal" href="#nautilus_trader.core.message.Message" title="nautilus_trader.core.message.Message">
-             <code class="xref py py-class docutils literal notranslate">
-              <span class="pre">
-               Message
-              </span>
-             </code>
-            </a>
+            <code class="xref py py-class docutils literal notranslate">
+             <span class="pre">
+              object
+             </span>
+            </code>
            </p>
            <p>
-            The base class for all responses.
+            The base class for all response messages.
            </p>
            <dl class="field-list simple">
             <dt class="field-odd">
@@ -4609,38 +4160,6 @@ set self.__traceback__ to tb and return self.
             </p>
            </div>
            <dl class="py attribute">
-            <dt class="sig sig-object py" id="nautilus_trader.core.message.Response.category">
-             <span class="sig-name descname">
-              <span class="pre">
-               category
-              </span>
-             </span>
-             <a class="headerlink" href="#nautilus_trader.core.message.Response.category" title="Permalink to this definition">
-              ¶
-             </a>
-            </dt>
-            <dd>
-             <p>
-              The message category.
-             </p>
-             <dl class="field-list simple">
-              <dt class="field-odd">
-               Returns
-               <span class="colon">
-                :
-               </span>
-              </dt>
-              <dd class="field-odd">
-               <p>
-                <cite>
-                 MessageCategory
-                </cite>
-               </p>
-              </dd>
-             </dl>
-            </dd>
-           </dl>
-           <dl class="py attribute">
             <dt class="sig sig-object py" id="nautilus_trader.core.message.Response.correlation_id">
              <span class="sig-name descname">
               <span class="pre">
@@ -4685,7 +4204,7 @@ set self.__traceback__ to tb and return self.
             </dt>
             <dd>
              <p>
-              The message ID.
+              The response message ID.
              </p>
              <dl class="field-list simple">
               <dt class="field-odd">

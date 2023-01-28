@@ -3517,6 +3517,40 @@
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              ssl
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               flush
              </span>
             </span>
@@ -3683,6 +3717,24 @@
                  optional
                 </em>
                 ) – The account password for the database connection.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 ssl
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default False
+                </em>
+                ) – If database should use an SSL enabled connection.
                </p>
               </li>
               <li>
@@ -4890,7 +4942,7 @@ whether the instrument should be loaded
             </span>
             <span class="default_value">
              <span class="pre">
-              True
+              False
              </span>
             </span>
            </em>
@@ -14393,7 +14445,7 @@ how the
               DataEngineConfig(build_time_bars_with_no_updates=True,
              </span>
              <span class="pre">
-              validate_data_sequence=True,
+              validate_data_sequence=False,
              </span>
              <span class="pre">
               debug=False)
@@ -16367,7 +16419,7 @@ external inputs of venues and data.
             </span>
             <span class="default_value">
              <span class="pre">
-              True
+              False
              </span>
             </span>
            </em>
@@ -20182,7 +20234,7 @@ is checked with the venue.
               LiveDataEngineConfig(build_time_bars_with_no_updates=True,
              </span>
              <span class="pre">
-              validate_data_sequence=True,
+              validate_data_sequence=False,
              </span>
              <span class="pre">
               debug=False,
