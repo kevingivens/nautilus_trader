@@ -721,6 +721,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.add()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_account">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -955,6 +964,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_general">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.cache_general()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.cache_instruments">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1004,15 +1022,6 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   Cache.check_residuals()
-                 </span>
-                </code>
-               </a>
-              </li>
-              <li class="md-nav__item">
-               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.clear_cache">
-                <code class="docutils literal notranslate">
-                 <span class="pre">
-                  Cache.clear_cache()
                  </span>
                 </code>
                </a>
@@ -1103,6 +1112,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   Cache.flush_db()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.get">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.get()
                  </span>
                 </code>
                </a>
@@ -1816,6 +1834,15 @@
              </span>
              <ul class="submenu">
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheDatabase.add()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.add_account">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1901,6 +1928,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   CacheDatabase.flush()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheDatabase.load()
                  </span>
                 </code>
                </a>
@@ -2155,6 +2191,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.add">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheFacade.add()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.bar">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -2240,6 +2285,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   CacheFacade.client_order_ids_open()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.get">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheFacade.get()
                  </span>
                 </code>
                </a>
@@ -3380,6 +3434,108 @@ accessed by many components.
                 set[ComponentId]
                </em>
               </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.add">
+            <span class="sig-name descname">
+             <span class="pre">
+              add
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               unicode
+              </span>
+              <span class="pre">
+               key
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               bytes
+              </span>
+              <span class="pre">
+               value
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.add" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Add the given general object to the cache.
+            </p>
+            <p>
+             The cache is agnostic to what the object actually is (and how it may
+be serialized), offering maximum flexibility.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <ul class="simple">
+               <li>
+                <p>
+                 <strong>
+                  key
+                 </strong>
+                 (
+                 <em>
+                  str
+                 </em>
+                 ) – The cache key for the object.
+                </p>
+               </li>
+               <li>
+                <p>
+                 <strong>
+                  value
+                 </strong>
+                 (
+                 <em>
+                  bytes
+                 </em>
+                 ) – The object value to write.
+                </p>
+               </li>
+              </ul>
              </dd>
             </dl>
            </dd>
@@ -5496,6 +5652,47 @@ database.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.cache_general">
+            <span class="sig-name descname">
+             <span class="pre">
+              cache_general
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.cache_general" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Clear the current general cache and load the general objects from the
+cache database.
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.cache_instruments">
             <span class="sig-name descname">
              <span class="pre">
@@ -5774,54 +5971,6 @@ error is found then a log error message will also be produced.
               </p>
              </dd>
             </dl>
-           </dd>
-          </dl>
-          <dl class="py method">
-           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.clear_cache">
-            <span class="sig-name descname">
-             <span class="pre">
-              clear_cache
-             </span>
-            </span>
-            <span class="sig-paren">
-             (
-            </span>
-            <em class="sig-param">
-             <span class="n">
-              <span class="pre">
-               self
-              </span>
-             </span>
-            </em>
-            <span class="sig-paren">
-             )
-            </span>
-            <span class="sig-return">
-             <span class="sig-return-icon">
-              →
-             </span>
-             <span class="sig-return-typehint">
-              <span class="pre">
-               void
-              </span>
-             </span>
-            </span>
-            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.clear_cache" title="Permalink to this definition">
-             ¶
-            </a>
-           </dt>
-           <dd>
-            <p>
-             Clear the cache.
-            </p>
-            <div class="admonition warning">
-             <p class="admonition-title">
-              Warning
-             </p>
-             <p>
-              Calling this without rebuilding the index will result in errors.
-             </p>
-            </div>
            </dd>
           </dl>
           <dl class="py method">
@@ -6970,6 +7119,97 @@ error is found then a log error message will also be produced.
               Permanent data loss.
              </p>
             </div>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.get">
+            <span class="sig-name descname">
+             <span class="pre">
+              get
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               unicode
+              </span>
+              <span class="pre">
+               key
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               bytes
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.get" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Add the given general object to the cache.
+            </p>
+            <p>
+             The cache is agnostic to what the object actually is (and how it may
+be serialized), offering maximum flexibility.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                key
+               </strong>
+               (
+               <em>
+                str
+               </em>
+               ) – The cache key for the object.
+              </p>
+             </dd>
+             <dt class="field-even">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-even">
+              <p>
+               bytes or
+               <code class="docutils literal notranslate">
+                <span class="pre">
+                 None
+                </span>
+               </code>
+              </p>
+             </dd>
+            </dl>
            </dd>
           </dl>
           <dl class="py method">
@@ -15561,6 +15801,68 @@ and is open.
            </p>
           </div>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.add">
+            <span class="sig-name descname">
+             <span class="pre">
+              add
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               unicode
+              </span>
+              <span class="pre">
+               key
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               bytes
+              </span>
+              <span class="pre">
+               value
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.add" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.add_account">
             <span class="sig-name descname">
              <span class="pre">
@@ -16050,6 +16352,46 @@ and is open.
              </span>
             </span>
             <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.flush" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.load">
+            <span class="sig-name descname">
+             <span class="pre">
+              load
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.load" title="Permalink to this definition">
              ¶
             </a>
            </dt>
@@ -17339,6 +17681,68 @@ and is open.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.base.CacheFacade.add">
+            <span class="sig-name descname">
+             <span class="pre">
+              add
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               unicode
+              </span>
+              <span class="pre">
+               key
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               bytes
+              </span>
+              <span class="pre">
+               value
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.base.CacheFacade.add" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.base.CacheFacade.bar">
             <span class="sig-name descname">
              <span class="pre">
@@ -17964,6 +18368,57 @@ and is open.
              </span>
             </span>
             <a class="headerlink" href="#nautilus_trader.cache.base.CacheFacade.client_order_ids_open" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.base.CacheFacade.get">
+            <span class="sig-name descname">
+             <span class="pre">
+              get
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               unicode
+              </span>
+              <span class="pre">
+               key
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               bytes
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.base.CacheFacade.get" title="Permalink to this definition">
              ¶
             </a>
            </dt>
