@@ -7557,7 +7557,7 @@ then the component state will not change, and an error will be logged.
            </dt>
            <dd>
             <p>
-             Load the strategy state from the give state dictionary.
+             Load the actor/strategy state from the give state dictionary.
             </p>
             <p>
              Calls
@@ -7613,7 +7613,7 @@ then the component state will not change, and an error will be logged.
                </strong>
                – If
                <cite>
-                strategy
+                actor/strategy
                </cite>
                is not registered with a trader.
               </p>
@@ -8286,7 +8286,7 @@ then the command will not be generated, and a warning will be logged.
              Actions to be performed on dispose.
             </p>
             <p>
-             Cleanup any resources used here.
+             Cleanup/release any resources used here.
             </p>
             <div class="admonition warning">
              <p class="admonition-title">
@@ -8294,9 +8294,6 @@ then the command will not be generated, and a warning will be logged.
              </p>
              <p>
               System method (not intended to be called by user code).
-             </p>
-             <p>
-              Should be overridden in the actor implementation.
              </p>
             </div>
            </dd>
@@ -8807,7 +8804,7 @@ update.
            </dt>
            <dd>
             <p>
-             Actions to be performed when the strategy is loaded.
+             Actions to be performed when the actor state is loaded.
             </p>
             <p>
              Saved state values will be contained in the give state dictionary.
@@ -9116,20 +9113,6 @@ update.
             </a>
            </dt>
            <dd>
-            <p>
-             Actions to be performed on reset.
-            </p>
-            <div class="admonition warning">
-             <p class="admonition-title">
-              Warning
-             </p>
-             <p>
-              System method (not intended to be called by user code).
-             </p>
-             <p>
-              Should be overridden in the actor implementation.
-             </p>
-            </div>
            </dd>
           </dl>
           <dl class="py method">
@@ -9167,17 +9150,6 @@ update.
             </a>
            </dt>
            <dd>
-            <p>
-             Actions to be performed on resume.
-            </p>
-            <div class="admonition warning">
-             <p class="admonition-title">
-              Warning
-             </p>
-             <p>
-              System method (not intended to be called by user code).
-             </p>
-            </div>
            </dd>
           </dl>
           <dl class="py method">
@@ -9216,7 +9188,7 @@ update.
            </dt>
            <dd>
             <p>
-             Actions to be performed when the strategy is saved.
+             Actions to be performed when the actor state is saved.
             </p>
             <p>
              Create and return a state dictionary of values to be saved.
@@ -9282,27 +9254,6 @@ update.
             </a>
            </dt>
            <dd>
-            <p>
-             Actions to be performed on start.
-            </p>
-            <p>
-             The intent is that this method is called once per trading session,
-when initially starting.
-            </p>
-            <p>
-             It is recommended to subscribe/request for data here.
-            </p>
-            <div class="admonition warning">
-             <p class="admonition-title">
-              Warning
-             </p>
-             <p>
-              System method (not intended to be called by user code).
-             </p>
-             <p>
-              Should be overridden in the actor implementation.
-             </p>
-            </div>
            </dd>
           </dl>
           <dl class="py method">
@@ -9340,23 +9291,6 @@ when initially starting.
             </a>
            </dt>
            <dd>
-            <p>
-             Actions to be performed on stop.
-            </p>
-            <p>
-             The intent is that this method is called to pause, or when done for day.
-            </p>
-            <div class="admonition warning">
-             <p class="admonition-title">
-              Warning
-             </p>
-             <p>
-              System method (not intended to be called by user code).
-             </p>
-             <p>
-              Should be overridden in the actor implementation.
-             </p>
-            </div>
            </dd>
           </dl>
           <dl class="py method">
@@ -12025,7 +11959,7 @@ then the component state will not change, and an error will be logged.
            </dt>
            <dd>
             <p>
-             Return the strategy state dictionary to be saved.
+             Return the actor/strategy state dictionary to be saved.
             </p>
             <p>
              Calls
@@ -12048,7 +11982,7 @@ then the component state will not change, and an error will be logged.
                </strong>
                – If
                <cite>
-                strategy
+                actor/strategy
                </cite>
                is not registered with a trader.
               </p>
@@ -17766,7 +17700,7 @@ then the component state will not change, and an error will be logged.
            </dt>
            <dd>
             <p>
-             Load all strategy states from the execution cache.
+             Load all actor and strategy states from the cache.
             </p>
            </dd>
           </dl>
@@ -17941,7 +17875,7 @@ then the component state will not change, and an error will be logged.
            </dt>
            <dd>
             <p>
-             Save all strategy states to the execution cache.
+             Save all actor and strategy states to the cache.
             </p>
            </dd>
           </dl>

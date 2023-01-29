@@ -3412,6 +3412,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.load">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  FXRolloverInterestModule.load()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.log">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -3529,6 +3538,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_load">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  FXRolloverInterestModule.on_load()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_order_book">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -3569,6 +3587,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   FXRolloverInterestModule.on_resume()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_save">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  FXRolloverInterestModule.on_save()
                  </span>
                 </code>
                </a>
@@ -3740,6 +3767,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   FXRolloverInterestModule.resume()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.save">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  FXRolloverInterestModule.save()
                  </span>
                 </code>
                </a>
@@ -4300,6 +4336,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.load">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulationModule.load()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.log">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -4417,6 +4462,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.on_load">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulationModule.on_load()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.on_order_book">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -4457,6 +4511,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   SimulationModule.on_resume()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.on_save">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulationModule.on_save()
                  </span>
                 </code>
                </a>
@@ -4628,6 +4691,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   SimulationModule.resume()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.backtest.modules.SimulationModule.save">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  SimulationModule.save()
                  </span>
                 </code>
                </a>
@@ -26957,6 +27029,125 @@ then the component state will not change, and an error will be logged.
             </dl>
            </dd>
           </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.load">
+            <span class="sig-name descname">
+             <span class="pre">
+              load
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               dict
+              </span>
+              <span class="pre">
+               state
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.load" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Load the actor/strategy state from the give state dictionary.
+            </p>
+            <p>
+             Calls
+             <cite>
+              on_load
+             </cite>
+             and passes the state.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                state
+               </strong>
+               (
+               <em>
+                dict
+               </em>
+               <em>
+                [
+               </em>
+               <em>
+                str
+               </em>
+               <em>
+                ,
+               </em>
+               <em>
+                object
+               </em>
+               <em>
+                ]
+               </em>
+               ) – The state dictionary.
+              </p>
+             </dd>
+             <dt class="field-even">
+              Raises
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-even">
+              <p>
+               <strong>
+                RuntimeError
+               </strong>
+               – If
+               <cite>
+                actor/strategy
+               </cite>
+               is not registered with a trader.
+              </p>
+             </dd>
+            </dl>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              Exceptions raised will be caught, logged, and reraised.
+             </p>
+            </div>
+           </dd>
+          </dl>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.log">
             <span class="sig-name descname">
@@ -27354,7 +27545,7 @@ then the component state will not change, and an error will be logged.
              Actions to be performed on dispose.
             </p>
             <p>
-             Cleanup any resources used here.
+             Cleanup/release any resources used here.
             </p>
             <div class="admonition warning">
              <p class="admonition-title">
@@ -27362,9 +27553,6 @@ then the component state will not change, and an error will be logged.
              </p>
              <p>
               System method (not intended to be called by user code).
-             </p>
-             <p>
-              Should be overridden in the actor implementation.
              </p>
             </div>
            </dd>
@@ -27829,6 +28017,68 @@ update.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.on_load">
+            <span class="sig-name descname">
+             <span class="pre">
+              on_load
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               dict
+              </span>
+              <span class="pre">
+               state
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_load" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Actions to be performed when the actor state is loaded.
+            </p>
+            <p>
+             Saved state values will be contained in the give state dictionary.
+            </p>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              System method (not intended to be called by user code).
+             </p>
+            </div>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.on_order_book">
             <span class="sig-name descname">
              <span class="pre">
@@ -28133,7 +28383,7 @@ update.
               System method (not intended to be called by user code).
              </p>
              <p>
-              Should be overridden in the actor implementation.
+              Should be overridden in a user implementation.
              </p>
             </div>
            </dd>
@@ -28187,6 +28437,73 @@ update.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.on_save">
+            <span class="sig-name descname">
+             <span class="pre">
+              on_save
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_save" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Actions to be performed when the actor state is saved.
+            </p>
+            <p>
+             Create and return a state dictionary of values to be saved.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <em>
+                dict[str, bytes]
+               </em>
+               – The strategy state dictionary.
+              </p>
+             </dd>
+            </dl>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              System method (not intended to be called by user code).
+             </p>
+            </div>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.on_start">
             <span class="sig-name descname">
              <span class="pre">
@@ -28225,8 +28542,8 @@ update.
              Actions to be performed on start.
             </p>
             <p>
-             The intent is that this method is called once per trading session,
-when initially starting.
+             The intent is that this method is called once per trading ‘run’, when
+initially starting.
             </p>
             <p>
              It is recommended to subscribe/request for data here.
@@ -28239,7 +28556,7 @@ when initially starting.
               System method (not intended to be called by user code).
              </p>
              <p>
-              Should be overridden in the actor implementation.
+              Should be overridden in a user implementation.
              </p>
             </div>
            </dd>
@@ -28293,7 +28610,7 @@ when initially starting.
               System method (not intended to be called by user code).
              </p>
              <p>
-              Should be overridden in the actor implementation.
+              Should be overridden in a user implementation.
              </p>
             </div>
            </dd>
@@ -30258,6 +30575,81 @@ The component will remain in a
              <p>
               If the component is not in a valid state from which to execute this method,
 then the component state will not change, and an error will be logged.
+             </p>
+            </div>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.FXRolloverInterestModule.save">
+            <span class="sig-name descname">
+             <span class="pre">
+              save
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.FXRolloverInterestModule.save" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Return the actor/strategy state dictionary to be saved.
+            </p>
+            <p>
+             Calls
+             <cite>
+              on_save
+             </cite>
+             .
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Raises
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                RuntimeError
+               </strong>
+               – If
+               <cite>
+                actor/strategy
+               </cite>
+               is not registered with a trader.
+              </p>
+             </dd>
+            </dl>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              Exceptions raised will be caught, logged, and reraised.
              </p>
             </div>
            </dd>
@@ -35859,6 +36251,125 @@ then the component state will not change, and an error will be logged.
             </dl>
            </dd>
           </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.load">
+            <span class="sig-name descname">
+             <span class="pre">
+              load
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               dict
+              </span>
+              <span class="pre">
+               state
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.SimulationModule.load" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Load the actor/strategy state from the give state dictionary.
+            </p>
+            <p>
+             Calls
+             <cite>
+              on_load
+             </cite>
+             and passes the state.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                state
+               </strong>
+               (
+               <em>
+                dict
+               </em>
+               <em>
+                [
+               </em>
+               <em>
+                str
+               </em>
+               <em>
+                ,
+               </em>
+               <em>
+                object
+               </em>
+               <em>
+                ]
+               </em>
+               ) – The state dictionary.
+              </p>
+             </dd>
+             <dt class="field-even">
+              Raises
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-even">
+              <p>
+               <strong>
+                RuntimeError
+               </strong>
+               – If
+               <cite>
+                actor/strategy
+               </cite>
+               is not registered with a trader.
+              </p>
+             </dd>
+            </dl>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              Exceptions raised will be caught, logged, and reraised.
+             </p>
+            </div>
+           </dd>
+          </dl>
           <dl class="py attribute">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.log">
             <span class="sig-name descname">
@@ -36230,7 +36741,7 @@ then the component state will not change, and an error will be logged.
              Actions to be performed on dispose.
             </p>
             <p>
-             Cleanup any resources used here.
+             Cleanup/release any resources used here.
             </p>
             <div class="admonition warning">
              <p class="admonition-title">
@@ -36238,9 +36749,6 @@ then the component state will not change, and an error will be logged.
              </p>
              <p>
               System method (not intended to be called by user code).
-             </p>
-             <p>
-              Should be overridden in the actor implementation.
              </p>
             </div>
            </dd>
@@ -36705,6 +37213,68 @@ update.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.on_load">
+            <span class="sig-name descname">
+             <span class="pre">
+              on_load
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               dict
+              </span>
+              <span class="pre">
+               state
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.SimulationModule.on_load" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Actions to be performed when the actor state is loaded.
+            </p>
+            <p>
+             Saved state values will be contained in the give state dictionary.
+            </p>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              System method (not intended to be called by user code).
+             </p>
+            </div>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.on_order_book">
             <span class="sig-name descname">
              <span class="pre">
@@ -37009,7 +37579,7 @@ update.
               System method (not intended to be called by user code).
              </p>
              <p>
-              Should be overridden in the actor implementation.
+              Should be overridden in a user implementation.
              </p>
             </div>
            </dd>
@@ -37063,6 +37633,73 @@ update.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.on_save">
+            <span class="sig-name descname">
+             <span class="pre">
+              on_save
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.SimulationModule.on_save" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Actions to be performed when the actor state is saved.
+            </p>
+            <p>
+             Create and return a state dictionary of values to be saved.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <em>
+                dict[str, bytes]
+               </em>
+               – The strategy state dictionary.
+              </p>
+             </dd>
+            </dl>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              System method (not intended to be called by user code).
+             </p>
+            </div>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.on_start">
             <span class="sig-name descname">
              <span class="pre">
@@ -37101,8 +37738,8 @@ update.
              Actions to be performed on start.
             </p>
             <p>
-             The intent is that this method is called once per trading session,
-when initially starting.
+             The intent is that this method is called once per trading ‘run’, when
+initially starting.
             </p>
             <p>
              It is recommended to subscribe/request for data here.
@@ -37115,7 +37752,7 @@ when initially starting.
               System method (not intended to be called by user code).
              </p>
              <p>
-              Should be overridden in the actor implementation.
+              Should be overridden in a user implementation.
              </p>
             </div>
            </dd>
@@ -37169,7 +37806,7 @@ when initially starting.
               System method (not intended to be called by user code).
              </p>
              <p>
-              Should be overridden in the actor implementation.
+              Should be overridden in a user implementation.
              </p>
             </div>
            </dd>
@@ -39117,6 +39754,81 @@ The component will remain in a
              <p>
               If the component is not in a valid state from which to execute this method,
 then the component state will not change, and an error will be logged.
+             </p>
+            </div>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.backtest.modules.SimulationModule.save">
+            <span class="sig-name descname">
+             <span class="pre">
+              save
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.backtest.modules.SimulationModule.save" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Return the actor/strategy state dictionary to be saved.
+            </p>
+            <p>
+             Calls
+             <cite>
+              on_save
+             </cite>
+             .
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Raises
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                RuntimeError
+               </strong>
+               – If
+               <cite>
+                actor/strategy
+               </cite>
+               is not registered with a trader.
+              </p>
+             </dd>
+            </dl>
+            <div class="admonition warning">
+             <p class="admonition-title">
+              Warning
+             </p>
+             <p>
+              Exceptions raised will be caught, logged, and reraised.
              </p>
             </div>
            </dd>
