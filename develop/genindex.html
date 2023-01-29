@@ -1175,9 +1175,21 @@
             </a>
            </li>
            <li>
-            <a href="api_reference/trading.html#nautilus_trader.trading.trader.Trader.actor_ids">
-             actor_ids() (Trader method)
+            <a href="api_reference/cache.html#nautilus_trader.cache.cache.Cache.actor_ids">
+             actor_ids() (Cache method)
             </a>
+            <ul>
+             <li>
+              <a href="api_reference/cache.html#nautilus_trader.cache.base.CacheFacade.actor_ids">
+               (CacheFacade method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/trading.html#nautilus_trader.trading.trader.Trader.actor_ids">
+               (Trader method)
+              </a>
+             </li>
+            </ul>
            </li>
            <li>
             <a href="api_reference/trading.html#nautilus_trader.trading.trader.Trader.actor_states">
@@ -6080,6 +6092,23 @@
              <li>
               <a href="api_reference/model/orderbook.html#nautilus_trader.model.orderbook.simulated.SimulatedL3OrderBook.delete">
                (SimulatedL3OrderBook method)
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li>
+            <a href="api_reference/cache.html#nautilus_trader.cache.cache.Cache.delete_actor">
+             delete_actor() (Cache method)
+            </a>
+            <ul>
+             <li>
+              <a href="api_reference/cache.html#nautilus_trader.cache.database.CacheDatabase.delete_actor">
+               (CacheDatabase method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/infrastructure.html#nautilus_trader.infrastructure.cache.RedisCacheDatabase.delete_actor">
+               (RedisCacheDatabase method)
               </a>
              </li>
             </ul>
@@ -15758,20 +15787,21 @@
              LiveRiskEngineConfig (class in nautilus_trader.config.live)
             </a>
            </li>
-          </ul>
-         </td>
-         <td style="width: 33%; vertical-align: top;">
-          <ul>
            <li>
             <a href="api_reference/common.html#nautilus_trader.common.timer.LiveTimer">
              LiveTimer (class in nautilus_trader.common.timer)
             </a>
            </li>
            <li>
-            <a href="api_reference/adapters/betfair.html#nautilus_trader.adapters.betfair.providers.BetfairInstrumentProvider.load">
-             load() (BetfairInstrumentProvider method)
+            <a href="api_reference/common.html#nautilus_trader.common.actor.Actor.load">
+             load() (Actor method)
             </a>
             <ul>
+             <li>
+              <a href="api_reference/adapters/betfair.html#nautilus_trader.adapters.betfair.providers.BetfairInstrumentProvider.load">
+               (BetfairInstrumentProvider method)
+              </a>
+             </li>
              <li>
               <a href="api_reference/adapters/binance.html#nautilus_trader.adapters.binance.futures.providers.BinanceFuturesInstrumentProvider.load">
                (BinanceFuturesInstrumentProvider method)
@@ -15793,6 +15823,11 @@
               </a>
              </li>
              <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.FXRolloverInterestModule.load">
+               (FXRolloverInterestModule method)
+              </a>
+             </li>
+             <li>
               <a href="api_reference/common.html#nautilus_trader.common.providers.InstrumentProvider.load">
                (InstrumentProvider method)
               </a>
@@ -15810,6 +15845,11 @@
              <li>
               <a href="api_reference/backtest.html#nautilus_trader.backtest.data.loaders.ParquetTickDataLoader.load">
                (ParquetTickDataLoader static method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.SimulationModule.load">
+               (SimulationModule method)
               </a>
              </li>
              <li>
@@ -15834,6 +15874,10 @@
              </li>
             </ul>
            </li>
+          </ul>
+         </td>
+         <td style="width: 33%; vertical-align: top;">
+          <ul>
            <li>
             <a href="api_reference/cache.html#nautilus_trader.cache.cache.Cache.load_account">
              load_account() (Cache method)
@@ -15858,6 +15902,23 @@
             <ul>
              <li>
               <a href="api_reference/infrastructure.html#nautilus_trader.infrastructure.cache.RedisCacheDatabase.load_accounts">
+               (RedisCacheDatabase method)
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li>
+            <a href="api_reference/cache.html#nautilus_trader.cache.cache.Cache.load_actor">
+             load_actor() (Cache method)
+            </a>
+            <ul>
+             <li>
+              <a href="api_reference/cache.html#nautilus_trader.cache.database.CacheDatabase.load_actor">
+               (CacheDatabase method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/infrastructure.html#nautilus_trader.infrastructure.cache.RedisCacheDatabase.load_actor">
                (RedisCacheDatabase method)
               </a>
              </li>
@@ -21600,9 +21661,26 @@
             </ul>
            </li>
            <li>
-            <a href="api_reference/trading.html#nautilus_trader.trading.strategy.Strategy.on_load">
-             on_load() (Strategy method)
+            <a href="api_reference/common.html#nautilus_trader.common.actor.Actor.on_load">
+             on_load() (Actor method)
             </a>
+            <ul>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_load">
+               (FXRolloverInterestModule method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.SimulationModule.on_load">
+               (SimulationModule method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/trading.html#nautilus_trader.trading.strategy.Strategy.on_load">
+               (Strategy method)
+              </a>
+             </li>
+            </ul>
            </li>
            <li>
             <a href="api_reference/common.html#nautilus_trader.common.actor.Actor.on_order_book">
@@ -21715,9 +21793,26 @@
             </ul>
            </li>
            <li>
-            <a href="api_reference/trading.html#nautilus_trader.trading.strategy.Strategy.on_save">
-             on_save() (Strategy method)
+            <a href="api_reference/common.html#nautilus_trader.common.actor.Actor.on_save">
+             on_save() (Actor method)
             </a>
+            <ul>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.FXRolloverInterestModule.on_save">
+               (FXRolloverInterestModule method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.SimulationModule.on_save">
+               (SimulationModule method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/trading.html#nautilus_trader.trading.strategy.Strategy.on_save">
+               (Strategy method)
+              </a>
+             </li>
+            </ul>
            </li>
            <li>
             <a href="api_reference/common.html#nautilus_trader.common.actor.Actor.on_start">
@@ -25852,10 +25947,25 @@
          <td style="width: 33%; vertical-align: top;">
           <ul>
            <li>
-            <a href="api_reference/trading.html#nautilus_trader.trading.strategy.Strategy.save">
-             save() (Strategy method)
+            <a href="api_reference/common.html#nautilus_trader.common.actor.Actor.save">
+             save() (Actor method)
             </a>
             <ul>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.FXRolloverInterestModule.save">
+               (FXRolloverInterestModule method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/backtest.html#nautilus_trader.backtest.modules.SimulationModule.save">
+               (SimulationModule method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/trading.html#nautilus_trader.trading.strategy.Strategy.save">
+               (Strategy method)
+              </a>
+             </li>
              <li>
               <a href="api_reference/trading.html#nautilus_trader.trading.trader.Trader.save">
                (Trader method)
@@ -32701,6 +32811,23 @@
              </li>
              <li>
               <a href="api_reference/infrastructure.html#nautilus_trader.infrastructure.cache.RedisCacheDatabase.update_account">
+               (RedisCacheDatabase method)
+              </a>
+             </li>
+            </ul>
+           </li>
+           <li>
+            <a href="api_reference/cache.html#nautilus_trader.cache.cache.Cache.update_actor">
+             update_actor() (Cache method)
+            </a>
+            <ul>
+             <li>
+              <a href="api_reference/cache.html#nautilus_trader.cache.database.CacheDatabase.update_actor">
+               (CacheDatabase method)
+              </a>
+             </li>
+             <li>
+              <a href="api_reference/infrastructure.html#nautilus_trader.infrastructure.cache.RedisCacheDatabase.update_actor">
                (RedisCacheDatabase method)
               </a>
              </li>

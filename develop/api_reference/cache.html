@@ -712,6 +712,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.actor_ids">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.actor_ids()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.add_account">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1072,6 +1081,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.delete_actor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.delete_actor()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.delete_strategy">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1229,6 +1247,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   Cache.load_account()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.load_actor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.load_actor()
                  </span>
                 </code>
                </a>
@@ -1729,6 +1756,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.update_actor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  Cache.update_actor()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.cache.Cache.update_order">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1843,6 +1879,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.delete_actor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheDatabase.delete_actor()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.delete_strategy">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -1874,6 +1919,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   CacheDatabase.load_accounts()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.load_actor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheDatabase.load_actor()
                  </span>
                 </code>
                </a>
@@ -2005,6 +2059,15 @@
                </a>
               </li>
               <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.update_actor">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheDatabase.update_actor()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
                <a class="md-nav__link" href="#nautilus_trader.cache.database.CacheDatabase.update_order">
                 <code class="docutils literal notranslate">
                  <span class="pre">
@@ -2078,6 +2141,15 @@
                 <code class="docutils literal notranslate">
                  <span class="pre">
                   CacheFacade.accounts()
+                 </span>
+                </code>
+               </a>
+              </li>
+              <li class="md-nav__item">
+               <a class="md-nav__link" href="#nautilus_trader.cache.base.CacheFacade.actor_ids">
+                <code class="docutils literal notranslate">
+                 <span class="pre">
+                  CacheFacade.actor_ids()
                  </span>
                 </code>
                </a>
@@ -3251,6 +3323,61 @@ accessed by many components.
               <p>
                <em>
                 list[Account]
+               </em>
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.actor_ids">
+            <span class="sig-name descname">
+             <span class="pre">
+              actor_ids
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               set
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.actor_ids" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Return all actor IDs.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Returns
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <em>
+                set[ComponentId]
                </em>
               </p>
              </dd>
@@ -6616,6 +6743,97 @@ error is found then a log error message will also be produced.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.delete_actor">
+            <span class="sig-name descname">
+             <span class="pre">
+              delete_actor
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Actor
+              </span>
+              <span class="pre">
+               actor
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.delete_actor" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Delete the given actor from the cache.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                actor
+               </strong>
+               (
+               <a class="reference internal" href="common.html#nautilus_trader.common.actor.Actor" title="nautilus_trader.common.actor.Actor">
+                <em>
+                 Actor
+                </em>
+               </a>
+               ) – The actor to deregister.
+              </p>
+             </dd>
+             <dt class="field-even">
+              Raises
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-even">
+              <p>
+               <strong>
+                ValueError
+               </strong>
+               – If
+               <cite>
+                actor
+               </cite>
+               is not contained in the actors index.
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.delete_strategy">
             <span class="sig-name descname">
              <span class="pre">
@@ -6700,7 +6918,7 @@ error is found then a log error message will also be produced.
                <cite>
                 strategy
                </cite>
-               is not contained in the strategies.
+               is not contained in the strategies index.
               </p>
              </dd>
             </dl>
@@ -8259,6 +8477,79 @@ and is open.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.load_actor">
+            <span class="sig-name descname">
+             <span class="pre">
+              load_actor
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Actor
+              </span>
+              <span class="pre">
+               actor
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.load_actor" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Load the state dictionary into the given actor.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                actor
+               </strong>
+               (
+               <a class="reference internal" href="common.html#nautilus_trader.common.actor.Actor" title="nautilus_trader.common.actor.Actor">
+                <em>
+                 Actor
+                </em>
+               </a>
+               ) – The actor to load.
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.load_instrument">
             <span class="sig-name descname">
              <span class="pre">
@@ -8578,7 +8869,7 @@ and is open.
            </dt>
            <dd>
             <p>
-             Load the state dictionary for the given strategy.
+             Load the state dictionary into the given strategy.
             </p>
             <dl class="field-list simple">
              <dt class="field-odd">
@@ -14827,6 +15118,79 @@ and is open.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.update_actor">
+            <span class="sig-name descname">
+             <span class="pre">
+              update_actor
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Actor
+              </span>
+              <span class="pre">
+               actor
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.cache.Cache.update_actor" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Update the given actor state in the cache.
+            </p>
+            <dl class="field-list simple">
+             <dt class="field-odd">
+              Parameters
+              <span class="colon">
+               :
+              </span>
+             </dt>
+             <dd class="field-odd">
+              <p>
+               <strong>
+                actor
+               </strong>
+               (
+               <a class="reference internal" href="common.html#nautilus_trader.common.actor.Actor" title="nautilus_trader.common.actor.Actor">
+                <em>
+                 Actor
+                </em>
+               </a>
+               ) – The actor to update.
+              </p>
+             </dd>
+            </dl>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.cache.Cache.update_order">
             <span class="sig-name descname">
              <span class="pre">
@@ -15554,6 +15918,57 @@ and is open.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.delete_actor">
+            <span class="sig-name descname">
+             <span class="pre">
+              delete_actor
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               ComponentId
+              </span>
+              <span class="pre">
+               component_id
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.delete_actor" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.delete_strategy">
             <span class="sig-name descname">
              <span class="pre">
@@ -15726,6 +16141,57 @@ and is open.
              </span>
             </span>
             <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.load_accounts" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.load_actor">
+            <span class="sig-name descname">
+             <span class="pre">
+              load_actor
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               ComponentId
+              </span>
+              <span class="pre">
+               component_id
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               dict
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.load_actor" title="Permalink to this definition">
              ¶
             </a>
            </dt>
@@ -16396,6 +16862,57 @@ and is open.
            </dd>
           </dl>
           <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.update_actor">
+            <span class="sig-name descname">
+             <span class="pre">
+              update_actor
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            ,
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               Actor
+              </span>
+              <span class="pre">
+               actor
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               void
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.database.CacheDatabase.update_actor" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
            <dt class="sig sig-object py" id="nautilus_trader.cache.database.CacheDatabase.update_order">
             <span class="sig-name descname">
              <span class="pre">
@@ -16772,6 +17289,46 @@ and is open.
              </span>
             </span>
             <a class="headerlink" href="#nautilus_trader.cache.base.CacheFacade.accounts" title="Permalink to this definition">
+             ¶
+            </a>
+           </dt>
+           <dd>
+            <p>
+             Abstract method (implement in subclass).
+            </p>
+           </dd>
+          </dl>
+          <dl class="py method">
+           <dt class="sig sig-object py" id="nautilus_trader.cache.base.CacheFacade.actor_ids">
+            <span class="sig-name descname">
+             <span class="pre">
+              actor_ids
+             </span>
+            </span>
+            <span class="sig-paren">
+             (
+            </span>
+            <em class="sig-param">
+             <span class="n">
+              <span class="pre">
+               self
+              </span>
+             </span>
+            </em>
+            <span class="sig-paren">
+             )
+            </span>
+            <span class="sig-return">
+             <span class="sig-return-icon">
+              →
+             </span>
+             <span class="sig-return-typehint">
+              <span class="pre">
+               set
+              </span>
+             </span>
+            </span>
+            <a class="headerlink" href="#nautilus_trader.cache.base.CacheFacade.actor_ids" title="Permalink to this definition">
              ¶
             </a>
            </dt>
