@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -16,9 +16,10 @@
 from libc.stdint cimport uint64_t
 
 from nautilus_trader.core.data cimport Data
-from nautilus_trader.model.c_enums.book_action cimport BookAction
-from nautilus_trader.model.c_enums.book_type cimport BookType
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
+from nautilus_trader.model.enums_c cimport BookAction
+from nautilus_trader.model.enums_c cimport BookType
+from nautilus_trader.model.enums_c cimport OrderSide
+from nautilus_trader.model.enums_c cimport TimeInForce
 from nautilus_trader.model.identifiers cimport InstrumentId
 
 
@@ -27,8 +28,10 @@ cdef class OrderBookData(Data):
     """The instrument ID for the order book.\n\n:returns: `InstrumentId`"""
     cdef readonly BookType book_type
     """The order book type (L1_TBBO, L2_MBP, L3_MBO).\n\n:returns: `BookType`"""
-    cdef readonly uint64_t update_id
-    """The update ID.\n\n:returns: `uint64`"""
+    cdef readonly TimeInForce time_in_force
+    """The time in force for this update.\n\n:returns: `TimeInForce`"""
+    cdef readonly uint64_t sequence
+    """The unique sequence number.\n\n:returns: `uint64`"""
 
 
 cdef class OrderBookSnapshot(OrderBookData):
@@ -58,7 +61,7 @@ cdef class OrderBookDeltas(OrderBookData):
 cdef class OrderBookDelta(OrderBookData):
     cdef readonly BookAction action
     """The order book delta action {``ADD``, ``UPDATED``, ``DELETE``, ``CLEAR``}.\n\n:returns: `BookAction`"""
-    cdef readonly Order order
+    cdef readonly BookOrder order
     """The order to apply.\n\n:returns: `Order`"""
 
     @staticmethod
@@ -68,24 +71,24 @@ cdef class OrderBookDelta(OrderBookData):
     cdef dict to_dict_c(OrderBookDelta obj)
 
 
-cdef class Order:
+cdef class BookOrder:
     cdef readonly double price
     """The orders price.\n\n:returns: `double`"""
     cdef readonly double size
     """The orders size.\n\n:returns: `double`"""
     cdef readonly OrderSide side
     """The orders side.\n\n:returns: `OrderSide`"""
-    cdef readonly str id
+    cdef readonly str order_id
     """The orders ID.\n\n:returns: `str`"""
 
     cpdef void update_price(self, double price) except *
     cpdef void update_size(self, double size) except *
-    cpdef void update_id(self, str value) except *
+    cpdef void update_order_id(self, str value) except *
     cpdef double exposure(self)
     cpdef double signed_size(self)
 
     @staticmethod
-    cdef Order from_dict_c(dict values)
+    cdef BookOrder from_dict_c(dict values)
 
     @staticmethod
-    cdef dict to_dict_c(Order obj)
+    cdef dict to_dict_c(BookOrder obj)

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -25,7 +25,6 @@ from nautilus_trader.common.factories import OrderFactory
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.core.uuid import UUID4
 from nautilus_trader.execution.engine import ExecutionEngine
-from nautilus_trader.model.c_enums.order_side import OrderSide
 from nautilus_trader.model.currencies import BTC
 from nautilus_trader.model.currencies import ETH
 from nautilus_trader.model.currencies import GBP
@@ -33,7 +32,8 @@ from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.currencies import USDT
 from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.model.enums import AccountType
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
+from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.events.account import AccountState
 from nautilus_trader.model.identifiers import AccountId
 from nautilus_trader.model.identifiers import PositionId
@@ -47,11 +47,10 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.model.position import Position
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 SIM = Venue("SIM")
@@ -65,7 +64,7 @@ USDJPY_SIM = TestInstrumentProvider.default_fx_ccy("USD/JPY")
 BTCUSDT_BINANCE = TestInstrumentProvider.btcusdt_binance()
 BTCUSD_BITMEX = TestInstrumentProvider.xbtusd_bitmex()
 ETHUSD_BITMEX = TestInstrumentProvider.ethusd_bitmex()
-BETTING_INSTRUMENT = BetfairTestStubs.betting_instrument()
+BETTING_INSTRUMENT = TestInstrumentProvider.betting_instrument()
 
 
 class TestPortfolio:
@@ -144,6 +143,7 @@ class TestPortfolio:
 
         # Assert
         assert result.id.get_issuer() == "BINANCE"
+        assert result.id.get_id() == "1513111"
 
     def test_balances_locked_when_no_account_for_venue_returns_none(self):
         # Arrange, Act, Assert
@@ -595,8 +595,8 @@ class TestPortfolio:
         )
 
         # Act
-        self.cache.add_position(position1, OMSType.HEDGING)
-        self.cache.add_position(position2, OMSType.HEDGING)
+        self.cache.add_position(position1, OmsType.HEDGING)
+        self.cache.add_position(position2, OmsType.HEDGING)
         self.portfolio.initialize_positions()
         self.portfolio.update_quote_tick(last)
 
@@ -670,14 +670,14 @@ class TestPortfolio:
         position = Position(instrument=BTCUSDT_BINANCE, fill=fill)
 
         # Act
-        self.cache.add_position(position, OMSType.HEDGING)
+        self.cache.add_position(position, OmsType.HEDGING)
         self.portfolio.update_position(TestEventStubs.position_opened(position))
 
         # Assert
         assert self.portfolio.net_exposures(BINANCE) == {USDT: Money(105100.00000000, USDT)}
         assert self.portfolio.unrealized_pnls(BINANCE) == {USDT: Money(100.00000000, USDT)}
         assert self.portfolio.margins_maint(BINANCE) == {
-            BTCUSDT_BINANCE.id: Money(105.00000000, USDT)
+            BTCUSDT_BINANCE.id: Money(105.00000000, USDT),
         }
         assert self.portfolio.net_exposure(BTCUSDT_BINANCE.id) == Money(105100.00000000, USDT)
         assert self.portfolio.unrealized_pnl(BTCUSDT_BINANCE.id) == Money(100.00000000, USDT)
@@ -754,14 +754,14 @@ class TestPortfolio:
         position = Position(instrument=BTCUSDT_BINANCE, fill=fill)
 
         # Act
-        self.cache.add_position(position, OMSType.HEDGING)
+        self.cache.add_position(position, OmsType.HEDGING)
         self.portfolio.update_position(TestEventStubs.position_opened(position))
 
         # Assert
         assert self.portfolio.net_exposures(BINANCE) == {USDT: Money(7987.77875000, USDT)}
         assert self.portfolio.unrealized_pnls(BINANCE) == {USDT: Money(-262.77875000, USDT)}
         assert self.portfolio.margins_maint(BINANCE) == {
-            BTCUSDT_BINANCE.id: Money(7.72500000, USDT)
+            BTCUSDT_BINANCE.id: Money(7.72500000, USDT),
         }
         assert self.portfolio.net_exposure(BTCUSDT_BINANCE.id) == Money(7987.77875000, USDT)
         assert self.portfolio.unrealized_pnl(BTCUSDT_BINANCE.id) == Money(-262.77875000, USDT)
@@ -830,7 +830,7 @@ class TestPortfolio:
         order = self.order_factory.market(
             ETHUSD_BITMEX.id,
             OrderSide.BUY,
-            Quantity.from_int(10000),
+            Quantity.from_int(10_000),
         )
 
         fill = TestEventStubs.order_filled(
@@ -845,7 +845,7 @@ class TestPortfolio:
         position = Position(instrument=ETHUSD_BITMEX, fill=fill)
 
         # Act
-        self.cache.add_position(position, OMSType.HEDGING)
+        self.cache.add_position(position, OmsType.HEDGING)
         self.portfolio.update_position(TestEventStubs.position_opened(position))
 
         # Assert
@@ -978,7 +978,7 @@ class TestPortfolio:
         position = Position(instrument=ETHUSD_BITMEX, fill=fill)
 
         self.portfolio.update_position(TestEventStubs.position_opened(position))
-        self.cache.add_position(position, OMSType.HEDGING)
+        self.cache.add_position(position, OmsType.HEDGING)
         self.cache.add_quote_tick(last_ethusd)
         self.cache.add_quote_tick(last_xbtusd)
         self.portfolio.update_quote_tick(last_ethusd)
@@ -1044,13 +1044,13 @@ class TestPortfolio:
         order1 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order2 = self.order_factory.market(
             GBPUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         self.cache.add_order(order1, position_id=None)
@@ -1083,8 +1083,8 @@ class TestPortfolio:
         position_opened2 = TestEventStubs.position_opened(position2)
 
         # Act
-        self.cache.add_position(position1, OMSType.HEDGING)
-        self.cache.add_position(position2, OMSType.HEDGING)
+        self.cache.add_position(position1, OmsType.HEDGING)
+        self.cache.add_position(position2, OmsType.HEDGING)
         self.portfolio.update_position(position_opened1)
         self.portfolio.update_position(position_opened2)
 
@@ -1148,7 +1148,7 @@ class TestPortfolio:
         order1 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill1 = TestEventStubs.order_filled(
@@ -1161,13 +1161,13 @@ class TestPortfolio:
         )
 
         position = Position(instrument=AUDUSD_SIM, fill=fill1)
-        self.cache.add_position(position, OMSType.HEDGING)
+        self.cache.add_position(position, OmsType.HEDGING)
         self.portfolio.update_position(TestEventStubs.position_opened(position))
 
         order2 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(50000),
+            Quantity.from_int(50_000),
         )
 
         order2_filled = TestEventStubs.order_filled(
@@ -1227,7 +1227,7 @@ class TestPortfolio:
         order1 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill1 = TestEventStubs.order_filled(
@@ -1240,13 +1240,13 @@ class TestPortfolio:
         )
 
         position = Position(instrument=AUDUSD_SIM, fill=fill1)
-        self.cache.add_position(position, OMSType.HEDGING)
+        self.cache.add_position(position, OmsType.HEDGING)
         self.portfolio.update_position(TestEventStubs.position_opened(position))
 
         order2 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order2_filled = TestEventStubs.order_filled(
@@ -1303,25 +1303,25 @@ class TestPortfolio:
         order1 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order2 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order3 = self.order_factory.market(
             GBPUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order4 = self.order_factory.market(
             GBPUSD_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill1 = TestEventStubs.order_filled(
@@ -1389,9 +1389,9 @@ class TestPortfolio:
         self.portfolio.update_quote_tick(last_audusd)
         self.portfolio.update_quote_tick(last_gbpusd)
 
-        self.cache.add_position(position1, OMSType.HEDGING)
-        self.cache.add_position(position2, OMSType.HEDGING)
-        self.cache.add_position(position3, OMSType.HEDGING)
+        self.cache.add_position(position1, OmsType.HEDGING)
+        self.cache.add_position(position2, OmsType.HEDGING)
+        self.cache.add_position(position3, OmsType.HEDGING)
 
         # Act
         self.portfolio.update_position(TestEventStubs.position_opened(position1))

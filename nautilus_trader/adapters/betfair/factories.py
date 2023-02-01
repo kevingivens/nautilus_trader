@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -130,10 +130,12 @@ def get_cached_betfair_instrument_provider(
     global INSTRUMENT_PROVIDER
     if INSTRUMENT_PROVIDER is None:
         LoggerAdapter("BetfairFactory", logger).warning(
-            "Creating new instance of BetfairInstrumentProvider"
+            "Creating new instance of BetfairInstrumentProvider",
         )
         INSTRUMENT_PROVIDER = BetfairInstrumentProvider(
-            client=client, logger=logger, filters=dict(market_filter)
+            client=client,
+            logger=logger,
+            filters=dict(market_filter),
         )
     return INSTRUMENT_PROVIDER
 
@@ -144,7 +146,7 @@ class BetfairLiveDataClientFactory(LiveDataClientFactory):
     """
 
     @staticmethod
-    def create(
+    def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
         config: BetfairDataClientConfig,
@@ -152,7 +154,7 @@ class BetfairLiveDataClientFactory(LiveDataClientFactory):
         cache: Cache,
         clock: LiveClock,
         logger: LiveLogger,
-    ) -> BetfairDataClient:
+    ):
         """
         Create a new Betfair data client.
 
@@ -214,7 +216,7 @@ class BetfairLiveExecClientFactory(LiveExecClientFactory):
     """
 
     @staticmethod
-    def create(
+    def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
         config: BetfairExecClientConfig,
@@ -222,7 +224,7 @@ class BetfairLiveExecClientFactory(LiveExecClientFactory):
         cache: Cache,
         clock: LiveClock,
         logger: LiveLogger,
-    ) -> BetfairExecutionClient:
+    ):
         """
         Create a new Betfair execution client.
 
@@ -259,7 +261,9 @@ class BetfairLiveExecClientFactory(LiveExecClientFactory):
             logger=logger,
         )
         provider = get_cached_betfair_instrument_provider(
-            client=client, logger=logger, market_filter=market_filter
+            client=client,
+            logger=logger,
+            market_filter=market_filter,
         )
 
         # Create client

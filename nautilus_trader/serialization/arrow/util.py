@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -22,7 +22,6 @@ from nautilus_trader.core.inspect import is_nautilus_class
 
 
 INVALID_WINDOWS_CHARS = r'<>:"/\|?* '
-
 GENERIC_DATA_PREFIX = "genericdata_"
 
 
@@ -90,7 +89,7 @@ def check_partition_columns(
                 # break queries, we should not do this.
                 raise ValueError(
                     f"Some values in partition column [{col}] "
-                    f"contain invalid characters: {invalid_values}"
+                    f"contain invalid characters: {invalid_values}",
                 )
 
     return mappings
@@ -105,7 +104,7 @@ def clean_partition_cols(df: pd.DataFrame, mappings: dict[str, dict[str, str]]):
     file.
     """
     for col, val_map in mappings.items():
-        df.loc[:, col] = df[col].map(val_map)
+        df[col] = df[col].map(val_map)
     return df
 
 

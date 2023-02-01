@@ -16,13 +16,19 @@ header = '"../includes/model.h"'
     "int64_t",
 ]
 
-"cpython.object" = [
-    "PyObject"
+[enum]
+rename_variants = "ScreamingSnakeCase"
+
+[export]
+exclude = [
+    "BarAggregation",
 ]
 
 [export.rename]
-"Timestamp" = "uint64_t"
-"Timedelta" = "int64_t"
+"BarAggregation" = "uint8_t"
+
+"UnixNanos" = "uint64_t"
+"TimedeltaNanos" = "int64_t"
 "TimeEvent" = "TimeEvent_t"
 "Currency" = "Currency_t"
 "Money" = "Money_t"

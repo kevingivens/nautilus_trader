@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -18,7 +18,7 @@ import asyncio
 import pytest
 
 from nautilus_trader.network.socket import SocketClient
-from tests.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
 
 
 @pytest.mark.asyncio

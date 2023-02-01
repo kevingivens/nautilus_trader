@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,19 +14,19 @@
 # -------------------------------------------------------------------------------------------------
 
 import asyncio
-import types
 from asyncio import Task
 from typing import Callable, Optional
 
 import aiohttp
 import msgspec
 from aiohttp import WSMessage
-from nautilus_trader.common.logging cimport LogColor
+
+from nautilus_trader.core.asynchronous import sleep0
+from nautilus_trader.network.error import MaxRetriesExceeded
+
 from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.common.logging cimport LoggerAdapter
 from nautilus_trader.core.correctness cimport Condition
-
-from nautilus_trader.network.error import MaxRetriesExceeded
 
 
 cpdef enum WSMsgType:
@@ -84,12 +84,12 @@ cdef class WebSocketClient:
         self._session: Optional[aiohttp.ClientSession] = None
         self._ws: Optional[aiohttp.ClientWebSocketResponse] = None
         self._tasks: list[asyncio.Task] = []
-        self._stopped = False
-        self._stopping = False
         self._pong_msg = pong_msg
         self._log_send = log_send
         self._log_recv = log_recv
 
+        self.is_stopping = False
+        self.is_running = False
         self.is_connected = False
         self.max_retry_connection = max_retry_connection
         self.connection_retry_count = 0
@@ -169,10 +169,10 @@ cdef class WebSocketClient:
 
         """
         self._log.debug("Closing WebSocket...")
-        self._stopping = True
+        self.is_stopping = True
         await self._ws.close()
-        while not self._stopped:
-            await self._sleep0()
+        while self.is_running:
+            await sleep0()
         self.is_connected = False
         await self.post_disconnection()
         self._log.debug("WebSocket closed.")
@@ -191,7 +191,7 @@ cdef class WebSocketClient:
 
     async def send(self, bytes raw) -> None:
         if self._log_send:
-            self._log.info(f"[SEND] {raw}", LogColor.BLUE)
+            self._log.debug(f"[SEND] {raw}")
         await self._ws.send_bytes(raw)
 
     async def receive(self) -> Optional[bytes]:
@@ -204,17 +204,17 @@ cdef class WebSocketClient:
             elif msg_type == BINARY:
                 return msg.data
             elif msg_type == ERROR:  # aiohttp specific
-                if self._stopping is True:
+                if self.is_stopping is True:
                     return
                 self._log.warning(f"[RECV] {msg}.")
                 raise ConnectionAbortedError("websocket aiohttp error")
             elif msg_type == CLOSE:  # Received CLOSE from server
-                if self._stopping is True:
+                if self.is_stopping is True:
                     return
                 self._log.warning(f"[RECV] {msg}.")
                 raise ConnectionAbortedError("websocket closed by server")
             elif msg_type == CLOSING or msg_type == CLOSED:  # aiohttp specific
-                if self._stopping is True:
+                if self.is_stopping is True:
                     return
                 self._log.warning(f"[RECV] {msg}.")
                 raise ConnectionAbortedError("websocket aiohttp closing or closed")
@@ -260,12 +260,13 @@ cdef class WebSocketClient:
 
     async def start(self) -> None:
         self._log.debug("Starting recv loop...")
+        self.is_running = True
         cdef bytes raw
-        while not self._stopping:
+        while not self.is_stopping:
             try:
                 raw = await self.receive()
                 if self._log_recv:
-                    self._log.info(f"[RECV] {raw}.", LogColor.BLUE)
+                    self._log.debug(f"[RECV] {raw}.")
                 if raw is None:
                     continue
                 if self._pong_msg is not None and raw == self._pong_msg:
@@ -276,20 +277,9 @@ cdef class WebSocketClient:
                 self._log.exception(f"Error on receive", e)
                 break
         self._log.debug("Stopped.")
-        self._stopped = True
+        self.is_running = False
 
     async def close(self):
         for task in self._tasks:
             self._log.debug(f"Canceling {task}...")
             task.cancel()
-
-    @types.coroutine
-    def _sleep0(self):
-        # Skip one event loop run cycle.
-        #
-        # This is equivalent to `asyncio.sleep(0)` however avoids the overhead
-        # of the pure Python function call and integer comparison <= 0.
-        #
-        # Uses a bare 'yield' expression (which Task.__step knows how to handle)
-        # instead of creating a Future object.
-        yield

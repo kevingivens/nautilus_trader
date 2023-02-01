@@ -6,7 +6,7 @@ derivative products. This integration supports live market data ingest and order
 execution with Binance.
 
 ```{warning}
-This integration is still under construction. Please consider it to be in an
+This integration is still under construction. Consider it to be in an
 unstable beta phase and exercise caution.
 ```
 
@@ -43,10 +43,6 @@ spot assets and futures contracts. However, because NautilusTrader is capable of
 trading, it's necessary to explicitly clarify the difference between `BTCUSDT` as the spot and margin traded
 pair, and the `BTCUSDT` perpetual futures contract (this symbol is used for _both_ natively by Binance). Therefore, NautilusTrader appends `-PERP` to all native perpetual symbols.
 E.g. for Binance Futures, the said instruments symbol is `BTCUSDT-PERP` within the Nautilus system boundary.
-
-```{note}
-This convention of appending `-PERP` to perpetual futures is also adopted by [FTX](ftx.md).
-```
 
 ## Order types
 |                        | Spot                            | Margin                          | Futures           |

@@ -6,9 +6,19 @@ sys_includes = ["stdint.h", "Python.h"]
 no_includes = true
 tab_width = 4
 
+[enum]
+rename_variants = "ScreamingSnakeCase"
+
+[export]
+exclude = [
+    "BarAggregation",
+]
+
 [export.rename]
-"Timestamp" = "uint64_t"
-"Timedelta" = "int64_t"
+"BarAggregation" = "uint8_t"
+
+"UnixNanos" = "uint64_t"
+"TimedeltaNanos" = "int64_t"
 "Currency" = "Currency_t"
 "Money" = "Money_t"
 "Price" = "Price_t"

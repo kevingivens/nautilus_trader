@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -52,12 +52,11 @@ from nautilus_trader.model.orderbook.data import OrderBookDeltas
 from nautilus_trader.model.orderbook.data import OrderBookSnapshot
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
+from nautilus_trader.test_kit.mocks.object_storer import ObjectStorer
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.filters import NewsEvent
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit.mocks.object_storer import ObjectStorer
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 from tests.unit_tests.portfolio.test_portfolio import BETFAIR
 
 
@@ -66,7 +65,7 @@ BINANCE = Venue("BINANCE")
 XBTUSD_BITMEX = TestInstrumentProvider.xbtusd_bitmex()
 BTCUSDT_BINANCE = TestInstrumentProvider.btcusdt_binance()
 ETHUSDT_BINANCE = TestInstrumentProvider.ethusdt_binance()
-BETFAIR_INSTRUMENT = BetfairTestStubs.betting_instrument()
+BETFAIR_INSTRUMENT = TestInstrumentProvider.betting_instrument()
 
 
 class TestDataEngine:
@@ -95,7 +94,10 @@ class TestDataEngine:
             logger=self.logger,
         )
 
-        config = DataEngineConfig(debug=True)
+        config = DataEngineConfig(
+            validate_data_sequence=True,
+            debug=True,
+        )
         self.data_engine = DataEngine(
             msgbus=self.msgbus,
             cache=self.cache,
@@ -923,7 +925,8 @@ class TestDataEngine:
 
         handler = []
         self.msgbus.subscribe(
-            topic="data.book.snapshots.BINANCE.ETHUSDT.1000", handler=handler.append
+            topic="data.book.snapshots.BINANCE.ETHUSDT.1000",
+            handler=handler.append,
         )
 
         subscribe = Subscribe(
@@ -962,7 +965,8 @@ class TestDataEngine:
 
         handler = []
         self.msgbus.subscribe(
-            topic="data.book.snapshots.BINANCE.ETHUSDT.1000", handler=handler.append
+            topic="data.book.snapshots.BINANCE.ETHUSDT.1000",
+            handler=handler.append,
         )
 
         subscribe = Subscribe(
@@ -1055,10 +1059,12 @@ class TestDataEngine:
         handler1 = []
         handler2 = []
         self.msgbus.subscribe(
-            topic="data.book.snapshots.BINANCE.ETHUSDT.1000", handler=handler1.append
+            topic="data.book.snapshots.BINANCE.ETHUSDT.1000",
+            handler=handler1.append,
         )
         self.msgbus.subscribe(
-            topic="data.book.snapshots.BINANCE.ETHUSDT.1000", handler=handler2.append
+            topic="data.book.snapshots.BINANCE.ETHUSDT.1000",
+            handler=handler2.append,
         )
 
         subscribe1 = Subscribe(
@@ -1423,7 +1429,7 @@ class TestDataEngine:
             instrument_id=ETHUSDT_BINANCE.id,
             price=Price.from_str("1050.00000"),
             size=Quantity.from_int(100),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456789"),
             ts_event=0,
             ts_init=0,
@@ -1470,7 +1476,7 @@ class TestDataEngine:
             instrument_id=ETHUSDT_BINANCE.id,
             price=Price.from_str("1050.00000"),
             size=Quantity.from_int(100),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456789"),
             ts_event=0,
             ts_init=0,
@@ -1633,6 +1639,146 @@ class TestDataEngine:
         # Assert
         assert handler1 == [bar]
         assert handler2 == [bar]
+
+    def test_process_bar_when_with_older_timestamp_does_not_cache_or_publish(self):
+        # Arrange
+        self.data_engine.register_client(self.binance_client)
+        self.binance_client.start()
+
+        bar_spec = BarSpecification(1000, BarAggregation.TICK, PriceType.MID)
+        bar_type = BarType(ETHUSDT_BINANCE.id, bar_spec)
+
+        handler = []
+        self.msgbus.subscribe(topic=f"data.bars.{bar_type}", handler=handler.append)
+
+        subscribe = Subscribe(
+            client_id=ClientId(BINANCE.value),
+            venue=BINANCE,
+            data_type=DataType(Bar, metadata={"bar_type": bar_type}),
+            command_id=UUID4(),
+            ts_init=self.clock.timestamp_ns(),
+        )
+
+        self.data_engine.execute(subscribe)
+
+        bar1 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1055.00000"),
+            Price.from_str("1050.00000"),
+            Price.from_str("1052.00000"),
+            Quantity.from_int(100),
+            1,
+            1,
+        )
+
+        bar2 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1055.00000"),
+            Price.from_str("1050.00000"),
+            Price.from_str("1051.00000"),
+            Quantity.from_int(100),
+            0,
+            1,
+        )
+
+        bar3 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1055.00000"),
+            Price.from_str("1050.00000"),
+            Price.from_str("1050.50000"),
+            Quantity.from_int(100),
+            0,
+            0,
+        )
+
+        bar4 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1055.00000"),
+            Price.from_str("1049.00000"),
+            Price.from_str("1049.50000"),
+            Quantity.from_int(100),
+            2,
+            0,
+        )
+
+        # Act
+        self.data_engine.process(bar1)
+        self.data_engine.process(bar2)
+        self.data_engine.process(bar3)
+        self.data_engine.process(bar4)
+
+        # Assert
+        assert handler == [bar1]
+        assert self.cache.bar(bar_type) == bar1
+
+    def test_process_bar_when_revision_is_not_of_last_bar_does_not_cache_or_publish(self):
+        # Arrange
+        self.data_engine.register_client(self.binance_client)
+        self.binance_client.start()
+
+        bar_spec = BarSpecification(1000, BarAggregation.TICK, PriceType.MID)
+        bar_type = BarType(ETHUSDT_BINANCE.id, bar_spec)
+
+        handler = []
+        self.msgbus.subscribe(topic=f"data.bars.{bar_type}", handler=handler.append)
+
+        subscribe = Subscribe(
+            client_id=ClientId(BINANCE.value),
+            venue=BINANCE,
+            data_type=DataType(Bar, metadata={"bar_type": bar_type}),
+            command_id=UUID4(),
+            ts_init=self.clock.timestamp_ns(),
+        )
+
+        self.data_engine.execute(subscribe)
+
+        bar1 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1055.00000"),
+            Price.from_str("1050.00000"),
+            Price.from_str("1052.00000"),
+            Quantity.from_int(100),
+            1,
+            1,
+        )
+
+        bar2 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1053.00000"),
+            Price.from_str("1050.00000"),
+            Price.from_str("1051.00000"),
+            Quantity.from_int(100),
+            1,
+            3,
+            is_revision=True,
+        )
+
+        bar3 = Bar(
+            bar_type,
+            Price.from_str("1051.00000"),
+            Price.from_str("1052.00000"),
+            Price.from_str("1050.00000"),
+            Price.from_str("1051.00000"),
+            Quantity.from_int(100),
+            1,
+            2,
+            is_revision=True,
+        )
+
+        # Act
+        self.data_engine.process(bar1)
+        self.data_engine.process(bar2)
+        self.data_engine.process(bar3)
+
+        # Assert
+        assert handler == [bar1, bar2]
+        assert self.cache.bar(bar_type) == bar2
 
     def test_request_instrument_reaches_client(self):
         # Arrange

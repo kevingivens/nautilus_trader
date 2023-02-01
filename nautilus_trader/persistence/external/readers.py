@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,8 +15,9 @@
 
 import inspect
 import logging
+from collections.abc import Generator
 from io import BytesIO
-from typing import Any, Callable, Generator, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 import pandas as pd
 
@@ -107,7 +108,7 @@ class Reader:
             if isinstance(r, Generator):
                 raise Exception(f"{self.instrument_provider_update} func should not be generator")
             new_instruments = set(self.instrument_provider.get_all().values()).difference(
-                instruments
+                instruments,
             )
             if new_instruments:
                 return list(new_instruments)
@@ -293,7 +294,7 @@ class CSVReader(Reader):
                     [
                         dict(zip(self.header, line.split(bytes(self.separator, encoding="utf-8"))))
                         for line in process.split(b"\n")
-                    ]
+                    ],
                 )  # type: ignore
 
         for chunk in chunks:
@@ -341,7 +342,7 @@ class ParquetReader(ByteReader):
             df = pd.read_parquet(BytesIO(block))
             self.buffer = b""
         except Exception as e:
-            logging.exception(f"Error on parse {block[:128]!r}", e)
+            logging.exception(f"Error {e} on parse " + str(block[:128]))
             return
 
         if self.instrument_provider_update is not None:

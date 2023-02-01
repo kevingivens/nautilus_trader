@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -60,10 +60,10 @@ class BetfairStreamClient(SocketClient):
         self.client = client
         self.unique_id = self.new_unique_id()
 
-    def connect(self):
-        err = f"Must login to BetfairClient before calling connect on {self.__class__}"
-        assert self.client.session_token, err
-        return super().connect()
+    async def connect(self):
+        if not self.client.session_token:
+            await self.client.connect()
+        return await super().connect()
 
     def new_unique_id(self) -> int:
         global _UNIQUE_ID
@@ -77,10 +77,6 @@ class BetfairStreamClient(SocketClient):
             "appKey": self.client.app_key,
             "session": self.client.session_token,
         }
-
-    async def send_dict(self, data):
-        raw = msgspec.json.encode(data)
-        await self.send(raw)
 
 
 class BetfairOrderStreamClient(BetfairStreamClient):
@@ -118,8 +114,8 @@ class BetfairOrderStreamClient(BetfairStreamClient):
             "initialClk": None,
             "clk": None,
         }
-        await self.send_dict(data=self.auth_message())
-        await self.send_dict(data=subscribe_msg)
+        await self.send(msgspec.json.encode(self.auth_message()))
+        await self.send(msgspec.json.encode(subscribe_msg))
 
 
 class BetfairMarketStreamClient(BetfairStreamClient):
@@ -156,6 +152,8 @@ class BetfairMarketStreamClient(BetfairStreamClient):
         subscribe_book_updates=True,
         subscribe_trade_updates=True,
         subscribe_market_definitions=True,
+        subscribe_bsp_updates=True,
+        subscribe_bsp_projected=True,
     ):
         filters = (
             market_ids,
@@ -170,7 +168,7 @@ class BetfairMarketStreamClient(BetfairStreamClient):
         )
         assert any(filters), "Must pass at least one filter"
         assert any(
-            (subscribe_book_updates, subscribe_trade_updates)
+            (subscribe_book_updates, subscribe_trade_updates),
         ), "Must subscribe to either book updates or trades"
         if market_ids is not None:
             # TODO - Log a warning about inefficiencies of specific market ids - Won't receive any updates for new
@@ -195,6 +193,10 @@ class BetfairMarketStreamClient(BetfairStreamClient):
             data_fields.append("EX_TRADED")
         if subscribe_market_definitions:
             data_fields.append("EX_MARKET_DEF")
+        if subscribe_bsp_updates:
+            data_fields.append("SP_TRADED")
+        if subscribe_bsp_projected:
+            data_fields.append("SP_PROJECTED")
 
         message = {
             "op": "marketSubscription",
@@ -207,7 +209,7 @@ class BetfairMarketStreamClient(BetfairStreamClient):
             "heartbeatMs": heartbeat_ms,
             "segmentationEnabled": segmentation_enabled,
         }
-        await self.send_dict(data=message)
+        await self.send(msgspec.json.encode(message))
 
     async def post_connection(self):
-        await self.send_dict(data=self.auth_message())
+        await self.send(msgspec.json.encode(self.auth_message()))

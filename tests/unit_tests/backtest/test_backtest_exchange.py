@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,6 +15,8 @@
 
 from datetime import timedelta
 from decimal import Decimal
+
+import pytest
 
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.backtest.exchange import SimulatedExchange
@@ -39,7 +41,7 @@ from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import AggressorSide
 from nautilus_trader.model.enums import BookType
 from nautilus_trader.model.enums import LiquiditySide
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.enums import OrderStatus
 from nautilus_trader.model.enums import PositionSide
@@ -57,11 +59,11 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
-from tests.test_kit.mocks.strategies import MockStrategy
-from tests.test_kit.stubs import UNIX_EPOCH
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.mocks.strategies import MockStrategy
+from nautilus_trader.test_kit.stubs import UNIX_EPOCH
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -120,7 +122,7 @@ class TestSimulatedExchange:
 
         self.exchange = SimulatedExchange(
             venue=Venue("SIM"),
-            oms_type=OMSType.HEDGING,
+            oms_type=OmsType.HEDGING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USD)],
@@ -184,6 +186,22 @@ class TestSimulatedExchange:
         # Assert
         assert self.exchange.fill_model == fill_model
 
+    def test_get_matching_engines_when_engine_returns_expected_dict(self):
+        # Arrange, Act
+        matching_engines = self.exchange.get_matching_engines()
+
+        # Assert
+        assert isinstance(matching_engines, dict)
+        assert len(matching_engines) == 1
+        assert list(matching_engines.keys()) == [USDJPY_SIM.id]
+
+    def test_get_matching_engine_when_no_engine_for_instrument_returns_none(self):
+        # Arrange, Act
+        matching_engine = self.exchange.get_matching_engine(USDJPY_SIM.id)
+
+        # Assert
+        assert matching_engine.instrument == USDJPY_SIM
+
     def test_get_books_with_one_instrument_returns_one_book(self):
         # Arrange, Act
         books = self.exchange.get_books()
@@ -242,12 +260,12 @@ class TestSimulatedExchange:
         # Arrange
         tick1 = TestDataStubs.trade_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
         )
 
         tick2 = TestDataStubs.trade_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
-            aggressor_side=AggressorSide.SELL,
+            aggressor_side=AggressorSide.SELLER,
         )
 
         # Act
@@ -263,7 +281,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("110.000"),
         )
 
@@ -281,7 +299,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("110.000"),
         )
 
@@ -299,7 +317,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act
@@ -316,7 +334,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act
@@ -341,7 +359,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.005"),  # Price at ask
         )
 
@@ -394,7 +412,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act
@@ -419,7 +437,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act
@@ -436,8 +454,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.002"),
             ask=Price.from_str("90.005"),
-            bid_volume=Quantity.from_int(500_000),
-            ask_volume=Quantity.from_int(500_000),
+            bid_size=Quantity.from_int(500_000),
+            ask_size=Quantity.from_int(500_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
@@ -465,8 +483,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.002"),
             ask=Price.from_str("90.005"),
-            bid_volume=Quantity.from_int(500_000),
-            ask_volume=Quantity.from_int(500_000),
+            bid_size=Quantity.from_int(500_000),
+            ask_size=Quantity.from_int(500_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
@@ -501,7 +519,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
@@ -527,7 +545,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.005"),
             post_only=True,
         )
@@ -553,7 +571,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
         )
 
@@ -572,8 +590,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.002"),
             ask=Price.from_str("90.005"),
-            bid_volume=Quantity.from_int(500_000),
-            ask_volume=Quantity.from_int(500_000),
+            bid_size=Quantity.from_int(500_000),
+            ask_size=Quantity.from_int(500_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
@@ -604,8 +622,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.002"),
             ask=Price.from_str("90.005"),
-            bid_volume=Quantity.from_int(500_000),
-            ask_volume=Quantity.from_int(500_000),
+            bid_size=Quantity.from_int(500_000),
+            ask_size=Quantity.from_int(500_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
@@ -764,8 +782,35 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market_if_touched(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
+            Price.from_str("90.000"),
+        )
+
+        # Act
+        self.strategy.submit_order(order)
+        self.exchange.process(0)
+
+        # Assert
+        assert order.status == OrderStatus.ACCEPTED
+        assert len(self.exchange.get_open_orders()) == 1
+        assert order in self.exchange.get_open_orders()
+
+    def test_submit_limit_if_touched_order(self):
+        # Arrange: Prepare market
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.002"),
+            ask=Price.from_str("90.005"),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+
+        order = self.strategy.order_factory.limit_if_touched(
+            USDJPY_SIM.id,
+            OrderSide.BUY,
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
+            Price.from_str("90.000"),
         )
 
         # Act
@@ -790,8 +835,8 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
-            Price.from_str("90.005"),  # <-- Limit price at the ask
+            Quantity.from_int(100_000),
+            Price.from_str("90.010"),
             post_only=False,  # <-- Can be liquidity TAKER
         )
 
@@ -801,6 +846,7 @@ class TestSimulatedExchange:
 
         # Assert
         assert order.status == OrderStatus.FILLED
+        assert order.avg_px == 90.005  # <-- fills at ask
         assert order.liquidity_side == LiquiditySide.TAKER
         assert len(self.exchange.get_open_orders()) == 0
 
@@ -817,8 +863,8 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
-            Price.from_str("90.010"),  # <-- Limit price above the ask
+            Quantity.from_int(100_000),
+            Price.from_str("90.000"),  # <-- Limit price above the ask
             post_only=False,  # <-- Can be liquidity TAKER
         )
 
@@ -826,9 +872,18 @@ class TestSimulatedExchange:
         self.strategy.submit_order(order)
         self.exchange.process(0)
 
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("89.900"),
+            ask=Price.from_str("89.950"),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+        self.exchange.process(0)
+
         # Assert
         assert order.status == OrderStatus.FILLED
-        assert order.avg_px == 90.005
+        assert order.avg_px == 90.000
 
     def test_submit_limit_order_fills_at_most_book_volume(self):
         # Arrange: Prepare market
@@ -870,7 +925,7 @@ class TestSimulatedExchange:
             USDJPY_SIM.id,
             OrderSide.BUY,
             Quantity.from_int(10_000),  # <-- Order volume greater than available ask volume
-            Price.from_str("90.010"),
+            Price.from_str("90.000"),
         )
 
         # Act
@@ -880,8 +935,8 @@ class TestSimulatedExchange:
         # Quantity is refreshed -> Ensure we don't trade the entire amount
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
-            ask=Price.from_str("90.010"),
-            ask_volume=Quantity.from_int(10_000),
+            ask=Price.from_str("90.000"),
+            ask_size=Quantity.from_int(10_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
@@ -890,21 +945,74 @@ class TestSimulatedExchange:
         assert order.status == OrderStatus.FILLED
         assert order.filled_qty == 10_000
 
-    def test_submit_limit_order_fills_at_most_order_volume(self):
+    @pytest.mark.parametrize(
+        "side, price, trigger_price",
+        [
+            [OrderSide.BUY, Price.from_str("90.000"), Price.from_str("90.000")],
+            [OrderSide.SELL, Price.from_str("90.010"), Price.from_str("90.010")],
+        ],
+    )
+    def test_submit_limit_if_touched_order_then_fills(self, side, price, trigger_price):
         # Arrange: Prepare market
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.000"),
+            ask=Price.from_str("90.010"),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+
+        order = self.strategy.order_factory.limit_if_touched(
+            USDJPY_SIM.id,
+            side,
+            Quantity.from_int(10_000),  # <-- Order volume greater than available ask volume
+            price=price,
+            trigger_price=trigger_price,
+        )
+
+        # Act
+        self.strategy.submit_order(order)
+        self.exchange.process(0)
+
+        # Quantity is refreshed -> Ensure we don't trade the entire amount
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.010"),  # <-- in cross for purpose of test
+            ask=Price.from_str("90.000"),
+            bid_size=Quantity.from_int(10_000),
+            ask_size=Quantity.from_int(10_000),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+
+        # Assert
+        assert order.status == OrderStatus.FILLED
+        assert order.filled_qty == 10_000
+
+    @pytest.mark.parametrize(
+        "side, price",
+        [
+            [OrderSide.BUY, Price.from_str("90.010")],
+            [OrderSide.SELL, Price.from_str("90.000")],
+        ],
+    )
+    def test_submit_limit_order_fills_at_most_order_volume(self, side, price):
+        # Arrange: Prepare market
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.005"),
             ask=Price.from_str("90.005"),
-            ask_volume=Quantity.from_int(10_000),
+            bid_size=Quantity.from_int(10_000),
+            ask_size=Quantity.from_int(10_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
 
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
-            OrderSide.BUY,
+            side,
             Quantity.from_int(15_000),  # <-- Order volume greater than available ask volume
-            Price.from_str("90.010"),
+            price,
             post_only=False,  # <-- Can be liquidity TAKER
         )
 
@@ -917,8 +1025,10 @@ class TestSimulatedExchange:
         # Quantity is refreshed -> Ensure we don't trade the entire amount
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.005"),
             ask=Price.from_str("90.005"),
-            ask_volume=Quantity.from_int(10_000),
+            bid_size=Quantity.from_int(10_000),
+            ask_size=Quantity.from_int(10_000),
         )
         self.data_engine.process(tick)
         self.exchange.process_quote_tick(tick)
@@ -927,7 +1037,14 @@ class TestSimulatedExchange:
         assert order.status == OrderStatus.FILLED
         assert order.filled_qty == 15_000
 
-    def test_submit_stop_market_order_inside_market_rejects(self):
+    @pytest.mark.parametrize(
+        "side, trigger_price",
+        [
+            [OrderSide.BUY, Price.from_str("90.005")],
+            [OrderSide.SELL, Price.from_str("90.002")],
+        ],
+    )
+    def test_submit_stop_market_order_inside_market_rejects(self, side, trigger_price):
         # Arrange: Prepare market
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
@@ -939,9 +1056,9 @@ class TestSimulatedExchange:
 
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100000),
-            Price.from_str("90.005"),
+            side,
+            Quantity.from_int(100_000),
+            trigger_price,
         )
 
         # Act
@@ -952,33 +1069,14 @@ class TestSimulatedExchange:
         assert order.status == OrderStatus.REJECTED
         assert len(self.exchange.get_open_orders()) == 0
 
-    def test_submit_stop_market_order(self):
-        # Arrange: Prepare market
-        tick = TestDataStubs.quote_tick_3decimal(
-            instrument_id=USDJPY_SIM.id,
-            bid=Price.from_str("90.002"),
-            ask=Price.from_str("90.005"),
-        )
-        self.data_engine.process(tick)
-        self.exchange.process_quote_tick(tick)
-
-        order = self.strategy.order_factory.stop_market(
-            USDJPY_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100000),
-            Price.from_str("90.010"),
-        )
-
-        # Act
-        self.strategy.submit_order(order)
-        self.exchange.process(0)
-
-        # Assert
-        assert order.status == OrderStatus.ACCEPTED
-        assert len(self.exchange.get_open_orders()) == 1
-        assert order in self.exchange.get_open_orders()
-
-    def test_submit_stop_limit_order_when_inside_market_rejects(self):
+    @pytest.mark.parametrize(
+        "side, price, trigger_price",
+        [
+            [OrderSide.BUY, Price.from_str("90.005"), Price.from_str("90.005")],
+            [OrderSide.SELL, Price.from_str("90.002"), Price.from_str("90.002")],
+        ],
+    )
+    def test_submit_stop_limit_order_inside_market_rejects(self, side, price, trigger_price):
         # Arrange: Prepare market
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
@@ -990,48 +1088,128 @@ class TestSimulatedExchange:
 
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
+            side,
+            Quantity.from_int(100_000),
+            price=price,
+            trigger_price=trigger_price,
+        )
+
+        # Act
+        self.strategy.submit_order(order)
+        self.exchange.process(0)
+
+        # Assert
+        assert order.status == OrderStatus.REJECTED
+        assert len(self.exchange.get_open_orders()) == 0
+
+    @pytest.mark.parametrize(
+        "side, trigger_price",
+        [
+            [OrderSide.BUY, Price.from_str("90.010")],
+            [OrderSide.SELL, Price.from_str("90.000")],
+        ],
+    )
+    def test_submit_stop_market_order(self, side, trigger_price):
+        # Arrange: Prepare market
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.002"),
+            ask=Price.from_str("90.005"),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+
+        order = self.strategy.order_factory.stop_market(
+            USDJPY_SIM.id,
+            side,
+            Quantity.from_int(100_000),
+            trigger_price=trigger_price,
+        )
+
+        # Act
+        self.strategy.submit_order(order)
+        self.exchange.process(0)
+
+        # Assert
+        assert order.status == OrderStatus.ACCEPTED
+        assert len(self.exchange.get_open_orders()) == 1
+        assert order in self.exchange.get_open_orders()
+
+    @pytest.mark.parametrize(
+        "side, price, trigger_price",
+        [
+            [OrderSide.BUY, Price.from_str("90.010"), Price.from_str("90.002")],
+            [OrderSide.SELL, Price.from_str("90.000"), Price.from_str("90.005")],
+        ],
+    )
+    def test_submit_stop_limit_order_when_inside_market_rejects(self, side, price, trigger_price):
+        # Arrange: Prepare market
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.002"),
+            ask=Price.from_str("90.005"),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+
+        order = self.strategy.order_factory.stop_limit(
+            USDJPY_SIM.id,
+            side,
+            Quantity.from_int(100_000),
+            price=price,
+            trigger_price=trigger_price,
+        )
+
+        # Act
+        self.strategy.submit_order(order)
+        self.exchange.process(0)
+
+        # Assert
+        assert order.status == OrderStatus.REJECTED
+        assert len(self.exchange.get_open_orders()) == 0
+
+    @pytest.mark.parametrize(
+        "side, price, trigger_price",
+        [
+            [OrderSide.BUY, Price.from_str("90.000"), Price.from_str("90.010")],
+            [OrderSide.SELL, Price.from_str("89.980"), Price.from_str("89.990")],
+        ],
+    )
+    def test_submit_stop_limit_order(self, side, price, trigger_price):
+        # Arrange: Prepare market
+        tick = TestDataStubs.quote_tick_3decimal(
+            instrument_id=USDJPY_SIM.id,
+            bid=Price.from_str("90.002"),
+            ask=Price.from_str("90.005"),
+        )
+        self.data_engine.process(tick)
+        self.exchange.process_quote_tick(tick)
+
+        order = self.strategy.order_factory.stop_limit(
+            USDJPY_SIM.id,
+            side,
+            Quantity.from_int(100_000),
+            price=price,
+            trigger_price=trigger_price,
+        )
+
+        # Act
+        self.strategy.submit_order(order)
+        self.exchange.process(0)
+
+        # Assert
+        assert order.status == OrderStatus.ACCEPTED
+        assert len(self.exchange.get_open_orders()) == 1
+        assert order in self.exchange.get_open_orders()
+
+    @pytest.mark.parametrize(
+        "side",
+        [
+            OrderSide.BUY,
             OrderSide.SELL,
-            Quantity.from_int(100000),
-            price=Price.from_str("90.010"),
-            trigger_price=Price.from_str("90.02"),
-        )
-
-        # Act
-        self.strategy.submit_order(order)
-        self.exchange.process(0)
-
-        # Assert
-        assert order.status == OrderStatus.REJECTED
-        assert len(self.exchange.get_open_orders()) == 0
-
-    def test_submit_stop_limit_order(self):
-        # Arrange: Prepare market
-        tick = TestDataStubs.quote_tick_3decimal(
-            instrument_id=USDJPY_SIM.id,
-            bid=Price.from_str("90.002"),
-            ask=Price.from_str("90.005"),
-        )
-        self.data_engine.process(tick)
-        self.exchange.process_quote_tick(tick)
-
-        order = self.strategy.order_factory.stop_limit(
-            USDJPY_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100000),
-            price=Price.from_str("90.000"),
-            trigger_price=Price.from_str("90.010"),
-        )
-
-        # Act
-        self.strategy.submit_order(order)
-        self.exchange.process(0)
-
-        # Assert
-        assert order.status == OrderStatus.ACCEPTED
-        assert len(self.exchange.get_open_orders()) == 1
-        assert order in self.exchange.get_open_orders()
-
-    def test_submit_reduce_only_order_when_no_position_rejects(self):
+        ],
+    )
+    def test_submit_reduce_only_order_when_no_position_rejects(self, side):
         # Arrange: Prepare market
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
@@ -1043,8 +1221,8 @@ class TestSimulatedExchange:
 
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100000),
+            side,
+            Quantity.from_int(100_000),
             reduce_only=True,
         )
 
@@ -1056,7 +1234,14 @@ class TestSimulatedExchange:
         assert order.status == OrderStatus.REJECTED
         assert len(self.exchange.get_open_orders()) == 0
 
-    def test_submit_reduce_only_order_when_would_increase_position_rejects(self):
+    @pytest.mark.parametrize(
+        "side",
+        [
+            OrderSide.BUY,
+            OrderSide.SELL,
+        ],
+    )
+    def test_submit_reduce_only_order_when_would_increase_position_rejects(self, side):
         # Arrange: Prepare market
         tick = TestDataStubs.quote_tick_3decimal(
             instrument_id=USDJPY_SIM.id,
@@ -1068,15 +1253,15 @@ class TestSimulatedExchange:
 
         order1 = self.strategy.order_factory.market(
             USDJPY_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100000),
+            side,
+            Quantity.from_int(100_000),
             reduce_only=False,
         )
 
         order2 = self.strategy.order_factory.market(
             USDJPY_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100000),
+            side,
+            Quantity.from_int(100_000),
             reduce_only=True,  # <-- reduce only set
         )
 
@@ -1105,7 +1290,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
         )
 
@@ -1152,14 +1337,14 @@ class TestSimulatedExchange:
         order1 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
         order2 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
@@ -1189,21 +1374,21 @@ class TestSimulatedExchange:
         order1 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
         order2 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
         order3 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
         )
 
@@ -1238,21 +1423,21 @@ class TestSimulatedExchange:
         order1 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
         )
 
         order2 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
         )
 
         order3 = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
@@ -1282,7 +1467,7 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             client_order_id=ClientOrderId("O-123456"),
             venue_order_id=VenueOrderId("001"),
-            quantity=Quantity.from_int(100000),
+            quantity=Quantity.from_int(100_000),
             price=Price.from_str("110.000"),
             trigger_price=None,
             command_id=UUID4(),
@@ -1309,7 +1494,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
             post_only=True,  # default value
         )
@@ -1339,7 +1524,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
             post_only=True,  # default value
         )
@@ -1369,7 +1554,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
             post_only=False,  # Ensures marketable on amendment
         )
@@ -1401,7 +1586,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
         )
 
@@ -1430,7 +1615,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.010"),
         )
 
@@ -1461,7 +1646,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
             trigger_price=Price.from_str("90.010"),
         )
@@ -1491,7 +1676,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
             trigger_price=Price.from_str("90.010"),
         )
@@ -1524,7 +1709,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
             trigger_price=Price.from_str("90.010"),
             post_only=True,
@@ -1567,7 +1752,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
             trigger_price=Price.from_str("90.010"),
             post_only=False,
@@ -1608,7 +1793,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
             trigger_price=Price.from_str("90.010"),
         )
@@ -1648,19 +1833,19 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         top_up_order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         reduce_order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(50000),
+            Quantity.from_int(50_000),
         )
 
         # Act
@@ -1697,7 +1882,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("96.711"),
             time_in_force=TimeInForce.GTD,
             expire_time=UNIX_EPOCH + timedelta(minutes=1),
@@ -1710,8 +1895,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("96.709"),
             ask=Price.from_str("96.710"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=1 * 60 * 1_000_000_000,  # 1 minute in nanoseconds
             ts_init=1 * 60 * 1_000_000_000,  # 1 minute in nanoseconds
         )
@@ -1736,7 +1921,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("96.711"),
         )
 
@@ -1748,8 +1933,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("96.710"),
             ask=Price.from_str("96.711"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1775,7 +1960,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("96.500"),  # LimitPx
             Price.from_str("96.710"),  # StopPx
         )
@@ -1788,8 +1973,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("96.710"),
             ask=Price.from_str("96.712"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1813,7 +1998,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.006"),
             trigger_price=Price.from_str("90.006"),
             post_only=True,
@@ -1827,8 +2012,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.005"),
             ask=Price.from_str("90.006"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=1_000_000_000,
             ts_init=1_000_000_000,
         )
@@ -1852,7 +2037,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             price=Price.from_str("90.001"),
             trigger_price=Price.from_str("90.006"),
         )
@@ -1864,8 +2049,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.006"),
             ask=Price.from_str("90.007"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1875,8 +2060,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.000"),
             ask=Price.from_str("90.001"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1901,7 +2086,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
         )
 
@@ -1913,8 +2098,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.000"),
             ask=Price.from_str("90.001"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1940,7 +2125,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
@@ -1952,8 +2137,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("89.997"),
             ask=Price.from_str("89.999"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1979,7 +2164,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.100"),
         )
 
@@ -1991,8 +2176,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("90.101"),
             ask=Price.from_str("90.102"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -2002,7 +2187,7 @@ class TestSimulatedExchange:
         # Assert
         assert order.status == OrderStatus.FILLED
         assert len(self.exchange.get_open_orders()) == 0
-        assert order.avg_px == 90.101
+        assert order.avg_px == 90.100
         assert self.exchange.get_account().balance_total(USD) == Money(999998.00, USD)
 
     def test_realized_pnl_contains_commission(self):
@@ -2018,7 +2203,7 @@ class TestSimulatedExchange:
         order = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act
@@ -2043,7 +2228,7 @@ class TestSimulatedExchange:
         order_open = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act 1
@@ -2054,8 +2239,8 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             bid=Price.from_str("100.003"),
             ask=Price.from_str("100.004"),
-            bid_size=Quantity.from_int(100000),
-            ask_size=Quantity.from_int(100000),
+            bid_size=Quantity.from_int(100_000),
+            ask_size=Quantity.from_int(100_000),
             ts_event=0,
             ts_init=0,
         )
@@ -2066,7 +2251,7 @@ class TestSimulatedExchange:
         order_reduce = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(50000),
+            Quantity.from_int(50_000),
         )
 
         position_id = PositionId("SIM-1-001")  # Generated by exchange
@@ -2094,7 +2279,7 @@ class TestSimulatedExchange:
         # Arrange
         exchange = SimulatedExchange(
             venue=Venue("SIM"),
-            oms_type=OMSType.HEDGING,
+            oms_type=OmsType.HEDGING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USD)],
@@ -2139,7 +2324,7 @@ class TestSimulatedExchange:
         order_open = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act 1
@@ -2162,7 +2347,7 @@ class TestSimulatedExchange:
         order_reduce = self.strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(150000),
+            Quantity.from_int(150_000),
         )
 
         # Act 2
@@ -2174,7 +2359,7 @@ class TestSimulatedExchange:
         position_open = self.cache.positions_open()[0]
         position_closed = self.cache.positions_closed()[0]
         assert position_open.side == PositionSide.SHORT
-        assert position_open.quantity == Quantity.from_int(50000)
+        assert position_open.quantity == Quantity.from_int(50_000)
         assert position_closed.realized_pnl == Money(-100, JPY)
         assert position_closed.commissions() == [Money(100, JPY)]
         assert self.exchange.get_account().balance_total(USD) == Money(1016660.97, USD)
@@ -2195,7 +2380,7 @@ class TestSimulatedExchange:
         entry = self.strategy.order_factory.market(
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.SELL,
-            quantity=Quantity.from_int(200000),
+            quantity=Quantity.from_int(200_000),
         )
         self.strategy.submit_order(entry)
         self.exchange.process(0)
@@ -2203,7 +2388,7 @@ class TestSimulatedExchange:
         exit = self.strategy.order_factory.market(
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.BUY,
-            quantity=Quantity.from_int(300000),  # <-- overfill to attempt flip
+            quantity=Quantity.from_int(300_000),  # <-- overfill to attempt flip
             reduce_only=True,
         )
         self.strategy.submit_order(exit, position_id=PositionId("SIM-1-001"))
@@ -2228,7 +2413,7 @@ class TestSimulatedExchange:
         entry = self.strategy.order_factory.market(
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.SELL,
-            quantity=Quantity.from_int(200000),
+            quantity=Quantity.from_int(200_000),
         )
         self.strategy.submit_order(entry)
         self.exchange.process(0)
@@ -2236,7 +2421,7 @@ class TestSimulatedExchange:
         exit = self.strategy.order_factory.limit(
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.BUY,
-            quantity=Quantity.from_int(300000),  # <-- overfill to attempt flip
+            quantity=Quantity.from_int(300_000),  # <-- overfill to attempt flip
             price=Price.from_str("11"),
             post_only=False,
             reduce_only=True,
@@ -2265,7 +2450,7 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.BUY,
             price=Price.from_int(100),
-            quantity=Quantity.from_int(200000),
+            quantity=Quantity.from_int(200_000),
         )
 
         # Act
@@ -2284,7 +2469,7 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.BUY,
             price=Price.from_int(100),
-            quantity=Quantity.from_int(200000),
+            quantity=Quantity.from_int(200_000),
         )
 
         # Act
@@ -2304,13 +2489,13 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.BUY,
             price=Price.from_int(100),
-            quantity=Quantity.from_int(200000),
+            quantity=Quantity.from_int(200_000),
         )
 
         # Act
         self.strategy.submit_order(entry)
         self.exchange.process(secs_to_nanos(1))
-        self.strategy.modify_order(entry, quantity=Quantity.from_int(100000))
+        self.strategy.modify_order(entry, quantity=Quantity.from_int(100_000))
         self.exchange.process(secs_to_nanos(2))
 
         # Assert
@@ -2324,7 +2509,7 @@ class TestSimulatedExchange:
             instrument_id=USDJPY_SIM.id,
             order_side=OrderSide.BUY,
             price=Price.from_int(100),
-            quantity=Quantity.from_int(200000),
+            quantity=Quantity.from_int(200_000),
         )
 
         # Act

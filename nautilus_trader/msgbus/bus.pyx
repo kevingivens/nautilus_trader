@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -18,12 +18,13 @@ from typing import Any, Callable
 import cython
 import numpy as np
 
+cimport numpy as np
+
 from nautilus_trader.common.clock cimport Clock
 from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.uuid cimport UUID4
 from nautilus_trader.model.identifiers cimport TraderId
-from nautilus_trader.msgbus.wildcard cimport is_matching
 
 
 cdef class MessageBus:
@@ -36,6 +37,10 @@ cdef class MessageBus:
     Pub/Sub wildcard patterns for hierarchical topics are possible:
      - `*` asterisk represents one or more characters in a pattern.
      - `?` question mark represents a single character in a pattern.
+
+    Given a topic and pattern potentially containing wildcard characters, i.e.
+    `*` and `?`, where `?` can match any single character in the topic, and `*`
+    can match any number of characters including zero characters.
 
     The asterisk in a wildcard matches any character zero or more times. For
     example, `comp*` matches anything beginning with `comp` which means `comp`,
@@ -153,6 +158,35 @@ cdef class MessageBus:
 
         """
         return len(self.subscriptions(pattern)) > 0
+
+    cpdef bint is_subscribed(self, str topic, handler: Callable[[Any], None]) except *:
+        """
+        Return if topic and handler is subscribed to the message bus.
+
+        Does not consider any previous `priority`.
+
+        Parameters
+        ----------
+        topic : str
+            The topic of the subscription.
+        handler : Callable[[Any], None]
+            The handler of the subscription.
+
+        Returns
+        -------
+        bool
+
+        """
+        Condition.valid_string(topic, "topic")
+        Condition.callable(handler, "handler")
+
+        # Create subscription
+        cdef Subscription sub = Subscription(
+            topic=topic,
+            handler=handler,
+        )
+
+        return sub in self._subscriptions
 
     cpdef void register(self, str endpoint, handler: Callable[[Any], None]) except *:
         """
@@ -351,7 +385,7 @@ cdef class MessageBus:
 
         # Check if already exists
         if sub in self._subscriptions:
-            self._log.warning(f"{sub} already exists.")
+            self._log.debug(f"{sub} already exists.")
             return
 
         cdef list matches = []
@@ -472,3 +506,38 @@ cdef class MessageBus:
             self._subscriptions[sub] = sorted(matches)
 
         return subs_array
+
+
+cdef inline bint is_matching(str topic, str pattern) except *:
+    # Get length of string and wildcard pattern
+    cdef int n = len(topic)
+    cdef int m = len(pattern)
+
+    # Create a DP lookup table
+    cdef np.ndarray[np.int8_t, ndim=2] t = np.empty((n + 1, m + 1), dtype=np.int8)
+    t.fill(False)
+
+    # If both pattern and string are empty: match
+    t[0, 0] = True
+
+    # Handle empty string case (i == 0)
+    cdef int j
+    for j in range(1, m + 1):
+        if pattern[j - 1] == '*':
+            t[0, j] = t[0, j - 1]
+
+    # Build a matrix in a bottom-up manner
+    cdef int i
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if pattern[j - 1] == '*':
+                t[i, j] = t[i - 1, j] or t[i, j - 1]
+            elif pattern[j - 1] == '?' or topic[i - 1] == pattern[j - 1]:
+                t[i, j] = t[i - 1, j - 1]
+
+    return t[n, m]
+
+
+# Python wrapper for test access
+def is_matching_py(str topic, str pattern) -> bool:
+    return is_matching(topic, pattern)

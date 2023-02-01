@@ -14,6 +14,8 @@
 import os
 import sys
 
+import nautilus_trader
+
 
 sys.path.insert(0, os.path.abspath(".."))
 sys.path.append(os.path.abspath("./_pygments"))
@@ -21,9 +23,8 @@ sys.path.append(os.path.abspath("./_pygments"))
 # -- Project information -----------------------------------------------------
 project = "NautilusTrader"
 author = "Nautech Systems Pty Ltd."
-copyright = "2015-2022 Nautech Systems Pty Ltd"
-version = "latest"
-release = "version"
+copyright = "2015-2023 Nautech Systems Pty Ltd"
+version = nautilus_trader.__version__
 
 # -- General configuration ---------------------------------------------------
 extensions = [
@@ -111,10 +112,6 @@ html_theme_options = {
     ],
     "version_dropdown": True,
     "version_json": "_static/version.json",
-    "version_info": {
-        "1.159.0 (develop)": "https://docs.nautilustrader.io",
-        "1.158.0 (latest)": "https://docs.nautilustrader.io/latest",
-    },
     "table_classes": ["plain"],
 }
 

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -23,6 +23,7 @@ import pandas as pd
 from fsspec.implementations.github import GithubFileSystem
 from fsspec.implementations.local import LocalFileSystem
 
+from nautilus_trader.adapters.betfair.common import BETFAIR_VENUE
 from nautilus_trader.backtest.data.loaders import CSVBarDataLoader
 from nautilus_trader.backtest.data.loaders import CSVTickDataLoader
 from nautilus_trader.backtest.data.loaders import ParquetBarDataLoader
@@ -39,6 +40,7 @@ from nautilus_trader.model.enums import OptionKind
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import Venue
+from nautilus_trader.model.instruments.betting import BettingInstrument
 from nautilus_trader.model.instruments.crypto_future import CryptoFuture
 from nautilus_trader.model.instruments.crypto_perpetual import CryptoPerpetual
 from nautilus_trader.model.instruments.currency_pair import CurrencyPair
@@ -78,7 +80,7 @@ class TestInstrumentProvider:
             price_increment=Price(1e-08, precision=8),
             size_increment=Quantity(1e-08, precision=8),
             lot_size=None,
-            max_quantity=Quantity.from_int(90000000),
+            max_quantity=Quantity.from_int(90_000_000),
             min_quantity=Quantity.from_int(1),
             max_notional=None,
             min_notional=Money(0.00010000, BTC),
@@ -250,43 +252,6 @@ class TestInstrumentProvider:
         )
 
     @staticmethod
-    def ethusd_ftx() -> CurrencyPair:
-        """
-        Return the FTX ETH/USD instrument for backtesting.
-
-        Returns
-        -------
-        CurrencyPair
-
-        """
-        return CurrencyPair(
-            instrument_id=InstrumentId(
-                symbol=Symbol("ETH/USD"),
-                venue=Venue("FTX"),
-            ),
-            native_symbol=Symbol("ETHUSD"),
-            base_currency=ETH,
-            quote_currency=USD,
-            price_precision=1,
-            size_precision=3,
-            price_increment=Price(1e-01, precision=1),
-            size_increment=Quantity(1e-03, precision=3),
-            lot_size=None,
-            max_quantity=Quantity(9000, precision=3),
-            min_quantity=Quantity(1e-05, precision=3),
-            max_notional=None,
-            min_notional=Money(10.00, USD),
-            max_price=None,
-            min_price=Price(0.1, precision=1),
-            margin_init=Decimal("0.9"),
-            margin_maint=Decimal("0.9"),
-            maker_fee=Decimal("0.0002"),
-            taker_fee=Decimal("0.0007"),
-            ts_event=0,
-            ts_init=0,
-        )
-
-    @staticmethod
     def xbtusd_bitmex() -> CryptoPerpetual:
         """
         Return the BitMEX XBT/USD perpetual contract for backtesting.
@@ -348,7 +313,7 @@ class TestInstrumentProvider:
             size_precision=0,
             price_increment=Price.from_str("0.05"),
             size_increment=Quantity.from_int(1),
-            max_quantity=Quantity.from_int(10000000),
+            max_quantity=Quantity.from_int(10_000_000),
             min_quantity=Quantity.from_int(1),
             max_notional=None,
             min_notional=None,
@@ -478,6 +443,62 @@ class TestInstrumentProvider:
             ts_init=0,
         )
 
+    @staticmethod
+    def betting_instrument(
+        market_id: str = "1.179082386",
+        selection_id: str = "50214",
+        handicap: Optional[str] = None,
+    ) -> BettingInstrument:
+        return BettingInstrument(
+            venue_name=BETFAIR_VENUE.value,
+            betting_type="ODDS",
+            competition_id="12282733",
+            competition_name="NFL",
+            event_country_code="GB",
+            event_id="29678534",
+            event_name="NFL",
+            event_open_date=pd.Timestamp("2022-02-07 23:30:00+00:00"),
+            event_type_id="6423",
+            event_type_name="American Football",
+            market_id=market_id,
+            market_name="AFC Conference Winner",
+            market_start_time=pd.Timestamp("2022-02-07 23:30:00+00:00"),
+            market_type="SPECIAL",
+            selection_handicap=handicap,
+            selection_id=selection_id,
+            selection_name="Kansas City Chiefs",
+            currency="GBP",
+            ts_event=0,
+            ts_init=0,
+        )
+
+    @staticmethod
+    def betting_instrument_handicap() -> BettingInstrument:
+        return BettingInstrument.from_dict(
+            {
+                "venue_name": "BETFAIR",
+                "event_type_id": "61420",
+                "event_type_name": "Australian Rules",
+                "competition_id": "11897406",
+                "competition_name": "AFL",
+                "event_id": "30777079",
+                "event_name": "GWS v Richmond",
+                "event_country_code": "AU",
+                "event_open_date": "2021-08-13T09:50:00+00:00",
+                "betting_type": "ASIAN_HANDICAP_DOUBLE_LINE",
+                "market_id": "1.186249896",
+                "market_name": "Handicap",
+                "market_start_time": "2021-08-13T09:50:00+00:00",
+                "market_type": "HANDICAP",
+                "selection_id": "5304641",
+                "selection_name": "GWS",
+                "selection_handicap": "-5.5",
+                "currency": "AUD",
+                "ts_event": 0,
+                "ts_init": 0,
+            },
+        )
+
 
 class TestDataProvider:
     """
@@ -500,7 +521,7 @@ class TestDataProvider:
         # Determine if the test data directory exists (i.e. this is a checkout of the source code).
         source_root = pathlib.Path(__file__).parent.parent.parent
         assert source_root.stem == "nautilus_trader"
-        test_data_dir = source_root.parent.joinpath("tests", "test_kit", "data")
+        test_data_dir = source_root.parent.joinpath("tests", "test_data")
         if test_data_dir.exists():
             return str(test_data_dir)
         else:
@@ -542,10 +563,10 @@ class TestDataProvider:
         with fsspec.open(uri) as f:
             return CSVBarDataLoader.load(file_path=f)
 
-    def read_parquet_ticks(self, path: str):
+    def read_parquet_ticks(self, path: str, timestamp_column: str = "timestamp"):
         uri = self._make_uri(path=path)
         with fsspec.open(uri) as f:
-            return ParquetTickDataLoader.load(file_path=f)
+            return ParquetTickDataLoader.load(file_path=f, timestamp_column=timestamp_column)
 
     def read_parquet_bars(self, path: str):
         uri = self._make_uri(path=path)

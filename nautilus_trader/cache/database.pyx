@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,6 +14,7 @@
 # -------------------------------------------------------------------------------------------------
 
 from nautilus_trader.accounting.accounts.base cimport Account
+from nautilus_trader.common.actor cimport Actor
 from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.common.logging cimport LoggerAdapter
 from nautilus_trader.execution.messages cimport SubmitOrder
@@ -31,7 +32,7 @@ from nautilus_trader.trading.strategy cimport Strategy
 
 cdef class CacheDatabase:
     """
-    The abstract base class for all cache databases.
+    The base class for all cache databases.
 
     Parameters
     ----------
@@ -46,9 +47,13 @@ cdef class CacheDatabase:
     def __init__(self, Logger logger not None):
         self._log = LoggerAdapter(component_name=type(self).__name__, logger=logger)
 
-        self._log.info("INITIALIZED.")
+        self._log.info("READY.")
 
     cpdef void flush(self) except *:
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
+    cpdef dict load(self):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -100,6 +105,14 @@ cdef class CacheDatabase:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
+    cpdef dict load_actor(self, ComponentId component_id):
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
+    cpdef void delete_actor(self, ComponentId component_id) except *:
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
     cpdef dict load_strategy(self, StrategyId strategy_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
@@ -121,6 +134,10 @@ cdef class CacheDatabase:
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
     cpdef void add_submit_order_list_command(self, SubmitOrderList command) except *:
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
+    cpdef void add(self, str key, bytes value) except *:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -153,6 +170,10 @@ cdef class CacheDatabase:
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
     cpdef void update_position(self, Position position) except *:
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
+    cpdef void update_actor(self, Actor actor) except *:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 

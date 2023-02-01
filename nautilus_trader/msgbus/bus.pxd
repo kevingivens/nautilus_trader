@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -44,6 +44,7 @@ cdef class MessageBus:
     cpdef list topics(self)
     cpdef list subscriptions(self, str pattern=*)
     cpdef bint has_subscribers(self, str pattern=*)
+    cpdef bint is_subscribed(self, str topic, handler) except *
 
     cpdef void register(self, str endpoint, handler) except *
     cpdef void deregister(self, str endpoint, handler) except *
@@ -55,3 +56,6 @@ cdef class MessageBus:
     cpdef void publish(self, str topic, msg) except *
     cdef void publish_c(self, str topic, msg) except *
     cdef Subscription[:] _resolve_subscriptions(self, str topic)
+
+
+cdef bint is_matching(str topic, str pattern) except *

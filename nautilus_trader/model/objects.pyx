@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -31,7 +31,8 @@ from libc.stdint cimport uint8_t
 from libc.stdint cimport uint64_t
 
 from nautilus_trader.core.correctness cimport Condition
-from nautilus_trader.core.rust.model cimport FIXED_SCALAR
+from nautilus_trader.core.rust.core cimport precision_from_cstr
+from nautilus_trader.core.rust.model cimport FIXED_SCALAR as RUST_FIXED_SCALAR
 from nautilus_trader.core.rust.model cimport MONEY_MAX as RUST_MONEY_MAX
 from nautilus_trader.core.rust.model cimport MONEY_MIN as RUST_MONEY_MIN
 from nautilus_trader.core.rust.model cimport PRICE_MAX as RUST_PRICE_MAX
@@ -39,19 +40,18 @@ from nautilus_trader.core.rust.model cimport PRICE_MIN as RUST_PRICE_MIN
 from nautilus_trader.core.rust.model cimport QUANTITY_MAX as RUST_QUANTITY_MAX
 from nautilus_trader.core.rust.model cimport QUANTITY_MIN as RUST_QUANTITY_MIN
 from nautilus_trader.core.rust.model cimport Currency_t
-from nautilus_trader.core.rust.model cimport currency_code_to_pystr
-from nautilus_trader.core.rust.model cimport currency_copy
+from nautilus_trader.core.rust.model cimport currency_clone
+from nautilus_trader.core.rust.model cimport currency_code_to_cstr
 from nautilus_trader.core.rust.model cimport currency_eq
 from nautilus_trader.core.rust.model cimport money_free
 from nautilus_trader.core.rust.model cimport money_from_raw
 from nautilus_trader.core.rust.model cimport money_new
-from nautilus_trader.core.rust.model cimport price_free
 from nautilus_trader.core.rust.model cimport price_from_raw
 from nautilus_trader.core.rust.model cimport price_new
-from nautilus_trader.core.rust.model cimport quantity_free
 from nautilus_trader.core.rust.model cimport quantity_from_raw
 from nautilus_trader.core.rust.model cimport quantity_new
-from nautilus_trader.core.string cimport precision_from_str
+from nautilus_trader.core.string cimport cstr_to_pystr
+from nautilus_trader.core.string cimport pystr_to_cstr
 from nautilus_trader.model.currency cimport Currency
 from nautilus_trader.model.identifiers cimport InstrumentId
 
@@ -64,6 +64,8 @@ PRICE_MIN = RUST_PRICE_MIN
 MONEY_MAX = RUST_MONEY_MAX
 MONEY_MIN = RUST_MONEY_MIN
 
+FIXED_SCALAR = RUST_FIXED_SCALAR
+
 
 @cython.auto_pickle(True)
 cdef class Quantity:
@@ -72,7 +74,7 @@ cdef class Quantity:
 
     Capable of storing either a whole number (no decimal places) of 'contracts'
     or 'shares' (securities denominated in whole units) or a decimal value
-    containing decimal places for non-share quantity asset classes (securities
+    containing decimal places for non-share quantity asset classes (instruments
     denominated in fractional units).
 
     Handles up to 9 decimals of precision.
@@ -116,10 +118,6 @@ cdef class Quantity:
             )
 
         self._mem = quantity_new(value, precision)
-
-    def __del__(self) -> None:
-        # Never allocating heap memory
-        quantity_free(self._mem)  # `self._mem` moved to Rust (then dropped)
 
     def __getstate__(self):
         return self._mem.raw, self._mem.precision
@@ -224,7 +222,7 @@ cdef class Quantity:
         return hash(self._mem.raw)
 
     def __str__(self) -> str:
-        return f"{self._mem.raw / FIXED_SCALAR:.{self._mem.precision}f}"
+        return f"{self._mem.raw / RUST_FIXED_SCALAR:.{self._mem.precision}f}"
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}('{self}')"
@@ -288,11 +286,11 @@ cdef class Quantity:
         return self._mem.raw
 
     cdef double as_f64_c(self) except *:
-        return self._mem.raw / FIXED_SCALAR
+        return self._mem.raw / RUST_FIXED_SCALAR
 
     @staticmethod
     cdef double raw_to_f64_c(uint64_t raw) except *:
-        return raw / FIXED_SCALAR
+        return raw / RUST_FIXED_SCALAR
 
     @staticmethod
     def raw_to_f64(raw) -> float:
@@ -332,7 +330,7 @@ cdef class Quantity:
 
     @staticmethod
     cdef Quantity from_str_c(str value):
-        return Quantity(float(value), precision=precision_from_str(value))
+        return Quantity(float(value), precision=precision_from_cstr(pystr_to_cstr(value)))
 
     @staticmethod
     cdef Quantity from_int_c(int value):
@@ -507,10 +505,6 @@ cdef class Price:
 
         self._mem = price_new(value, precision)
 
-    def __del__(self) -> None:
-        # Never allocating heap memory
-        price_free(self._mem)  # `self._mem` moved to Rust (then dropped)
-
     def __getstate__(self):
         return self._mem.raw, self._mem.precision
 
@@ -614,7 +608,7 @@ cdef class Price:
         return hash(self._mem.raw)
 
     def __str__(self) -> str:
-        return f"{self._mem.raw / FIXED_SCALAR:.{self._mem.precision}f}"
+        return f"{self._mem.raw / RUST_FIXED_SCALAR:.{self._mem.precision}f}"
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}('{self}')"
@@ -684,7 +678,7 @@ cdef class Price:
         return self._mem.raw
 
     cdef double as_f64_c(self) except *:
-        return self._mem.raw / FIXED_SCALAR
+        return self._mem.raw / RUST_FIXED_SCALAR
 
     @staticmethod
     cdef object _extract_decimal(object obj):
@@ -710,7 +704,7 @@ cdef class Price:
 
     @staticmethod
     cdef double raw_to_f64_c(uint64_t raw) except *:
-        return raw / FIXED_SCALAR
+        return raw / RUST_FIXED_SCALAR
 
     @staticmethod
     def raw_to_f64(raw) -> float:
@@ -718,7 +712,7 @@ cdef class Price:
 
     @staticmethod
     cdef Price from_str_c(str value):
-        return Price(float(value), precision=precision_from_str(value))
+        return Price(float(value), precision=precision_from_cstr(pystr_to_cstr(value)))
 
     @staticmethod
     cdef Price from_int_c(int value):
@@ -836,7 +830,7 @@ cdef class Money:
             )
 
         cdef Currency_t currency_t = currency._mem
-        self._mem = money_new(value_f64, currency_copy(&currency_t))
+        self._mem = money_new(value_f64, currency_clone(&currency_t))
 
     def __del__(self) -> None:
         if self._mem.currency.code != NULL:
@@ -848,7 +842,7 @@ cdef class Money:
     def __setstate__(self, state):
         cdef Currency currency = Currency.from_str_c(state[1])
         cdef Currency_t currency_t = currency._mem
-        self._mem = money_from_raw(state[0], currency_copy(&currency_t))
+        self._mem = money_from_raw(state[0], currency_clone(&currency_t))
 
     def __eq__(self, Money other) -> bool:
         Condition.true(currency_eq(&self._mem.currency, &other._mem.currency), "currency != other.currency")
@@ -952,7 +946,7 @@ cdef class Money:
         return hash((self._mem.raw, self.currency_code_c()))
 
     def __str__(self) -> str:
-        return f"{self._mem.raw / FIXED_SCALAR:.{self._mem.currency.precision}f}"
+        return f"{self._mem.raw / RUST_FIXED_SCALAR:.{self._mem.currency.precision}f}"
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}('{str(self)}', {self.currency_code_c()})"
@@ -962,7 +956,7 @@ cdef class Money:
         return Currency.from_str_c(self.currency_code_c())
 
     cdef str currency_code_c(self):
-        return <str>currency_code_to_pystr(&self._mem.currency)
+        return cstr_to_pystr(currency_code_to_cstr(&self._mem.currency))
 
     cdef bint is_zero(self) except *:
         return self._mem.raw == 0
@@ -993,11 +987,11 @@ cdef class Money:
         return self._mem.raw
 
     cdef double as_f64_c(self):
-        return self._mem.raw / FIXED_SCALAR
+        return self._mem.raw / RUST_FIXED_SCALAR
 
     @staticmethod
     cdef double raw_to_f64_c(uint64_t raw) except *:
-        return raw / FIXED_SCALAR
+        return raw / RUST_FIXED_SCALAR
 
     @staticmethod
     def from_raw(uint64_t raw, uint8_t precision):
@@ -1007,7 +1001,7 @@ cdef class Money:
     cdef Money from_raw_c(uint64_t raw, Currency currency):
         cdef Money money = Money.__new__(Money)
         cdef Currency_t currency_t = currency._mem
-        money._mem = money_from_raw(raw, currency_copy(&currency_t))
+        money._mem = money_from_raw(raw, currency_clone(&currency_t))
         return money
 
     @staticmethod
@@ -1138,6 +1132,13 @@ cdef class AccountBalance:
         self.free = free
         self.currency = total.currency
 
+    def __eq__(self, AccountBalance other) -> bool:
+        return (
+            self.total == other.total
+            and self.locked == other.locked
+            and self.free == other.free
+        )
+
     def __repr__(self) -> str:
         return (
             f"{type(self).__name__}("
@@ -1228,6 +1229,13 @@ cdef class MarginBalance:
         self.maintenance = maintenance
         self.currency = initial.currency
         self.instrument_id = instrument_id
+
+    def __eq__(self, MarginBalance other) -> bool:
+        return (
+            self.initial == other.initial
+            and self.maintenance == other.maintenance
+            and self.instrument_id == other.instrument_id
+        )
 
     def __repr__(self) -> str:
         return (

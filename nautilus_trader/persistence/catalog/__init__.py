@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,13 +13,11 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-from .base import BaseDataCatalog
-from .parquet import ParquetDataCatalog
-from .parquet import resolve_path
+from nautilus_trader.persistence.catalog.base import BaseDataCatalog
+from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 
 
 __all__ = (
     "BaseDataCatalog",
     "ParquetDataCatalog",
-    "resolve_path",
 )

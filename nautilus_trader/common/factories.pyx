@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,13 +17,17 @@ from cpython.datetime cimport datetime
 
 from nautilus_trader.common.clock cimport Clock
 from nautilus_trader.common.generators cimport ClientOrderIdGenerator
+from nautilus_trader.common.generators cimport OrderListIdGenerator
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.datetime cimport dt_to_unix_nanos
 from nautilus_trader.core.uuid cimport UUID4
-from nautilus_trader.model.c_enums.contingency_type cimport ContingencyType
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
-from nautilus_trader.model.c_enums.time_in_force cimport TimeInForce
-from nautilus_trader.model.c_enums.trailing_offset_type cimport TrailingOffsetType
+from nautilus_trader.model.enums_c cimport ContingencyType
+from nautilus_trader.model.enums_c cimport OrderSide
+from nautilus_trader.model.enums_c cimport OrderType
+from nautilus_trader.model.enums_c cimport TimeInForce
+from nautilus_trader.model.enums_c cimport TrailingOffsetType
+from nautilus_trader.model.enums_c cimport TriggerType
+from nautilus_trader.model.enums_c cimport order_type_to_str
 from nautilus_trader.model.identifiers cimport ClientOrderId
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.identifiers cimport OrderListId
@@ -45,8 +49,7 @@ cdef class OrderFactory:
     """
     A factory class which provides different order types.
 
-    The `TraderId` tag and `StrategyId` tag will be inserted into all
-    IDs generated.
+    The `TraderId` tag and `StrategyId` tag will be inserted into all IDs generated.
 
     Parameters
     ----------
@@ -56,13 +59,17 @@ cdef class OrderFactory:
         The strategy ID (only numerical tag sent to venue).
     clock : Clock
         The clock for the factory.
-    initial_count : int, optional
-        The initial order count for the factory.
+    initial_order_id_count : int, optional
+        The initial order ID count for the factory.
+    initial_order_list_id_count : int, optional
+        The initial order list ID count for the factory.
 
     Raises
     ------
     ValueError
-        If `initial_count` is negative (< 0).
+        If `initial_order_id_count` is negative (< 0).
+    ValueError
+        If `initial_order_list_id_count` is negative (< 0).
     """
 
     def __init__(
@@ -70,38 +77,27 @@ cdef class OrderFactory:
         TraderId trader_id not None,
         StrategyId strategy_id not None,
         Clock clock not None,
-        int initial_count=0,
+        int initial_order_id_count=0,
+        int initial_order_list_id_count=0,
     ):
-        Condition.not_negative_int(initial_count, "initial_count")
-
         self._clock = clock
         self.trader_id = trader_id
         self.strategy_id = strategy_id
 
-        self._order_list_id = 1
-        self._id_generator = ClientOrderIdGenerator(
+        self._order_id_generator = ClientOrderIdGenerator(
             trader_id=trader_id,
             strategy_id=strategy_id,
             clock=clock,
-            initial_count=initial_count,
+            initial_count=initial_order_id_count,
+        )
+        self._order_list_id_generator = OrderListIdGenerator(
+            trader_id=trader_id,
+            strategy_id=strategy_id,
+            clock=clock,
+            initial_count=initial_order_list_id_count,
         )
 
-    cdef int count_c(self):
-        return self._id_generator.count
-
-    @property
-    def count(self):
-        """
-        Return the count of IDs generated.
-
-        Returns
-        -------
-        int
-
-        """
-        return self.count_c()
-
-    cpdef void set_count(self, int count) except *:
+    cpdef void set_order_id_count(self, int count) except *:
         """
         Set the internal order ID generator count to the given count.
 
@@ -115,7 +111,23 @@ cdef class OrderFactory:
         System method (not intended to be called by user code).
 
         """
-        self._id_generator.set_count(count)
+        self._order_id_generator.set_count(count)
+
+    cpdef void set_order_list_id_count(self, int count) except *:
+        """
+        Set the internal order list ID generator count to the given count.
+
+        Parameters
+        ----------
+        count : int
+            The count to set.
+
+        Warnings
+        --------
+        System method (not intended to be called by user code).
+
+        """
+        self._order_list_id_generator.set_count(count)
 
     cpdef void reset(self) except *:
         """
@@ -123,7 +135,8 @@ cdef class OrderFactory:
 
         All stateful fields are reset to their initial value.
         """
-        self._id_generator.reset()
+        self._order_id_generator.reset()
+        self._order_list_id_generator.reset()
 
     cpdef MarketOrder market(
         self,
@@ -135,7 +148,7 @@ cdef class OrderFactory:
         str tags = None,
     ):
         """
-        Create a new `Market` order.
+        Create a new ``MARKET`` order.
 
         Parameters
         ----------
@@ -169,14 +182,14 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             time_in_force=time_in_force,
             reduce_only=reduce_only,
             init_id=UUID4(),
             ts_init=self._clock.timestamp_ns(),
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -194,11 +207,11 @@ cdef class OrderFactory:
         bint post_only = False,
         bint reduce_only = False,
         Quantity display_qty = None,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Limit` order.
+        Create a new ``LIMIT`` order.
 
         Parameters
         ----------
@@ -220,7 +233,7 @@ cdef class OrderFactory:
             If the order carries the 'reduce-only' execution instruction.
         display_qty : Quantity, optional
             The quantity of the order to display on the public book (iceberg).
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -244,7 +257,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             price=price,
@@ -256,7 +269,7 @@ cdef class OrderFactory:
             reduce_only=reduce_only,
             display_qty=display_qty,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -273,11 +286,11 @@ cdef class OrderFactory:
         TimeInForce time_in_force = TimeInForce.GTC,
         datetime expire_time = None,
         bint reduce_only = False,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Stop-Market` conditional order.
+        Create a new ``STOP_MARKET`` conditional order.
 
         Parameters
         ----------
@@ -297,7 +310,7 @@ cdef class OrderFactory:
             The order expiration (for ``GTD`` orders).
         reduce_only : bool, default False
             If the order carries the 'reduce-only' execution instruction.
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -312,7 +325,7 @@ cdef class OrderFactory:
         ValueError
             If `quantity` is not positive (> 0).
         ValueError
-            If `trigger_type` is ``NONE``.
+            If `trigger_type` is ``NO_TRIGGER``.
         ValueError
             If `time_in_force` is ``AT_THE_OPEN`` or ``AT_THE_CLOSE``.
         ValueError
@@ -323,7 +336,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             trigger_price=trigger_price,
@@ -334,7 +347,7 @@ cdef class OrderFactory:
             expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
             reduce_only=reduce_only,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -354,11 +367,11 @@ cdef class OrderFactory:
         bint post_only = False,
         bint reduce_only = False,
         Quantity display_qty = None,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Stop-Limit` conditional order.
+        Create a new ``STOP_LIMIT`` conditional order.
 
         Parameters
         ----------
@@ -384,7 +397,7 @@ cdef class OrderFactory:
             If the order carries the 'reduce-only' execution instruction.
         display_qty : Quantity, optional
             The quantity of the order to display on the public book (iceberg).
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -399,7 +412,7 @@ cdef class OrderFactory:
         ValueError
             If `quantity` is not positive (> 0).
         ValueError
-            If `trigger_type` is ``NONE``.
+            If `trigger_type` is ``NO_TRIGGER``.
         ValueError
             If `time_in_force` is ``AT_THE_OPEN`` or ``AT_THE_CLOSE``.
         ValueError
@@ -412,7 +425,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             price=price,
@@ -426,7 +439,7 @@ cdef class OrderFactory:
             reduce_only=reduce_only,
             display_qty=display_qty,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -445,7 +458,7 @@ cdef class OrderFactory:
         str tags = None,
     ):
         """
-        Create a new `Market` order.
+        Create a new ``MARKET`` order.
 
         Parameters
         ----------
@@ -483,7 +496,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             reduce_only=reduce_only,
@@ -492,7 +505,7 @@ cdef class OrderFactory:
             ts_init=self._clock.timestamp_ns(),
             time_in_force=time_in_force,
             expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -509,11 +522,11 @@ cdef class OrderFactory:
         TimeInForce time_in_force = TimeInForce.GTC,
         datetime expire_time = None,
         bint reduce_only = False,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Market-If-Touched` (MIT) conditional order.
+        Create a new ``MARKET_IF_TOUCHED`` (MIT) conditional order.
 
         Parameters
         ----------
@@ -533,7 +546,7 @@ cdef class OrderFactory:
             The order expiration (for ``GTD`` orders).
         reduce_only : bool, default False
             If the order carries the 'reduce-only' execution instruction.
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -548,7 +561,7 @@ cdef class OrderFactory:
         ValueError
             If `quantity` is not positive (> 0).
         ValueError
-            If `trigger_type` is ``NONE``.
+            If `trigger_type` is ``NO_TRIGGER``.
         ValueError
             If `time_in_force` is ``AT_THE_OPEN`` or ``AT_THE_CLOSE``.
         ValueError
@@ -559,7 +572,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             trigger_price=trigger_price,
@@ -570,7 +583,7 @@ cdef class OrderFactory:
             expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
             reduce_only=reduce_only,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -590,11 +603,11 @@ cdef class OrderFactory:
         bint post_only = False,
         bint reduce_only = False,
         Quantity display_qty = None,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Limit-If-Touched` (LIT) conditional order.
+        Create a new ``LIMIT_IF_TOUCHED`` (LIT) conditional order.
 
         Parameters
         ----------
@@ -620,7 +633,7 @@ cdef class OrderFactory:
             If the order carries the 'reduce-only' execution instruction.
         display_qty : Quantity, optional
             The quantity of the order to display on the public book (iceberg).
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -635,7 +648,7 @@ cdef class OrderFactory:
         ValueError
             If `quantity` is not positive (> 0).
         ValueError
-            If `trigger_type` is ``NONE``.
+            If `trigger_type` is ``NO_TRIGGER``.
         ValueError
             If `time_in_force` is ``AT_THE_OPEN`` or ``AT_THE_CLOSE``.
         ValueError
@@ -648,7 +661,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             price=price,
@@ -662,7 +675,7 @@ cdef class OrderFactory:
             reduce_only=reduce_only,
             display_qty=display_qty,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -681,11 +694,11 @@ cdef class OrderFactory:
         TimeInForce time_in_force = TimeInForce.GTC,
         datetime expire_time = None,
         bint reduce_only = False,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Trailing-Stop-Market` conditional order.
+        Create a new ``TRAILING_STOP_MARKET`` conditional order.
 
         Parameters
         ----------
@@ -710,7 +723,7 @@ cdef class OrderFactory:
             The order expiration (for ``GTD`` orders).
         reduce_only : bool, default False
             If the order carries the 'reduce-only' execution instruction.
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -725,9 +738,9 @@ cdef class OrderFactory:
         ValueError
             If `quantity` is not positive (> 0).
         ValueError
-            If `trigger_type` is ``NONE``.
+            If `trigger_type` is ``NO_TRIGGER``.
         ValueError
-            If `trailing_offset_type` is ``NONE``.
+            If `trailing_offset_type` is ``NO_TRAILING_OFFSET``.
         ValueError
             If `time_in_force` is ``AT_THE_OPEN`` or ``AT_THE_CLOSE``.
         ValueError
@@ -738,7 +751,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             trigger_price=trigger_price,
@@ -751,7 +764,7 @@ cdef class OrderFactory:
             expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
             reduce_only=reduce_only,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
@@ -774,11 +787,11 @@ cdef class OrderFactory:
         bint post_only = False,
         bint reduce_only = False,
         Quantity display_qty = None,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         str tags = None,
     ):
         """
-        Create a new `Trailing-Stop-Limit` conditional order.
+        Create a new ``TRAILING_STOP_LIMIT`` conditional order.
 
         Parameters
         ----------
@@ -812,7 +825,7 @@ cdef class OrderFactory:
             If the order carries the 'reduce-only' execution instruction.
         display_qty : Quantity, optional
             The quantity of the order to display on the public book (iceberg).
-        emulation_trigger : TriggerType, default ``NONE``
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The orders emulation trigger.
         tags : str, optional
             The custom user tags for the order. These are optional and can
@@ -827,9 +840,9 @@ cdef class OrderFactory:
         ValueError
             If `quantity` is not positive (> 0).
         ValueError
-            If `trigger_type` is ``NONE``.
+            If `trigger_type` is ``NO_TRIGGER``.
         ValueError
-            If `trailing_offset_type` is ``NONE``.
+            If `trailing_offset_type` is ``NO_TRAILING_OFFSET``.
         ValueError
             If `time_in_force` is ``AT_THE_OPEN`` or ``AT_THE_CLOSE``.
         ValueError
@@ -842,7 +855,7 @@ cdef class OrderFactory:
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=instrument_id,
-            client_order_id=self._id_generator.generate(),
+            client_order_id=self._order_id_generator.generate(),
             order_side=order_side,
             quantity=quantity,
             price=price,
@@ -859,160 +872,37 @@ cdef class OrderFactory:
             reduce_only=reduce_only,
             display_qty=display_qty,
             emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.NONE,
+            contingency_type=ContingencyType.NO_CONTINGENCY,
             order_list_id=None,
             linked_order_ids=None,
             parent_order_id=None,
             tags=tags,
         )
 
-    cpdef OrderList bracket_market(
+    cpdef OrderList bracket(
         self,
         InstrumentId instrument_id,
         OrderSide order_side,
         Quantity quantity,
-        Price stop_loss,
-        Price take_profit,
-        TriggerType emulation_trigger = TriggerType.NONE,
-        ContingencyType contingency_type = ContingencyType.OUO,
-    ):
-        """
-        Create a bracket order with a `Market` parent entry order.
-
-        The brackets stop-loss and take-profit orders will have a time in force
-        of GTC.
-
-        Parameters
-        ----------
-        instrument_id : InstrumentId
-            The orders instrument ID.
-        order_side : OrderSide {``BUY``, ``SELL``}
-            The entry orders side.
-        quantity : Quantity
-            The entry orders quantity (> 0).
-        stop_loss : Price
-            The stop-loss child order trigger price (STOP).
-        take_profit : Price
-            The take-profit child order price (LIMIT).
-        emulation_trigger : TriggerType, default ``NONE``
-            The emulation trigger type for the TP and SL bracket orders.
-        contingency_type : ContingencyType, default ``OUO``
-            The contingency type for the TP and SL bracket orders.
-
-        Returns
-        -------
-        OrderList
-
-        Raises
-        ------
-        ValueError
-            If `order_side` is ``NONE``.
-        ValueError
-            If `entry_order.side` is ``BUY`` and `entry_order.price` <= `stop_loss.price`.
-        ValueError
-            If `entry_order.side` is ``BUY`` and `entry_order.price` >= `take_profit.price`.
-        ValueError
-            If `entry_order.side` is ``SELL`` and `entry_order.price` >= `stop_loss.price`.
-        ValueError
-            If `entry_order.side` is ``SELL`` and `entry_order.price` <= `take_profit.price`.
-
-        """
-        Condition.not_equal(order_side, OrderSide.NONE, "order_side", "NONE")
-
-        # Validate prices
-        if order_side == OrderSide.BUY:
-            Condition.true(stop_loss < take_profit, "stop_loss was >= take_profit")
-        elif order_side == OrderSide.SELL:
-            Condition.true(stop_loss > take_profit, "stop_loss was <= take_profit")
-
-        cdef OrderListId order_list_id = OrderListId(str(self._order_list_id))
-        self._order_list_id += 1
-        cdef ClientOrderId entry_client_order_id = self._id_generator.generate()
-        cdef ClientOrderId stop_loss_client_order_id = self._id_generator.generate()
-        cdef ClientOrderId take_profit_client_order_id = self._id_generator.generate()
-
-        cdef MarketOrder entry_order = MarketOrder(
-            trader_id=self.trader_id,
-            strategy_id=self.strategy_id,
-            instrument_id=instrument_id,
-            client_order_id=entry_client_order_id,
-            order_side=order_side,
-            quantity=quantity,
-            init_id=UUID4(),
-            ts_init=self._clock.timestamp_ns(),
-            time_in_force=TimeInForce.GTC,
-            contingency_type=ContingencyType.OTO,
-            order_list_id=order_list_id,
-            linked_order_ids=[stop_loss_client_order_id, take_profit_client_order_id],
-            parent_order_id=None,
-            tags="ENTRY",
-        )
-
-        cdef StopMarketOrder stop_loss_order = StopMarketOrder(
-            trader_id=self.trader_id,
-            strategy_id=self.strategy_id,
-            instrument_id=entry_order.instrument_id,
-            client_order_id=stop_loss_client_order_id,
-            order_side=Order.opposite_side_c(entry_order.side),
-            quantity=quantity,
-            trigger_price=stop_loss,
-            trigger_type=TriggerType.DEFAULT,
-            init_id=UUID4(),
-            ts_init=self._clock.timestamp_ns(),
-            time_in_force=TimeInForce.GTC,
-            reduce_only=True,
-            emulation_trigger=emulation_trigger,
-            contingency_type=contingency_type,
-            order_list_id=order_list_id,
-            linked_order_ids=[take_profit_client_order_id],
-            parent_order_id=entry_client_order_id,
-            tags="STOP_LOSS",
-        )
-
-        cdef LimitOrder take_profit_order = LimitOrder(
-            trader_id=self.trader_id,
-            strategy_id=self.strategy_id,
-            instrument_id=entry_order.instrument_id,
-            client_order_id=take_profit_client_order_id,
-            order_side=Order.opposite_side_c(entry_order.side),
-            quantity=quantity,
-            price=take_profit,
-            time_in_force=TimeInForce.GTC,
-            init_id=UUID4(),
-            ts_init=self._clock.timestamp_ns(),
-            post_only=True,
-            reduce_only=True,
-            emulation_trigger=emulation_trigger,
-            contingency_type=contingency_type,
-            order_list_id=order_list_id,
-            linked_order_ids=[stop_loss_client_order_id],
-            parent_order_id=entry_client_order_id,
-            tags="TAKE_PROFIT",
-        )
-
-        return OrderList(
-            order_list_id=order_list_id,
-            orders=[entry_order, stop_loss_order, take_profit_order],
-        )
-
-    cpdef OrderList bracket_limit(
-        self,
-        InstrumentId instrument_id,
-        OrderSide order_side,
-        Quantity quantity,
-        Price entry,
-        Price stop_loss,
-        Price take_profit,
-        TimeInForce tif = TimeInForce.GTC,
+        Price entry_trigger_price = None,
+        Price entry_price = None,
+        Price sl_trigger_price = None,
+        Price tp_trigger_price = None,
+        Price tp_price = None,
+        OrderType entry_order_type = OrderType.MARKET,
+        OrderType tp_order_type = OrderType.LIMIT,
+        TimeInForce time_in_force = TimeInForce.GTC,
         datetime expire_time = None,
-        bint post_only = False,
-        TriggerType emulation_trigger = TriggerType.NONE,
+        bint post_only_entry = False,
+        bint post_only_tp = True,
+        TriggerType emulation_trigger = TriggerType.NO_TRIGGER,
         ContingencyType contingency_type = ContingencyType.OUO,
     ):
         """
-        Create a bracket order with a `Limit` parent entry order.
+        Create a bracket order with optional entry of take-profit order types.
 
-        The brackets stop-loss and take-profit orders will have a time in force
+        The stop-loss order will always be ``STOP_MARKET``.
+        The bracketing stop-loss and take-profit orders will have a time in force
         of ``GTC``.
 
         Parameters
@@ -1023,19 +913,29 @@ cdef class OrderFactory:
             The entry orders side.
         quantity : Quantity
             The entry orders quantity (> 0).
-        entry : Price
-            The entry LIMIT order price.
-        stop_loss : Price
+        entry_trigger_price : Price, optional
+            The entry order trigger price (STOP).
+        entry_price : Price, optional
+            The entry order price (LIMIT).
+        sl_trigger_price : Price, optional
             The stop-loss child order trigger price (STOP).
-        take_profit : Price
+        tp_trigger_price : Price, optional
+            The take-profit child order trigger price (STOP).
+        tp_price : Price, optional
             The take-profit child order price (LIMIT).
-        tif : TimeInForce {``DAY``, ``GTC``}, optional
+        entry_order_type : OrderType {``MARKET``, ``LIMIT``, ``LIMIT_IF_TOUCHED``, ``MARKET_IF_TOUCHED``}, default ``MARKET``
+            The entry order type.
+        tp_order_type : OrderType {``LIMIT``, ``LIMIT_IF_TOUCHED``, ``MARKET_IF_TOUCHED``}, default ``LIMIT``
+            The take-profit order type.
+        time_in_force : TimeInForce {``DAY``, ``GTC``}, optional
             The entry orders time in force.
         expire_time : datetime, optional
             The order expiration (for ``GTD`` orders).
-        post_only : bool, default False
+        post_only_entry : bool, default False
             If the entry order will only provide liquidity (make a market).
-        emulation_trigger : TriggerType, default ``NONE``
+        post_only_tp : bool, default False
+            If the take-profit order will only provide liquidity (make a market).
+        emulation_trigger : TriggerType, default ``NO_TRIGGER``
             The emulation trigger type for the entry, as well as the TP and SL bracket orders.
         contingency_type : ContingencyType, default ``OUO``
             The contingency type for the TP and SL bracket orders.
@@ -1044,69 +944,184 @@ cdef class OrderFactory:
         -------
         OrderList
 
-        Raises
-        ------
-        ValueError
-            If `order_side` is ``NONE``.
-        ValueError
-            If `tif` is ``GTD`` and `expire_time` is ``None``.
-        ValueError
-            If `entry_order.side` is ``BUY`` and `entry_order.price` <= `stop_loss.price`.
-        ValueError
-            If `entry_order.side` is ``BUY`` and `entry_order.price` >= `take_profit.price`.
-        ValueError
-            If `entry_order.side` is ``SELL`` and `entry_order.price` >= `stop_loss.price`.
-        ValueError
-            If `entry_order.side` is ``SELL`` and `entry_order.price` <= `take_profit.price`.
-
         """
-        Condition.not_equal(order_side, OrderSide.NONE, "order_side", "NONE")
+        cdef OrderListId order_list_id = self._order_list_id_generator.generate()
+        cdef ClientOrderId entry_client_order_id = self._order_id_generator.generate()
+        cdef ClientOrderId sl_client_order_id = self._order_id_generator.generate()
+        cdef ClientOrderId tp_client_order_id = self._order_id_generator.generate()
 
-        # Validate prices
-        if order_side == OrderSide.BUY:
-            Condition.true(stop_loss < take_profit, "stop_loss was >= take_profit")
-            Condition.true(entry > stop_loss, "BUY entry was <= stop_loss")
-            Condition.true(entry < take_profit, "BUY entry was >= take_profit")
-        elif order_side == OrderSide.SELL:
-            Condition.true(stop_loss > take_profit, "stop_loss was <= take_profit")
-            Condition.true(entry < stop_loss, "SELL entry was >= stop_loss")
-            Condition.true(entry > take_profit, "SELL entry was <= take_profit")
+        ########################################################################
+        # ENTRY ORDER
+        ########################################################################
+        if entry_order_type == OrderType.MARKET:
+            entry_order = MarketOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=instrument_id,
+                client_order_id=entry_client_order_id,
+                order_side=order_side,
+                quantity=quantity,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=TimeInForce.GTC,
+                contingency_type=ContingencyType.OTO,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id, tp_client_order_id],
+                parent_order_id=None,
+                tags="ENTRY",
+            )
+        elif entry_order_type == OrderType.LIMIT:
+            entry_order = LimitOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=instrument_id,
+                client_order_id=entry_client_order_id,
+                order_side=order_side,
+                quantity=quantity,
+                price=entry_price,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=time_in_force,
+                expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
+                post_only=post_only_entry,
+                emulation_trigger=emulation_trigger,
+                contingency_type=ContingencyType.OTO,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id, tp_client_order_id],
+                parent_order_id=None,
+                tags="ENTRY",
+            )
+        elif entry_order_type == OrderType.MARKET_IF_TOUCHED:
+            entry_order = MarketIfTouchedOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=instrument_id,
+                client_order_id=entry_client_order_id,
+                order_side=order_side,
+                quantity=quantity,
+                trigger_price=entry_trigger_price,
+                trigger_type=TriggerType.DEFAULT,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=time_in_force,
+                expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
+                emulation_trigger=emulation_trigger,
+                contingency_type=ContingencyType.OTO,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id, tp_client_order_id],
+                parent_order_id=None,
+                tags="ENTRY",
+            )
+        elif entry_order_type == OrderType.LIMIT_IF_TOUCHED:
+            entry_order = LimitIfTouchedOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=instrument_id,
+                client_order_id=entry_client_order_id,
+                order_side=order_side,
+                quantity=quantity,
+                price=entry_price,
+                trigger_price=entry_trigger_price,
+                trigger_type=TriggerType.DEFAULT,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=time_in_force,
+                expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
+                post_only=post_only_entry,
+                emulation_trigger=emulation_trigger,
+                contingency_type=ContingencyType.OTO,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id, tp_client_order_id],
+                parent_order_id=None,
+                tags="ENTRY",
+            )
+        else:
+            raise ValueError(f"invalid `entry_order_type`, was {order_type_to_str(entry_order_type)}")
 
-        cdef OrderListId order_list_id = OrderListId(str(self._order_list_id))
-        self._order_list_id += 1
-        cdef ClientOrderId entry_client_order_id = self._id_generator.generate()
-        cdef ClientOrderId stop_loss_client_order_id = self._id_generator.generate()
-        cdef ClientOrderId take_profit_client_order_id = self._id_generator.generate()
+        ########################################################################
+        # TAKE-PROFIT ORDER
+        ########################################################################
+        if tp_order_type == OrderType.LIMIT:
+            tp_order = LimitOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=entry_order.instrument_id,
+                client_order_id=tp_client_order_id,
+                order_side=Order.opposite_side_c(entry_order.side),
+                quantity=quantity,
+                price=tp_price,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=TimeInForce.GTC,
+                post_only=post_only_tp,
+                reduce_only=True,
+                display_qty=None,
+                emulation_trigger=emulation_trigger,
+                contingency_type=contingency_type,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id],
+                parent_order_id=entry_client_order_id,
+                tags="TAKE_PROFIT",
+            )
+        elif tp_order_type == OrderType.LIMIT_IF_TOUCHED:
+            tp_order = LimitIfTouchedOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=entry_order.instrument_id,
+                client_order_id=tp_client_order_id,
+                order_side=Order.opposite_side_c(entry_order.side),
+                quantity=quantity,
+                price=tp_price,
+                trigger_price=tp_trigger_price,
+                trigger_type=TriggerType.DEFAULT,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=TimeInForce.GTC,
+                post_only=post_only_tp,
+                reduce_only=True,
+                display_qty=None,
+                emulation_trigger=emulation_trigger,
+                contingency_type=contingency_type,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id],
+                parent_order_id=entry_client_order_id,
+                tags="TAKE_PROFIT",
+            )
+        elif tp_order_type == OrderType.MARKET_IF_TOUCHED:
+            tp_order = MarketIfTouchedOrder(
+                trader_id=self.trader_id,
+                strategy_id=self.strategy_id,
+                instrument_id=entry_order.instrument_id,
+                client_order_id=tp_client_order_id,
+                order_side=Order.opposite_side_c(entry_order.side),
+                quantity=quantity,
+                trigger_price=tp_trigger_price,
+                trigger_type=TriggerType.DEFAULT,
+                init_id=UUID4(),
+                ts_init=self._clock.timestamp_ns(),
+                time_in_force=TimeInForce.GTC,
+                reduce_only=True,
+                emulation_trigger=emulation_trigger,
+                contingency_type=contingency_type,
+                order_list_id=order_list_id,
+                linked_order_ids=[sl_client_order_id],
+                parent_order_id=entry_client_order_id,
+                tags="TAKE_PROFIT",
+            )
+        else:
+            raise ValueError(f"invalid `tp_order_type`, was {order_type_to_str(entry_order_type)}")
 
-        cdef LimitOrder entry_order = LimitOrder(
-            trader_id=self.trader_id,
-            strategy_id=self.strategy_id,
-            instrument_id=instrument_id,
-            client_order_id=entry_client_order_id,
-            order_side=order_side,
-            quantity=quantity,
-            price=entry,
-            init_id=UUID4(),
-            ts_init=self._clock.timestamp_ns(),
-            time_in_force=tif,
-            expire_time_ns=0 if expire_time is None else dt_to_unix_nanos(expire_time),
-            post_only=post_only,
-            emulation_trigger=emulation_trigger,
-            contingency_type=ContingencyType.OTO,
-            order_list_id=order_list_id,
-            linked_order_ids=[stop_loss_client_order_id, take_profit_client_order_id],
-            parent_order_id=None,
-            tags="ENTRY",
-        )
-
-        cdef StopMarketOrder stop_loss_order = StopMarketOrder(
+        ########################################################################
+        # STOP-LOSS ORDER
+        ########################################################################
+        sl_order = StopMarketOrder(
             trader_id=self.trader_id,
             strategy_id=self.strategy_id,
             instrument_id=entry_order.instrument_id,
-            client_order_id=stop_loss_client_order_id,
+            client_order_id=sl_client_order_id,
             order_side=Order.opposite_side_c(entry_order.side),
             quantity=quantity,
-            trigger_price=stop_loss,
+            trigger_price=sl_trigger_price,
             trigger_type=TriggerType.DEFAULT,
             init_id=UUID4(),
             ts_init=self._clock.timestamp_ns(),
@@ -1115,34 +1130,12 @@ cdef class OrderFactory:
             emulation_trigger=emulation_trigger,
             contingency_type=contingency_type,
             order_list_id=order_list_id,
-            linked_order_ids=[take_profit_client_order_id],
+            linked_order_ids=[tp_client_order_id],
             parent_order_id=entry_client_order_id,
             tags="STOP_LOSS",
         )
 
-        cdef LimitOrder take_profit_order = LimitOrder(
-            trader_id=self.trader_id,
-            strategy_id=self.strategy_id,
-            instrument_id=entry_order.instrument_id,
-            client_order_id=take_profit_client_order_id,
-            order_side=Order.opposite_side_c(entry_order.side),
-            quantity=quantity,
-            price=take_profit,
-            init_id=UUID4(),
-            ts_init=self._clock.timestamp_ns(),
-            time_in_force=TimeInForce.GTC,
-            post_only=True,
-            reduce_only=True,
-            display_qty=None,
-            emulation_trigger=emulation_trigger,
-            contingency_type=contingency_type,
-            order_list_id=order_list_id,
-            linked_order_ids=[stop_loss_client_order_id],
-            parent_order_id=entry_client_order_id,
-            tags="TAKE_PROFIT",
-        )
-
         return OrderList(
             order_list_id=order_list_id,
-            orders=[entry_order, stop_loss_order, take_profit_order],
+            orders=[entry_order, sl_order, tp_order],
         )

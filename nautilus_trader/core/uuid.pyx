@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,22 +13,22 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-from cpython.object cimport PyObject
-
 from nautilus_trader.core.rust.core cimport UUID4_t
-from nautilus_trader.core.rust.core cimport uuid4_copy
+from nautilus_trader.core.rust.core cimport uuid4_clone
 from nautilus_trader.core.rust.core cimport uuid4_eq
 from nautilus_trader.core.rust.core cimport uuid4_free
-from nautilus_trader.core.rust.core cimport uuid4_from_pystr
+from nautilus_trader.core.rust.core cimport uuid4_from_cstr
 from nautilus_trader.core.rust.core cimport uuid4_hash
 from nautilus_trader.core.rust.core cimport uuid4_new
-from nautilus_trader.core.rust.core cimport uuid4_to_pystr
+from nautilus_trader.core.rust.core cimport uuid4_to_cstr
+from nautilus_trader.core.string cimport cstr_to_pystr
+from nautilus_trader.core.string cimport pystr_to_cstr
 
 
 cdef class UUID4:
     """
-    Represents a pseudo-random UUID (universally unique identifier) version 4
-    based on a 128-bit label as specified in RFC 4122.
+    Represents a pseudo-random UUID (universally unique identifier)
+    version 4 based on a 128-bit label as specified in RFC 4122.
 
     Parameters
     ----------
@@ -49,23 +49,18 @@ cdef class UUID4:
             # Create a new UUID4 from Rust
             self._mem = uuid4_new()  # `UUID4_t` owned from Rust
         else:
-            self._mem = self._uuid4_from_pystr(value)
-
-    cdef UUID4_t _uuid4_from_pystr(self, str value) except *:
-        return uuid4_from_pystr(<PyObject *>value)  # `value` borrowed by Rust, `UUID4_t` owned from Rust
-
-    cdef str to_str(self):
-        return <str>uuid4_to_pystr(&self._mem)
+            # `value` borrowed by Rust, `UUID4_t` owned from Rust
+            self._mem = uuid4_from_cstr(pystr_to_cstr(value))
 
     def __del__(self) -> None:
         if self._mem.value != NULL:
-            uuid4_free(self._mem)  # `self._uuid4` moved to Rust (then dropped)
+            uuid4_free(self._mem)  # `self._mem` moved to Rust (then dropped)
 
     def __getstate__(self):
         return self.to_str()
 
     def __setstate__(self, state):
-        self._mem = self._uuid4_from_pystr(state)
+        self._mem = uuid4_from_cstr(pystr_to_cstr(state))
 
     def __eq__(self, UUID4 other) -> bool:
         return uuid4_eq(&self._mem, &other._mem)
@@ -79,12 +74,15 @@ cdef class UUID4:
     def __repr__(self) -> str:
         return f"{type(self).__name__}('{self}')"
 
+    cdef str to_str(self):
+        return cstr_to_pystr(uuid4_to_cstr(&self._mem))
+
     @property
     def value(self) -> str:
         return self.to_str()
 
     @staticmethod
-    cdef UUID4 from_raw_c(UUID4_t raw):
+    cdef UUID4 from_mem_c(UUID4_t mem):
         cdef UUID4 uuid4 = UUID4.__new__(UUID4)
-        uuid4._mem = uuid4_copy(&raw)
+        uuid4._mem = uuid4_clone(&mem)
         return uuid4

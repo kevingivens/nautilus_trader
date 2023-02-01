@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -31,8 +31,8 @@ from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.model.orderbook.book import L2OrderBook
 from nautilus_trader.model.orderbook.data import OrderBookSnapshot
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
 SIM = Venue("SIM")
@@ -377,7 +377,9 @@ class TestCache:
         ],
     )
     def test_price_given_various_quote_price_types_when_quote_tick_returns_expected_price(
-        self, price_type, expected
+        self,
+        price_type,
+        expected,
     ):
         # Arrange
         tick = TestDataStubs.quote_tick_5decimal()
@@ -474,6 +476,24 @@ class TestCache:
         # Assert
         assert self.cache.bar_count(bar_type) == 2
         assert result == bar2
+
+    def test_get_general_object_when_nothing_in_cache_returns_none(self):
+        # Arrange, Act
+        result = self.cache.get("something")
+
+        # Assert
+        assert result is None
+
+    def test_add_general_object_adds_to_cache(self):
+        # Arrange
+        key = "value_a"
+        obj = b"some string value"
+
+        # Act
+        self.cache.add(key, obj)
+
+        # Assert
+        assert self.cache.get(key) == obj
 
     def test_get_xrate_returns_correct_rate(self):
         # Arrange

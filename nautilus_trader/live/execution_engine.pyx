@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -30,8 +30,8 @@ from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.datetime cimport dt_to_unix_nanos
 from nautilus_trader.core.datetime cimport millis_to_nanos
 from nautilus_trader.core.fsm cimport InvalidStateTrigger
-from nautilus_trader.core.message cimport Message
-from nautilus_trader.core.message cimport MessageCategory
+from nautilus_trader.core.message cimport Command
+from nautilus_trader.core.message cimport Event
 from nautilus_trader.core.uuid cimport UUID4
 from nautilus_trader.execution.engine cimport ExecutionEngine
 from nautilus_trader.execution.messages cimport QueryOrder
@@ -41,12 +41,12 @@ from nautilus_trader.execution.reports cimport ExecutionReport
 from nautilus_trader.execution.reports cimport OrderStatusReport
 from nautilus_trader.execution.reports cimport PositionStatusReport
 from nautilus_trader.execution.reports cimport TradeReport
-from nautilus_trader.model.c_enums.liquidity_side cimport LiquiditySide
-from nautilus_trader.model.c_enums.order_status cimport OrderStatus
-from nautilus_trader.model.c_enums.order_type cimport OrderType
-from nautilus_trader.model.c_enums.trailing_offset_type cimport TrailingOffsetTypeParser
-from nautilus_trader.model.c_enums.trigger_type cimport TriggerType
-from nautilus_trader.model.c_enums.trigger_type cimport TriggerTypeParser
+from nautilus_trader.model.enums_c cimport LiquiditySide
+from nautilus_trader.model.enums_c cimport OrderStatus
+from nautilus_trader.model.enums_c cimport OrderType
+from nautilus_trader.model.enums_c cimport TriggerType
+from nautilus_trader.model.enums_c cimport trailing_offset_type_to_str
+from nautilus_trader.model.enums_c cimport trigger_type_to_str
 from nautilus_trader.model.events.order cimport OrderAccepted
 from nautilus_trader.model.events.order cimport OrderCanceled
 from nautilus_trader.model.events.order cimport OrderEvent
@@ -118,7 +118,8 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         )
 
         self._loop = loop
-        self._queue = Queue(maxsize=config.qsize)
+        self._cmd_queue = Queue(maxsize=config.qsize)
+        self._evt_queue = Queue(maxsize=config.qsize)
 
         # Settings
         self.reconciliation = config.reconciliation
@@ -128,7 +129,8 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         self._inflight_check_threshold_ns = millis_to_nanos(self.inflight_check_threshold_ms)
 
         # Async tasks
-        self._run_queue_task = None
+        self._cmd_queue_task = None
+        self._evt_queue_task = None
         self._inflight_check_task = None
         self.is_running = False
 
@@ -140,6 +142,7 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         """
         Connect the engine by calling connect on all registered clients.
         """
+        self._log.info("Connecting all clients...")
         for client in self._clients.values():
             client.connect()
 
@@ -147,52 +150,80 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         """
         Disconnect the engine by calling disconnect on all registered clients.
         """
+        self._log.info("Disconnecting all clients...")
         for client in self._clients.values():
             client.disconnect()
 
-    def get_run_queue_task(self) -> asyncio.Task:
+    def get_cmd_queue_task(self) -> Optional[asyncio.Task]:
         """
-        Return the internal run queue task for the engine.
+        Return the internal command queue task for the engine.
 
         Returns
         -------
-        asyncio.Task
+        asyncio.Task or ``None``
 
         """
-        return self._run_queue_task
+        return self._cmd_queue_task
 
-    def get_inflight_check_task(self) -> asyncio.Task:
+    def get_evt_queue_task(self) -> Optional[asyncio.Task]:
+        """
+        Return the internal event queue task for the engine.
+
+        Returns
+        -------
+        asyncio.Task or ``None``
+
+        """
+        return self._evt_queue_task
+
+    def get_inflight_check_task(self) -> Optional[asyncio.Task]:
         """
         Return the internal in-flight check task for the engine.
 
         Returns
         -------
-        asyncio.Task
+        asyncio.Task or ``None``
 
         """
         return self._inflight_check_task
 
-    cpdef int qsize(self) except *:
+    def cmd_qsize(self) -> int:
         """
-        Return the number of messages buffered on the internal queue.
+        Return the number of `Command` messages buffered on the internal queue.
 
         Returns
         -------
         int
 
         """
-        return self._queue.qsize()
+        return self._cmd_queue.qsize()
+
+    def evt_qsize(self) -> int:
+        """
+        Return the number of `Event` messages buffered on the internal queue.
+
+        Returns
+        -------
+        int
+
+        """
+        return self._evt_queue.qsize()
 
 # -- COMMANDS -------------------------------------------------------------------------------------
 
-    cpdef void kill(self) except *:
+    def kill(self) -> None:
         """
-        Kill the engine by abruptly cancelling the queue task and calling stop.
+        Kill the engine by abruptly canceling the queue task and calling stop.
         """
         self._log.warning("Killing engine...")
-        if self._run_queue_task:
-            self._log.debug("Canceling run_queue_task...")
-            self._run_queue_task.cancel()
+        if self._cmd_queue_task:
+            self._log.debug(f"Canceling {self._cmd_queue_task.get_name()}...")
+            self._cmd_queue_task.cancel()
+            self._cmd_queue_task.done()
+        if self._evt_queue_task:
+            self._log.debug(f"Canceling {self._evt_queue_task.get_name()}...")
+            self._evt_queue_task.cancel()
+            self._evt_queue_task.done()
         if self.is_running:
             self.is_running = False  # Avoids sentinel messages for queues
             self.stop()
@@ -219,13 +250,13 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         # Do not allow None through (None is a sentinel value which stops the queue)
 
         try:
-            self._queue.put_nowait(command)
+            self._cmd_queue.put_nowait(command)
         except asyncio.QueueFull:
             self._log.warning(
-                f"Blocking on `_queue.put` as queue full "
-                f"at {self._queue.qsize()} items.",
+                f"Blocking on `_cmd_queue.put` as queue full "
+                f"at {self._cmd_queue.qsize()} items.",
             )
-            self._loop.create_task(self._queue.put(command))  # Blocking until qsize reduces
+            self._loop.create_task(self._cmd_queue.put(command))  # Blocking until qsize reduces
 
     cpdef void process(self, OrderEvent event) except *:
         """
@@ -248,21 +279,30 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         Condition.not_none(event, "event")
 
         try:
-            self._queue.put_nowait(event)
+            self._evt_queue.put_nowait(event)
         except asyncio.QueueFull:
             self._log.warning(
-                f"Blocking on `_queue.put` as queue full "
-                f"at {self._queue.qsize()} items.",
+                f"Blocking on `_evt_queue.put` as queue full "
+                f"at {self._evt_queue.qsize()} items.",
             )
-            self._loop.create_task(self._queue.put(event))  # Blocking until qsize reduces
+            self._loop.create_task(self._evt_queue.put(event))  # Blocking until qsize reduces
+
+# -- INTERNAL -------------------------------------------------------------------------------------
+
+    def _enqueue_sentinel(self) -> None:
+        self._cmd_queue.put_nowait(self._sentinel)
+        self._evt_queue.put_nowait(self._sentinel)
+        self._log.debug(f"Sentinel messages placed on queues.")
 
     cpdef void _on_start(self) except *:
         if not self._loop.is_running():
             self._log.warning("Started when loop is not running.")
 
         self.is_running = True  # Queue will continue to process
-        self._run_queue_task = self._loop.create_task(self._run())
-        self._log.debug(f"Scheduled {self._run_queue_task}.")
+        self._cmd_queue_task = self._loop.create_task(self._run_cmd_queue(), name="cmd_queue")
+        self._evt_queue_task = self._loop.create_task(self._run_evt_queue(), name="evt_queue")
+        self._log.debug(f"Scheduled {self._cmd_queue_task}.")
+        self._log.debug(f"Scheduled {self._evt_queue_task}.")
 
         if self.inflight_check_interval_ms > 0:
             self._inflight_check_task = self._loop.create_task(self._inflight_check_loop())
@@ -276,35 +316,45 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         if self._inflight_check_task:
             self._inflight_check_task.cancel()
 
-    async def _run(self):
+    async def _run_cmd_queue(self):
         self._log.debug(
-            f"Message queue processing starting (qsize={self.qsize()})...",
+            f"Command message queue processing starting (qsize={self.cmd_qsize()})...",
         )
-        cdef Message message
+        cdef Command command
         try:
             while self.is_running:
-                message = await self._queue.get()
-                if message is None:  # Sentinel message (fast C-level check)
+                command = await self._cmd_queue.get()
+                if command is None:  # Sentinel message (fast C-level check)
                     continue         # Returns to the top to check `self.is_running`
-                if message.category == MessageCategory.EVENT:
-                    self._handle_event(message)
-                elif message.category == MessageCategory.COMMAND:
-                    self._execute_command(message)
-                else:
-                    self._log.error(f"Cannot handle message: unrecognized {message}.")
+                self._execute_command(command)
         except asyncio.CancelledError:
-            if not self._queue.empty():
+            if not self._cmd_queue.empty():
                 self._log.warning(
-                    f"Running canceled with {self.qsize()} message(s) on queue.",
+                    f"Command message queue processing canceled "
+                    f"with {self.cmd_qsize()} message(s) on queue.",
                 )
             else:
-                self._log.debug(
-                    f"Message queue processing stopped (qsize={self.qsize()}).",
-                )
+                self._log.debug("Command message queue processing stopped.")
 
-    cdef void _enqueue_sentinel(self) except *:
-        self._queue.put_nowait(self._sentinel)
-        self._log.debug(f"Sentinel message placed on message queue.")
+    async def _run_evt_queue(self):
+        self._log.debug(
+            f"Event message queue processing starting (qsize={self.evt_qsize()})...",
+        )
+        cdef Event event
+        try:
+            while self.is_running:
+                event = await self._evt_queue.get()
+                if event is None:  # Sentinel message (fast C-level check)
+                    continue       # Returns to the top to check `self.is_running`
+                self._handle_event(event)
+        except asyncio.CancelledError:
+            if not self._evt_queue.empty():
+                self._log.warning(
+                    f"Event message queue processing canceled "
+                    f"with {self.evt_qsize()} message(s) on queue.",
+                )
+            else:
+                self._log.debug("Event message queue processing stopped.")
 
     async def _inflight_check_loop(self) -> None:
         while True:
@@ -387,7 +437,7 @@ cdef class LiveExecutionEngine(ExecutionEngine):
 
         Parameters
         ----------
-        report : Document
+        report : ExecutionReport
             The execution report to check.
 
         """
@@ -401,7 +451,7 @@ cdef class LiveExecutionEngine(ExecutionEngine):
 
         Parameters
         ----------
-        report : Document
+        report : ExecutionMassStatus
             The execution mass status report to reconcile.
 
         """
@@ -426,7 +476,7 @@ cdef class LiveExecutionEngine(ExecutionEngine):
             result = self._reconcile_position_report(report)
         else:
             self._log.error(  # pragma: no cover (design-time error)
-                f"Cannot handle report: unrecognized {report}.",
+                f"Cannot handle report: unrecognized {report}.",  # pragma: no cover (design-time error)
             )
             return False
 
@@ -658,7 +708,7 @@ cdef class LiveExecutionEngine(ExecutionEngine):
         Instrument instrument,
     ):
         # Infer liquidity side
-        cdef LiquiditySide liquidity_side = LiquiditySide.NONE
+        cdef LiquiditySide liquidity_side = LiquiditySide.NO_LIQUIDITY_SIDE
         if (
             order.order_type == OrderType.MARKET
             or order.order_type == OrderType.STOP_MARKET
@@ -718,13 +768,13 @@ cdef class LiveExecutionEngine(ExecutionEngine):
             options["price"] = str(report.price)
         if report.trigger_price is not None:
             options["trigger_price"] = str(report.trigger_price)
-            options["trigger_type"] = TriggerTypeParser.to_str(report.trigger_type)
+            options["trigger_type"] = trigger_type_to_str(report.trigger_type)
         if report.limit_offset is not None:
             options["limit_offset"] = str(report.limit_offset)
-            options["trailing_offset_type"] =  TrailingOffsetTypeParser.to_str(report.trailing_offset_type)
+            options["trailing_offset_type"] =  trailing_offset_type_to_str(report.trailing_offset_type)
         if report.trailing_offset is not None:
             options["trailing_offset"] = str(report.trailing_offset)
-            options["trailing_offset_type"] = TrailingOffsetTypeParser.to_str(report.trailing_offset_type)
+            options["trailing_offset_type"] = trailing_offset_type_to_str(report.trailing_offset_type)
         if report.display_qty is not None:
             options["display_qty"] = str(report.display_qty)
 
@@ -742,7 +792,7 @@ cdef class LiveExecutionEngine(ExecutionEngine):
             post_only=report.post_only,
             reduce_only=report.reduce_only,
             options=options,
-            emulation_trigger=TriggerType.NONE,
+            emulation_trigger=TriggerType.NO_TRIGGER,
             contingency_type=report.contingency_type,
             order_list_id=report.order_list_id,
             linked_order_ids=None,

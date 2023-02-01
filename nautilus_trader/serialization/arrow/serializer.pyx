@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -153,7 +153,7 @@ cdef class ParquetSerializer:
             delegate = _OBJECT_TO_DICT_MAP.get(cls.__name__)
         if delegate is None:
             raise TypeError(
-                f"Cannot serialize object `{cls}`. Please register a "
+                f"Cannot serialize object `{cls}`. Register a "
                 f"serialization method via `arrow.serializer.register_parquet()`"
             )
 
@@ -186,7 +186,7 @@ cdef class ParquetSerializer:
             delegate = _OBJECT_FROM_DICT_MAP.get(cls.__name__)
         if delegate is None:
             raise TypeError(
-                f"Cannot deserialize object `{cls}`. Please register a "
+                f"Cannot deserialize object `{cls}`. Register a "
                 f"deserialization method via `arrow.serializer.register_parquet()`"
             )
 

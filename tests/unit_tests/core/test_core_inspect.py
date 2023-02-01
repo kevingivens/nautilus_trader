@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -16,6 +16,8 @@
 import pandas as pd
 import pytest
 
+from nautilus_trader.adapters.betfair.data_types import BetfairStartingPrice
+from nautilus_trader.adapters.betfair.data_types import BetfairTicker
 from nautilus_trader.core.inspect import get_size_of
 from nautilus_trader.core.inspect import is_nautilus_class
 from nautilus_trader.model.data.tick import TradeTick
@@ -29,6 +31,8 @@ from nautilus_trader.model.orderbook.data import OrderBookData
         (OrderBookData, True),
         (TradeTick, True),
         (OrderAccepted, True),
+        (BetfairStartingPrice, False),  # BetfairStartingPrice is an adapter specific type.
+        (BetfairTicker, True),  # BetfairTicker is a subclass of a nautilus type
         (pd.DataFrame, False),
     ],
 )

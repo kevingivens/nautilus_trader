@@ -4,7 +4,13 @@
 .. automodule:: nautilus_trader.backtest
 ```
 
-## Loaders
+```{eval-rst}
+.. automodule:: nautilus_trader.backtest.auction
+   :show-inheritance:
+   :inherited-members:
+   :members:
+   :member-order: bysource
+```
 
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.data.loaders
@@ -14,8 +20,6 @@
    :member-order: bysource
 ```
 
-## Providers
-
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.data.providers
    :show-inheritance:
@@ -23,8 +27,6 @@
    :members:
    :member-order: bysource
 ```
-
-## Wranglers
 
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.data.wranglers
@@ -34,8 +36,6 @@
    :member-order: bysource
 ```
 
-## Data Client
-
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.data_client
    :show-inheritance:
@@ -43,8 +43,6 @@
    :members:
    :member-order: bysource
 ```
-
-## Engine
 
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.engine
@@ -54,8 +52,6 @@
    :member-order: bysource
 ```
 
-## Exchange
-
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.exchange
    :show-inheritance:
@@ -63,8 +59,6 @@
    :members:
    :member-order: bysource
 ```
-
-## Execution
 
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.execution_client
@@ -74,8 +68,6 @@
    :member-order: bysource
 ```
 
-## Models
-
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.models
    :show-inheritance:
@@ -83,8 +75,6 @@
    :members:
    :member-order: bysource
 ```
-
-## Modules
 
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.modules
@@ -94,8 +84,6 @@
    :member-order: bysource
 ```
 
-## Backtest Node
-
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.node
    :show-inheritance:
@@ -103,8 +91,6 @@
    :members:
    :member-order: bysource
 ```
-
-## Results
 
 ```{eval-rst}
 .. automodule:: nautilus_trader.backtest.results

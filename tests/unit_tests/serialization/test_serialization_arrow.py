@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -25,8 +25,8 @@ from nautilus_trader.common.clock import TestClock
 from nautilus_trader.common.events.risk import TradingStateChanged
 from nautilus_trader.common.events.system import ComponentStateChanged
 from nautilus_trader.common.factories import OrderFactory
-from nautilus_trader.model.c_enums.book_action import BookAction
-from nautilus_trader.model.c_enums.book_type import BookType
+from nautilus_trader.model.enums import BookAction
+from nautilus_trader.model.enums import BookType
 from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.events.account import AccountState
 from nautilus_trader.model.identifiers import PositionId
@@ -41,10 +41,10 @@ from nautilus_trader.model.position import Position
 from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 from nautilus_trader.persistence.external.core import write_objects
 from nautilus_trader.serialization.arrow.serializer import ParquetSerializer
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.execution import TestExecStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.execution import TestExecStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from tests.unit_tests.serialization.conftest import nautilus_objects
 
 
@@ -78,7 +78,7 @@ class TestParquetSerializer:
         self.order = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
         self.order_submitted = copy.copy(self.order)
         self.order_submitted.apply(TestEventStubs.order_submitted(self.order))
@@ -87,7 +87,13 @@ class TestParquetSerializer:
         self.order_accepted.apply(TestEventStubs.order_accepted(self.order_submitted))
 
         self.order_updated = copy.copy(self.order_submitted)
-        self.order_updated.apply(TestEventStubs.order_updated(self.order))
+        self.order_updated.apply(
+            TestEventStubs.order_updated(
+                self.order,
+                price=Price.from_str("1.00000"),
+                quantity=Quantity.from_int(1),
+            ),
+        )
 
         self.order_pending_cancel = copy.copy(self.order_accepted)
         self.order_pending_cancel.apply(TestEventStubs.order_pending_cancel(self.order_accepted))
@@ -167,22 +173,22 @@ class TestParquetSerializer:
                 OrderBookDelta.from_dict(
                     {
                         "action": "ADD",
-                        "order_side": "BUY",
-                        "order_price": 8.0,
-                        "order_size": 30.0,
+                        "side": "BUY",
+                        "price": 8.0,
+                        "size": 30.0,
                         "order_id": "e0364f94-8fcb-0262-cbb3-075c51ee4917",
                         **kw,
-                    }
+                    },
                 ),
                 OrderBookDelta.from_dict(
                     {
                         "action": "ADD",
-                        "order_side": "SELL",
-                        "order_price": 15.0,
-                        "order_size": 10.0,
+                        "side": "SELL",
+                        "price": 15.0,
+                        "size": 10.0,
                         "order_id": "cabec174-acc6-9204-9ebf-809da3896daf",
                         **kw,
-                    }
+                    },
                 ),
             ],
             ts_event=0,
@@ -206,30 +212,30 @@ class TestParquetSerializer:
         deltas = [
             {
                 "action": "ADD",
-                "order_side": "SELL",
-                "order_price": 0.9901,
-                "order_size": 327.25,
+                "side": "SELL",
+                "price": 0.9901,
+                "size": 327.25,
                 "order_id": "1",
             },
             {
                 "action": "CLEAR",
-                "order_side": None,
-                "order_price": None,
-                "order_size": None,
+                "side": None,
+                "price": None,
+                "size": None,
                 "order_id": None,
             },
             {
                 "action": "ADD",
-                "order_side": "SELL",
-                "order_price": 0.98039,
-                "order_size": 27.91,
+                "side": "SELL",
+                "price": 0.98039,
+                "size": 27.91,
                 "order_id": "2",
             },
             {
                 "action": "ADD",
-                "order_side": "SELL",
-                "order_price": 0.97087,
-                "order_size": 14.43,
+                "side": "SELL",
+                "price": 0.97087,
+                "size": 14.43,
                 "order_id": "3",
             },
         ]
@@ -269,7 +275,8 @@ class TestParquetSerializer:
 
         serialized = ParquetSerializer.serialize(event)
         [deserialized] = ParquetSerializer.deserialize(
-            cls=ComponentStateChanged, chunk=[serialized]
+            cls=ComponentStateChanged,
+            chunk=[serialized],
         )
 
         # Assert
@@ -310,12 +317,20 @@ class TestParquetSerializer:
             TestEventStubs.order_accepted,
             TestEventStubs.order_rejected,
             TestEventStubs.order_submitted,
-            TestEventStubs.order_updated,
         ],
     )
     def test_serialize_and_deserialize_order_events_base(self, event_func):
         order = TestExecStubs.limit_order()
         event = event_func(order=order)
+        self._test_serialization(obj=event)
+
+    def test_serialize_and_deserialize_order_updated_events(self):
+        order = TestExecStubs.limit_order()
+        event = TestEventStubs.order_updated(
+            order=order,
+            quantity=Quantity.from_int(500_000),
+            price=Price.from_str("1.00000"),
+        )
         self._test_serialization(obj=event)
 
     @pytest.mark.parametrize(
@@ -361,7 +376,7 @@ class TestParquetSerializer:
         order3 = self.order_factory.market(
             instrument.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
         fill3 = TestEventStubs.order_filled(
             order3,
@@ -388,7 +403,7 @@ class TestParquetSerializer:
         open_order = self.order_factory.market(
             instrument.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
         open_fill = TestEventStubs.order_filled(
             open_order,
@@ -400,7 +415,7 @@ class TestParquetSerializer:
         close_order = self.order_factory.market(
             instrument.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
         close_fill = TestEventStubs.order_filled(
             close_order,

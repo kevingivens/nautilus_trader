@@ -1,34 +1,257 @@
+# NautilusTrader 1.168.0 Beta
+
+Released on 29th January 2023 (UTC).
+
+### Breaking Changes
+- Removed `Cache.clear_cache()` (redundant with the `.reset()` method)
+
+### Enhancements
+- Added `Cache` `.add(...)` and `.get(...)` for general 'user/custom' objects (as bytes)
+- Added `CacheDatabase` `.add(...)` and `.load()` for general cache objects (as bytes)
+- Added `RedisCacheDatabase` `.add(...) `and `.load()` for general Redis persisted bytes objects (as bytes)
+- Added `Cache.actor_ids()`
+- Added `Actor` cached state saving and loading functionality
+- Improved logging for called action handlers when not overridden
+
+### Fixes
+- Fixed configuration of loading and saving actor and strategy state
+
+---
+
+# NautilusTrader 1.167.0 Beta
+
+Released on 28th January 2023 (UTC).
+
+### Breaking Changes
+- Renamed `OrderBookData.update_id` to `sequence`
+- Renamed `BookOrder.id` to `order_id`
+
+### Enhancements
+- Introduced Rust pyo3 based `ParquetReader` and `ParquetWriter`, thanks @twitu
+- Added `msgbus.is_subscribed` (to check if topic and handler already subscribed)
+- Simplified message type model and introduce CQRS-ish live messaging architecture
+
+### Fixes
+- Fixed Binance data clients order book startup buffer handling
+- Fixed `NautilusKernel` redundant initialization of event loop for backtesting, thanks @limx0
+- Fixed `BacktestNode` disposal sequence
+- Fixed quick start docs and notebook
+
+---
+
+# NautilusTrader 1.166.0 Beta
+
+Released on 17th January 2023 (UTC).
+
+### Breaking Changes
+- `Position.unrealized_pnl` now `None` until any realized PnL is generated (to reduce ambiguity)
+
+### Enhancements
+- Added instrument status update subscription handlers, thanks @limx0
+- Improvements to InteractiveBrokers `DataClient`, thanks @rsmb7z
+- Improvements to async task handling for live clients
+- Various improvements to Betfair adapter, thanks @limx0
+
+### Fixes
+- Fixed netted `Position` `realized_pnl` and `realized_return` fields, which were incorrectly cumulative
+- Fixed netted `Position` flip logic (now correctly 'resets' position)
+- Various fixes for Betfair adapter, thanks @limx0
+- InteractiveBrokers integration docs fixes
+
+---
+
+# NautilusTrader 1.165.0 Beta
+
+Released on 14th January 2023 (UTC).
+
+A number of enum variant names have been changed in favour of explicitness, 
+and also to avoid C naming collisions.
+
+### Breaking Changes
+- Renamed `AggressorSide.NONE` to `NO_AGGRESSOR`
+- Renamed `AggressorSide.BUY` to `BUYER`
+- Renamed `AggressorSide.SELL` to `SELLER`
+- Renamed `AssetClass.CRYPTO` to `CRYPTOCURRENCY`
+- Renamed `LiquiditySide.NONE` to `NO_LIQUIDITY_SIDE`
+- Renamed `OMSType` to `OmsType`
+- Renamed `OmsType.NONE` to `UNSPECIFIED`
+- Renamed `OrderSide.NONE` to `NO_ORDER_SIDE`
+- Renamed `PositionSide.NONE` to `NO_POSITION_SIDE`
+- Renamed `TrailingOffsetType.NONE` to `NO_TRAILING_OFFSET`
+- Removed `TrailingOffsetType.DEFAULT`
+- Renamed `TriggerType.NONE` to `NO_TRIGGER`
+- Renamed `TriggerType.LAST` to `LAST_TRADE`
+- Renamed `TriggerType.MARK` to `MARK_PRICE`
+- Renamed `TriggerType.INDEX` to `INDEX_PRICE`
+- Renamed `ComponentState.INITIALIZED` to `READY`
+- Renamed `OrderFactory.bracket(post_only)` to `post_only_entry`
+- Moved `manage_gtd_expiry` to `Strategy.submit_order(...)` and `Strategy.submit_order_list(...)`
+
+### Enhancements
+- Added `BarSpecification.timedelta` property, thanks @rsmb7z
+- Added `DataEngineConfig.build_time_bars_with_no_updates` option
+- Added `OrderFactory.bracket(post_only_tp)` param
+- Added `OrderListIdGenerator` and integrate with `OrderFactory`
+- Added `Cache.add_order_list(...)`
+- Added `Cache.order_list(...)`
+- Added `Cache.order_lists(...)`
+- Added `Cache.order_list_exists(...)`
+- Added `Cache.order_list_ids(...)`
+- Improved generation of `OrderListId` from factory to ensure uniqueness
+- Added auction matches for backtests, thanks @limx0
+- Added `.timedelta` property to `BarSpecification`, thanks @rsmb7z
+- Numerous improvements to the Betfair adapter, thanks @limx0
+- Improvements to Interactive Brokers data subscriptions, thanks @rsmb7z
+- Added `DataEngineConfig.validate_data_sequence` (False by default and currently only for `Bar` data), thanks @rsmb7z
+
+### Fixes
+- Added `TRD_GRP_*` enum variants for Binance spot permissions
+- Fixed `PARTIALLY_FILLED` -> `EXPIRED` order state transition, thanks @bb01100100
+
+---
+
+# NautilusTrader 1.164.0 Beta
+
+Released on 23rd December 2022 (UTC).
+
+### Breaking Changes
+None
+
+### Enhancements
+- Added managed GTD order expiry (experimental feature, config may change)
+- Added Rust `ParquetReader` and `ParquetWriter` (for `QuoteTick` and `TradeTick` only)
+
+### Fixes
+- Fixed `MARKET_IF_TOUCHED` orders for `OrderFactory.bracket(..)`
+- Fixed `OrderEmulator` trigger event handling for live trading
+- Fixed `OrderEmulator` transformation to market orders which had a GTD time in force
+- Fixed serialization of `OrderUpdated` events
+- Fixed typing and edge cases for new `msgspec`, thanks @limx0 
+- Fixed data wrangler processing with missing data, thanks @rsmb7z
+
+---
+
+# NautilusTrader 1.163.0 Beta
+
+Released on 17th December 2022 (UTC).
+
+### Breaking Changes
+None
+
+### Enhancements
+None
+
+### Fixes
+- Fixed `MARKET_IF_TOUCHED` and `LIMIT_IF_TOUCHED` trigger and modify behavior
+- Fixed `MatchingEngine` updates of stop order types
+- Fixed combinations of passive or immediate trigger vs passive or immediate fill behavior
+- Fixed memory leaks from passing string pointers from Rust, thanks @twitu
+
+---
+
+# NautilusTrader 1.162.0 Beta
+
+Released on 12th December 2022 (UTC).
+
+### Breaking Changes
+- `OrderFactory` bracket order methods consolidated to `.bracket(...)`
+
+### Enhancements
+- Extended `OrderFactory` to provide more bracket order types
+- Simplified GitHub CI and removed `nox` dependency
+
+### Fixes
+- Fixed `OrderBook` sorting for bid side, thanks @gaugau3000
+- Fixed `MARKET_TO_LIMIT` order initial fill behaviour
+- Fixed `BollingerBands` indicator mid-band calculations, thanks zhp (Discord)
+
+---
+
+# NautilusTrader 1.161.0 Beta
+
+Released on 10th December 2022 (UTC).
+
+### Breaking Changes
+- Renamed `OrderFactory.bracket_market` to `OrderFactory.bracket_market_entry`
+- Renamed `OrderFactory.bracket_limit` to `OrderFactory.bracket_limit_entry`
+- Renamed `OrderFactory` bracket order `price` and `trigger_price` parameters
+
+### Enhancements
+- Added support for Python 3.11
+- Consolidated config objects to `msgspec` providing better performance and correctness
+- Added `OrderFactory.bracket_stop_limit_entry_stop_limit_tp(...)`
+- Numerous improvements to the Interactive Brokers adapter, thanks @limx0 and @rsmb7z
+- Removed dependency on `pydantic`
+
+### Fixes
+- Fixed `STOP_MARKET` order behavior to fill at market on immediate trigger
+- Fixed `STOP_LIMIT` order behavior to fill at market on immediate trigger and marketable
+- Fixed `STOP_LIMIT` order behavior to fill at market on processed trigger and marketable
+- Fixed `LIMIT_IF_TOUCHED` order behavior to fill at market on immediate trigger and marketable
+- Fixed Binance start and stop time units for bar (kline) requests, thanks @Tzumx
+- `RiskEngineConfig.bypass` set to `True` will now correctly bypass throttlers, thanks @DownBadCapital
+- Fixed updating of emulated orders
+- Numerous fixes to the Interactive Brokers adapter, thanks @limx0 and @rsmb7z
+
+---
+
+# NautilusTrader 1.160.0 Beta
+
+Released on 28th November 2022 (UTC).
+
+### Breaking Changes
+- Removed time portion from generated IDs (affects `ClientOrderId` and `PositionOrderId`)
+- Renamed `orderbook.data.Order` to `orderbook.data.BookOrder` (reduce conflicts/confusion)
+- Renamed `Instrument.get_cost_currency(...)` to `Instrument.get_settlement_currency(...)` (more accurate terminology)
+
+### Enhancements
+- Added emulated contingency orders capability to `OrderEmulator`
+- Moved `test_kit` module to main package to support downstream project/package testing
+
+### Fixes
+- Fixed position event sequencing: now generates `PositionOpened` when reopening a closed position
+- Fixed `LIMIT` order fill characteristics when immediately marketable as a taker
+- Fixed `LIMIT` order fill characteristics when passively filled as a maker as quotes move through
+- Fixed canceling OTO contingent orders when still in-flight
+- Fixed `RiskEngine` notional check when selling cash assets (spot currency pairs)
+- Fixed flush on closed file bug for persistence stream writers
+
+---
+
 # NautilusTrader 1.159.0 Beta
 
-Released on TBD (UTC).
+Released on 18th November 2022 (UTC).
 
 ### Breaking Changes
 - Removed FTX integration
-- Renamed `SubmitOrderList.list` -> `SubmitOrderList.order_list`
+- Renamed `SubmitOrderList.list` to `SubmitOrderList.order_list`
 - Slight adjustment to bar aggregation (will not use the last close as the open)
 
 ### Enhancements
 - Implemented `TRAILING_STOP_MARKET` orders for Binance Futures (beta)
-- Added `OUO` One-Updates-Other `ContigencyType` with matching engine implementation
-- Improved FTX client error handling
+- Added `OUO` One-Updates-Other `ContingencyType` with matching engine implementation
+- Added bar price fallback for exchange rate calculations, thanks @ghill2
 
 ### Fixes
-- Fixed deallocation of Rust backing struct on Python exceptions causing segfaults
+- Fixed dealloc of Rust backing struct on Python exceptions causing segfaults
 - Fixed bar aggregation start times for bar specs outside typical intervals (60-SECOND rather than 1-MINUTE etc) 
 - Fixed backtest engine main loop ordering of time events with identically timestamped data
 - Fixed `ModifyOrder` message `str` and `repr` when no quantity
 - Fixed OCO contingency orders which were actually implemented as OUO for backtests
+- Fixed various bugs for Interactive Brokers integration, thanks @limx0 and @rsmb7z
+- Fixed pyarrow version parsing, thanks @ghill2
+- Fixed returning venue from InstrumentId, thanks @rsmb7z
 
 ---
 
 # NautilusTrader 1.158.0 Beta
 
-Released on 3rd November (UTC).
+Released on 3rd November 2022 (UTC).
 
 ### Breaking Changes
 - Added `LiveExecEngineConfig.reconcilation` boolean flag to control if reconciliation is active
 - Removed `LiveExecEngineConfig.reconciliation_auto` (unclear naming and concept)
-- All Redis keys have changed to a lowercase convention (please either migrate or flush your Redis)
+- All Redis keys have changed to a lowercase convention (either migrate or flush your Redis)
 - Removed `BidAskMinMax` indicator (to reduce total package size)
 - Removed `HilbertPeriod` indicator (to reduce total package size)
 - Removed `HilbertSignalNoiseRatio` indicator (to reduce total package size)
@@ -48,7 +271,7 @@ Released on 3rd November (UTC).
 
 # NautilusTrader 1.157.0 Beta
 
-Released on 24th October (UTC).
+Released on 24th October 2022 (UTC).
 
 ### Breaking Changes
 - None
@@ -71,9 +294,9 @@ This will be the final release with support for Python 3.8.
 
 ### Breaking Changes
 - Added `OrderSide.NONE` enum variant
-- Added `PositionSide.NONE` enum variant
+- Added `PositionSide.NO_POSITION_SIDE` enum variant
 - Changed order of `TriggerType` enum variants
-- Renamed `AggressorSide.UNKNOWN` -> `AggressorSide.NONE` (for consistency with other enums)
+- Renamed `AggressorSide.UNKNOWN` to `AggressorSide.NONE` (for consistency with other enums)
 - Renamed `Order.type` to `Order.order_type` (reduces ambiguity and aligns with Rust struct field)
 - Renamed `OrderInitialized.type` to `OrderInitialized.order_type` reduces ambiguity)
 - Renamed `Bar.type` to `Bar.bar_type` (reduces ambiguity and aligns with Rust struct field)
@@ -554,7 +777,7 @@ safety this type is now utilized for the `TradeTick.trade_id`.
 - Renamed `execution_id` to `trade_id`
 - Renamed `Order.trade_id` to `Order.last_trade_id` (for clarity)
 - Renamed other variations and references of 'execution ID' to 'trade ID'
-- Renamed `contigency` to `contingency_type`
+- Renamed `contingency` to `contingency_type`
 
 ### Enhancements
 - Introduced the `TradeId` type to enforce `trade_id` typing
@@ -1017,7 +1240,7 @@ Released on 18th July 2021.
 This release introduces a major re-architecture of the internal messaging system.
 A common message bus has been implemented which now handles all events via a 
 Pub/Sub messaging pattern. The next release will see all data being handled by 
-the message bus, please see the related issue for further details on this enhancement.
+the message bus, see the related issue for further details on this enhancement.
 
 Another notable feature is the introduction of the order 'in-flight' concept, 
 which is a submitted order which has not yet been acknowledged by the 
@@ -1199,7 +1422,7 @@ https://cython.readthedocs.io/en/latest/src/userguide/pyrex_differences.html?hig
 
 It has been found that adding `inline` to method signatures makes no difference
 to the performance of the system - and so they have been removed to reduce 
-'noise' and simplify the codebase. Please note that the use of `inline` for 
+'noise' and simplify the codebase. Note that the use of `inline` for 
 module level functions will be passed to the C compiler with the expected 
 result of inlining the function.
 
@@ -1333,8 +1556,8 @@ for `OrderFill` events, as well as additional order states and events.
 
 ### Fixes
 - `ExecutionCache` positions open queries
-- Exchange accounting for exchange `OMSType.NETTING`
-- Position flipping logic for exchange `OMSType.NETTING`
+- Exchange accounting for exchange `OmsType.NETTING`
+- Position flipping logic for exchange `OmsType.NETTING`
 - Multi-currency account terminology
 - Windows wheel packaging
 - Windows path errors
@@ -1432,7 +1655,7 @@ being renamed in properties and variables from `cl_ord_id` to `client_order_id`.
 - Rename `Order.id` to `Order.venue_order_id`
 - Rename `Order.cl_ord_id` to `Order.client_order_id`
 - Rename `AssetClass.STOCK` to `AssetClass.EQUITY`
-- Remove redundant flag `generate_position_ids` (handled by `OMSType`)
+- Remove redundant flag `generate_position_ids` (handled by `OmsType`)
 
 ### Enhancements
 - Introduce integration for Betfair.

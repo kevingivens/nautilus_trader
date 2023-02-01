@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -24,7 +24,7 @@ from nautilus_trader.model.currencies import BTC
 from nautilus_trader.model.currencies import ETH
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.currencies import USDT
-from nautilus_trader.model.enums import OptionKindParser
+from nautilus_trader.model.enums import option_kind_from_str
 from nautilus_trader.model.instruments.base import Instrument
 from nautilus_trader.model.instruments.crypto_future import CryptoFuture
 from nautilus_trader.model.instruments.crypto_perpetual import CryptoPerpetual
@@ -34,7 +34,6 @@ from nautilus_trader.model.instruments.option import Option
 from nautilus_trader.model.objects import Money
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
 
 
 provider = TestDataProvider()
@@ -48,7 +47,7 @@ ETHUSD_BITMEX = TestInstrumentProvider.ethusd_bitmex()
 AAPL_EQUITY = TestInstrumentProvider.aapl_equity()
 ES_FUTURE = TestInstrumentProvider.es_future()
 AAPL_OPTION = TestInstrumentProvider.aapl_option()
-NFL_INSTRUMENT = BetfairTestStubs.betting_instrument()
+NFL_INSTRUMENT = TestInstrumentProvider.betting_instrument()
 
 
 class TestInstrument:
@@ -92,7 +91,7 @@ class TestInstrument:
             "type": "Instrument",
             "id": "BTCUSDT.BINANCE",
             "native_symbol": "BTCUSDT",
-            "asset_class": "CRYPTO",
+            "asset_class": "CRYPTOCURRENCY",
             "asset_type": "SPOT",
             "quote_currency": "USDT",
             "is_inverse": False,
@@ -123,7 +122,7 @@ class TestInstrument:
             "type": "Instrument",
             "id": "BTCUSDT.BINANCE",
             "native_symbol": "BTCUSDT",
-            "asset_class": "CRYPTO",
+            "asset_class": "CRYPTOCURRENCY",
             "asset_type": "SPOT",
             "quote_currency": "USDT",
             "is_inverse": False,
@@ -374,7 +373,7 @@ class TestInstrument:
     )
     def test_cost_currency_for_various_instruments(self, instrument, expected):
         # Arrange, Act, Asset
-        assert instrument.get_cost_currency() == expected
+        assert instrument.get_settlement_currency() == expected
 
     def test_calculate_notional_value(self):
         # Arrange
@@ -402,7 +401,7 @@ class TestInstrument:
 
         # Act
         result = instrument.notional_value(
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("11493.60"),
             inverse_as_quote=inverse_as_quote,
         )
@@ -440,12 +439,12 @@ class TestInstrument:
 
     def test_option_attributes(self):
         assert AAPL_OPTION.underlying == "AAPL"
-        assert AAPL_OPTION.kind == OptionKindParser.from_str_py("CALL")
+        assert AAPL_OPTION.kind == option_kind_from_str("CALL")
 
 
 class TestBettingInstrument:
     def setup(self):
-        self.instrument = BetfairTestStubs.betting_instrument()
+        self.instrument = TestInstrumentProvider.betting_instrument()
 
     def test_notional_value(self):
         notional = self.instrument.notional_value(

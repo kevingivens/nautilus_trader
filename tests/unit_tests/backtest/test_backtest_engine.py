@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -30,6 +30,7 @@ from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.backtest.models import FillModel
 from nautilus_trader.config import StreamingConfig
 from nautilus_trader.config.error import InvalidConfiguration
+from nautilus_trader.core.uuid import UUID4
 from nautilus_trader.examples.strategies.ema_cross import EMACross
 from nautilus_trader.examples.strategies.ema_cross import EMACrossConfig
 from nautilus_trader.examples.strategies.signal_strategy import SignalStrategy
@@ -46,8 +47,8 @@ from nautilus_trader.model.enums import AggregationSource
 from nautilus_trader.model.enums import BarAggregation
 from nautilus_trader.model.enums import BookAction
 from nautilus_trader.model.enums import BookType
-from nautilus_trader.model.enums import InstrumentStatus
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import MarketStatus
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.enums import PriceType
 from nautilus_trader.model.identifiers import ClientId
@@ -55,16 +56,16 @@ from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Money
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from nautilus_trader.model.orderbook.data import Order
+from nautilus_trader.model.orderbook.data import BookOrder
 from nautilus_trader.model.orderbook.data import OrderBookDelta
 from nautilus_trader.model.orderbook.data import OrderBookDeltas
 from nautilus_trader.model.orderbook.data import OrderBookSnapshot
 from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
+from nautilus_trader.test_kit.stubs import MyData
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.config import TestConfigStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit.stubs import MyData
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.config import TestConfigStubs
-from tests.test_kit.stubs.data import TestDataStubs
 
 
 ETHUSDT_BINANCE = TestInstrumentProvider.ethusdt_binance()
@@ -83,7 +84,7 @@ class TestBacktestEngine:
         engine = BacktestEngine(config)
         engine.add_venue(
             venue=Venue("SIM"),
-            oms_type=OMSType.HEDGING,
+            oms_type=OmsType.HEDGING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USD)],
@@ -189,8 +190,8 @@ class TestBacktestEngine:
             strategy = SignalStrategy(config)
             engine = self.create_engine(
                 config=BacktestEngineConfig(
-                    streaming=StreamingConfig(catalog_path="/", fs_protocol="memory")
-                )
+                    streaming=StreamingConfig(catalog_path="/", fs_protocol="memory"),
+                ),
             )
             engine.add_strategy(strategy)
             engine.run()
@@ -202,8 +203,8 @@ class TestBacktestEngine:
         strategy = SignalStrategy(config)
         engine = self.create_engine(
             config=BacktestEngineConfig(
-                streaming=StreamingConfig(catalog_path="/", fs_protocol="memory")
-            )
+                streaming=StreamingConfig(catalog_path="/", fs_protocol="memory"),
+            ),
         )
         engine.add_strategy(strategy)
         messages = []
@@ -218,6 +219,18 @@ class TestBacktestEngine:
         assert msg.ts_init == 1359676799700000000
         assert msg.ts_event == 1359676799700000000
 
+    def test_set_instance_id(self):
+        # Arrange
+        instance_id = UUID4().value
+
+        # Act
+        engine = self.create_engine(config=BacktestEngineConfig(instance_id=instance_id))
+        engine2 = self.create_engine(config=BacktestEngineConfig())  # Engine sets instance id
+
+        # Assert
+        assert engine.kernel.instance_id.value == instance_id
+        assert engine2.kernel.instance_id.value != instance_id
+
 
 class TestBacktestEngineData:
     def setup(self):
@@ -225,14 +238,14 @@ class TestBacktestEngineData:
         self.engine = BacktestEngine()
         self.engine.add_venue(
             venue=Venue("BINANCE"),
-            oms_type=OMSType.NETTING,
+            oms_type=OmsType.NETTING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USDT)],
         )
         self.engine.add_venue(
             venue=Venue("SIM"),
-            oms_type=OMSType.HEDGING,
+            oms_type=OmsType.HEDGING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USD)],
@@ -321,7 +334,7 @@ class TestBacktestEngineData:
                 instrument_id=AUDUSD_SIM.id,
                 book_type=BookType.L2_MBP,
                 action=BookAction.ADD,
-                order=Order(
+                order=BookOrder(
                     price=Price.from_str("13.0"),
                     size=Quantity.from_str("40"),
                     side=OrderSide.SELL,
@@ -333,7 +346,7 @@ class TestBacktestEngineData:
                 instrument_id=AUDUSD_SIM.id,
                 book_type=BookType.L2_MBP,
                 action=BookAction.ADD,
-                order=Order(
+                order=BookOrder(
                     price=Price.from_str("12.0"),
                     size=Quantity.from_str("30"),
                     side=OrderSide.SELL,
@@ -345,7 +358,7 @@ class TestBacktestEngineData:
                 instrument_id=AUDUSD_SIM.id,
                 book_type=BookType.L2_MBP,
                 action=BookAction.ADD,
-                order=Order(
+                order=BookOrder(
                     price=Price.from_str("11.0"),
                     size=Quantity.from_str("20"),
                     side=OrderSide.SELL,
@@ -357,7 +370,7 @@ class TestBacktestEngineData:
                 instrument_id=AUDUSD_SIM.id,
                 book_type=BookType.L2_MBP,
                 action=BookAction.ADD,
-                order=Order(
+                order=BookOrder(
                     price=Price.from_str("10.0"),
                     size=Quantity.from_str("20"),
                     side=OrderSide.BUY,
@@ -369,7 +382,7 @@ class TestBacktestEngineData:
                 instrument_id=AUDUSD_SIM.id,
                 book_type=BookType.L2_MBP,
                 action=BookAction.ADD,
-                order=Order(
+                order=BookOrder(
                     price=Price.from_str("9.0"),
                     size=Quantity.from_str("30"),
                     side=OrderSide.BUY,
@@ -381,7 +394,7 @@ class TestBacktestEngineData:
                 instrument_id=AUDUSD_SIM.id,
                 book_type=BookType.L2_MBP,
                 action=BookAction.ADD,
-                order=Order(
+                order=BookOrder(
                     price=Price.from_str("0.0"),
                     size=Quantity.from_str("40"),
                     side=OrderSide.BUY,
@@ -475,13 +488,13 @@ class TestBacktestEngineData:
         data = [
             InstrumentStatusUpdate(
                 instrument_id=USDJPY_SIM.id,
-                status=InstrumentStatus.CLOSED,
+                status=MarketStatus.CLOSED,
                 ts_init=0,
                 ts_event=0,
             ),
             InstrumentStatusUpdate(
                 instrument_id=USDJPY_SIM.id,
-                status=InstrumentStatus.OPEN,
+                status=MarketStatus.OPEN,
                 ts_init=0,
                 ts_event=0,
             ),
@@ -509,7 +522,7 @@ class TestBacktestWithAddedBars:
         # Setup venue
         self.engine.add_venue(
             venue=self.venue,
-            oms_type=OMSType.HEDGING,
+            oms_type=OmsType.HEDGING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USD)],
@@ -561,8 +574,8 @@ class TestBacktestWithAddedBars:
             instrument_id=str(GBPUSD_SIM.id),
             bar_type=str(bar_type),
             trade_size=Decimal(100_000),
-            fast_ema=10,
-            slow_ema=20,
+            fast_ema_period=10,
+            slow_ema_period=20,
         )
         strategy = EMACross(config=config)
         self.engine.add_strategy(strategy)
@@ -574,12 +587,13 @@ class TestBacktestWithAddedBars:
         assert strategy.fast_ema.count == 30117
         assert self.engine.iteration == 60234
         assert self.engine.portfolio.account(self.venue).balance_total(USD) == Money(
-            1011166.89, USD
+            1011166.89,
+            USD,
         )
 
     def test_dump_pickled_data(self):
         # Arrange, # Act, # Assert
-        assert len(self.engine.dump_pickled_data()) == 5181010
+        assert len(self.engine.dump_pickled_data()) == 5060524
 
     def test_load_pickled_data(self):
         # Arrange
@@ -592,8 +606,8 @@ class TestBacktestWithAddedBars:
             instrument_id=str(GBPUSD_SIM.id),
             bar_type=str(bar_type),
             trade_size=Decimal(100_000),
-            fast_ema=10,
-            slow_ema=20,
+            fast_ema_period=10,
+            slow_ema_period=20,
         )
         strategy = EMACross(config=config)
         self.engine.add_strategy(strategy)
@@ -608,5 +622,6 @@ class TestBacktestWithAddedBars:
         assert strategy.fast_ema.count == 30117
         assert self.engine.iteration == 60234
         assert self.engine.portfolio.account(self.venue).balance_total(USD) == Money(
-            1011166.89, USD
+            1011166.89,
+            USD,
         )

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -156,7 +156,7 @@ class TestFixedRiskSizer:
         )
 
         # Assert
-        assert result == Quantity.from_int(500000)
+        assert result == Quantity.from_int(500_000)
 
     def test_calculate_multiple_unit_size(self):
         # Arrange

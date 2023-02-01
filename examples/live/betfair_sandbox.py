@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -81,7 +81,7 @@ async def main(market_id: str):
                 instrument_id=instrument.id.value,
                 max_trade_size=10,
                 order_id_tag=instrument.selection_id,
-            )
+            ),
         )
         for instrument in instruments
     ]

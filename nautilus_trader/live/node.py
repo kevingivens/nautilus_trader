@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,16 +14,15 @@
 # -------------------------------------------------------------------------------------------------
 
 import asyncio
-import sys
 import time
 from datetime import timedelta
 from typing import Optional
 
 from nautilus_trader.cache.base import CacheFacade
 from nautilus_trader.common import Environment
+from nautilus_trader.common.enums import LogColor
+from nautilus_trader.common.enums import log_level_from_str
 from nautilus_trader.common.logging import LiveLogger
-from nautilus_trader.common.logging import LogColor
-from nautilus_trader.common.logging import LogLevelParser
 from nautilus_trader.config import CacheConfig
 from nautilus_trader.config import CacheDatabaseConfig
 from nautilus_trader.config import LiveDataEngineConfig
@@ -47,11 +46,6 @@ class TradingNode:
     ----------
     config : TradingNodeConfig, optional
         The configuration for the instance.
-
-    Raises
-    ------
-    TypeError
-        If `config` is not of type `TradingNodeConfig`.
     """
 
     def __init__(self, config: Optional[TradingNodeConfig] = None):
@@ -71,6 +65,7 @@ class TradingNode:
             environment=Environment.LIVE,
             name=type(self).__name__,
             trader_id=TraderId(config.trader_id),
+            instance_id=config.instance_id,
             cache_config=config.cache or CacheConfig(),
             cache_database_config=config.cache_database or CacheDatabaseConfig(),
             data_config=config.data_engine or LiveDataEngineConfig(),
@@ -81,8 +76,10 @@ class TradingNode:
             strategy_configs=config.strategies,
             loop=loop,
             loop_debug=config.loop_debug,
+            load_state=config.load_state,
+            save_state=config.save_state,
             loop_sig_callback=self._loop_sig_handler,
-            log_level=LogLevelParser.from_str_py(config.log_level.upper()),
+            log_level=log_level_from_str(config.log_level.upper()),
         )
 
         self._builder = TradingNodeBuilder(
@@ -278,7 +275,7 @@ class TradingNode:
         if not self._is_built:
             raise RuntimeError(
                 "The trading nodes clients have not been built. "
-                "Please run `node.build()` prior to start."
+                "Run `node.build()` prior to start.",
             )
 
         try:
@@ -315,7 +312,7 @@ class TradingNode:
         """
         try:
             timeout = self.kernel.clock.utc_now() + timedelta(
-                seconds=self._config.timeout_disconnection
+                seconds=self._config.timeout_disconnection,
             )
             while self._is_running:
                 time.sleep(0.1)
@@ -325,15 +322,20 @@ class TradingNode:
                         f"\nStatus"
                         f"\n------"
                         f"\nDataEngine.check_disconnected() == {self.kernel.data_engine.check_disconnected()}"
-                        f"\nExecEngine.check_disconnected() == {self.kernel.exec_engine.check_disconnected()}"
+                        f"\nExecEngine.check_disconnected() == {self.kernel.exec_engine.check_disconnected()}",
                     )
                     break
 
             self.kernel.log.info("DISPOSING...")
 
-            self.kernel.log.debug(f"{self.kernel.data_engine.get_run_queue_task()}")
-            self.kernel.log.debug(f"{self.kernel.exec_engine.get_run_queue_task()}")
-            self.kernel.log.debug(f"{self.kernel.risk_engine.get_run_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.data_engine.get_cmd_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.data_engine.get_req_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.data_engine.get_res_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.data_engine.get_data_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.exec_engine.get_cmd_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.exec_engine.get_evt_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.risk_engine.get_cmd_queue_task()}")
+            self.kernel.log.debug(f"{self.kernel.risk_engine.get_evt_queue_task()}")
 
             if self.kernel.trader.is_running:
                 self.kernel.trader.stop()
@@ -356,12 +358,9 @@ class TradingNode:
             if self.kernel.writer is not None:
                 self.kernel.writer.close()
 
-            self.kernel.log.info("Shutting down executor...")
-            if sys.version_info >= (3, 9):
-                # cancel_futures added in Python 3.9
+            if self.kernel.executor:
+                self.kernel.log.info("Shutting down executor...")
                 self.kernel.executor.shutdown(wait=True, cancel_futures=True)
-            else:
-                self.kernel.executor.shutdown(wait=True)
 
             self.kernel.log.info("Stopping event loop...")
             self.kernel.cancel_all_tasks()
@@ -420,10 +419,9 @@ class TradingNode:
                     f"\nStatus"
                     f"\n------"
                     f"\nDataEngine.check_connected() == {self.kernel.data_engine.check_connected()}"
-                    f"\nExecEngine.check_connected() == {self.kernel.exec_engine.check_connected()}"
+                    f"\nExecEngine.check_connected() == {self.kernel.exec_engine.check_connected()}",
                 )
                 return
-            self.kernel.log.info("Engines connected.", color=LogColor.GREEN)
 
             # Await execution state reconciliation
             self.kernel.log.info(
@@ -436,7 +434,9 @@ class TradingNode:
             ):
                 self.kernel.log.error("Execution state could not be reconciled.")
                 return
-            self.kernel.log.info("State reconciled.", color=LogColor.GREEN)
+
+            if self.kernel.exec_engine.reconciliation:
+                self.kernel.log.info("State reconciled.", color=LogColor.GREEN)
 
             self.kernel.emulator.start()
 
@@ -455,7 +455,7 @@ class TradingNode:
                     f"Timed out ({self._config.timeout_portfolio}s) waiting for portfolio to initialize."
                     f"\nStatus"
                     f"\n------"
-                    f"\nPortfolio.initialized == {self.kernel.portfolio.initialized}"
+                    f"\nPortfolio.initialized == {self.kernel.portfolio.initialized}",
                 )
                 return
             self.kernel.log.info("Portfolio initialized.", color=LogColor.GREEN)
@@ -469,9 +469,17 @@ class TradingNode:
                 self.kernel.log.warning("Event loop is not running.")
 
             # Continue to run while engines are running...
-            await self.kernel.data_engine.get_run_queue_task()
-            await self.kernel.risk_engine.get_run_queue_task()
-            await self.kernel.exec_engine.get_run_queue_task()
+            tasks: list[asyncio.Task] = [
+                self.kernel.data_engine.get_cmd_queue_task(),
+                self.kernel.data_engine.get_req_queue_task(),
+                self.kernel.data_engine.get_res_queue_task(),
+                self.kernel.data_engine.get_data_queue_task(),
+                self.kernel.risk_engine.get_cmd_queue_task(),
+                self.kernel.risk_engine.get_evt_queue_task(),
+                self.kernel.exec_engine.get_cmd_queue_task(),
+                self.kernel.exec_engine.get_evt_queue_task(),
+            ]
+            await asyncio.gather(*tasks)
         except asyncio.CancelledError as e:
             self.kernel.log.error(str(e))
 
@@ -525,21 +533,12 @@ class TradingNode:
             await asyncio.sleep(self._config.timeout_post_stop)
             self.kernel.trader.check_residuals()
 
-        if self._config.save_state:
+        if self.kernel.save_state:
             self.kernel.trader.save()
 
         # Disconnect all clients
         self.kernel.data_engine.disconnect()
         self.kernel.exec_engine.disconnect()
-
-        if self.kernel.data_engine.is_running:
-            self.kernel.data_engine.stop()
-        if self.kernel.risk_engine.is_running:
-            self.kernel.risk_engine.stop()
-        if self.kernel.exec_engine.is_running:
-            self.kernel.exec_engine.stop()
-        if self.kernel.emulator.is_running:
-            self.kernel.emulator.stop()
 
         self.kernel.log.info(
             f"Awaiting engine disconnections "
@@ -552,8 +551,17 @@ class TradingNode:
                 f"\nStatus"
                 f"\n------"
                 f"\nDataEngine.check_disconnected() == {self.kernel.data_engine.check_disconnected()}"
-                f"\nExecEngine.check_disconnected() == {self.kernel.exec_engine.check_disconnected()}"
+                f"\nExecEngine.check_disconnected() == {self.kernel.exec_engine.check_disconnected()}",
             )
+
+        if self.kernel.data_engine.is_running:
+            self.kernel.data_engine.stop()
+        if self.kernel.risk_engine.is_running:
+            self.kernel.risk_engine.stop()
+        if self.kernel.exec_engine.is_running:
+            self.kernel.exec_engine.stop()
+        if self.kernel.emulator.is_running:
+            self.kernel.emulator.stop()
 
         # Clean up remaining timers
         timer_names = self.kernel.clock.timer_names

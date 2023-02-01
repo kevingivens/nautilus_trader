@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -25,10 +25,11 @@ cdef class SocketClient:
     cdef object _handler
     cdef bytes _crlf
     cdef str _encoding
-    cdef bint _running
-    cdef bint _stopped
     cdef int _incomplete_read_count
+    cdef readonly bint is_running
+    cdef readonly bint is_stopped
     cdef readonly int reconnection_count
+    cdef readonly bint is_stopping
 
     cdef readonly object host  # TODO(cs): Temporary `object` typing
     """The host for the socket client.\n\n:returns: `str`"""

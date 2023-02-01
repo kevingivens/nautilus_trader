@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,11 +14,11 @@
 # -------------------------------------------------------------------------------------------------
 import pytest
 
+from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.model.data.bet import Bet
 from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
 
 
 class DecimaL:
@@ -27,7 +27,7 @@ class DecimaL:
 
 class TestBet:
     def setup(self):
-        self.instrument = BetfairTestStubs.betting_instrument()
+        self.instrument = TestInstrumentProvider.betting_instrument
         self.price = Price.from_str("2.0")
         self.size = Quantity.from_int(10)
 
@@ -65,7 +65,9 @@ class TestBet:
     def test_win_payoff(self, price, size, side, expected):
         side = getattr(OrderSide, side)
         result = Bet(
-            price=Price.from_str(price), quantity=Quantity.from_int(size), side=side
+            price=Price.from_str(price),
+            quantity=Quantity.from_int(size),
+            side=side,
         ).win_payoff()
         assert result == expected
 
@@ -83,7 +85,9 @@ class TestBet:
     def test_lose_payoff(self, price, size, side, expected):
         side = getattr(OrderSide, side)
         result = Bet(
-            price=Price.from_str(price), quantity=Quantity.from_int(size), side=side
+            price=Price.from_str(price),
+            quantity=Quantity.from_int(size),
+            side=side,
         ).lose_payoff()
         assert result == expected
 
@@ -101,7 +105,9 @@ class TestBet:
     def test_exposure(self, price, size, side, expected):
         side = getattr(OrderSide, side)
         result = Bet(
-            price=Price.from_str(price), quantity=Quantity.from_int(size), side=side
+            price=Price.from_str(price),
+            quantity=Quantity.from_int(size),
+            side=side,
         ).exposure()
         assert result == expected
 

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -40,9 +40,9 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 
 
 ETHUSDT_BINANCE = TestInstrumentProvider.ethusdt_binance()
@@ -202,7 +202,7 @@ class TestBinanceSpotExecutionClient:
     async def test_submit_unsupported_order_logs_error(self, mocker):
         # Arrange
         mock_send_request = mocker.patch(
-            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request"
+            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request",
         )
 
         order = self.strategy.order_factory.market_to_limit(
@@ -232,7 +232,7 @@ class TestBinanceSpotExecutionClient:
     async def test_submit_market_order(self, mocker):
         # Arrange
         mock_send_request = mocker.patch(
-            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request"
+            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request",
         )
 
         order = self.strategy.order_factory.market(
@@ -270,7 +270,7 @@ class TestBinanceSpotExecutionClient:
     async def test_submit_limit_order(self, mocker):
         # Arrange
         mock_send_request = mocker.patch(
-            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request"
+            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request",
         )
 
         order = self.strategy.order_factory.limit(
@@ -310,7 +310,7 @@ class TestBinanceSpotExecutionClient:
     async def test_submit_stop_limit_order(self, mocker):
         # Arrange
         mock_send_request = mocker.patch(
-            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request"
+            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request",
         )
 
         order = self.strategy.order_factory.stop_limit(
@@ -354,7 +354,7 @@ class TestBinanceSpotExecutionClient:
     async def test_submit_limit_if_touched_order(self, mocker):
         # Arrange
         mock_send_request = mocker.patch(
-            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request"
+            target="nautilus_trader.adapters.binance.http.client.BinanceHttpClient.send_request",
         )
 
         order = self.strategy.order_factory.limit_if_touched(
@@ -398,7 +398,7 @@ class TestBinanceSpotExecutionClient:
     async def test_query_order(self, mocker):
         # Arrange
         mock_query_order = mocker.patch(
-            target="nautilus_trader.adapters.binance.spot.execution.BinanceSpotExecutionClient.query_order"
+            target="nautilus_trader.adapters.binance.spot.execution.BinanceSpotExecutionClient.query_order",
         )
 
         order = self.strategy.order_factory.limit(

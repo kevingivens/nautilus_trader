@@ -14,9 +14,11 @@ tab_width = 4
 # Explicit export declaration needed. CVec is not returned from a function in this module. 
 include = ["CVec"] 
 
+[enum]
+rename_variants = "ScreamingSnakeCase"
 
 [export.rename]
-"Timestamp" = "uint64_t"
-"Timedelta" = "int64_t"
+"UnixNanos" = "uint64_t"
+"TimedeltaNanos" = "int64_t"
 "TimeEvent" = "TimeEvent_t"
 "UUID4" = "UUID4_t"

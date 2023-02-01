@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -35,9 +35,9 @@ from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 BITMEX = Venue("BITMEX")
@@ -124,7 +124,7 @@ class TestLiveDataEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.engine.message_qsize() == 1
+        assert self.engine.cmd_qsize() == 1
         assert self.engine.command_count == 0
 
     @pytest.mark.asyncio
@@ -168,7 +168,7 @@ class TestLiveDataEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.engine.message_qsize() == 1
+        assert self.engine.req_qsize() == 1
         assert self.engine.command_count == 0
 
     @pytest.mark.asyncio
@@ -204,7 +204,7 @@ class TestLiveDataEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.engine.message_qsize() == 1
+        assert self.engine.res_qsize() == 1
         assert self.engine.command_count == 0
 
     @pytest.mark.asyncio
@@ -234,13 +234,6 @@ class TestLiveDataEngine:
         # Assert
         assert self.engine.data_qsize() == 1
         assert self.engine.data_count == 0
-
-    def test_get_event_loop_returns_expected_loop(self):
-        # Arrange, Act
-        loop = self.engine.get_event_loop()
-
-        # Assert
-        assert loop == self.loop
 
     @pytest.mark.asyncio
     async def test_start(self):
@@ -290,7 +283,7 @@ class TestLiveDataEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.engine.message_qsize() == 0
+        assert self.engine.cmd_qsize() == 0
         assert self.engine.command_count == 1
 
         # Tear Down
@@ -324,7 +317,7 @@ class TestLiveDataEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.engine.message_qsize() == 0
+        assert self.engine.req_qsize() == 0
         assert self.engine.request_count == 1
 
         # Tear Down
@@ -350,7 +343,7 @@ class TestLiveDataEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.engine.message_qsize() == 0
+        assert self.engine.res_qsize() == 0
         assert self.engine.response_count == 1
 
         # Tear Down

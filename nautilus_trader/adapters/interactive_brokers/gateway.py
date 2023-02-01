@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -24,7 +24,7 @@ try:
     import docker
 except ImportError as e:
     warnings.warn(
-        f"Docker required for Gateway, please install manually via `pip install docker` ({e})"
+        f"Docker required for Gateway, install manually via `pip install docker` ({e})",
     )
     docker = None
 from ib_insync import IB
@@ -123,8 +123,13 @@ class InteractiveBrokersGateway:
 
     def start(self, wait: Optional[int] = 90):
         """
-        :param wait: Seconds to wait until container is ready
-        :return:
+        Start the gateway.
+
+        Parameters
+        ----------
+        wait : int, default 90
+            The seconds to wait until container is ready.
+
         """
         broken_statuses = (
             ContainerStatus.NOT_LOGGED_IN,

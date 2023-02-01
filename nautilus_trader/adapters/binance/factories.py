@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -182,7 +182,7 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
     """
 
     @staticmethod
-    def create(
+    def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
         config: BinanceDataClientConfig,
@@ -291,7 +291,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
     """
 
     @staticmethod
-    def create(
+    def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
         config: BinanceExecClientConfig,
@@ -371,6 +371,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
                 account_type=config.account_type,
                 base_url_ws=config.base_url_ws or default_base_url_ws,
                 clock_sync_interval_secs=config.clock_sync_interval_secs,
+                warn_gtd_to_gtc=config.warn_gtd_to_gtc,
             )
         else:
             # Get instrument provider singleton
@@ -393,6 +394,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
                 account_type=config.account_type,
                 base_url_ws=config.base_url_ws or default_base_url_ws,
                 clock_sync_interval_secs=config.clock_sync_interval_secs,
+                warn_gtd_to_gtc=config.warn_gtd_to_gtc,
             )
 
 
@@ -433,7 +435,7 @@ def _get_http_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us
             return "https://testnet.binancefuture.com"
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
-                f"invalid `BinanceAccountType`, was {account_type}"
+                f"invalid `BinanceAccountType`, was {account_type}",  # pragma: no cover
             )
 
     # Live base URLs
@@ -448,7 +450,7 @@ def _get_http_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us
         return f"https://dapi.binance.{top_level_domain}"
     else:
         raise RuntimeError(  # pragma: no cover (design-time error)
-            f"invalid `BinanceAccountType`, was {account_type}"
+            f"invalid `BinanceAccountType`, was {account_type}",  # pragma: no cover
         )
 
 
@@ -463,7 +465,7 @@ def _get_ws_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us: 
             raise ValueError("no testnet for COIN-M futures")
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
-                f"invalid `BinanceAccountType`, was {account_type}"
+                f"invalid `BinanceAccountType`, was {account_type}",  # pragma: no cover
             )
 
     # Live base URLs
@@ -476,5 +478,5 @@ def _get_ws_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us: 
         return f"wss://dstream.binance.{top_level_domain}"
     else:
         raise RuntimeError(
-            f"invalid `BinanceAccountType`, was {account_type}"
+            f"invalid `BinanceAccountType`, was {account_type}",
         )  # pragma: no cover (design-time error)  # noqa

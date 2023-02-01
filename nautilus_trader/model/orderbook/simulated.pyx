@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,14 +17,14 @@ from libc.stdint cimport uint8_t
 from libc.stdint cimport uint64_t
 
 from nautilus_trader.core.rust.model cimport FIXED_SCALAR
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
 from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
+from nautilus_trader.model.enums_c cimport OrderSide
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.orderbook.book cimport L1OrderBook
 from nautilus_trader.model.orderbook.book cimport L2OrderBook
 from nautilus_trader.model.orderbook.book cimport L3OrderBook
-from nautilus_trader.model.orderbook.data cimport Order
+from nautilus_trader.model.orderbook.data cimport BookOrder
 
 
 cdef class SimulatedL1OrderBook(L1OrderBook):
@@ -65,7 +65,7 @@ cdef class SimulatedL1OrderBook(L1OrderBook):
         self._top_bid_level = None
         self._top_ask_level = None
 
-    cpdef void add(self, Order order, uint64_t update_id=0) except *:
+    cpdef void add(self, BookOrder order, uint64_t sequence=0) except *:
         """
         NotImplemented (Use `update(order)` for SimulatedOrderBook).
         """
@@ -100,10 +100,10 @@ cdef class SimulatedL1OrderBook(L1OrderBook):
         self._update_ask(price, size)
 
     cdef void _update_bid(self, double price, double size) except *:
-        cdef Order bid
+        cdef BookOrder bid
         if self._top_bid is None:
-            bid = Order(price, size, OrderSide.BUY, "B")
-            self._add(bid, update_id=0)
+            bid = BookOrder(price, size, OrderSide.BUY, "B")
+            self._add(bid, sequence=0)
             self._top_bid = bid
             self._top_bid_level = self.bids.top()
         else:
@@ -112,10 +112,10 @@ cdef class SimulatedL1OrderBook(L1OrderBook):
             self._top_bid.size = size
 
     cdef void _update_ask(self, double price, double size) except *:
-        cdef Order ask
+        cdef BookOrder ask
         if self._top_ask is None:
-            ask = Order(price, size, OrderSide.SELL, "A")
-            self._add(ask, update_id=0)
+            ask = BookOrder(price, size, OrderSide.SELL, "A")
+            self._add(ask, sequence=0)
             self._top_ask = ask
             self._top_ask_level = self.asks.top()
         else:

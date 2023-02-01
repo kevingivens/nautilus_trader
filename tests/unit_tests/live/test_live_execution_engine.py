@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,9 +20,9 @@ import pytest
 
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.common.clock import LiveClock
+from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.factories import OrderFactory
 from nautilus_trader.common.logging import Logger
-from nautilus_trader.common.logging import LogLevel
 from nautilus_trader.common.providers import InstrumentProvider
 from nautilus_trader.config import LiveExecEngineConfig
 from nautilus_trader.core.uuid import UUID4
@@ -35,8 +35,6 @@ from nautilus_trader.execution.reports import TradeReport
 from nautilus_trader.live.data_engine import LiveDataEngine
 from nautilus_trader.live.execution_engine import LiveExecutionEngine
 from nautilus_trader.live.risk_engine import LiveRiskEngine
-from nautilus_trader.model.c_enums.trailing_offset_type import TrailingOffsetType
-from nautilus_trader.model.c_enums.trigger_type import TriggerType
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import ContingencyType
@@ -46,6 +44,8 @@ from nautilus_trader.model.enums import OrderStatus
 from nautilus_trader.model.enums import OrderType
 from nautilus_trader.model.enums import PositionSide
 from nautilus_trader.model.enums import TimeInForce
+from nautilus_trader.model.enums import TrailingOffsetType
+from nautilus_trader.model.enums import TriggerType
 from nautilus_trader.model.identifiers import AccountId
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import ClientOrderId
@@ -61,11 +61,11 @@ from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
+from nautilus_trader.test_kit.mocks.exec_clients import MockLiveExecutionClient
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit.mocks.exec_clients import MockLiveExecutionClient
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 
 
 SIM = Venue("SIM")
@@ -250,7 +250,7 @@ class TestLiveExecutionEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         submit_order = SubmitOrder(
@@ -268,7 +268,7 @@ class TestLiveExecutionEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.exec_engine.qsize() == 1
+        assert self.exec_engine.cmd_qsize() == 1
         assert self.exec_engine.command_count == 0
 
     @pytest.mark.asyncio
@@ -314,7 +314,7 @@ class TestLiveExecutionEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         submit_order = SubmitOrder(
@@ -334,7 +334,7 @@ class TestLiveExecutionEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.exec_engine.qsize() == 1
+        assert self.exec_engine.cmd_qsize() == 1
         assert self.exec_engine.command_count == 0
 
     @pytest.mark.asyncio
@@ -365,7 +365,8 @@ class TestLiveExecutionEngine:
         self.exec_engine.kill()
 
         # Assert
-        assert self.exec_engine.qsize() == 0
+        assert self.exec_engine.cmd_qsize() == 0
+        assert self.exec_engine.evt_qsize() == 0
 
     @pytest.mark.asyncio
     async def test_execute_command_places_command_on_queue(self):
@@ -385,7 +386,7 @@ class TestLiveExecutionEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         submit_order = SubmitOrder(
@@ -402,7 +403,7 @@ class TestLiveExecutionEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.exec_engine.qsize() == 0
+        assert self.exec_engine.evt_qsize() == 0
         assert self.exec_engine.command_count == 1
 
         # Tear Down

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -37,11 +37,11 @@ from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
+from nautilus_trader.test_kit.mocks.exec_clients import MockExecutionClient
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit.mocks.exec_clients import MockExecutionClient
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 
 
 SIM = Venue("SIM")
@@ -137,14 +137,6 @@ class TestLiveRiskEngine:
         self.risk_engine.stop()
 
     @pytest.mark.asyncio
-    async def test_get_event_loop_returns_expected_loop(self):
-        # Arrange, Act
-        loop = self.risk_engine.get_event_loop()
-
-        # Assert
-        assert loop == self.loop
-
-    @pytest.mark.asyncio
     async def test_message_qsize_at_max_blocks_on_put_command(self):
         # Arrange
         self.msgbus.deregister("RiskEngine.execute", self.risk_engine.execute)
@@ -173,7 +165,7 @@ class TestLiveRiskEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         submit_order = SubmitOrder(
@@ -191,7 +183,7 @@ class TestLiveRiskEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.risk_engine.qsize() == 1
+        assert self.risk_engine.cmd_qsize() == 1
         assert self.risk_engine.command_count == 0
 
     @pytest.mark.asyncio
@@ -223,7 +215,7 @@ class TestLiveRiskEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         submit_order = SubmitOrder(
@@ -243,7 +235,7 @@ class TestLiveRiskEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.risk_engine.qsize() == 1
+        assert self.risk_engine.cmd_qsize() == 1
         assert self.risk_engine.event_count == 0
 
     @pytest.mark.asyncio
@@ -274,7 +266,8 @@ class TestLiveRiskEngine:
         self.risk_engine.kill()
 
         # Assert
-        assert self.risk_engine.qsize() == 0
+        assert self.risk_engine.cmd_qsize() == 0
+        assert self.risk_engine.evt_qsize() == 0
 
     @pytest.mark.asyncio
     async def test_execute_command_places_command_on_queue(self):
@@ -294,7 +287,7 @@ class TestLiveRiskEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         submit_order = SubmitOrder(
@@ -311,12 +304,13 @@ class TestLiveRiskEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.risk_engine.qsize() == 0
+        assert self.risk_engine.cmd_qsize() == 0
         assert self.risk_engine.command_count == 1
 
         # Tear Down
         self.risk_engine.stop()
-        await self.risk_engine.get_run_queue_task()
+        await self.risk_engine.get_cmd_queue_task()
+        await self.risk_engine.get_evt_queue_task()
 
     @pytest.mark.asyncio
     async def test_handle_position_opening_with_position_id_none(self):
@@ -336,7 +330,7 @@ class TestLiveRiskEngine:
         order = strategy.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         event = TestEventStubs.order_submitted(order)
@@ -346,9 +340,10 @@ class TestLiveRiskEngine:
         await asyncio.sleep(0.1)
 
         # Assert
-        assert self.risk_engine.qsize() == 0
+        assert self.risk_engine.cmd_qsize() == 0
         assert self.risk_engine.event_count == 1
 
         # Tear Down
         self.risk_engine.stop()
-        await self.risk_engine.get_run_queue_task()
+        await self.risk_engine.get_cmd_queue_task()
+        await self.risk_engine.get_evt_queue_task()

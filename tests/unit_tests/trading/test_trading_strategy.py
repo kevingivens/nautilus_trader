@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -38,10 +38,12 @@ from nautilus_trader.indicators.average.ema import ExponentialMovingAverage
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.data.bar import Bar
 from nautilus_trader.model.enums import AccountType
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.enums import OrderStatus
+from nautilus_trader.model.enums import OrderType
 from nautilus_trader.model.enums import PriceType
+from nautilus_trader.model.enums import TimeInForce
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import PositionId
 from nautilus_trader.model.identifiers import StrategyId
@@ -52,13 +54,14 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
+from nautilus_trader.test_kit.mocks.strategies import KaboomStrategy
+from nautilus_trader.test_kit.mocks.strategies import MockStrategy
+from nautilus_trader.test_kit.stubs import UNIX_EPOCH
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit.mocks.strategies import KaboomStrategy
-from tests.test_kit.mocks.strategies import MockStrategy
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -116,7 +119,7 @@ class TestStrategy:
 
         self.exchange = SimulatedExchange(
             venue=Venue("SIM"),
-            oms_type=OMSType.HEDGING,
+            oms_type=OmsType.HEDGING,
             account_type=AccountType.MARGIN,
             base_currency=USD,
             starting_balances=[Money(1_000_000, USD)],
@@ -163,7 +166,7 @@ class TestStrategy:
         self.cache.add_instrument(USDJPY_SIM)
 
         self.exchange.process_quote_tick(
-            TestDataStubs.quote_tick_3decimal(USDJPY_SIM.id)
+            TestDataStubs.quote_tick_3decimal(USDJPY_SIM.id),
         )  # Prepare market
 
         self.data_engine.start()
@@ -182,7 +185,11 @@ class TestStrategy:
         assert isinstance(result, ImportableStrategyConfig)
         assert result.strategy_path == "nautilus_trader.trading.strategy:Strategy"
         assert result.config_path == "nautilus_trader.config.common:StrategyConfig"
-        assert result.config == {"oms_type": None, "order_id_tag": None, "strategy_id": None}
+        assert result.config == {
+            "oms_type": None,
+            "order_id_tag": None,
+            "strategy_id": None,
+        }
 
     def test_strategy_to_importable_config(self):
         # Arrange
@@ -200,7 +207,11 @@ class TestStrategy:
         assert isinstance(result, ImportableStrategyConfig)
         assert result.strategy_path == "nautilus_trader.trading.strategy:Strategy"
         assert result.config_path == "nautilus_trader.config.common:StrategyConfig"
-        assert result.config == {"oms_type": None, "order_id_tag": "001", "strategy_id": "ALPHA-01"}
+        assert result.config == {
+            "oms_type": None,
+            "order_id_tag": "001",
+            "strategy_id": "ALPHA-01",
+        }
 
     def test_strategy_equality(self):
         # Arrange
@@ -338,7 +349,7 @@ class TestStrategy:
             Price.from_str("1.00004"),
             Price.from_str("1.00000"),
             Price.from_str("1.00003"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -738,7 +749,10 @@ class TestStrategy:
 
         start_time = datetime.now(pytz.utc) + timedelta(milliseconds=100)
         strategy.clock.set_timer(
-            "test_timer", timedelta(milliseconds=100), start_time, stop_time=None
+            "test_timer",
+            timedelta(milliseconds=100),
+            start_time,
+            stop_time=None,
         )
 
         # Act
@@ -763,7 +777,7 @@ class TestStrategy:
         order = strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         # Act
@@ -777,6 +791,63 @@ class TestStrategy:
         assert not strategy.cache.is_order_open(order.client_order_id)
         assert strategy.cache.is_order_closed(order.client_order_id)
 
+    def test_submit_order_with_managed_gtd_starts_timer(self):
+        # Arrange
+        strategy = Strategy()
+        strategy.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        order = strategy.order_factory.limit(
+            USDJPY_SIM.id,
+            OrderSide.BUY,
+            Quantity.from_int(100_000),
+            price=Price.from_str("100.000"),
+            time_in_force=TimeInForce.GTD,
+            expire_time=UNIX_EPOCH + timedelta(minutes=1),
+        )
+
+        # Act
+        strategy.submit_order(order, manage_gtd_expiry=True)
+
+        # Assert
+        assert strategy.clock.timer_count == 1
+        assert strategy.clock.timer_names == ["GTD-EXPIRY:O-19700101-000-None-1"]
+
+    def test_submit_order_with_managed_gtd_when_immediately_filled_cancels_timer(self):
+        # Arrange
+        strategy = Strategy()
+        strategy.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        order = strategy.order_factory.limit(
+            USDJPY_SIM.id,
+            OrderSide.BUY,
+            Quantity.from_int(100_000),
+            price=Price.from_str("100.000"),
+            time_in_force=TimeInForce.GTD,
+            expire_time=UNIX_EPOCH + timedelta(minutes=1),
+        )
+
+        # Act
+        strategy.submit_order(order, manage_gtd_expiry=True)
+        self.exchange.process(0)
+
+        # Assert
+        assert strategy.clock.timer_count == 0
+        assert order.status == OrderStatus.FILLED
+
     def test_submit_order_list_with_valid_order_successfully_submits(self):
         # Arrange
         strategy = Strategy()
@@ -789,26 +860,93 @@ class TestStrategy:
             logger=self.logger,
         )
 
-        bracket = strategy.order_factory.bracket_market(
+        bracket = strategy.order_factory.bracket(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
-            stop_loss=Price.from_str("90.000"),
-            take_profit=Price.from_str("90.500"),
+            Quantity.from_int(100_000),
+            entry_price=Price.from_str("80.000"),
+            sl_trigger_price=Price.from_str("90.000"),
+            tp_price=Price.from_str("90.500"),
+            entry_order_type=OrderType.LIMIT,
         )
 
         # Act
         strategy.submit_order_list(bracket)
+        self.exchange.process(0)
 
         # Assert
+        entry = bracket.first
         assert bracket.orders[0] in strategy.cache.orders()
         assert bracket.orders[1] in strategy.cache.orders()
         assert bracket.orders[2] in strategy.cache.orders()
-        # TODO: Implement
-        # assert bracket.orders[0].status == OrderStatus.ACCEPTED
-        # assert entry in strategy.cache.orders_open()
-        # assert strategy.cache.is_order_open(entry.client_order_id)
-        # assert not strategy.cache.is_order_closed(entry.client_order_id)
+        assert entry.status == OrderStatus.ACCEPTED
+        assert entry in strategy.cache.orders_open()
+
+    def test_submit_order_list_with_managed_gtd_starts_timer(self):
+        # Arrange
+        strategy = Strategy()
+        strategy.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        bracket = strategy.order_factory.bracket(
+            USDJPY_SIM.id,
+            OrderSide.BUY,
+            Quantity.from_int(100_000),
+            entry_price=Price.from_str("80.000"),
+            sl_trigger_price=Price.from_str("70.000"),
+            tp_price=Price.from_str("90.500"),
+            entry_order_type=OrderType.LIMIT,
+            time_in_force=TimeInForce.GTD,
+            expire_time=UNIX_EPOCH + timedelta(minutes=1),
+        )
+
+        # Act
+        strategy.submit_order_list(bracket, manage_gtd_expiry=True)
+        self.exchange.process(0)
+
+        # Assert
+        assert strategy.clock.timer_count == 1
+        assert strategy.clock.timer_names == ["GTD-EXPIRY:O-19700101-000-None-1"]
+
+    def test_submit_order_list_with_managed_gtd_when_immediately_filled_cancels_timer(self):
+        # Arrange
+        strategy = Strategy()
+        strategy.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        bracket = strategy.order_factory.bracket(
+            USDJPY_SIM.id,
+            OrderSide.BUY,
+            Quantity.from_int(100_000),
+            entry_price=Price.from_str("90.100"),
+            sl_trigger_price=Price.from_str("70.000"),
+            tp_price=Price.from_str("90.500"),
+            entry_order_type=OrderType.LIMIT,
+            time_in_force=TimeInForce.GTD,
+            expire_time=UNIX_EPOCH + timedelta(minutes=1),
+        )
+
+        # Act
+        strategy.submit_order_list(bracket, manage_gtd_expiry=True)
+        self.exchange.process(0)
+
+        # Assert
+        assert strategy.clock.timer_count == 0
+        assert bracket.orders[0].status == OrderStatus.FILLED
+        assert bracket.orders[1].status == OrderStatus.ACCEPTED
+        assert bracket.orders[2].status == OrderStatus.ACCEPTED
 
     def test_cancel_order(self):
         # Arrange
@@ -825,7 +963,7 @@ class TestStrategy:
         order = strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.006"),
         )
 
@@ -860,7 +998,7 @@ class TestStrategy:
         order = strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.006"),
         )
 
@@ -894,7 +1032,7 @@ class TestStrategy:
         order = strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.006"),
         )
 
@@ -928,7 +1066,7 @@ class TestStrategy:
         order = strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
         )
 
@@ -939,7 +1077,7 @@ class TestStrategy:
         # Act
         strategy.modify_order(
             order=order,
-            quantity=Quantity.from_int(100000),
+            quantity=Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
         )
         self.exchange.process(0)
@@ -962,7 +1100,7 @@ class TestStrategy:
         order = strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
         )
 
@@ -973,7 +1111,7 @@ class TestStrategy:
         # Act
         strategy.modify_order(
             order=order,
-            quantity=Quantity.from_int(100000),
+            quantity=Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
         )
         self.exchange.process(0)
@@ -996,7 +1134,7 @@ class TestStrategy:
         order = strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
         )
 
@@ -1007,7 +1145,7 @@ class TestStrategy:
         # Act
         strategy.modify_order(
             order=order,
-            quantity=Quantity.from_int(100000),
+            quantity=Quantity.from_int(100_000),
             price=Price.from_str("90.000"),
         )
         self.exchange.process(0)
@@ -1030,7 +1168,7 @@ class TestStrategy:
         order = strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.001"),
         )
 
@@ -1039,7 +1177,7 @@ class TestStrategy:
         # Act
         strategy.modify_order(
             order=order,
-            quantity=Quantity.from_int(100000),
+            quantity=Quantity.from_int(100_000),
             price=Price.from_str("90.001"),
         )
 
@@ -1061,7 +1199,7 @@ class TestStrategy:
         order = strategy.order_factory.limit(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.000"),
         )
 
@@ -1079,7 +1217,7 @@ class TestStrategy:
         # Assert
         assert strategy.cache.orders()[0] == order
         assert strategy.cache.orders()[0].status == OrderStatus.ACCEPTED
-        assert strategy.cache.orders()[0].quantity == Quantity.from_int(110000)
+        assert strategy.cache.orders()[0].quantity == Quantity.from_int(110_000)
         assert strategy.cache.orders()[0].price == Price.from_str("90.001")
         assert strategy.cache.order_exists(order.client_order_id)
         assert strategy.cache.is_order_open(order.client_order_id)
@@ -1101,14 +1239,14 @@ class TestStrategy:
         order1 = strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.007"),
         )
 
         order2 = strategy.order_factory.stop_market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("90.006"),
         )
 
@@ -1144,13 +1282,13 @@ class TestStrategy:
         order1 = strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order2 = strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         strategy.submit_order(order1)
@@ -1182,7 +1320,7 @@ class TestStrategy:
         order = strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         strategy.submit_order(order)
@@ -1220,13 +1358,13 @@ class TestStrategy:
         order1 = strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order2 = strategy.order_factory.market(
             USDJPY_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         strategy.submit_order(order1)

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -29,8 +29,6 @@ from ib_insync import HistoricalTickLast
 from nautilus_trader.adapters.interactive_brokers.parsing.data import generate_trade_id
 from nautilus_trader.adapters.interactive_brokers.parsing.instruments import parse_instrument
 from nautilus_trader.core.datetime import dt_to_unix_nanos
-from nautilus_trader.model.c_enums.bar_aggregation import BarAggregationParser
-from nautilus_trader.model.c_enums.price_type import PriceTypeParser
 from nautilus_trader.model.data.bar import Bar
 from nautilus_trader.model.data.bar import BarSpecification
 from nautilus_trader.model.data.bar import BarType
@@ -38,6 +36,8 @@ from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.model.data.tick import TradeTick
 from nautilus_trader.model.enums import AggregationSource
 from nautilus_trader.model.enums import AggressorSide
+from nautilus_trader.model.enums import bar_aggregation_to_str
+from nautilus_trader.model.enums import price_type_to_str
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.instruments.base import Instrument
 from nautilus_trader.model.objects import Price
@@ -69,7 +69,7 @@ def back_fill_catalog(
     kinds=("BID_ASK", "TRADES"),
 ):
     """
-    Back fill the data catalog with market data from Interactive Brokers.
+    Backfill the data catalog with market data from Interactive Brokers.
 
     Parameters
     ----------
@@ -80,9 +80,9 @@ def back_fill_catalog(
     contracts : list[Contract]
         The list of IB Contracts to collect data for.
     start_date : datetime.date
-        The start_date for the back fill.
+        The start_date for the backfill.
     end_date : datetime.date
-        The end_date for the back fill.
+        The end_date for the backfill.
     tz_name : str
         The timezone of the contracts
     kinds : tuple[str] (default: ('BID_ASK', 'TRADES')
@@ -104,7 +104,7 @@ def back_fill_catalog(
                 fn = generate_filename(catalog, instrument_id=instrument.id, kind=kind, date=date)
                 if catalog.fs.exists(fn):
                     logger.info(
-                        f"file for {instrument.id.value} {kind} {date:%Y-%m-%d} exists, skipping"
+                        f"file for {instrument.id.value} {kind} {date:%Y-%m-%d} exists, skipping",
                     )
                     continue
                 logger.info(f"Fetching {instrument.id.value} {kind} for {date:%Y-%m-%d}")
@@ -137,7 +137,11 @@ def request_data(
     elif kind.split("-")[0] == "BARS":
         bar_spec = BarSpecification.from_str(kind.split("-", maxsplit=1)[1])
         raw = request_bar_data(
-            contract=contract, date=date, bar_spec=bar_spec, tz_name=tz_name, ib=ib
+            contract=contract,
+            date=date,
+            bar_spec=bar_spec,
+            tz_name=tz_name,
+            ib=ib,
         )
     else:
         raise RuntimeError(f"Unknown {kind=}")
@@ -157,14 +161,20 @@ def request_data(
 
 
 def request_tick_data(
-    contract: Contract, date: datetime.date, kind: str, tz_name: str, ib=None
+    contract: Contract,
+    date: datetime.date,
+    kind: str,
+    tz_name: str,
+    ib=None,
 ) -> list:
     assert kind in ("TRADES", "BID_ASK")
     data: list = []
 
     while True:
         start_time = _determine_next_timestamp(
-            date=date, timestamps=[d.time for d in data], tz_name=tz_name
+            date=date,
+            timestamps=[d.time for d in data],
+            tz_name=tz_name,
         )
         logger.debug(f"Using start_time: {start_time}")
 
@@ -192,7 +202,7 @@ def request_tick_data(
                     tick
                     for tick in ticks
                     if pd.Timestamp(tick.time).astimezone(tz_name).date() == date
-                ]
+                ],
             )
             break
         else:
@@ -201,7 +211,11 @@ def request_tick_data(
 
 
 def request_bar_data(
-    contract: Contract, date: datetime.date, tz_name: str, bar_spec: BarSpecification, ib=None
+    contract: Contract,
+    date: datetime.date,
+    tz_name: str,
+    bar_spec: BarSpecification,
+    ib=None,
 ) -> list:
     data: list = []
 
@@ -236,7 +250,7 @@ def request_bar_data(
                     bar
                     for bar in bars
                     if parse_response_datetime(bar.date, tz_name=tz_name).date() == date
-                ]
+                ],
             )
             break
         else:
@@ -259,8 +273,8 @@ def _request_historical_ticks(ib: IB, contract: Contract, start_time: str, what=
 
 
 def _bar_spec_to_hist_data_request(bar_spec: BarSpecification) -> dict[str, str]:
-    aggregation = BarAggregationParser.to_str_py(bar_spec.aggregation)
-    price_type = PriceTypeParser.to_str_py(bar_spec.price_type)
+    aggregation = bar_aggregation_to_str(bar_spec.aggregation)
+    price_type = price_type_to_str(bar_spec.price_type)
     accepted_aggregations = ("SECOND", "MINUTE", "HOUR")
 
     err = f"Loading historic bars is for intraday data, bar_spec.aggregation should be {accepted_aggregations}"
@@ -305,7 +319,8 @@ def _determine_next_timestamp(timestamps: list[pd.Timestamp], date: datetime.dat
 
 
 def parse_response_datetime(
-    dt: Union[datetime.datetime, pd.Timestamp], tz_name: str
+    dt: Union[datetime.datetime, pd.Timestamp],
+    tz_name: str,
 ) -> datetime.datetime:
     if isinstance(dt, pd.Timestamp):
         dt = dt.to_pydatetime()
@@ -316,7 +331,8 @@ def parse_response_datetime(
 
 
 def parse_historic_quote_ticks(
-    historic_ticks: list[HistoricalTickBidAsk], instrument: Instrument
+    historic_ticks: list[HistoricalTickBidAsk],
+    instrument: Instrument,
 ) -> list[QuoteTick]:
     trades = []
     for tick in historic_ticks:
@@ -336,7 +352,8 @@ def parse_historic_quote_ticks(
 
 
 def parse_historic_trade_ticks(
-    historic_ticks: list[HistoricalTickLast], instrument: Instrument
+    historic_ticks: list[HistoricalTickLast],
+    instrument: Instrument,
 ) -> list[TradeTick]:
     trades = []
     for tick in historic_ticks:
@@ -345,7 +362,7 @@ def parse_historic_trade_ticks(
             instrument_id=instrument.id,
             price=Price(value=tick.price, precision=instrument.price_precision),
             size=Quantity(value=tick.size, precision=instrument.size_precision),
-            aggressor_side=AggressorSide.NONE,
+            aggressor_side=AggressorSide.NO_AGGRESSOR,
             trade_id=generate_trade_id(
                 ts_event=ts_init,
                 price=tick.price,
@@ -360,7 +377,9 @@ def parse_historic_trade_ticks(
 
 
 def parse_historic_bars(
-    historic_bars: list[BarData], instrument: Instrument, kind: str
+    historic_bars: list[BarData],
+    instrument: Instrument,
+    kind: str,
 ) -> list[Bar]:
     bars = []
     bar_type = BarType(

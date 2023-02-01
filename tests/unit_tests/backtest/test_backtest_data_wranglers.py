@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -27,9 +27,9 @@ from nautilus_trader.model.enums import AggressorSide
 from nautilus_trader.model.identifiers import TradeId
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
+from tests import TEST_DATA_DIR
 
 
 AUDUSD_SIM = TestIdStubs.audusd_id()
@@ -66,8 +66,8 @@ class TestQuoteTickDataWrangler:
         assert ticks[0].instrument_id == usdjpy.id
         assert ticks[0].bid == Price.from_str("86.655")
         assert ticks[0].ask == Price.from_str("86.728")
-        assert ticks[0].bid_size == Quantity.from_int(1000000)
-        assert ticks[0].ask_size == Quantity.from_int(1000000)
+        assert ticks[0].bid_size == Quantity.from_int(1_000_000)
+        assert ticks[0].ask_size == Quantity.from_int(1_000_000)
         assert ticks[0].ts_event == 1357077600295000064
         assert ticks[0].ts_event == 1357077600295000064
 
@@ -90,8 +90,8 @@ class TestQuoteTickDataWrangler:
         assert ticks[0].instrument_id == usdjpy.id
         assert ticks[0].bid == Price.from_str("86.655")
         assert ticks[0].ask == Price.from_str("86.728")
-        assert ticks[0].bid_size == Quantity.from_int(1000000)
-        assert ticks[0].ask_size == Quantity.from_int(1000000)
+        assert ticks[0].bid_size == Quantity.from_int(1_000_000)
+        assert ticks[0].ask_size == Quantity.from_int(1_000_000)
         assert ticks[0].ts_event == 1357077600295000064
         assert ticks[0].ts_init == 1357077600296000564  # <-- delta diff
 
@@ -117,8 +117,8 @@ class TestQuoteTickDataWrangler:
         assert ticks[0].instrument_id == usdjpy.id
         assert ticks[0].bid == Price.from_str("91.715")
         assert ticks[0].ask == Price.from_str("91.717")
-        assert ticks[0].bid_size == Quantity.from_int(1000000)
-        assert ticks[0].ask_size == Quantity.from_int(1000000)
+        assert ticks[0].bid_size == Quantity.from_int(1_000_000)
+        assert ticks[0].ask_size == Quantity.from_int(1_000_000)
         assert ticks[0].ts_event == 1359676799700000000
         assert ticks[0].ts_init == 1359676799701000500  # <-- delta diff
 
@@ -175,7 +175,7 @@ class TestTradeTickDataWrangler:
         assert len(ticks) == 100
         assert ticks[0].price == Price.from_str("423.760")
         assert ticks[0].size == Quantity.from_str("2.67900")
-        assert ticks[0].aggressor_side == AggressorSide.SELL
+        assert ticks[0].aggressor_side == AggressorSide.SELLER
         assert ticks[0].trade_id == TradeId("148568980")
         assert ticks[0].ts_event == 1597399200223000064
         assert ticks[0].ts_init == 1597399200223000064
@@ -196,7 +196,7 @@ class TestTradeTickDataWrangler:
         assert len(ticks) == 100
         assert ticks[0].price == Price.from_str("423.760")
         assert ticks[0].size == Quantity.from_str("2.67900")
-        assert ticks[0].aggressor_side == AggressorSide.SELL
+        assert ticks[0].aggressor_side == AggressorSide.SELLER
         assert ticks[0].trade_id == TradeId("148568980")
         assert ticks[0].ts_event == 1597399200223000064
         assert ticks[0].ts_init == 1597399200224000564  # <-- delta diff
@@ -223,7 +223,7 @@ class TestBarDataWrangler:
         assert bars[0].high == Price.from_str("1.57606")
         assert bars[0].low == Price.from_str("1.57576")
         assert bars[0].close == Price.from_str("1.57576")
-        assert bars[0].volume == Quantity.from_int(1000000)
+        assert bars[0].volume == Quantity.from_int(1_000_000)
         assert bars[0].ts_event == 1328054400000000000
         assert bars[0].ts_init == 1328054400000000000
 
@@ -274,7 +274,7 @@ class TestBarDataWranglerHeaderless:
                 "taker_buy_base_volume",
                 "taker_buy_quote_volume",
                 "ignore",
-            ]
+            ],
         }
         data = provider.read_csv("ADABTC-1m-2021-11-27.csv", **config)
         data["timestamp"] = data["timestamp"].astype("datetime64[ms]")
@@ -299,7 +299,7 @@ class TestTardisQuoteDataWrangler:
 
     def test_tick_data(self):
         # Arrange, Act
-        path = os.path.join(PACKAGE_ROOT, "data", "tardis_quotes.csv")
+        path = os.path.join(TEST_DATA_DIR, "tardis_quotes.csv")
         ticks = TardisQuoteDataLoader.load(path)
 
         # Assert
@@ -309,7 +309,7 @@ class TestTardisQuoteDataWrangler:
         # Arrange
         instrument = TestInstrumentProvider.btcusdt_binance()
         wrangler = QuoteTickDataWrangler(instrument=instrument)
-        path = os.path.join(PACKAGE_ROOT, "data", "tardis_quotes.csv")
+        path = os.path.join(TEST_DATA_DIR, "tardis_quotes.csv")
         data = TardisQuoteDataLoader.load(path)
 
         # Act
@@ -335,7 +335,7 @@ class TestTardisTradeDataWrangler:
 
     def test_tick_data(self):
         # Arrange, Act
-        path = os.path.join(PACKAGE_ROOT, "data", "tardis_trades.csv")
+        path = os.path.join(TEST_DATA_DIR, "tardis_trades.csv")
         ticks = TardisTradeDataLoader.load(path)
 
         # Assert
@@ -345,7 +345,7 @@ class TestTardisTradeDataWrangler:
         # Arrange
         instrument = TestInstrumentProvider.btcusdt_binance()
         wrangler = TradeTickDataWrangler(instrument=instrument)
-        path = os.path.join(PACKAGE_ROOT, "data", "tardis_trades.csv")
+        path = os.path.join(TEST_DATA_DIR, "tardis_trades.csv")
         data = TardisTradeDataLoader.load(path)
 
         # Act
@@ -355,7 +355,7 @@ class TestTardisTradeDataWrangler:
         assert len(ticks) == 9999
         assert ticks[0].price == Price.from_str("9682.00")
         assert ticks[0].size == Quantity.from_str("0.132000")
-        assert ticks[0].aggressor_side == AggressorSide.BUY
+        assert ticks[0].aggressor_side == AggressorSide.BUYER
         assert ticks[0].trade_id == TradeId("42377944")
         assert ticks[0].ts_event == 1582329602418379008
         assert ticks[0].ts_init == 1582329602418379008

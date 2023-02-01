@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,114 +13,56 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-import dataclasses
-import datetime
-import json
-import pathlib
 import pickle
-from typing import Optional
 
+import msgspec
 import pytest
-from pydantic import BaseModel
-from pydantic.json import pydantic_encoder
+from click.testing import CliRunner
 
+from nautilus_trader.backtest.data.providers import TestDataProvider
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
-from nautilus_trader.backtest.engine import BacktestEngineConfig
+from nautilus_trader.backtest.modules import FXRolloverInterestConfig
+from nautilus_trader.backtest.modules import FXRolloverInterestModule
+from nautilus_trader.backtest.node import BacktestNode
 from nautilus_trader.config import BacktestDataConfig
 from nautilus_trader.config import BacktestRunConfig
 from nautilus_trader.config import BacktestVenueConfig
-from nautilus_trader.config import Partialable
+from nautilus_trader.config.backtest import BacktestEngineConfig
+from nautilus_trader.config.backtest import json_encoder
+from nautilus_trader.config.backtest import tokenize_config
+from nautilus_trader.config.common import ImportableActorConfig
+from nautilus_trader.config.common import NautilusConfig
 from nautilus_trader.model.data.tick import QuoteTick
+from nautilus_trader.model.data.tick import TradeTick
 from nautilus_trader.model.data.venue import InstrumentStatusUpdate
 from nautilus_trader.model.identifiers import ClientId
+from nautilus_trader.model.identifiers import Venue
+from nautilus_trader.model.orderbook.data import OrderBookData
 from nautilus_trader.persistence.external.core import process_files
 from nautilus_trader.persistence.external.readers import CSVReader
+from nautilus_trader.test_kit.mocks.data import NewsEventData
+from nautilus_trader.test_kit.mocks.data import aud_usd_data_loader
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.stubs.config import TestConfigStubs
+from nautilus_trader.test_kit.stubs.persistence import TestPersistenceStubs
+from tests import TEST_DATA_DIR
 from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.mocks.data import NewsEventData
-from tests.test_kit.mocks.data import aud_usd_data_loader
-from tests.test_kit.mocks.data import data_catalog_setup
-from tests.test_kit.stubs.persistence import TestPersistenceStubs
 
 
-TEST_DATA_DIR = str(pathlib.Path(PACKAGE_ROOT).joinpath("data"))
-
-
-@dataclasses.dataclass(repr=False)
-class ExamplePartialable(Partialable):
-    a: int = None
-    b: int = None
-    c: Optional[str] = None
-
-
-class TestBacktestConfig:
+class _TestBacktestConfig:
     def setup(self):
-        self.catalog = data_catalog_setup()
-        aud_usd_data_loader()
-        self.backtest_config = BacktestRunConfig(
-            engine=BacktestEngineConfig(),
-            venues=[
-                BacktestVenueConfig(
-                    name="SIM",
-                    oms_type="HEDGING",
-                    account_type="MARGIN",
-                    base_currency="USD",
-                    starting_balances=["1000000 USD"],
-                    # fill_model=fill_model,  # TODO(cs): Implement next iteration
-                )
-            ],
-            data=[
-                BacktestDataConfig(
-                    catalog_path="/.nautilus/catalog",
-                    catalog_fs_protocol="memory",
-                    data_cls=QuoteTick,
-                    instrument_id="AUD/USD.SIM",
-                    start_time=1580398089820000000,
-                    end_time=1580504394501000000,
-                )
-            ],
-        )
+        self.catalog = data_catalog_setup(protocol=self.fs_protocol)
+        aud_usd_data_loader(self.catalog)
+        self.venue = Venue("SIM")
+        self.instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=self.venue)
+        self.backtest_config = TestConfigStubs.backtest_run_config(catalog=self.catalog)
 
-    def test_partialable_partial(self):
-        test = ExamplePartialable().replace(a=5)
-        assert test.is_partial()
-        test = test.replace(b=1, c="1")
-        assert not test.is_partial()
-        test = ExamplePartialable(a=5, b=1, c="1")
-        assert not test.is_partial()
-
-    def test_partialable_repr(self):
-        test = ExamplePartialable(a=5)
-        assert test.__repr__() == "Partial-ExamplePartialable(a=5, b=None, c=None)"
-        test = ExamplePartialable(a=5, b=1, c="a")
-        assert test.__repr__() == "ExamplePartialable(a=5, b=1, c='a')"
-
-    def test_partialable_is_partial(self):
-        test = ExamplePartialable().replace(a=5)
-        assert test.is_partial()
-
-    def test_partialable_replace(self):
-        test = ExamplePartialable().replace(a=5)
-        assert test.is_partial()
-
-        test = test.replace(b=1, a=3, c="a")
-        assert test.a == 3
-        assert test.b == 1
-        assert not test.is_partial()
-
-    def test_partialable_check(self):
-        test = ExamplePartialable().replace(a=5)
-        with pytest.raises(AssertionError):
-            test.check()
-        test = test.replace(b=1, c=1)
-        assert test.check() is None
-
-    def test_partialable_optional_check(self):
-        test = ExamplePartialable().replace(a=5)
-        with pytest.raises(AssertionError):
-            test.check()
-        test = test.replace(b=1)
-        assert test.check() is None
+    def teardown(self):
+        # Cleanup
+        path = self.catalog.path
+        fs = self.catalog.fs
+        if fs.exists(path):
+            fs.rm(path, recursive=True)
 
     def test_backtest_config_pickle(self):
         pickle.loads(pickle.dumps(self))  # noqa: S301
@@ -128,70 +70,42 @@ class TestBacktestConfig:
     def test_backtest_data_config_load(self):
         instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
         c = BacktestDataConfig(
-            catalog_path="/.nautilus/catalog",
-            catalog_fs_protocol="memory",
+            catalog_path=self.catalog.path,
+            catalog_fs_protocol=self.catalog.fs.protocol,
             data_cls=QuoteTick,
             instrument_id=instrument.id.value,
             start_time=1580398089820000000,
             end_time=1580504394501000000,
         )
+
         result = c.query
         assert result == {
             "as_nautilus": True,
             "cls": QuoteTick,
             "instrument_ids": ["AUD/USD.SIM"],
             "filter_expr": None,
-            "start": datetime.datetime(
-                2020, 1, 30, 15, 28, 9, 820000, tzinfo=datetime.timezone.utc
-            ),
-            "end": datetime.datetime(2020, 1, 31, 20, 59, 54, 501000, tzinfo=datetime.timezone.utc),
+            "start": 1580398089820000000,
+            "end": 1580504394501000000,
         }
-
-    def test_backtest_config_partial(self):
-        # Arrange
-        config = BacktestRunConfig()
-        config.update(
-            venues=[
-                BacktestVenueConfig(
-                    name="SIM",
-                    oms_type="HEDGING",
-                    account_type="MARGIN",
-                    base_currency="USD",
-                    starting_balances=["1000000 USD"],
-                )
-            ],
-        )
-        assert config.is_partial()
-        config = config.update(
-            data=[
-                BacktestDataConfig(
-                    "/",
-                    "nautilus_trader.model.data.tick.QuoteTick",
-                    "memory",
-                    {},
-                    "AUD/USD.IDEALPRO",
-                    1580398089820000,
-                    1580504394501000,
-                )
-            ],
-        )
-        assert config.is_partial()
 
     def test_backtest_data_config_generic_data(self):
         # Arrange
         TestPersistenceStubs.setup_news_event_persistence()
+
         process_files(
             glob_path=f"{TEST_DATA_DIR}/news_events.csv",
             reader=CSVReader(block_parser=TestPersistenceStubs.news_event_parser),
             catalog=self.catalog,
         )
+
         c = BacktestDataConfig(
-            catalog_path="/.nautilus/catalog",
-            catalog_fs_protocol="memory",
+            catalog_path=self.catalog.path,
+            catalog_fs_protocol=self.catalog.fs.protocol,
             data_cls=NewsEventData,
             client_id="NewsClient",
             metadata={"kind": "news"},
         )
+
         result = c.load()
         assert len(result["data"]) == 86985
         assert result["instrument"] is None
@@ -207,24 +121,25 @@ class TestBacktestConfig:
             catalog=self.catalog,
         )
         c = BacktestDataConfig(
-            catalog_path="/.nautilus/catalog",
-            catalog_fs_protocol="memory",
+            catalog_path=self.catalog.path,
+            catalog_fs_protocol=self.catalog.fs.protocol,
             data_cls=NewsEventData,
             filter_expr="field('currency') == 'CHF'",
             client_id="NewsClient",
         )
+
         result = c.load()
         assert len(result["data"]) == 2745
 
     def test_backtest_data_config_status_updates(self):
         process_files(
-            glob_path=PACKAGE_ROOT + "/data/1.166564490.bz2",
+            glob_path=TEST_DATA_DIR + "/1.166564490.bz2",
             reader=BetfairTestStubs.betfair_reader(),
             catalog=self.catalog,
         )
         c = BacktestDataConfig(
-            catalog_path="/.nautilus/catalog",
-            catalog_fs_protocol="memory",
+            catalog_path=self.catalog.path,
+            catalog_fs_protocol=self.catalog.fs.protocol,
             data_cls=InstrumentStatusUpdate,
         )
         result = c.load()
@@ -234,24 +149,22 @@ class TestBacktestConfig:
 
     def test_resolve_cls(self):
         config = BacktestDataConfig(
-            "/",
-            "nautilus_trader.model.data.tick:QuoteTick",
-            "memory",
-            {},
-            "AUD/USD.IDEALPRO",
-            1580398089820000,
-            1580504394501000,
+            catalog_path=self.catalog.path,
+            data_cls="nautilus_trader.model.data.tick:QuoteTick",
+            catalog_fs_protocol=self.catalog.fs.protocol,
+            catalog_fs_storage_options={},
+            instrument_id="AUD/USD.IDEALPRO",
+            start_time=1580398089820000,
+            end_time=1580504394501000,
         )
         assert config.data_type == QuoteTick
 
     @pytest.mark.parametrize(
         "model",
         [
-            # type ignore due to workaround for kwargs on pydantic data classes
-            # https://github.com/python/mypy/issues/6239
-            BacktestDataConfig(  # type: ignore
+            BacktestDataConfig(
                 catalog_path="/",
-                data_cls=QuoteTick,
+                data_cls=QuoteTick.fully_qualified_name(),
                 catalog_fs_protocol="memory",
                 catalog_fs_storage_options={},
                 instrument_id="AUD/USD.IDEALPRO",
@@ -260,5 +173,213 @@ class TestBacktestConfig:
             ),
         ],
     )
-    def test_models_to_json(self, model: BaseModel):
-        print(json.dumps(model, indent=4, default=pydantic_encoder))
+    def test_models_to_json(self, model: NautilusConfig):
+        raw = model.json()
+        assert raw
+
+    def test_backtest_config_to_json(self):
+        assert msgspec.json.encode(self.backtest_config)
+
+
+class TestBacktestConfigFile(_TestBacktestConfig):
+    fs_protocol = "file"
+
+
+class TestBacktestConfigMemory(_TestBacktestConfig):
+    fs_protocol = "memory"
+
+
+class TestBacktestConfigParsing:
+    def setup(self):
+        self.catalog = data_catalog_setup(protocol="memory", path="/.nautilus/")
+        self.venue = Venue("SIM")
+        self.instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=self.venue)
+        self.backtest_config = TestConfigStubs.backtest_run_config(catalog=self.catalog)
+
+    def test_run_config_to_json(self):
+        run_config = TestConfigStubs.backtest_run_config(
+            catalog=self.catalog,
+            instrument_ids=[self.instrument.id.value],
+            venues=[
+                BacktestVenueConfig(
+                    name="SIM",
+                    oms_type="HEDGING",
+                    account_type="MARGIN",
+                    starting_balances=["1_000_000 USD"],
+                ),
+            ],
+        )
+        json = msgspec.json.encode(run_config)
+        result = len(msgspec.json.encode(json))
+        assert result in (786, 790)  # unix, windows sizes
+
+    def test_run_config_parse_obj(self):
+        run_config = TestConfigStubs.backtest_run_config(
+            catalog=self.catalog,
+            instrument_ids=[self.instrument.id.value],
+            venues=[
+                BacktestVenueConfig(
+                    name="SIM",
+                    oms_type="HEDGING",
+                    account_type="MARGIN",
+                    starting_balances=["1_000_000 USD"],
+                ),
+            ],
+        )
+        raw = msgspec.json.encode(run_config)
+        config = msgspec.json.decode(raw, type=BacktestRunConfig)
+        assert isinstance(config, BacktestRunConfig)
+        node = BacktestNode(configs=[config])
+        assert isinstance(node, BacktestNode)
+        assert len(raw) in (587, 589)  # unix, windows sizes
+
+    def test_backtest_data_config_to_dict(self):
+        run_config = TestConfigStubs.backtest_run_config(
+            catalog=self.catalog,
+            instrument_ids=[self.instrument.id.value],
+            data_types=(TradeTick, QuoteTick, OrderBookData),
+            venues=[
+                BacktestVenueConfig(
+                    name="BETFAIR",
+                    oms_type="NETTING",
+                    account_type="BETTING",
+                    base_currency="GBP",
+                    starting_balances=["10000 GBP"],
+                    book_type="L2_MBP",
+                ),
+            ],
+        )
+        json = msgspec.json.encode(run_config)
+        result = len(msgspec.json.encode(json))
+        assert result in (1510, 1518)  # unix, windows
+
+    def test_backtest_run_config_id(self):
+        token = self.backtest_config.id
+        print("token:", token)
+        value: bytes = msgspec.json.encode(self.backtest_config.dict(), enc_hook=json_encoder)
+        print("token_value:", value.decode())
+        assert token in (
+            "025fddcf56215cdd9be2a7b1ccc0e48abfd76fc44839d793fa07d326655b70a9",  # unix
+            "585913bbdf353d7e00b74c8f0a00f0eb8771da901faefeecf3fb9df1f3d48854",  # windows
+        )
+
+    @pytest.mark.skip(reason="fix after merge")
+    @pytest.mark.parametrize(
+        "config_func, keys, kw, expected",
+        [
+            (
+                TestConfigStubs.venue_config,
+                (),
+                {},
+                ("7919596b3762fd98d79afa64976a292d408313816d38ec26ebd29e31049b92f9",),
+            ),
+            (
+                TestConfigStubs.backtest_data_config,
+                ("catalog",),
+                {},
+                (
+                    "8485d8c61bb15514769412bc4c0fb0a662617b3245d751c40e3627a1b6762ba0",  # unix
+                    "d32e5785aad958ec163da39ba501a8fbe654fd973ada46e21907631824369ce4",  # windows
+                ),
+            ),
+            (
+                TestConfigStubs.backtest_engine_config,
+                ("catalog",),
+                {"persist": True},
+                (
+                    "90f34a9e9474a35a365fa6ffb4bd8586f443a98ff845dec019ed9c857774f6cb",
+                    "11048af3175c58d841d1e936e6075d053d8d445d889ab653229208033f60307d",
+                ),
+            ),
+            (
+                TestConfigStubs.risk_engine_config,
+                (),
+                {},
+                ("962367da58082b349922801d5fea53526f1c35149a042c84fde2fc69c8fb46cf",),
+            ),
+            (
+                TestConfigStubs.exec_engine_config,
+                (),
+                {},
+                ("a6ca5c188b92707f81a9ba5d45700dcbc8aebe0443c1e7b13b10a86c045c6391",),
+            ),
+            (
+                TestConfigStubs.streaming_config,
+                ("catalog",),
+                {},
+                (
+                    "a1d857e553be89e5e6336fa7d1ee2c55032ada5d63193ecc959b216b4afc3f18",
+                    "1f1564863058e883768f311e4724fa1f4ddcab0faf717d262a586f734403dc11",
+                ),
+            ),
+        ],
+    )
+    def test_tokenize_config(self, config_func, keys, kw, expected):
+        config = config_func(**{k: getattr(self, k) for k in keys}, **kw)
+        token = tokenize_config(config.dict())
+        assert token in expected
+
+    def test_backtest_main_cli(self, mocker):
+        # Arrange
+        from nautilus_trader.backtest.__main__ import main
+
+        runner = CliRunner()
+        raw = msgspec.json.encode(
+            [
+                BacktestRunConfig(
+                    engine=BacktestEngineConfig(),
+                    venues=[
+                        BacktestVenueConfig(
+                            name="SIM",
+                            oms_type="HEDGING",
+                            account_type="CASH",
+                            starting_balances=["100 USD"],
+                        ),
+                    ],
+                    data=[],
+                ),
+            ],
+        ).decode()
+
+        # Act
+        with mocker.patch("nautilus_trader.backtest.node.BacktestNode.run"):
+            result = runner.invoke(main, ["--raw", raw])
+
+        # Assert
+        assert result.exception is None
+        assert result.exit_code == 0
+
+    def test_simulation_modules(self):
+        # Arrange
+        interest_rate_data = TestDataProvider().read_csv("short-term-interest.csv")
+        run_config = TestConfigStubs.backtest_run_config(
+            catalog=self.catalog,
+            instrument_ids=[self.instrument.id.value],
+            venues=[
+                BacktestVenueConfig(
+                    name="SIM",
+                    oms_type="HEDGING",
+                    account_type="MARGIN",
+                    starting_balances=["1_000_000 USD"],
+                    modules=[
+                        ImportableActorConfig(
+                            actor_path=FXRolloverInterestModule.fully_qualified_name(),
+                            config_path=FXRolloverInterestConfig.fully_qualified_name(),
+                            config={"rate_data": interest_rate_data},
+                        ),
+                    ],
+                ),
+            ],
+        )
+        node = BacktestNode([run_config])
+
+        # Act
+        engine = node._create_engine(
+            run_config_id=run_config.id,
+            config=run_config.engine,
+            venue_configs=run_config.venues,
+            data_configs=run_config.data,
+        )
+
+        # Assert
+        assert engine

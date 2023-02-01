@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -43,18 +43,17 @@ from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.msgbus.bus import MessageBus
-from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 from nautilus_trader.persistence.streaming import StreamingFeatherWriter
+from nautilus_trader.test_kit.mocks.actors import KaboomActor
+from nautilus_trader.test_kit.mocks.actors import MockActor
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.stubs import UNIX_EPOCH
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.filters import NewsEvent
 from nautilus_trader.trading.filters import NewsImpact
-from tests.test_kit.mocks.actors import KaboomActor
-from tests.test_kit.mocks.actors import MockActor
-from tests.test_kit.mocks.data import data_catalog_setup
-from tests.test_kit.stubs import UNIX_EPOCH
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -159,7 +158,7 @@ class TestActor:
         )
 
         # Act, Assert
-        assert actor.state == ComponentState.INITIALIZED
+        assert actor.state == ComponentState.READY
         assert actor.is_initialized
 
     def test_register_warning_event(self):
@@ -791,7 +790,7 @@ class TestActor:
 
         # Assert
         assert "on_reset" in actor.calls
-        assert actor.state == ComponentState.INITIALIZED
+        assert actor.state == ComponentState.READY
 
     def test_dispose(self):
         # Arrange
@@ -1606,10 +1605,10 @@ class TestActor:
             clock=self.clock,
             logger=self.logger,
         )
-        data_catalog_setup()
-        catalog = ParquetDataCatalog.from_env()
+        catalog = data_catalog_setup(protocol="memory")
+
         writer = StreamingFeatherWriter(
-            path=str(catalog.path),
+            path=catalog.path,
             fs_protocol=catalog.fs_protocol,
             logger=LoggerAdapter(
                 component_name="Actor",
@@ -1623,7 +1622,7 @@ class TestActor:
         actor.publish_signal(name="Test", value=5.0, ts_event=0)
 
         # Assert
-        assert catalog.fs.exists(str(catalog.path / "SignalTest.feather"))
+        assert catalog.fs.exists(f"{catalog.path}/genericdata_SignalTest.feather")
 
     def test_subscribe_bars(self):
         # Arrange

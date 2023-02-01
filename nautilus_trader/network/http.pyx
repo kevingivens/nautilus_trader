@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -32,10 +32,6 @@ from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.common.logging cimport LoggerAdapter
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.rust.core cimport unix_timestamp_ns
-
-
-# Seconds in one day
-cdef int ONE_DAY = 86_400
 
 
 cdef class HttpClient:
@@ -71,7 +67,7 @@ cdef class HttpClient:
         Logger logger not None,
         list addresses = None,
         list nameservers = None,
-        int ttl_dns_cache = 86_400,
+        int ttl_dns_cache = 86_400,  # Seconds in day
         ssl_context: Optional[SSLContext] = None,
         ssl: Optional[Union[bool, Fingerprint, SSLContext]] = None,
         dict connector_kwargs = None,

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -24,7 +24,6 @@ attempts to operate without a managing `Trader` instance.
 
 """
 
-import warnings
 from typing import Optional
 
 import cython
@@ -37,10 +36,11 @@ from cpython.datetime cimport datetime
 from libc.stdint cimport uint64_t
 
 from nautilus_trader.cache.base cimport CacheFacade
-from nautilus_trader.common.c_enums.component_state cimport ComponentState
 from nautilus_trader.common.clock cimport Clock
 from nautilus_trader.common.clock cimport LiveClock
 from nautilus_trader.common.component cimport Component
+from nautilus_trader.common.enums_c cimport ComponentState
+from nautilus_trader.common.enums_c cimport LogColor
 from nautilus_trader.common.logging cimport CMD
 from nautilus_trader.common.logging cimport REQ
 from nautilus_trader.common.logging cimport SENT
@@ -53,16 +53,16 @@ from nautilus_trader.data.messages cimport DataRequest
 from nautilus_trader.data.messages cimport DataResponse
 from nautilus_trader.data.messages cimport Subscribe
 from nautilus_trader.data.messages cimport Unsubscribe
-from nautilus_trader.model.c_enums.book_type cimport BookType
 from nautilus_trader.model.data.bar cimport Bar
 from nautilus_trader.model.data.bar cimport BarType
 from nautilus_trader.model.data.base cimport DataType
 from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
 from nautilus_trader.model.data.ticker cimport Ticker
-from nautilus_trader.model.data.venue cimport InstrumentClosePrice
+from nautilus_trader.model.data.venue cimport InstrumentClose
 from nautilus_trader.model.data.venue cimport InstrumentStatusUpdate
 from nautilus_trader.model.data.venue cimport VenueStatusUpdate
+from nautilus_trader.model.enums_c cimport BookType
 from nautilus_trader.model.identifiers cimport ClientId
 from nautilus_trader.model.identifiers cimport ComponentId
 from nautilus_trader.model.identifiers cimport InstrumentId
@@ -139,12 +139,43 @@ cdef class Actor(Component):
 
 # -- ABSTRACT METHODS -----------------------------------------------------------------------------
 
+    cpdef dict on_save(self):
+        """
+        Actions to be performed when the actor state is saved.
+
+        Create and return a state dictionary of values to be saved.
+
+        Returns
+        -------
+        dict[str, bytes]
+            The strategy state dictionary.
+
+        Warnings
+        --------
+        System method (not intended to be called by user code).
+
+        """
+        return {}  # Optionally override in subclass
+
+    cpdef void on_load(self, dict state) except *:
+        """
+        Actions to be performed when the actor state is loaded.
+
+        Saved state values will be contained in the give state dictionary.
+
+        Warnings
+        --------
+        System method (not intended to be called by user code).
+
+        """
+        pass  # Optionally override in subclass
+
     cpdef void on_start(self) except *:
         """
         Actions to be performed on start.
 
-        The intent is that this method is called once per trading session,
-        when initially starting.
+        The intent is that this method is called once per trading 'run', when
+        initially starting.
 
         It is recommended to subscribe/request for data here.
 
@@ -152,11 +183,15 @@ cdef class Actor(Component):
         --------
         System method (not intended to be called by user code).
 
-        Should be overridden in the actor implementation.
+        Should be overridden in a user implementation.
 
         """
         # Should override in subclass
-        warnings.warn("on_start was called when not overridden")
+        self.log.warning(
+            "The `Actor.on_start` handler was called when not overridden. "
+            "It's expected that any actions required when starting the actor "
+            "occur here, such as subscribing/requesting data.",
+        )
 
     cpdef void on_stop(self) except *:
         """
@@ -168,11 +203,15 @@ cdef class Actor(Component):
         --------
         System method (not intended to be called by user code).
 
-        Should be overridden in the actor implementation.
+        Should be overridden in a user implementation.
 
         """
         # Should override in subclass
-        warnings.warn("on_stop was called when not overridden")
+        self.log.warning(
+            "The `Actor.on_stop` handler was called when not overridden. "
+            "It's expected that any actions required when stopping the actor "
+            "occur here, such as unsubscribing from data.",
+        )
 
     cpdef void on_resume(self) except *:
         """
@@ -183,7 +222,12 @@ cdef class Actor(Component):
         System method (not intended to be called by user code).
 
         """
-        pass  # Optionally override in subclass
+        # Should override in subclass
+        self.log.warning(
+            "The `Actor.on_resume` handler was called when not overridden. "
+            "It's expected that any actions required when resuming the actor "
+            "following a stop occur here."
+        )
 
     cpdef void on_reset(self) except *:
         """
@@ -193,27 +237,28 @@ cdef class Actor(Component):
         --------
         System method (not intended to be called by user code).
 
-        Should be overridden in the actor implementation.
+        Should be overridden in a user implementation.
 
         """
         # Should override in subclass
-        warnings.warn("on_reset was called when not overridden")
+        self.log.warning(
+            "The `Actor.on_reset` handler was called when not overridden. "
+            "It's expected that any actions required when resetting the actor "
+            "occur here, such as resetting indicators and other state."
+        )
 
     cpdef void on_dispose(self) except *:
         """
         Actions to be performed on dispose.
 
-        Cleanup any resources used here.
+        Cleanup/release any resources used here.
 
         Warnings
         --------
         System method (not intended to be called by user code).
 
-        Should be overridden in the actor implementation.
-
         """
-        # Should override in subclass
-        warnings.warn("on_dispose was called when not overridden")
+        pass  # Optionally override in subclass
 
     cpdef void on_degrade(self) except *:
         """
@@ -226,8 +271,7 @@ cdef class Actor(Component):
         Should be overridden in the actor implementation.
 
         """
-        # Should override in subclass
-        warnings.warn("on_degrade was called when not overridden")
+        pass  # Optionally override in subclass
 
     cpdef void on_fault(self) except *:
         """
@@ -242,8 +286,7 @@ cdef class Actor(Component):
         Should be overridden in the actor implementation.
 
         """
-        # Should override in subclass
-        warnings.warn("on_fault was called when not overridden")
+        pass  # Optionally override in subclass
 
     cpdef void on_venue_status_update(self, VenueStatusUpdate update) except *:
         """
@@ -278,14 +321,14 @@ cdef class Actor(Component):
         """
         pass  # Optionally override in subclass
 
-    cpdef void on_instrument_close_price(self, InstrumentClosePrice update) except *:
+    cpdef void on_instrument_close(self, InstrumentClose update) except *:
         """
         Actions to be performed when running and receives an instrument close
-        price update.
+        update.
 
         Parameters
         ----------
-        update : InstrumentClosePrice
+        update : InstrumentClose
             The update received.
 
         Warnings
@@ -534,6 +577,76 @@ cdef class Actor(Component):
         self._warning_events.discard(event)
 
         self._log.debug(f"Deregistered `{event.__name__}` from warning log levels.")
+
+# -- ACTOR COMMANDS -------------------------------------------------------------------------------
+
+    cpdef dict save(self):
+        """
+        Return the actor/strategy state dictionary to be saved.
+
+        Calls `on_save`.
+
+        Raises
+        ------
+        RuntimeError
+            If `actor/strategy` is not registered with a trader.
+
+        Warnings
+        --------
+        Exceptions raised will be caught, logged, and reraised.
+
+        """
+        if not self.is_initialized:
+            self.log.error(
+                "Cannot save: actor/strategy has not been registered with a trader.",
+            )
+            return
+        try:
+            self.log.debug("Saving state...")
+            user_state = self.on_save()
+            if len(user_state) > 0:
+                self.log.info(f"Saved state: {list(user_state.keys())}.", color=LogColor.BLUE)
+            else:
+                self.log.info("No user state to save.", color=LogColor.BLUE)
+            return user_state
+        except Exception as e:
+            self.log.exception("Error on save", e)
+            raise  # Otherwise invalid state information could be saved
+
+    cpdef void load(self, dict state) except *:
+        """
+        Load the actor/strategy state from the give state dictionary.
+
+        Calls `on_load` and passes the state.
+
+        Parameters
+        ----------
+        state : dict[str, object]
+            The state dictionary.
+
+        Raises
+        ------
+        RuntimeError
+            If `actor/strategy` is not registered with a trader.
+
+        Warnings
+        --------
+        Exceptions raised will be caught, logged, and reraised.
+
+        """
+        Condition.not_none(state, "state")
+
+        if not state:
+            self.log.info("No user state to load.", color=LogColor.BLUE)
+            return
+
+        try:
+            self.log.debug(f"Loading state...")
+            self.on_load(state)
+            self.log.info(f"Loaded state {list(state.keys())}.", color=LogColor.BLUE)
+        except Exception as e:
+            self.log.exception(f"Error on load {repr(state)}", e)
+            raise
 
 # -- ACTION IMPLEMENTATIONS -----------------------------------------------------------------------
 
@@ -926,7 +1039,7 @@ cdef class Actor(Component):
 
     cpdef void subscribe_venue_status_updates(self, Venue venue, ClientId client_id = None) except *:
         """
-        Subscribe to status updates of the given venue.
+        Subscribe to status updates for the given venue.
 
         Parameters
         ----------
@@ -941,13 +1054,23 @@ cdef class Actor(Component):
         Condition.true(self.trader_id is not None, "The actor has not been registered")
 
         self._msgbus.subscribe(
-            topic=f"data.venue.status",
+            topic=f"data.status.{venue.to_str()}",
             handler=self.handle_venue_status_update,
         )
 
+        cdef Subscribe command = Subscribe(
+            client_id=client_id,
+            venue=venue,
+            data_type=DataType(VenueStatusUpdate),
+            command_id=UUID4(),
+            ts_init=self._clock.timestamp_ns(),
+        )
+
+        self._send_data_cmd(command)
+
     cpdef void subscribe_instrument_status_updates(self, InstrumentId instrument_id, ClientId client_id = None) except *:
         """
-        Subscribe to status updates of the given instrument id.
+        Subscribe to status updates for the given instrument ID.
 
         Parameters
         ----------
@@ -962,7 +1085,7 @@ cdef class Actor(Component):
         Condition.true(self.trader_id is not None, "The actor has not been registered")
 
         self._msgbus.subscribe(
-            topic=f"data.venue.status",
+            topic=f"data.status.{instrument_id.venue.to_str()}.{instrument_id.symbol}",
             handler=self.handle_instrument_status_update,
         )
 
@@ -975,10 +1098,11 @@ cdef class Actor(Component):
         )
 
         self._send_data_cmd(command)
+        self._log.info(f"Subscribed to {instrument_id} InstrumentStatusUpdate.")
 
-    cpdef void subscribe_instrument_close_prices(self, InstrumentId instrument_id, ClientId client_id = None) except *:
+    cpdef void subscribe_instrument_close(self, InstrumentId instrument_id, ClientId client_id = None) except *:
         """
-        Subscribe to closing prices for the given instrument id.
+        Subscribe to close updates for the given instrument ID.
 
         Parameters
         ----------
@@ -994,13 +1118,13 @@ cdef class Actor(Component):
 
         self._msgbus.subscribe(
             topic=f"data.venue.close_price.{instrument_id.to_str()}",
-            handler=self.handle_instrument_close_price,
+            handler=self.handle_instrument_close,
         )
 
         cdef Subscribe command = Subscribe(
             client_id=client_id,
             venue=instrument_id.venue,
-            data_type=DataType(InstrumentClosePrice, metadata={"instrument_id": instrument_id}),
+            data_type=DataType(InstrumentClose, metadata={"instrument_id": instrument_id}),
             command_id=UUID4(),
             ts_init=self._clock.timestamp_ns(),
         )
@@ -1317,12 +1441,12 @@ cdef class Actor(Component):
 
     cpdef void unsubscribe_venue_status_updates(self, Venue venue, ClientId client_id = None) except *:
         """
-        Unsubscribe to status updates of the given venue.
+        Unsubscribe to status updates for the given venue.
 
         Parameters
         ----------
         venue : Venue
-            The venue to subscribe to.
+            The venue to unsubscribe from.
         client_id : ClientId, optional
             The specific client ID for the command.
             If ``None`` then will be inferred from the venue.
@@ -1332,9 +1456,51 @@ cdef class Actor(Component):
         Condition.true(self.trader_id is not None, "The actor has not been registered")
 
         self._msgbus.unsubscribe(
-            topic=f"data.venue.status",
+            topic=f"data.status.{venue.to_str()}",
             handler=self.handle_venue_status_update,
         )
+
+        cdef Unsubscribe command = Unsubscribe(
+            client_id=client_id,
+            venue=venue,
+            data_type=DataType(VenueStatusUpdate),
+            command_id=UUID4(),
+            ts_init=self._clock.timestamp_ns(),
+        )
+
+        self._send_data_cmd(command)
+
+    cpdef void unsubscribe_instrument_status_updates(self, InstrumentId instrument_id, ClientId client_id = None) except *:
+        """
+        Unsubscribe to status updates of the given venue.
+
+        Parameters
+        ----------
+        instrument_id : InstrumentId
+            The instrument to unsubscribe to status updates for.
+        client_id : ClientId, optional
+            The specific client ID for the command.
+            If ``None`` then will be inferred from the venue.
+
+        """
+        Condition.not_none(instrument_id, "instrument_id")
+        Condition.true(self.trader_id is not None, "The actor has not been registered")
+
+        self._msgbus.unsubscribe(
+            topic=f"data.status.{instrument_id.venue.to_str()}.{instrument_id.symbol}",
+            handler=self.handle_venue_status_update,
+        )
+        cdef Unsubscribe command = Unsubscribe(
+            client_id=client_id,
+            venue=instrument_id.venue,
+            data_type=DataType(InstrumentStatusUpdate),
+            command_id=UUID4(),
+            ts_init=self._clock.timestamp_ns(),
+        )
+
+        self._send_data_cmd(command)
+        self._log.info(f"Unsubscribed from {instrument_id} InstrumentStatusUpdate.")
+
 
     cpdef void publish_data(self, DataType data_type, Data data) except *:
         """
@@ -1984,15 +2150,15 @@ cdef class Actor(Component):
                 self._log.exception(f"Error on handling {repr(update)}", e)
                 raise
 
-    cpdef void handle_instrument_close_price(self, InstrumentClosePrice update) except *:
+    cpdef void handle_instrument_close(self, InstrumentClose update) except *:
         """
-        Handle the given instrument close price update.
+        Handle the given instrument close update.
 
-        If state is ``RUNNING`` then passes to `on_instrument_close_price`.
+        If state is ``RUNNING`` then passes to `on_instrument_close`.
 
         Parameters
         ----------
-        update : InstrumentClosePrice
+        update : InstrumentClose
             The update received.
 
         Warnings
@@ -2004,7 +2170,7 @@ cdef class Actor(Component):
 
         if self._fsm.state == ComponentState.RUNNING:
             try:
-                self.on_instrument_close_price(update)
+                self.on_instrument_close(update)
             except Exception as e:
                 self._log.exception(f"Error on handling {repr(update)}", e)
                 raise

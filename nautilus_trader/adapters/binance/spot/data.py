@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -37,7 +37,6 @@ from nautilus_trader.adapters.binance.common.schemas import BinanceTrade
 from nautilus_trader.adapters.binance.common.types import BinanceBar
 from nautilus_trader.adapters.binance.common.types import BinanceTicker
 from nautilus_trader.adapters.binance.http.client import BinanceHttpClient
-from nautilus_trader.adapters.binance.http.error import BinanceError
 from nautilus_trader.adapters.binance.spot.http.market import BinanceSpotMarketHttpAPI
 from nautilus_trader.adapters.binance.spot.parsing.data import parse_spot_book_snapshot
 from nautilus_trader.adapters.binance.spot.parsing.data import parse_spot_trade_tick_ws
@@ -46,14 +45,13 @@ from nautilus_trader.adapters.binance.spot.schemas.market import BinanceSpotTrad
 from nautilus_trader.adapters.binance.websocket.client import BinanceWebSocketClient
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import LiveClock
-from nautilus_trader.common.logging import LogColor
+from nautilus_trader.common.enums import LogColor
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.common.providers import InstrumentProvider
-from nautilus_trader.core.correctness import PyCondition
+from nautilus_trader.core.asynchronous import sleep0
 from nautilus_trader.core.datetime import secs_to_millis
 from nautilus_trader.core.uuid import UUID4
 from nautilus_trader.live.data_client import LiveMarketDataClient
-from nautilus_trader.model.c_enums.bar_aggregation import BarAggregationParser
 from nautilus_trader.model.data.bar import BarType
 from nautilus_trader.model.data.base import DataType
 from nautilus_trader.model.data.tick import QuoteTick
@@ -61,6 +59,7 @@ from nautilus_trader.model.data.tick import TradeTick
 from nautilus_trader.model.enums import BarAggregation
 from nautilus_trader.model.enums import BookType
 from nautilus_trader.model.enums import PriceType
+from nautilus_trader.model.enums import bar_aggregation_to_str
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
@@ -124,7 +123,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         self._binance_account_type = account_type
         self._log.info(f"Account type: {self._binance_account_type.value}.", LogColor.BLUE)
 
-        self._update_instrument_interval: int = 60 * 60  # Once per hour (hardcode)
+        self._update_instruments_interval: int = 60 * 60  # Once per hour (hardcode)
         self._update_instruments_task: Optional[asyncio.Task] = None
 
         # HTTP API
@@ -147,32 +146,18 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         self._log.info(f"Base URL HTTP {self._http_client.base_url}.", LogColor.BLUE)
         self._log.info(f"Base URL WebSocket {base_url_ws}.", LogColor.BLUE)
 
-    def connect(self) -> None:
-        self._log.info("Connecting...")
-        self._loop.create_task(self._connect())
-
-    def disconnect(self) -> None:
-        self._log.info("Disconnecting...")
-        self._loop.create_task(self._disconnect())
-
     async def _connect(self) -> None:
         # Connect HTTP client
         if not self._http_client.connected:
             await self._http_client.connect()
-        try:
-            await self._instrument_provider.initialize()
-        except BinanceError as e:
-            self._log.exception(f"Error on connect: {e.message}", e)
-            return
+
+        await self._instrument_provider.initialize()
 
         self._send_all_instruments_to_data_engine()
-        self._update_instruments_task = self._loop.create_task(self._update_instruments())
+        self._update_instruments_task = self.create_task(self._update_instruments())
 
         # Connect WebSocket clients
-        self._loop.create_task(self._connect_websockets())
-
-        self._set_connected(True)
-        self._log.info("Connected.")
+        self.create_task(self._connect_websockets())
 
     async def _connect_websockets(self) -> None:
         self._log.info("Awaiting subscriptions...")
@@ -181,20 +166,24 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             await self._ws_client.connect()
 
     async def _update_instruments(self) -> None:
-        while True:
-            self._log.debug(
-                f"Scheduled `update_instruments` to run in "
-                f"{self._update_instruments_interval}s."
-            )
-            await asyncio.sleep(self._update_instruments_interval)
-            await self._instrument_provider.load_all_async()
-            self._send_all_instruments_to_data_engine()
+        try:
+            while True:
+                self._log.debug(
+                    f"Scheduled `update_instruments` to run in "
+                    f"{self._update_instruments_interval}s.",
+                )
+                await asyncio.sleep(self._update_instruments_interval)
+                await self._instrument_provider.load_all_async()
+                self._send_all_instruments_to_data_engine()
+        except asyncio.CancelledError:
+            self._log.debug("`update_instruments` task was canceled.")
 
     async def _disconnect(self) -> None:
         # Cancel tasks
         if self._update_instruments_task:
             self._log.debug("Canceling `update_instruments` task...")
             self._update_instruments_task.cancel()
+            self._update_instruments_task.done()
 
         # Disconnect WebSocket client
         if self._ws_client.is_connected:
@@ -204,54 +193,39 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         if self._http_client.connected:
             await self._http_client.disconnect()
 
-        self._set_connected(False)
-        self._log.info("Disconnected.")
-
     # -- SUBSCRIPTIONS ----------------------------------------------------------------------------
 
-    def subscribe(self, data_type: DataType) -> None:
-        self._log.error(f"Cannot subscribe to {data_type.type} (not implemented).")
+    async def _subscribe_instruments(self) -> None:
+        pass  # Do nothing further
 
-    def subscribe_instruments(self) -> None:
-        for instrument_id in list(self._instrument_provider.get_all().keys()):
-            self._add_subscription_instrument(instrument_id)
+    async def _subscribe_instrument(self, instrument_id: InstrumentId) -> None:
+        pass  # Do nothing further
 
-    def subscribe_instrument(self, instrument_id: InstrumentId) -> None:
-        self._add_subscription_instrument(instrument_id)
-
-    def subscribe_order_book_deltas(
+    async def _subscribe_order_book_deltas(
         self,
         instrument_id: InstrumentId,
         book_type: BookType,
         depth: Optional[int] = None,
-        kwargs: dict = None,
+        kwargs: Optional[dict] = None,
     ) -> None:
-        self._loop.create_task(
-            self._subscribe_order_book(
-                instrument_id=instrument_id,
-                book_type=book_type,
-                depth=depth,
-            )
+        await self._subscribe_order_book(
+            instrument_id=instrument_id,
+            book_type=book_type,
+            depth=depth,
         )
 
-        self._add_subscription_order_book_deltas(instrument_id)
-
-    def subscribe_order_book_snapshots(
+    async def _subscribe_order_book_snapshots(
         self,
         instrument_id: InstrumentId,
         book_type: BookType,
         depth: Optional[int] = None,
-        kwargs: dict = None,
+        kwargs: Optional[dict] = None,
     ) -> None:
-        self._loop.create_task(
-            self._subscribe_order_book(
-                instrument_id=instrument_id,
-                book_type=book_type,
-                depth=depth,
-            )
+        await self._subscribe_order_book(
+            instrument_id=instrument_id,
+            book_type=book_type,
+            depth=depth,
         )
-
-        self._add_subscription_order_book_snapshots(instrument_id)
 
     async def _subscribe_order_book(
         self,
@@ -293,7 +267,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             )
 
         while not self._ws_client.is_connected:
-            await self.sleep0()
+            await sleep0()
 
         data: dict[str, Any] = await self._http_market.depth(
             symbol=instrument_id.symbol.value,
@@ -301,41 +275,36 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         )
 
         ts_event: int = self._clock.timestamp_ns()
-        last_update_id: int = data.get("lastUpdateId")
+        last_update_id: int = data.get("lastUpdateId", 0)
 
         snapshot = OrderBookSnapshot(
             instrument_id=instrument_id,
             book_type=BookType.L2_MBP,
-            bids=[[float(o[0]), float(o[1])] for o in data.get("bids")],
-            asks=[[float(o[0]), float(o[1])] for o in data.get("asks")],
+            bids=[[float(o[0]), float(o[1])] for o in data.get("bids", [])],
+            asks=[[float(o[0]), float(o[1])] for o in data.get("asks", [])],
             ts_event=ts_event,
             ts_init=ts_event,
-            update_id=last_update_id,
+            sequence=last_update_id,
         )
 
         self._handle_data(snapshot)
 
-        book_buffer = self._book_buffer.pop(instrument_id)
+        book_buffer = self._book_buffer.pop(instrument_id, [])
         for deltas in book_buffer:
-            if deltas.update_id <= last_update_id:
+            if deltas.sequence <= last_update_id:
                 continue
             self._handle_data(deltas)
 
-    def subscribe_ticker(self, instrument_id: InstrumentId) -> None:
+    async def _subscribe_ticker(self, instrument_id: InstrumentId) -> None:
         self._ws_client.subscribe_ticker(instrument_id.symbol.value)
-        self._add_subscription_ticker(instrument_id)
 
-    def subscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
+    async def _subscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
         self._ws_client.subscribe_book_ticker(instrument_id.symbol.value)
-        self._add_subscription_quote_ticks(instrument_id)
 
-    def subscribe_trade_ticks(self, instrument_id: InstrumentId) -> None:
+    async def _subscribe_trade_ticks(self, instrument_id: InstrumentId) -> None:
         self._ws_client.subscribe_trades(instrument_id.symbol.value)
-        self._add_subscription_trade_ticks(instrument_id)
 
-    def subscribe_bars(self, bar_type: BarType) -> None:
-        PyCondition.true(bar_type.is_externally_aggregated(), "aggregation_source is not EXTERNAL")
-
+    async def _subscribe_bars(self, bar_type: BarType) -> None:
         if not bar_type.spec.is_time_aggregated():
             self._log.error(
                 f"Cannot subscribe to {bar_type}: only time bars are aggregated by Binance.",
@@ -345,7 +314,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         if bar_type.spec.aggregation == BarAggregation.MILLISECOND:
             self._log.error(
                 f"Cannot subscribe to {bar_type}: "
-                f"{BarAggregationParser.to_str_py(bar_type.spec.aggregation)} "
+                f"{bar_aggregation_to_str(bar_type.spec.aggregation)} "
                 f"bars are not aggregated by Binance.",
             )
             return
@@ -360,50 +329,42 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             resolution = "d"
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
-                f"invalid `BarAggregation`, "
-                f"was {BarAggregationParser.to_str_py(bar_type.spec.aggregation)}",
+                f"invalid `BarAggregation`, "  # pragma: no cover
+                f"was {bar_aggregation_to_str(bar_type.spec.aggregation)}",  # pragma: no cover
             )
 
         self._ws_client.subscribe_bars(
             symbol=bar_type.instrument_id.symbol.value,
             interval=f"{bar_type.spec.step}{resolution}",
         )
-        self._add_subscription_bars(bar_type)
 
-    def unsubscribe_instruments(self) -> None:
-        for instrument_id in list(self._instrument_provider.get_all().keys()):
-            self._remove_subscription_instrument(instrument_id)
+    async def _unsubscribe_instruments(self) -> None:
+        pass  # Do nothing further
 
-    def unsubscribe_instrument(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_instrument(instrument_id)
+    async def _unsubscribe_instrument(self, instrument_id: InstrumentId) -> None:
+        pass  # Do nothing further
 
-    def unsubscribe_order_book_deltas(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_order_book_deltas(instrument_id)
+    async def _unsubscribe_order_book_deltas(self, instrument_id: InstrumentId) -> None:
+        pass  # TODO: Unsubscribe from Binance if no other subscriptions
 
-    def unsubscribe_order_book_snapshots(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_order_book_snapshots(instrument_id)
+    async def _unsubscribe_order_book_snapshots(self, instrument_id: InstrumentId) -> None:
+        pass  # TODO: Unsubscribe from Binance if no other subscriptions
 
-    def unsubscribe_ticker(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_ticker(instrument_id)
+    async def _unsubscribe_ticker(self, instrument_id: InstrumentId) -> None:
+        pass  # TODO: Unsubscribe from Binance if no other subscriptions
 
-    def unsubscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_quote_ticks(instrument_id)
+    async def _unsubscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
+        pass  # TODO: Unsubscribe from Binance if no other subscriptions
 
-    def unsubscribe_trade_ticks(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_trade_ticks(instrument_id)
+    async def _unsubscribe_trade_ticks(self, instrument_id: InstrumentId) -> None:
+        pass  # TODO: Unsubscribe from Binance if no other subscriptions
 
-    def unsubscribe_bars(self, bar_type: BarType) -> None:
-        self._remove_subscription_bars(bar_type)
-
-    def unsubscribe_instrument_status_updates(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_instrument_status_updates(instrument_id)
-
-    def unsubscribe_instrument_close_prices(self, instrument_id: InstrumentId) -> None:
-        self._remove_subscription_instrument_close_prices(instrument_id)
+    async def _unsubscribe_bars(self, bar_type: BarType) -> None:
+        pass  # TODO: Unsubscribe from Binance if no other subscriptions
 
     # -- REQUESTS ---------------------------------------------------------------------------------
 
-    def request_instrument(self, instrument_id: InstrumentId, correlation_id: UUID4) -> None:
+    async def _request_instrument(self, instrument_id: InstrumentId, correlation_id: UUID4) -> None:
         instrument: Optional[Instrument] = self._instrument_provider.find(instrument_id)
         if instrument is None:
             self._log.error(f"Cannot find instrument for {instrument_id}.")
@@ -420,7 +381,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             correlation_id=correlation_id,
         )
 
-    def request_quote_ticks(
+    async def _request_quote_ticks(
         self,
         instrument_id: InstrumentId,
         limit: int,
@@ -432,7 +393,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             "Cannot request historical quote ticks: not published by Binance.",
         )
 
-    def request_trade_ticks(
+    async def _request_trade_ticks(
         self,
         instrument_id: InstrumentId,
         limit: int,
@@ -446,17 +407,9 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         if from_datetime is not None or to_datetime is not None:
             self._log.warning(
                 "Trade ticks have been requested with a from/to time range, "
-                f"however the request will be for the most recent {limit}."
+                f"however the request will be for the most recent {limit}.",
             )
 
-        self._loop.create_task(self._request_trade_ticks(instrument_id, limit, correlation_id))
-
-    async def _request_trade_ticks(
-        self,
-        instrument_id: InstrumentId,
-        limit: int,
-        correlation_id: UUID4,
-    ) -> None:
         response: list[BinanceTrade] = await self._http_market.trades(
             instrument_id.symbol.value,
             limit,
@@ -473,7 +426,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
 
         self._handle_trade_ticks(instrument_id, ticks, correlation_id)
 
-    def request_bars(
+    async def _request_bars(  # noqa (too complex)
         self,
         bar_type: BarType,
         limit: int,
@@ -497,7 +450,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
         if bar_type.spec.aggregation == BarAggregation.MILLISECOND:
             self._log.error(
                 f"Cannot request {bar_type}: "
-                f"{BarAggregationParser.to_str_py(bar_type.spec.aggregation)} "
+                f"{bar_aggregation_to_str(bar_type.spec.aggregation)} "
                 f"bars are not aggregated by Binance.",
             )
             return
@@ -509,24 +462,6 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             )
             return
 
-        self._loop.create_task(
-            self._request_bars(
-                bar_type=bar_type,
-                limit=limit,
-                correlation_id=correlation_id,
-                from_datetime=from_datetime,
-                to_datetime=to_datetime,
-            )
-        )
-
-    async def _request_bars(
-        self,
-        bar_type: BarType,
-        limit: int,
-        correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
-    ) -> None:
         if limit == 0 or limit > 1000:
             limit = 1000
 
@@ -540,17 +475,17 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             resolution = "d"
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
-                f"invalid `BarAggregation`, "
-                f"was {BarAggregationParser.to_str_py(bar_type.spec.aggregation)}",
+                f"invalid `BarAggregation`, "  # pragma: no cover
+                f"was {bar_aggregation_to_str(bar_type.spec.aggregation)}",  # pragma: no cover
             )
 
         start_time_ms = None
         if from_datetime is not None:
-            start_time_ms = secs_to_millis(from_datetime)
+            start_time_ms = secs_to_millis(from_datetime.timestamp())
 
         end_time_ms = None
         if to_datetime is not None:
-            end_time_ms = secs_to_millis(to_datetime)
+            end_time_ms = secs_to_millis(to_datetime.timestamp())
 
         data: list[list[Any]] = await self._http_market.klines(
             symbol=bar_type.instrument_id.symbol.value,
@@ -609,7 +544,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
                 self._handle_kline(raw)
             else:
                 self._log.error(
-                    f"Unrecognized websocket message type: {msgspec.json.decode(raw)['stream']}"
+                    f"Unrecognized websocket message type: {msgspec.json.decode(raw)['stream']}",
                 )
                 return
         except Exception as e:
@@ -623,7 +558,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             data=msg.data,
             ts_init=self._clock.timestamp_ns(),
         )
-        book_buffer: list[OrderBookData] = self._book_buffer.get(instrument_id)
+        book_buffer: Optional[list[OrderBookData]] = self._book_buffer.get(instrument_id)
         if book_buffer is not None:
             book_buffer.append(book_deltas)
         else:
@@ -632,7 +567,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
     def _handle_book_update(self, raw: bytes) -> None:
         msg: BinanceSpotOrderBookMsg = msgspec.json.decode(raw, type=BinanceSpotOrderBookMsg)
         instrument_id: InstrumentId = self._get_cached_instrument_id(
-            msg.stream.partition("@")[0].upper()
+            msg.stream.partition("@")[0].upper(),
         )
         book_snapshot: OrderBookSnapshot = parse_spot_book_snapshot(
             instrument_id=instrument_id,
@@ -640,7 +575,7 @@ class BinanceSpotDataClient(LiveMarketDataClient):
             ts_init=self._clock.timestamp_ns(),
         )
         # Check if book buffer active
-        book_buffer: list[OrderBookData] = self._book_buffer.get(instrument_id)
+        book_buffer: Optional[list[OrderBookData]] = self._book_buffer.get(instrument_id)
         if book_buffer is not None:
             book_buffer.append(book_snapshot)
         else:

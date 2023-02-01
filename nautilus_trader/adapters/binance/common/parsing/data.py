@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -38,7 +38,7 @@ from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import TradeId
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from nautilus_trader.model.orderbook.data import Order
+from nautilus_trader.model.orderbook.data import BookOrder
 from nautilus_trader.model.orderbook.data import OrderBookDelta
 from nautilus_trader.model.orderbook.data import OrderBookDeltas
 
@@ -52,7 +52,7 @@ def parse_trade_tick_http(
         instrument_id=instrument_id,
         price=Price.from_str(trade.price),
         size=Quantity.from_str(trade.qty),
-        aggressor_side=AggressorSide.SELL if trade.isBuyerMaker else AggressorSide.BUY,
+        aggressor_side=AggressorSide.SELLER if trade.isBuyerMaker else AggressorSide.BUYER,
         trade_id=TradeId(str(trade.id)),
         ts_event=millis_to_nanos(trade.time),
         ts_init=ts_init,
@@ -98,7 +98,7 @@ def parse_diff_depth_stream_ws(
         deltas=bid_deltas + ask_deltas,
         ts_event=ts_event,
         ts_init=ts_init,
-        update_id=data.u,
+        sequence=data.u,
     )
 
 
@@ -113,7 +113,7 @@ def parse_book_delta_ws(
     price = float(delta[0])
     size = float(delta[1])
 
-    order = Order(
+    order = BookOrder(
         price=price,
         size=size,
         side=side,
@@ -126,7 +126,7 @@ def parse_book_delta_ws(
         order=order,
         ts_event=ts_event,
         ts_init=ts_init,
-        update_id=update_id,
+        sequence=update_id,
     )
 
 
@@ -198,7 +198,7 @@ def parse_bar_ws(
         aggregation = BarAggregation.MONTH
     else:
         raise RuntimeError(  # pragma: no cover (design-time error)
-            f"unsupported time aggregation resolution, was {resolution}"
+            f"unsupported time aggregation resolution, was {resolution}",  # pragma: no cover (design-time error)  # noqa
         )
 
     bar_spec = BarSpecification(

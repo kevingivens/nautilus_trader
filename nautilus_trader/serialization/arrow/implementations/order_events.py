@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -57,7 +57,7 @@ def deserialize_order_initialised(data: dict) -> OrderInitialized:
     for k in ("price", "quantity"):
         data[k] = str(data[k])
     options_fields = msgspec.json.decode(
-        NAUTILUS_PARQUET_SCHEMA[OrderInitialized].metadata[b"options_fields"]
+        NAUTILUS_PARQUET_SCHEMA[OrderInitialized].metadata[b"options_fields"],
     )
     data["options"] = msgspec.json.encode({k: data.pop(k, None) for k in options_fields})
     return OrderInitialized.from_dict(data)

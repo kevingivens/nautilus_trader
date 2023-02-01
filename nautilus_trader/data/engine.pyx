@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -31,14 +31,14 @@ just need to override the `execute`, `process`, `send` and `receive` methods.
 
 from typing import Callable, Optional
 
-from nautilus_trader.common.logging import LogColor
+from nautilus_trader.common.enums import LogColor
 from nautilus_trader.config import DataEngineConfig
 
 from cpython.datetime cimport timedelta
 
-from nautilus_trader.common.c_enums.component_state cimport ComponentState
 from nautilus_trader.common.clock cimport Clock
 from nautilus_trader.common.component cimport Component
+from nautilus_trader.common.enums_c cimport ComponentState
 from nautilus_trader.common.logging cimport CMD
 from nautilus_trader.common.logging cimport RECV
 from nautilus_trader.common.logging cimport REQ
@@ -58,16 +58,16 @@ from nautilus_trader.data.messages cimport DataRequest
 from nautilus_trader.data.messages cimport DataResponse
 from nautilus_trader.data.messages cimport Subscribe
 from nautilus_trader.data.messages cimport Unsubscribe
-from nautilus_trader.model.c_enums.bar_aggregation cimport BarAggregation
-from nautilus_trader.model.c_enums.price_type cimport PriceType
 from nautilus_trader.model.data.bar cimport Bar
 from nautilus_trader.model.data.bar cimport BarType
 from nautilus_trader.model.data.base cimport DataType
 from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
-from nautilus_trader.model.data.venue cimport InstrumentClosePrice
+from nautilus_trader.model.data.venue cimport InstrumentClose
 from nautilus_trader.model.data.venue cimport InstrumentStatusUpdate
-from nautilus_trader.model.data.venue cimport StatusUpdate
+from nautilus_trader.model.data.venue cimport VenueStatusUpdate
+from nautilus_trader.model.enums_c cimport BarAggregation
+from nautilus_trader.model.enums_c cimport PriceType
 from nautilus_trader.model.identifiers cimport ClientId
 from nautilus_trader.model.identifiers cimport ComponentId
 from nautilus_trader.model.identifiers cimport InstrumentId
@@ -126,6 +126,8 @@ cdef class DataEngine(Component):
 
         # Settings
         self.debug = config.debug
+        self._build_time_bars_with_no_updates = config.build_time_bars_with_no_updates
+        self._validate_data_sequence = config.validate_data_sequence
 
         # Counters
         self.command_count = 0
@@ -392,7 +394,7 @@ cdef class DataEngine(Component):
             subscriptions += client.subscribed_instrument_status_updates()
         return subscriptions
 
-    cpdef list subscribed_instrument_close_prices(self):
+    cpdef list subscribed_instrument_close(self):
         """
         Return the close price instruments subscribed to.
 
@@ -404,7 +406,7 @@ cdef class DataEngine(Component):
         cdef list subscriptions = []
         cdef MarketDataClient client
         for client in [c for c in self._clients.values() if isinstance(c, MarketDataClient)]:
-            subscriptions += client.subscribed_instrument_close_prices()
+            subscriptions += client.subscribed_instrument_close()
         return subscriptions
 
     cpdef bint check_connected(self) except *:
@@ -608,13 +610,18 @@ cdef class DataEngine(Component):
                 client,
                 command.data_type.metadata.get("bar_type"),
             )
+        elif command.data_type.type == VenueStatusUpdate:
+            self._handle_subscribe_venue_status_updates(
+                client,
+                command.data_type.metadata.get("instrument_id"),
+            )
         elif command.data_type.type == InstrumentStatusUpdate:
             self._handle_subscribe_instrument_status_updates(
                 client,
                 command.data_type.metadata.get("instrument_id"),
             )
-        elif command.data_type.type == InstrumentClosePrice:
-            self._handle_subscribe_instrument_close_prices(
+        elif command.data_type.type == InstrumentClose:
+            self._handle_subscribe_instrument_close(
                 client,
                 command.data_type.metadata.get("instrument_id"),
             )
@@ -711,10 +718,16 @@ cdef class DataEngine(Component):
             kwargs=metadata.get("kwargs"),
         )
 
+        cdef str topic = f"data.book.deltas.{instrument_id.venue}.{instrument_id.symbol}"
+
+        if self._msgbus.is_subscribed(
+            topic=topic,
+            handler=self._maintain_order_book,
+        ):
+            return  # Already subscribed
+
         self._msgbus.subscribe(
-            topic=f"data.book.deltas"
-                  f".{instrument_id.venue}"
-                  f".{instrument_id.symbol}",
+            topic=topic,
             handler=self._maintain_order_book,
             priority=10,
         )
@@ -779,6 +792,14 @@ cdef class DataEngine(Component):
                     depth=metadata["depth"],
                     kwargs=metadata.get("kwargs"),
                 )
+
+        cdef str topic = f"data.book.deltas.{instrument_id.venue}.{instrument_id.symbol}"
+
+        if self._msgbus.is_subscribed(
+            topic=topic,
+            handler=self._maintain_order_book,
+        ):
+            return  # Already subscribed
 
         self._msgbus.subscribe(
             topic=f"data.book.deltas"
@@ -855,6 +876,17 @@ cdef class DataEngine(Component):
             )
             return
 
+    cdef void _handle_subscribe_venue_status_updates(
+        self,
+        MarketDataClient client,
+        Venue venue,
+    ) except *:
+        Condition.not_none(client, "client")
+        Condition.not_none(venue, "venue")
+
+        if venue not in client.subscribed_venue_status_updates():
+            client.subscribe_venue_status_updates(venue)
+
     cdef void _handle_subscribe_instrument_status_updates(
         self,
         MarketDataClient client,
@@ -866,7 +898,7 @@ cdef class DataEngine(Component):
         if instrument_id not in client.subscribed_instrument_status_updates():
             client.subscribe_instrument_status_updates(instrument_id)
 
-    cdef void _handle_subscribe_instrument_close_prices(
+    cdef void _handle_subscribe_instrument_close(
         self,
         MarketDataClient client,
         InstrumentId instrument_id,
@@ -874,8 +906,8 @@ cdef class DataEngine(Component):
         Condition.not_none(client, "client")
         Condition.not_none(instrument_id, "instrument_id")
 
-        if instrument_id not in client.subscribed_instrument_close_prices():
-            client.subscribe_instrument_close_prices(instrument_id)
+        if instrument_id not in client.subscribed_instrument_close():
+            client.subscribe_instrument_close(instrument_id)
 
     cdef void _handle_unsubscribe_instrument(
         self,
@@ -1085,9 +1117,11 @@ cdef class DataEngine(Component):
             self._handle_bar(data)
         elif isinstance(data, Instrument):
             self._handle_instrument(data)
-        elif isinstance(data, StatusUpdate):
-            self._handle_status_update(data)
-        elif isinstance(data, InstrumentClosePrice):
+        elif isinstance(data, VenueStatusUpdate):
+            self._handle_venue_status_update(data)
+        elif isinstance(data, InstrumentStatusUpdate):
+            self._handle_instrument_status_update(data)
+        elif isinstance(data, InstrumentClose):
             self._handle_close_price(data)
         elif isinstance(data, GenericData):
             self._handle_generic_data(data)
@@ -1139,14 +1173,48 @@ cdef class DataEngine(Component):
         )
 
     cdef void _handle_bar(self, Bar bar) except *:
-        self._cache.add_bar(bar)
+        cdef BarType bar_type = bar.bar_type
 
-        self._msgbus.publish_c(topic=f"data.bars.{bar.bar_type}", msg=bar)
+        cdef:
+            Bar cached_bar
+            Bar last_bar
+            list bars
+            int i
+        if self._validate_data_sequence:
+            last_bar = self._cache.bar(bar_type)
+            if last_bar is not None:
+                if bar.ts_event < last_bar.ts_event:
+                    self._log.warning(
+                        f"Bar {bar} was prior to last bar `ts_event` {last_bar.ts_event}.",
+                    )
+                    return  # `bar` is out of sequence
+                if bar.ts_init < last_bar.ts_init:
+                    self._log.warning(
+                        f"Bar {bar} was prior to last bar `ts_init` {last_bar.ts_init}.",
+                    )
+                    return  # `bar` is out of sequence
+                if bar.is_revision:
+                    if bar.ts_event == last_bar.ts_event:
+                        # Replace `last_bar`, previously cached bar will fall out of scope
+                        self._cache._bars.get(bar_type)[0] = bar  # noqa
+                    else:
+                        self._log.warning(
+                            f"Bar revision {bar} was not at last bar `ts_event` {last_bar.ts_event}.",
+                        )
+                        return  # Revision SHOULD be at `last_bar.ts_event`
 
-    cdef void _handle_status_update(self, StatusUpdate data) except *:
-        self._msgbus.publish_c(topic=f"data.venue.status", msg=data)
+        if not bar.is_revision:
+            self._cache.add_bar(bar)
 
-    cdef void _handle_close_price(self, InstrumentClosePrice data) except *:
+        self._msgbus.publish_c(topic=f"data.bars.{bar_type}", msg=bar)
+
+    cdef void _handle_venue_status_update(self, VenueStatusUpdate data) except *:
+        self._msgbus.publish_c(topic=f"data.status.{data.venue}", msg=data)
+
+    cdef void _handle_instrument_status_update(self, InstrumentStatusUpdate data) except *:
+        self._msgbus.publish_c(topic=f"data.status.{data.instrument_id.venue}.{data.instrument_id.symbol}", msg=data)
+
+    cdef void _handle_close_price(self, InstrumentClose data) except *:
         self._msgbus.publish_c(topic=f"data.venue.close_price.{data.instrument_id}", msg=data)
 
     cdef void _handle_generic_data(self, GenericData data) except *:
@@ -1262,6 +1330,7 @@ cdef class DataEngine(Component):
                 handler=self.process,
                 clock=self._clock,
                 logger=self._log.get_logger(),
+                build_bars_with_no_updates=self._build_time_bars_with_no_updates,
             )
         elif bar_type.spec.aggregation == BarAggregation.TICK:
             aggregator = TickBarAggregator(
@@ -1286,9 +1355,9 @@ cdef class DataEngine(Component):
             )
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
-                f"Cannot start aggregator: "
-                f"BarAggregation.{bar_type.spec.aggregation_string_c()} "
-                f"not supported in open-source"
+                f"Cannot start aggregator: "  # pragma: no cover (design-time error)
+                f"BarAggregation.{bar_type.spec.aggregation_string_c()} "  # pragma: no cover (design-time error)
+                f"not supported in open-source"  # pragma: no cover (design-time error)
             )
 
         # Add aggregator

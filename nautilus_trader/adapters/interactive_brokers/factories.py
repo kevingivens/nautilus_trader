@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,6 +14,7 @@
 # -------------------------------------------------------------------------------------------------
 
 import asyncio
+import os
 from functools import lru_cache
 from typing import Literal, Optional
 
@@ -110,7 +111,7 @@ def get_cached_ib_client(
         if connect:
             for _ in range(10):
                 try:
-                    client.connect(host=host, port=port, timeout=1, clientId=client_id)
+                    client.connect(host=host, port=port, timeout=6, clientId=client_id)
                     break
                 except (TimeoutError, AttributeError, asyncio.TimeoutError):
                     continue
@@ -155,7 +156,7 @@ class InteractiveBrokersLiveDataClientFactory(LiveDataClientFactory):
     """
 
     @staticmethod
-    def create(
+    def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
         config: InteractiveBrokersDataClientConfig,
@@ -163,7 +164,6 @@ class InteractiveBrokersLiveDataClientFactory(LiveDataClientFactory):
         cache: Cache,
         clock: LiveClock,
         logger: LiveLogger,
-        client_cls: Optional[type] = None,
     ) -> InteractiveBrokersDataClient:
         """
         Create a new InteractiveBrokers data client.
@@ -184,8 +184,6 @@ class InteractiveBrokersLiveDataClientFactory(LiveDataClientFactory):
             The clock for the client.
         logger : LiveLogger
             The logger for the client.
-        client_cls : class, optional
-            The class to call to return a new internal client.
 
         Returns
         -------
@@ -200,11 +198,14 @@ class InteractiveBrokersLiveDataClientFactory(LiveDataClientFactory):
             trading_mode=config.trading_mode,
             client_id=config.client_id,
             start_gateway=config.start_gateway,
+            read_only_api=config.read_only_api,
         )
 
         # Get instrument provider singleton
         provider = get_cached_interactive_brokers_instrument_provider(
-            client=client, config=config.instrument_provider, logger=logger
+            client=client,
+            config=config.instrument_provider,
+            logger=logger,
         )
 
         # Create client
@@ -216,6 +217,7 @@ class InteractiveBrokersLiveDataClientFactory(LiveDataClientFactory):
             clock=clock,
             logger=logger,
             instrument_provider=provider,
+            handle_revised_bars=config.handle_revised_bars,
         )
         return data_client
 
@@ -226,7 +228,7 @@ class InteractiveBrokersLiveExecClientFactory(LiveExecClientFactory):
     """
 
     @staticmethod
-    def create(
+    def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
         config: InteractiveBrokersExecClientConfig,
@@ -234,7 +236,6 @@ class InteractiveBrokersLiveExecClientFactory(LiveExecClientFactory):
         cache: Cache,
         clock: LiveClock,
         logger: LiveLogger,
-        client_cls: Optional[type] = None,
     ) -> InteractiveBrokersExecutionClient:
         """
         Create a new InteractiveBrokers execution client.
@@ -255,9 +256,6 @@ class InteractiveBrokersLiveExecClientFactory(LiveExecClientFactory):
             The clock for the client.
         logger : LiveLogger
             The logger for the client.
-        client_cls : class, optional
-            The internal client constructor. This allows external library and
-            testing dependency injection.
 
         Returns
         -------
@@ -271,14 +269,22 @@ class InteractiveBrokersLiveExecClientFactory(LiveExecClientFactory):
             port=config.gateway_port,
             client_id=config.client_id,
             start_gateway=config.start_gateway,
+            read_only_api=config.read_only_api,
         )
 
         # Get instrument provider singleton
         provider = get_cached_interactive_brokers_instrument_provider(
-            client=client, config=config.instrument_provider, logger=logger
+            client=client,
+            config=config.instrument_provider,
+            logger=logger,
         )
+
         # Set account ID
-        account_id = AccountId(f"{IB_VENUE.value}-{config.account_id}")
+        ib_account = config.account_id or os.environ.get("TWS_ACCOUNT")
+        assert (
+            ib_account
+        ), f"Must pass `{config.__class__.__name__}.account_id` or set `TWS_ACCOUNT` env var."
+        account_id = AccountId(f"{IB_VENUE.value}-{ib_account}")
 
         # Create client
         exec_client = InteractiveBrokersExecutionClient(

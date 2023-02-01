@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,17 +17,22 @@ import asyncio
 from typing import Optional
 
 import msgspec
+from betfair_parser.spec.streaming import STREAM_DECODER
+from betfair_parser.spec.streaming.mcm import MCM
+from betfair_parser.spec.streaming.status import Connection
+from betfair_parser.spec.streaming.status import Status
 
 from nautilus_trader.adapters.betfair.client.core import BetfairClient
 from nautilus_trader.adapters.betfair.common import BETFAIR_VENUE
+from nautilus_trader.adapters.betfair.data_types import BetfairStartingPrice
 from nautilus_trader.adapters.betfair.data_types import InstrumentSearch
 from nautilus_trader.adapters.betfair.data_types import SubscriptionStatus
-from nautilus_trader.adapters.betfair.parsing import on_market_update
+from nautilus_trader.adapters.betfair.parsing.streaming import BetfairParser
 from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
 from nautilus_trader.adapters.betfair.sockets import BetfairMarketStreamClient
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import LiveClock
-from nautilus_trader.common.logging import LogColor
+from nautilus_trader.common.enums import LogColor
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.core.data import Data
@@ -35,6 +40,7 @@ from nautilus_trader.core.message import Event
 from nautilus_trader.core.uuid import UUID4
 from nautilus_trader.live.data_client import LiveMarketDataClient
 from nautilus_trader.model.data.base import DataType
+from nautilus_trader.model.data.base import GenericData
 from nautilus_trader.model.enums import BookType
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import InstrumentId
@@ -99,7 +105,7 @@ class BetfairDataClient(LiveMarketDataClient):
             logger=logger,
             message_handler=self.on_market_update,
         )
-
+        self.parser = BetfairParser()
         self.subscription_status = SubscriptionStatus.UNSUBSCRIBED
 
         # Subscriptions
@@ -110,14 +116,6 @@ class BetfairDataClient(LiveMarketDataClient):
     @property
     def instrument_provider(self) -> BetfairInstrumentProvider:
         return self._instrument_provider
-
-    def connect(self):
-        self._log.info("Connecting...")
-        self._loop.create_task(self._connect())
-
-    def disconnect(self):
-        self._log.info("Disconnecting...")
-        self._loop.create_task(self._disconnect())
 
     async def _connect(self):
         self._log.info("Connecting to BetfairClient...")
@@ -136,15 +134,12 @@ class BetfairDataClient(LiveMarketDataClient):
             self._handle_data(instrument)
 
         self._log.debug(
-            f"DataEngine has {len(self._cache.instruments(BETFAIR_VENUE))} Betfair instruments"
+            f"DataEngine has {len(self._cache.instruments(BETFAIR_VENUE))} Betfair instruments",
         )
 
         # Schedule a heartbeat in 10s to give us a little more time to load instruments
         self._log.debug("scheduling heartbeat")
         self._loop.create_task(self._post_connect_heartbeat())
-
-        self._set_connected(True)
-        self._log.info("Connected.")
 
     async def _post_connect_heartbeat(self):
         for _ in range(3):
@@ -158,10 +153,7 @@ class BetfairDataClient(LiveMarketDataClient):
 
         # Ensure client closed
         self._log.info("Closing BetfairClient...")
-        self._client.client_logout()
-
-        self._set_connected(False)
-        self._log.info("Disconnected.")
+        await self._client.disconnect()
 
     def _reset(self):
         if self.is_connected:
@@ -177,19 +169,17 @@ class BetfairDataClient(LiveMarketDataClient):
 
     # -- REQUESTS ---------------------------------------------------------------------------------
 
-    def request(self, data_type: DataType, correlation_id: UUID4):
+    async def _request(self, data_type: DataType, correlation_id: UUID4):
         if data_type.type == InstrumentSearch:
             # Strategy has requested a list of instruments
-            self._loop.create_task(
-                self._handle_instrument_search(data_type=data_type, correlation_id=correlation_id)
-            )
+            await self._handle_instrument_search(data_type=data_type, correlation_id=correlation_id)
         else:
-            super().request(data_type=data_type, correlation_id=correlation_id)
+            await super()._request(data_type=data_type, correlation_id=correlation_id)
 
     async def _handle_instrument_search(self, data_type: DataType, correlation_id: UUID4):
         await self._instrument_provider.load_all_async(market_filter=data_type.metadata)
         instruments = self._instrument_provider.search_instruments(
-            instrument_filter=data_type.metadata
+            instrument_filter=data_type.metadata,
         )
         now = self._clock.timestamp_ns()
         search = InstrumentSearch(
@@ -235,7 +225,7 @@ class BetfairDataClient(LiveMarketDataClient):
             self._loop.create_task(self.delayed_subscribe(delay=0))
 
         self._log.info(
-            f"Added market_id {instrument.market_id} for {instrument_id.symbol} <OrderBook> data."
+            f"Added market_id {instrument.market_id} for {instrument_id.symbol} <OrderBook> data.",
         )
 
     async def delayed_subscribe(self, delay=0):
@@ -255,7 +245,7 @@ class BetfairDataClient(LiveMarketDataClient):
     def subscribe_instrument_status_updates(self, instrument_id: InstrumentId):
         pass  # Subscribed as part of orderbook
 
-    def subscribe_instrument_close_prices(self, instrument_id: InstrumentId):
+    def subscribe_instrument_close(self, instrument_id: InstrumentId):
         pass  # Subscribed as part of orderbook
 
     def unsubscribe_order_book_snapshots(self, instrument_id: InstrumentId):
@@ -279,21 +269,29 @@ class BetfairDataClient(LiveMarketDataClient):
 
     # -- STREAMS ----------------------------------------------------------------------------------
     def on_market_update(self, raw: bytes):
-        update = msgspec.json.decode(raw)
-        self._on_market_update(update=update)
-
-    def _on_market_update(self, update):
-        if self._check_stream_unhealthy(update=update):
+        update = STREAM_DECODER.decode(raw)
+        if isinstance(update, MCM):
+            self._on_market_update(mcm=update)
+        elif isinstance(update, Connection):
             pass
-        updates = on_market_update(
-            instrument_provider=self._instrument_provider,
-            update=update,
-        )
-        if not updates:
-            self._handle_no_data(update=update)
+        elif isinstance(update, Status):
+            self._handle_status_message(update=update)
+        else:
+            raise RuntimeError
+
+    def _on_market_update(self, mcm: MCM):
+        self._check_stream_unhealthy(update=mcm)
+        updates = self.parser.parse(mcm=mcm)
         for data in updates:
             self._log.debug(f"{data}")
-            if isinstance(data, Data):
+            if isinstance(data, BetfairStartingPrice):
+                # Not a regular data type
+                generic_data = GenericData(
+                    DataType(BetfairStartingPrice, metadata={"instrument_id": data.instrument_id}),
+                    data,
+                )
+                self._handle_data(generic_data)
+            elif isinstance(data, Data):
                 if self._strict_handling:
                     if (
                         hasattr(data, "instrument_id")
@@ -302,34 +300,26 @@ class BetfairDataClient(LiveMarketDataClient):
                         # We receive data for multiple instruments within a subscription, don't emit data if we're not
                         # subscribed to this particular instrument as this will trigger a bunch of error logs
                         continue
-                self._handle_data(data=data)
+                self._handle_data(data)
             elif isinstance(data, Event):
                 self._log.warning(
-                    f"Received event: {data}, DataEngine not yet setup to send events"
+                    f"Received event: {data}, DataEngine not yet setup to send events",
                 )
+            else:
+                raise RuntimeError()
 
-    def _check_stream_unhealthy(self, update: dict):
-        conflated = update.get("con", False)  # Consuming data slower than the rate of deliver
-        if conflated:
-            self._log.warning(
-                "Conflated stream - consuming data too slow (data received is delayed)"
-            )
-        if update.get("status") == 503:
+    def _check_stream_unhealthy(self, update: MCM):
+        if update.stream_unreliable:
             self._log.warning("Stream unhealthy, waiting for recover")
             self.degrade()
+        for mc in update.mc:
+            if mc.con:
+                self._log.warning(
+                    "Conflated stream - consuming data too slow (data received is delayed)",
+                )
 
-    def _handle_no_data(self, update):
-        if update.get("op") == "connection" or update.get("connectionsAvailable"):
-            return
-        if update.get("status") == 503:
-            # handled in `_check_stream_unhealthy`
-            return
-        if update.get("ct") == "HEARTBEAT":
-            if self.is_degraded:
-                self.resume()
-            return
-        self._log.warning(f"Received message but parsed no updates: {update}")
-        if update.get("statusCode") == "FAILURE" and update.get("connectionClosed"):
+    def _handle_status_message(self, update: Status):
+        if update.statusCode == "FAILURE" and update.connectionClosed:
             # TODO (bm) - self._loop.create_task(self._stream.reconnect())
             self._log.error(str(update))
             raise RuntimeError()

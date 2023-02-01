@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -70,7 +70,9 @@ class TestMoney:
         ],
     )
     def test_instantiate_with_various_valid_inputs_returns_expected_money(
-        self, value, expected
+        self,
+        value,
+        expected,
     ) -> None:
         # Arrange, Act
         money = Money(value, USD)
@@ -103,8 +105,8 @@ class TestMoney:
         result2 = Money(5005.556666, USD)
 
         # Assert
-        assert "1_000.33 USD" == result1.to_str()
-        assert "5_005.56 USD" == result2.to_str()
+        assert result1.to_str() == "1_000.33 USD"
+        assert result2.to_str() == "5_005.56 USD"
 
     def test_equality_with_different_currencies_raises_value_error(self) -> None:
         # Arrange
@@ -153,7 +155,7 @@ class TestMoney:
         result = repr(money)
 
         # Assert
-        assert "Money('1.00', USD)" == result
+        assert result == "Money('1.00', USD)"
 
     def test_from_str_when_malformed_raises_value_error(self) -> None:
         # Arrange
@@ -186,6 +188,31 @@ class TestMoney:
 
 
 class TestAccountBalance:
+    def test_equality(self):
+        # Arrange, Act
+        balance1 = AccountBalance(
+            total=Money(1, USD),
+            locked=Money(0, USD),
+            free=Money(1, USD),
+        )
+
+        balance2 = AccountBalance(
+            total=Money(1, USD),
+            locked=Money(0, USD),
+            free=Money(1, USD),
+        )
+
+        balance3 = AccountBalance(
+            total=Money(2, USD),
+            locked=Money(0, USD),
+            free=Money(2, USD),
+        )
+
+        # Act, Assert
+        assert balance1 == balance1
+        assert balance1 == balance2
+        assert balance1 != balance3
+
     def test_instantiate_str_repr(self):
         # Arrange, Act
         balance = AccountBalance(
@@ -206,6 +233,26 @@ class TestAccountBalance:
 
 
 class TestMarginBalance:
+    def test_equality(self):
+        # Arrange, Act
+        margin1 = MarginBalance(
+            initial=Money(5_000, USD),
+            maintenance=Money(25_000, USD),
+        )
+        margin2 = MarginBalance(
+            initial=Money(5_000, USD),
+            maintenance=Money(25_000, USD),
+        )
+        margin3 = MarginBalance(
+            initial=Money(10_000, USD),
+            maintenance=Money(50_000, USD),
+        )
+
+        # Assert
+        assert margin1 == margin1
+        assert margin1 == margin2
+        assert margin1 != margin3
+
     def test_instantiate_str_repr_with_instrument_id(self):
         # Arrange, Act
         margin = MarginBalance(

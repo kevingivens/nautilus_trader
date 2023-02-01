@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,13 +14,16 @@
 # -------------------------------------------------------------------------------------------------
 
 from nautilus_trader.core.correctness import PyCondition
-from tests.test_kit.performance import PerformanceHarness
+from nautilus_trader.test_kit.performance import PerformanceHarness
 
 
 class TestCorrectnessConditionPerformance(PerformanceHarness):
     def test_condition_none(self):
         self.benchmark.pedantic(
-            target=PyCondition.none, args=(None, "param"), iterations=100_000, rounds=1
+            target=PyCondition.none,
+            args=(None, "param"),
+            iterations=100_000,
+            rounds=1,
         )
         # ~0.0ms / ~0.1μs / 142ns minimum of 100,000 runs @ 1 iteration each run.
 

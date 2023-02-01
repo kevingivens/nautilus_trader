@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -74,7 +74,9 @@ class TestMaFactory:
     def test_variable_index_dynamic_returns_expected_indicator(self):
         # Arrange, Act
         indicator = MovingAverageFactory.create(
-            10, MovingAverageType.VARIABLE_INDEX_DYNAMIC, cmo_ma_type=MovingAverageType.SIMPLE
+            10,
+            MovingAverageType.VARIABLE_INDEX_DYNAMIC,
+            cmo_ma_type=MovingAverageType.SIMPLE,
         )
 
         # Assert

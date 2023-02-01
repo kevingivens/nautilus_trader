@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -26,18 +26,19 @@ from nautilus_trader.backtest.data.wranglers import QuoteTickDataWrangler
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.backtest.models import FillModel
+from nautilus_trader.backtest.modules import FXRolloverInterestConfig
 from nautilus_trader.backtest.modules import FXRolloverInterestModule
 from nautilus_trader.examples.strategies.ema_cross import EMACross
 from nautilus_trader.examples.strategies.ema_cross import EMACrossConfig
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.enums import AccountType
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Money
+from nautilus_trader.test_kit.performance import PerformanceHarness
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.performance import PerformanceHarness
-from tests.test_kit.stubs.data import TestDataStubs
+from tests import TEST_DATA_DIR
 
 
 USDJPY_SIM = TestInstrumentProvider.default_fx_ccy("USD/JPY")
@@ -53,7 +54,7 @@ class TestBacktestEnginePerformance(PerformanceHarness):
 
             engine.add_venue(
                 venue=Venue("SIM"),
-                oms_type=OMSType.HEDGING,
+                oms_type=OmsType.HEDGING,
                 account_type=AccountType.MARGIN,
                 base_currency=USD,
                 starting_balances=[Money(1_000_000, USD)],
@@ -90,7 +91,7 @@ class TestBacktestEnginePerformance(PerformanceHarness):
 
             engine.add_venue(
                 venue=Venue("SIM"),
-                oms_type=OMSType.HEDGING,
+                oms_type=OmsType.HEDGING,
                 account_type=AccountType.MARGIN,
                 base_currency=USD,
                 starting_balances=[Money(1_000_000, USD)],
@@ -111,8 +112,8 @@ class TestBacktestEnginePerformance(PerformanceHarness):
                 instrument_id=str(USDJPY_SIM.id),
                 bar_type=str(TestDataStubs.bartype_usdjpy_1min_bid()),
                 trade_size=Decimal(1_000_000),
-                fast_ema=10,
-                slow_ema=20,
+                fast_ema_period=10,
+                slow_ema_period=20,
             )
             strategy = EMACross(config=config)
 
@@ -135,14 +136,14 @@ class TestBacktestEnginePerformance(PerformanceHarness):
 
             provider = TestDataProvider()
             interest_rate_data = pd.read_csv(
-                os.path.join(PACKAGE_ROOT, "data", "short-term-interest.csv")
+                os.path.join(TEST_DATA_DIR, "short-term-interest.csv"),
             )
-
-            fx_rollover_interest = FXRolloverInterestModule(rate_data=interest_rate_data)
+            config = FXRolloverInterestConfig(interest_rate_data)
+            fx_rollover_interest = FXRolloverInterestModule(config)
 
             engine.add_venue(
                 venue=Venue("SIM"),
-                oms_type=OMSType.HEDGING,
+                oms_type=OmsType.HEDGING,
                 account_type=AccountType.MARGIN,
                 base_currency=USD,
                 starting_balances=[Money(1_000_000, USD)],
@@ -163,8 +164,8 @@ class TestBacktestEnginePerformance(PerformanceHarness):
                 instrument_id=str(USDJPY_SIM.id),
                 bar_type=str(TestDataStubs.bartype_usdjpy_1min_bid()),
                 trade_size=Decimal(1_000_000),
-                fast_ema=10,
-                slow_ema=20,
+                fast_ema_period=10,
+                slow_ema_period=20,
             )
             strategy = EMACross(config=config)
 

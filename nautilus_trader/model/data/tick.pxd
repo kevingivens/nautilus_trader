@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,8 +20,8 @@ from libc.stdint cimport uint64_t
 from nautilus_trader.core.data cimport Data
 from nautilus_trader.core.rust.model cimport QuoteTick_t
 from nautilus_trader.core.rust.model cimport TradeTick_t
-from nautilus_trader.model.c_enums.aggressor_side cimport AggressorSide
-from nautilus_trader.model.c_enums.price_type cimport PriceType
+from nautilus_trader.model.enums_c cimport AggressorSide
+from nautilus_trader.model.enums_c cimport PriceType
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.identifiers cimport TradeId
 from nautilus_trader.model.objects cimport Price
@@ -49,10 +49,17 @@ cdef class QuoteTick(Data):
     )
 
     @staticmethod
+    cdef QuoteTick from_mem_c(QuoteTick_t mem)
+
+    @staticmethod
+    cdef list capsule_to_quote_tick_list(object capsule)
+
+    @staticmethod
     cdef QuoteTick from_dict_c(dict values)
 
     @staticmethod
     cdef dict to_dict_c(QuoteTick obj)
+
     cpdef Price extract_price(self, PriceType price_type)
     cpdef Quantity extract_volume(self, PriceType price_type)
 
@@ -74,6 +81,12 @@ cdef class TradeTick(Data):
         uint64_t ts_event,
         uint64_t ts_init,
     )
+
+    @staticmethod
+    cdef TradeTick from_mem_c(TradeTick_t mem)
+
+    @staticmethod
+    cdef list capsule_to_trade_tick_list(object capsule)
 
     @staticmethod
     cdef TradeTick from_dict_c(dict values)

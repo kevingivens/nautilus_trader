@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -85,8 +85,8 @@ from nautilus_trader.model.orders.trailing_stop_market import TrailingStopMarket
 from nautilus_trader.model.orders.unpacker import OrderUnpacker
 from nautilus_trader.model.position import Position
 from nautilus_trader.serialization.msgpack.serializer import MsgPackSerializer
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -362,7 +362,7 @@ class TestMsgPackSerializer:
             Quantity(100000, precision=0),
             price=Price(1.00000, precision=5),
             trigger_price=Price(1.00010, precision=5),
-            trigger_type=TriggerType.LAST,
+            trigger_type=TriggerType.LAST_TRADE,
             time_in_force=TimeInForce.GTD,
             expire_time_ns=1_000_000_000 * 60,
             init_id=UUID4(),
@@ -439,7 +439,7 @@ class TestMsgPackSerializer:
             Quantity(100000, precision=0),
             price=Price(1.00000, precision=5),
             trigger_price=Price(1.00010, precision=5),
-            trigger_type=TriggerType.MARK,
+            trigger_type=TriggerType.MARK_PRICE,
             limit_offset=Decimal("50"),
             trailing_offset=Decimal("50"),
             trailing_offset_type=TrailingOffsetType.TICKS,
@@ -467,7 +467,7 @@ class TestMsgPackSerializer:
             Quantity(100000, precision=0),
             price=None,
             trigger_price=None,
-            trigger_type=TriggerType.MARK,
+            trigger_type=TriggerType.MARK_PRICE,
             limit_offset=Decimal("50"),
             trailing_offset=Decimal("50"),
             trailing_offset_type=TrailingOffsetType.TICKS,
@@ -523,12 +523,12 @@ class TestMsgPackSerializer:
 
     def test_serialize_and_deserialize_submit_order_list_commands(self):
         # Arrange
-        bracket = self.order_factory.bracket_market(
+        bracket = self.order_factory.bracket(
             AUDUSD_SIM.id,
             OrderSide.BUY,
             Quantity(100000, precision=0),
-            stop_loss=Price(0.99900, precision=5),
-            take_profit=Price(1.00010, precision=5),
+            sl_trigger_price=Price(0.99900, precision=5),
+            tp_price=Price(1.00010, precision=5),
         )
 
         exec_algorithm_specs = [
@@ -536,7 +536,7 @@ class TestMsgPackSerializer:
                 client_order_id=bracket.first.client_order_id,
                 exec_algorithm_id=ExecAlgorithmId("VWAP"),
                 params={"max_percentage": 100.0, "start": 0, "end": 1},
-            )
+            ),
         ]
 
         command = SubmitOrderList(
@@ -702,7 +702,7 @@ class TestMsgPackSerializer:
             post_only=False,
             reduce_only=True,
             options={},
-            emulation_trigger=TriggerType.NONE,
+            emulation_trigger=TriggerType.NO_TRIGGER,
             contingency_type=ContingencyType.OTO,
             order_list_id=OrderListId("1"),
             linked_order_ids=[ClientOrderId("O-123457"), ClientOrderId("O-123458")],
@@ -738,7 +738,7 @@ class TestMsgPackSerializer:
             post_only=True,
             reduce_only=False,
             options=options,
-            emulation_trigger=TriggerType.NONE,
+            emulation_trigger=TriggerType.NO_TRIGGER,
             contingency_type=ContingencyType.OTO,
             order_list_id=OrderListId("1"),
             linked_order_ids=[ClientOrderId("O-123457"), ClientOrderId("O-123458")],
@@ -774,7 +774,7 @@ class TestMsgPackSerializer:
             post_only=False,
             reduce_only=True,
             options=options,
-            emulation_trigger=TriggerType.NONE,
+            emulation_trigger=TriggerType.NO_TRIGGER,
             contingency_type=ContingencyType.OTO,
             order_list_id=OrderListId("1"),
             linked_order_ids=[ClientOrderId("O-123457"), ClientOrderId("O-123458")],
@@ -812,7 +812,7 @@ class TestMsgPackSerializer:
             post_only=True,
             reduce_only=True,
             options=options,
-            emulation_trigger=TriggerType.NONE,
+            emulation_trigger=TriggerType.NO_TRIGGER,
             contingency_type=ContingencyType.OTO,
             order_list_id=OrderListId("1"),
             linked_order_ids=[ClientOrderId("O-123457"), ClientOrderId("O-123458")],
@@ -1150,7 +1150,7 @@ class TestMsgPackSerializer:
         order = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill = TestEventStubs.order_filled(
@@ -1178,7 +1178,7 @@ class TestMsgPackSerializer:
         order1 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill1 = TestEventStubs.order_filled(
@@ -1192,7 +1192,7 @@ class TestMsgPackSerializer:
         order2 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(50000),
+            Quantity.from_int(50_000),
         )
 
         fill2 = TestEventStubs.order_filled(
@@ -1221,7 +1221,7 @@ class TestMsgPackSerializer:
         order1 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill1 = TestEventStubs.order_filled(
@@ -1235,7 +1235,7 @@ class TestMsgPackSerializer:
         order2 = self.order_factory.market(
             AUDUSD_SIM.id,
             OrderSide.SELL,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         fill2 = TestEventStubs.order_filled(

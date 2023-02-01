@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -43,20 +43,21 @@ from nautilus_trader.execution.messages cimport ModifyOrder
 from nautilus_trader.execution.messages cimport SubmitOrder
 from nautilus_trader.execution.messages cimport SubmitOrderList
 from nautilus_trader.execution.messages cimport TradingCommand
-from nautilus_trader.model.c_enums.asset_type cimport AssetType
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
-from nautilus_trader.model.c_enums.order_status cimport OrderStatus
-from nautilus_trader.model.c_enums.order_type cimport OrderType
-from nautilus_trader.model.c_enums.order_type cimport OrderTypeParser
-from nautilus_trader.model.c_enums.trading_state cimport TradingState
-from nautilus_trader.model.c_enums.trading_state cimport TradingStateParser
-from nautilus_trader.model.c_enums.trigger_type cimport TriggerType
 from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
+from nautilus_trader.model.enums_c cimport AssetType
+from nautilus_trader.model.enums_c cimport OrderSide
+from nautilus_trader.model.enums_c cimport OrderStatus
+from nautilus_trader.model.enums_c cimport OrderType
+from nautilus_trader.model.enums_c cimport TradingState
+from nautilus_trader.model.enums_c cimport TriggerType
+from nautilus_trader.model.enums_c cimport order_type_to_str
+from nautilus_trader.model.enums_c cimport trading_state_to_str
 from nautilus_trader.model.events.order cimport OrderDenied
 from nautilus_trader.model.identifiers cimport ComponentId
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.instruments.base cimport Instrument
+from nautilus_trader.model.instruments.currency_pair cimport CurrencyPair
 from nautilus_trader.model.objects cimport Money
 from nautilus_trader.model.objects cimport Price
 from nautilus_trader.model.objects cimport Quantity
@@ -127,6 +128,7 @@ cdef class RiskEngine(Component):
         # Settings
         self.trading_state = TradingState.ACTIVE  # Start active by default
         self.is_bypassed = config.bypass
+        self.deny_modify_pending_update = config.deny_modify_pending_update
         self.debug = config.debug
         self._log_state()
 
@@ -135,13 +137,13 @@ cdef class RiskEngine(Component):
         self.event_count = 0
 
         # Throttlers
-        pieces = config.max_order_rate.split("/")
-        order_rate_limit = int(pieces[0])
-        order_rate_interval = pd.to_timedelta(pieces[1])
-        self._order_throttler = Throttler(
-            name="ORDER_RATE",
-            limit=order_rate_limit,
-            interval=order_rate_interval,
+        pieces = config.max_order_submit_rate.split("/")
+        order_submit_rate_limit = int(pieces[0])
+        order_submit_rate_interval = pd.to_timedelta(pieces[1])
+        self._order_submit_throttler = Throttler(
+            name="ORDER_SUBMIT_THROTTLER",
+            limit=order_submit_rate_limit,
+            interval=order_submit_rate_interval,
             output_send=self._send_to_execution,
             output_drop=self._deny_new_order,
             clock=clock,
@@ -149,8 +151,27 @@ cdef class RiskEngine(Component):
         )
 
         self._log.info(
-            f"Set MAX_ORDER_RATE: "
-            f"{order_rate_limit}/{str(order_rate_interval).replace('0 days ', '')}.",
+            f"Set MAX_ORDER_SUBMIT_RATE: "
+            f"{order_submit_rate_limit}/{str(order_submit_rate_interval).replace('0 days ', '')}.",
+            color=LogColor.BLUE,
+        )
+
+        pieces = config.max_order_modify_rate.split("/")
+        order_modify_rate_limit = int(pieces[0])
+        order_modify_rate_interval = pd.to_timedelta(pieces[1])
+        self._order_modify_throttler = Throttler(
+            name="ORDER_MODIFY_THROTTLER",
+            limit=order_modify_rate_limit,
+            interval=order_modify_rate_interval,
+            output_send=self._send_to_execution,
+            output_drop=None,  # Buffer modify commands
+            clock=clock,
+            logger=logger,
+        )
+
+        self._log.info(
+            f"Set MAX_ORDER_MODIFY_RATE: "
+            f"{order_modify_rate_limit}/{str(order_modify_rate_interval).replace('0 days ', '')}.",
             color=LogColor.BLUE,
         )
 
@@ -216,7 +237,7 @@ cdef class RiskEngine(Component):
         if state == self.trading_state:
             self._log.warning(
                 f"No change to trading state: "
-                f"already set to {TradingStateParser.to_str(self.trading_state)}.",
+                f"already set to {trading_state_to_str(self.trading_state)}.",
             )
             return
 
@@ -242,7 +263,7 @@ cdef class RiskEngine(Component):
         elif self.trading_state == TradingState.HALTED:
             color = LogColor.RED
         self._log.info(
-            f"TradingState is {TradingStateParser.to_str(self.trading_state)}.",
+            f"TradingState is {trading_state_to_str(self.trading_state)}.",
             color=color,
         )
 
@@ -290,9 +311,9 @@ cdef class RiskEngine(Component):
 
 # -- RISK SETTINGS --------------------------------------------------------------------------------
 
-    cpdef tuple max_order_rate(self):
+    cpdef tuple max_order_submit_rate(self):
         """
-        Return the current maximum order rate limit setting.
+        Return the current maximum order submit rate limit setting.
 
         Returns
         -------
@@ -301,8 +322,23 @@ cdef class RiskEngine(Component):
 
         """
         return (
-            self._order_throttler.limit,
-            self._order_throttler.interval,
+            self._order_submit_throttler.limit,
+            self._order_submit_throttler.interval,
+        )
+
+    cpdef tuple max_order_modify_rate(self):
+        """
+        Return the current maximum order modify rate limit setting.
+
+        Returns
+        -------
+        (int, timedelta)
+            The limit per timedelta interval.
+
+        """
+        return (
+            self._order_modify_throttler.limit,
+            self._order_modify_throttler.interval,
         )
 
     cpdef dict max_notionals_per_order(self):
@@ -389,8 +425,8 @@ cdef class RiskEngine(Component):
 
         if self.is_bypassed:
             # Perform no further risk checks or throttling
-            if command.order.emulation_trigger == TriggerType.NONE:
-                self._execution_gateway(None, command)
+            if command.order.emulation_trigger == TriggerType.NO_TRIGGER:
+                self._send_to_execution(command)
             else:
                 self._send_to_emulator(command)
             return
@@ -425,12 +461,18 @@ cdef class RiskEngine(Component):
         if not self._check_orders_risk(instrument, [order]):
             return # Denied
 
-        if command.order.emulation_trigger == TriggerType.NONE:
+        if command.order.emulation_trigger == TriggerType.NO_TRIGGER:
             self._execution_gateway(instrument, command)
         else:
             self._send_to_emulator(command)
 
     cdef void _handle_submit_order_list(self, SubmitOrderList command) except *:
+        if self._cache.order_list_exists(command.order_list.id):
+            self._deny_command(
+                command=command,
+                reason=f"Duplicate {repr(command.order_list.id)}")
+            return  # Denied
+
         cdef Order order
         for order in command.order_list.orders:
             # Check IDs for duplicates
@@ -442,12 +484,14 @@ cdef class RiskEngine(Component):
             # Cache order
             self._cache.add_order(order, position_id=command.position_id)
 
+        self._cache.add_order_list(command.order_list)
+
         if self.is_bypassed:
             # Perform no further risk checks or throttling
             if command.has_emulated_order:
                 self._send_to_emulator(command)
             else:
-                self._execution_gateway(None, command)
+                self._send_to_execution(command)
             return
 
         # Get instrument for orders
@@ -493,10 +537,16 @@ cdef class RiskEngine(Component):
                 reason=f"Order with {repr(command.client_order_id)} already closed",
             )
             return  # Denied
-        elif order.is_inflight_c():
+        elif order.is_pending_cancel_c():
             self._deny_command(
                 command=command,
-                reason=f"Order with {repr(command.client_order_id)} currently in-flight",
+                reason=f"Order with {repr(command.client_order_id)} already pending cancel",
+            )
+            return  # Denied
+        elif self.deny_modify_pending_update and order.is_pending_update_c():
+            self._deny_command(
+                command=command,
+                reason=f"Order with {repr(command.client_order_id)} already pending update",
             )
             return  # Denied
 
@@ -551,8 +601,8 @@ cdef class RiskEngine(Component):
                     )
                     return  # Denied
 
-        if order.emulation_trigger == TriggerType.NONE:
-            self._send_to_execution(command)
+        if order.emulation_trigger == TriggerType.NO_TRIGGER:
+            self._order_modify_throttler.send(command)
         else:
             self._send_to_emulator(command)
 
@@ -580,7 +630,7 @@ cdef class RiskEngine(Component):
             )
             return  # Denied
 
-        if order.emulation_trigger == TriggerType.NONE:
+        if order.emulation_trigger == TriggerType.NO_TRIGGER:
             self._send_to_execution(command)
         else:
             # All checks passed
@@ -647,11 +697,21 @@ cdef class RiskEngine(Component):
         cdef TradeTick last_trade = None
         cdef Price last_px = None
 
-        max_notional: Optional[Decimal] = self._max_notional_per_order.get(instrument.id)
+        # Determine max notional
+        cdef Money max_notional = None
+        max_notional_setting: Optional[Decimal] = self._max_notional_per_order.get(instrument.id)
+        if max_notional_setting:
+            # TODO(cs): Improve efficiency of this
+            max_notional = Money(float(max_notional_setting), instrument.quote_currency)
 
-        cdef:
-            # Get account for risk checks
-            Account account = self._cache.account_for_venue(instrument.id.venue)
+        # Get account for risk checks
+        cdef Account account = self._cache.account_for_venue(instrument.id.venue)
+        if account is None:
+            self._log.debug(f"Cannot find account for venue {instrument.id.venue}.")
+            return True  # TODO: Temporary early return until handling routing/multiple venues
+
+        if account.is_margin_account:
+            return True  # TODO: Determine risk controls for margin
 
         cdef:
             Order order
@@ -659,6 +719,7 @@ cdef class RiskEngine(Component):
             Money free = None
             Money cum_notional_buy = None
             Money cum_notional_sell = None
+            double xrate
         for order in orders:
             if order.order_type == OrderType.MARKET:
                 if last_px is None:
@@ -685,7 +746,7 @@ cdef class RiskEngine(Component):
             elif order.order_type == OrderType.TRAILING_STOP_MARKET or order.order_type == OrderType.TRAILING_STOP_LIMIT:
                 if order.trigger_price is None:
                     self._log.warning(
-                        f"Cannot check {OrderTypeParser.to_str(order.order_type)} order risk: "
+                        f"Cannot check {order_type_to_str(order.order_type)} order risk: "
                         f"no trigger price was set.",  # TODO(cs): Use last_trade += offset
                     )
                     continue  # Cannot assess risk
@@ -694,21 +755,20 @@ cdef class RiskEngine(Component):
             else:
                 last_px = order.price
 
-            if account is None:
-                self._log.warning(f"Cannot find account for venue {instrument.id.venue}.")
-                continue
-
-            if account.is_margin_account:
-                continue  # Determine risk controls for margin
-
             ####################################################################
             # CASH account balance risk check
             ####################################################################
-            notional = instrument.notional_value(order.quantity, last_px)
-            if max_notional and notional.as_decimal() > max_notional:  # TODO(cs): Use raw
+            if max_notional and isinstance(instrument, CurrencyPair) and order.side == OrderSide.SELL:
+                xrate = 1.0 / last_px.as_f64_c()
+                notional = Money(order.quantity.as_f64_c() * xrate, instrument.base_currency)
+                max_notional = Money(max_notional * Decimal(xrate), instrument.base_currency)
+            else:
+                notional = instrument.notional_value(order.quantity, last_px)
+
+            if max_notional and notional._mem.raw > max_notional._mem.raw:
                 self._deny_order(
                     order=order,
-                    reason=f"NOTIONAL_EXCEEDS_MAX_PER_ORDER {max_notional:,} @ {notional.to_str()}",
+                    reason=f"NOTIONAL_EXCEEDS_MAX_PER_ORDER {max_notional.to_str()} @ {notional.to_str()}",
                 )
                 return False  # Denied
 
@@ -785,11 +845,12 @@ cdef class RiskEngine(Component):
         elif isinstance(command, CancelOrder):
             self._log.error(f"CancelOrder DENIED: {reason}.")
 
+    # Needs to be `cpdef` due being called from throttler
     cpdef void _deny_new_order(self, TradingCommand command) except *:
         if isinstance(command, SubmitOrder):
-            self._deny_order(command.order, reason="Exceeded MAX_ORDER_RATE")
+            self._deny_order(command.order, reason="Exceeded MAX_ORDER_SUBMIT_RATE")
         elif isinstance(command, SubmitOrderList):
-            self._deny_order_list(command.order_list, reason="Exceeded MAX_ORDER_RATE")
+            self._deny_order_list(command.order_list, reason="Exceeded MAX_ORDER_SUBMIT_RATE")
 
     cdef void _deny_order(self, Order order, str reason) except *:
         self._log.error(f"SubmitOrder DENIED: {reason}.")
@@ -883,11 +944,13 @@ cdef class RiskEngine(Component):
                         return  # Denied
 
         # All checks passed: send to ORDER_RATE throttler
-        self._order_throttler.send(command)
+        self._order_submit_throttler.send(command)
 
+    # Needs to be `cpdef` due being called from throttler
     cpdef void _send_to_execution(self, TradingCommand command) except *:
         self._msgbus.send(endpoint="ExecEngine.execute", msg=command)
 
+    # Needs to be `cpdef` due being called from throttler
     cpdef void _send_to_emulator(self, TradingCommand command) except *:
         self._msgbus.send(endpoint="OrderEmulator.execute", msg=command)
 

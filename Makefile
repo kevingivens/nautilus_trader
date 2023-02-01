@@ -3,14 +3,17 @@ REGISTRY?=ghcr.io/
 IMAGE?=${REGISTRY}${PROJECT}
 GIT_TAG:=$(shell git rev-parse --abbrev-ref HEAD)
 IMAGE_FULL?=${IMAGE}:${GIT_TAG}
-EXTRAS?="docker ib redis"
 .PHONY: install build clean docs format pre-commit
-.PHONY: cargo-update cargo-test cargo-test-arm64
+.PHONY: clippy cargo-build cargo-update cargo-test cargo-test-arm64
 .PHONY: update docker-build docker-build-force docker-push
 .PHONY: docker-build-jupyter docker-push-jupyter
+.PHONY: pytest pytest-coverage
 
 install:
-	poetry install --extras ${EXTRAS}
+	poetry install --with dev,test --all-extras
+
+install-just-deps:
+	poetry install --with dev,test --all-extras --no-root
 
 build: nautilus_trader
 	poetry run python build.py
@@ -25,8 +28,17 @@ format:
 	(cd nautilus_core && cargo fmt)
 
 pre-commit: format
-	(cd nautilus_core && cargo fmt --all -- --check && cargo check -q && cargo clippy -- -D warnings)
 	pre-commit run --all-files
+
+update:
+	(cd nautilus_core && cargo update)
+	poetry update
+
+clippy:
+	(cd nautilus_core && cargo clippy --all-targets --all-features -- -D warnings -W clippy::pedantic -W clippy::nursery -W clippy::unwrap_used -W clippy::expect_used)
+
+cargo-build:
+	(cd nautilus_core && cargo build --release --all-features)
 
 cargo-update:
 	(cd nautilus_core && cargo update)
@@ -36,10 +48,6 @@ cargo-test:
 
 cargo-test-arm64:
 	(cd nautilus_core && cargo test --features extension-module)
-
-update:
-	(cd nautilus_core && cargo update)
-	poetry update
 
 docker-build: clean
 	docker pull ${IMAGE_FULL} || docker pull ${IMAGE}:develop ||  true
@@ -56,3 +64,12 @@ docker-build-jupyter:
 
 docker-push-jupyter:
 	docker push ${IMAGE}:jupyter
+
+pytest:
+	bash scripts/test.sh
+
+pytest-coverage:
+	bash scripts/test-coverage.sh
+
+test-examples:
+	bash scripts/test-examples.sh

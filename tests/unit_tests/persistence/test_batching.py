@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -23,32 +23,35 @@ from nautilus_trader.config import BacktestRunConfig
 from nautilus_trader.model.data.venue import InstrumentStatusUpdate
 from nautilus_trader.model.orderbook.data import OrderBookData
 from nautilus_trader.persistence.batching import batch_files
-from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
-from nautilus_trader.persistence.catalog.parquet import resolve_path
 from nautilus_trader.persistence.external.core import process_files
 from nautilus_trader.persistence.external.readers import CSVReader
 from nautilus_trader.persistence.funcs import parse_bytes
+from nautilus_trader.test_kit.mocks.data import NewsEventData
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.stubs.persistence import TestPersistenceStubs
+from tests import TEST_DATA_DIR
 from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.mocks.data import NewsEventData
-from tests.test_kit.mocks.data import data_catalog_setup
-from tests.test_kit.stubs.persistence import TestPersistenceStubs
-
-
-TEST_DATA_DIR = PACKAGE_ROOT + "/data"
 
 
 class TestPersistenceBatching:
     def setup(self):
-        data_catalog_setup()
-        self.catalog = ParquetDataCatalog.from_env()
-        self.fs: fsspec.AbstractFileSystem = self.catalog.fs
-        self._loaded_data_into_catalog()
+        self.catalog = data_catalog_setup(protocol="memory")
 
-    def _loaded_data_into_catalog(self):
+        self.fs: fsspec.AbstractFileSystem = self.catalog.fs
+
+        self._load_data_into_catalog()
+
+    def teardown(self):
+        # Cleanup
+        path = self.catalog.path
+        fs = self.catalog.fs
+        if fs.exists(path):
+            fs.rm(path, recursive=True)
+
+    def _load_data_into_catalog(self):
         self.instrument_provider = BetfairInstrumentProvider.from_instruments([])
         process_files(
-            glob_path=PACKAGE_ROOT + "/data/1.166564490.bz2",
+            glob_path=TEST_DATA_DIR + "/1.166564490.bz2",
             reader=BetfairTestStubs.betfair_reader(instrument_provider=self.instrument_provider),
             instrument_provider=self.instrument_provider,
             catalog=self.catalog,
@@ -57,17 +60,16 @@ class TestPersistenceBatching:
     def test_batch_files_single(self):
         # Arrange
         instrument_ids = self.catalog.instruments()["id"].unique().tolist()
-        base = BacktestDataConfig(
+        shared_kw = dict(
             catalog_path=str(self.catalog.path),
             catalog_fs_protocol=self.catalog.fs.protocol,
             data_cls=OrderBookData,
         )
-
         iter_batches = batch_files(
             catalog=self.catalog,
             data_configs=[
-                base.replace(instrument_id=instrument_ids[0]),
-                base.replace(instrument_id=instrument_ids[1]),
+                BacktestDataConfig(**shared_kw, instrument_id=instrument_ids[0]),
+                BacktestDataConfig(**shared_kw, instrument_id=instrument_ids[1]),
             ],
             target_batch_size_bytes=parse_bytes("10kib"),
             read_num_rows=300,
@@ -89,25 +91,25 @@ class TestPersistenceBatching:
         # Arrange
         TestPersistenceStubs.setup_news_event_persistence()
         process_files(
-            glob_path=f"{PACKAGE_ROOT}/data/news_events.csv",
+            glob_path=f"{TEST_DATA_DIR}/news_events.csv",
             reader=CSVReader(block_parser=TestPersistenceStubs.news_event_parser),
             catalog=self.catalog,
         )
         data_config = BacktestDataConfig(
-            catalog_path="/.nautilus/catalog/",
+            catalog_path=self.catalog.path,
             catalog_fs_protocol="memory",
             data_cls=NewsEventData,
             client_id="NewsClient",
         )
         # Add some arbitrary instrument data to appease BacktestEngine
         instrument_data_config = BacktestDataConfig(
-            catalog_path="/.nautilus/catalog/",
+            catalog_path=self.catalog.path,
             catalog_fs_protocol="memory",
             instrument_id=self.catalog.instruments(as_nautilus=True)[0].id.value,
             data_cls=InstrumentStatusUpdate,
         )
         streaming = BetfairTestStubs.streaming_config(
-            catalog_path=resolve_path(self.catalog.path, self.fs)
+            catalog_path=self.catalog.path,
         )
         engine = BacktestEngineConfig(streaming=streaming)
         run_config = BacktestRunConfig(

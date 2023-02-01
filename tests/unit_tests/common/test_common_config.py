@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,11 +20,11 @@ import pytest
 from nautilus_trader.config import ActorConfig
 from nautilus_trader.config import ActorFactory
 from nautilus_trader.config import ImportableActorConfig
-from tests.test_kit.mocks.actors import MockActor
+from nautilus_trader.test_kit.mocks.actors import MockActor
 
 
 class TestActorFactory:
-    @pytest.mark.skip(reason="WIP")
+    @pytest.mark.skip(reason="Not implemented anymore")
     def test_create_from_source(self):
         # Arrange
         config = ActorConfig(
@@ -47,12 +47,12 @@ class TestActorFactory:
 
     def test_create_from_path(self):
         # Arrange
-        config = ActorConfig(
+        config = dict(
             component_id="MyActor",
         )
         importable = ImportableActorConfig(
-            actor_path="tests.test_kit.mocks.actors:MockActor",
-            config_path="tests.test_kit.mocks.actors:MockActorConfig",
+            actor_path="nautilus_trader.test_kit.mocks.actors:MockActor",
+            config_path="nautilus_trader.test_kit.mocks.actors:MockActorConfig",
             config=config,
         )
 
@@ -61,4 +61,4 @@ class TestActorFactory:
 
         # Assert
         assert isinstance(actor, MockActor)
-        assert repr(config) == "ActorConfig(component_id='MyActor')"
+        assert repr(actor.config) == "MockActorConfig(component_id='MyActor')"

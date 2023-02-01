@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -16,8 +16,8 @@
 from libc.stdint cimport int64_t
 from libc.stdint cimport uint64_t
 
-from nautilus_trader.core.rust.model cimport Price_t
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
+from nautilus_trader.model.enums_c cimport LiquiditySide
+from nautilus_trader.model.enums_c cimport OrderSide
 from nautilus_trader.model.identifiers cimport ClientOrderId
 from nautilus_trader.model.instruments.base cimport Instrument
 from nautilus_trader.model.objects cimport Price
@@ -51,21 +51,30 @@ cdef class MatchingCore:
 
 # -- COMMANDS -------------------------------------------------------------------------------------
 
-    cdef void set_bid(self, Price_t bid) except *
-    cdef void set_ask(self, Price_t ask) except *
-    cdef void set_last(self, Price_t last) except *
+    cdef void set_bid_raw(self, int64_t bid_raw) except *
+    cdef void set_ask_raw(self, int64_t ask_raw) except *
+    cdef void set_last_raw(self, int64_t last_raw) except *
 
     cpdef void reset(self) except *
     cpdef void add_order(self, Order order) except *
     cdef void _add_order(self, Order order) except *
+    cdef void sort_bid_orders(self) except *
+    cdef void sort_ask_orders(self) except *
     cpdef void delete_order(self, Order order) except *
     cpdef void iterate(self, uint64_t timestamp_ns) except *
 
 # -- MATCHING -------------------------------------------------------------------------------------
 
-    cpdef void match_order(self, Order order) except *
+    cpdef void match_order(self, Order order, bint initial=*) except *
     cpdef void match_limit_order(self, Order order) except *
     cpdef void match_stop_market_order(self, Order order) except *
-    cpdef void match_stop_limit_order(self, Order order) except *
+    cpdef void match_stop_limit_order(self, Order order, bint initial) except *
+    cpdef void match_market_if_touched_order(self, Order order) except *
+    cpdef void match_limit_if_touched_order(self, Order order, bint initial) except *
     cpdef bint is_limit_matched(self, OrderSide side, Price price) except *
-    cpdef bint is_stop_triggered(self, OrderSide side, Price price) except *
+    cpdef bint is_stop_triggered(self, OrderSide side, Price trigger_price) except *
+    cpdef bint is_touch_triggered(self, OrderSide side, Price trigger_price) except *
+    cdef LiquiditySide _determine_order_liquidity(self, bint initial, OrderSide side, Price price, Price trigger_price) except *
+
+
+cdef int64_t order_sort_key(Order order) except *

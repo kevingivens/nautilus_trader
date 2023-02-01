@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,17 +15,17 @@
 
 use std::cmp::Ordering;
 use std::collections::hash_map::DefaultHasher;
+use std::ffi::c_char;
 use std::fmt::{Debug, Display, Formatter, Result};
 use std::hash::{Hash, Hasher};
 
-use pyo3::ffi;
+use nautilus_core::string::string_to_cstr;
+use nautilus_core::time::UnixNanos;
 
 use crate::enums::{AggregationSource, BarAggregation, PriceType};
 use crate::identifiers::instrument_id::InstrumentId;
 use crate::types::price::Price;
 use crate::types::quantity::Quantity;
-use nautilus_core::string::string_to_pystr;
-use nautilus_core::time::Timestamp;
 
 #[repr(C)]
 #[derive(Clone, Hash, PartialEq, Eq, Debug)]
@@ -63,22 +63,10 @@ impl PartialOrd for BarSpecification {
     }
 }
 
-/// Returns a [BarSpecification] as a Python str.
-///
-/// # Safety
-/// Returns a pointer to a valid Python UTF-8 string.
-/// - Assumes that since the data is originating from Rust, the GIL does not need
-/// to be acquired.
-/// - Assumes you are immediately returning this pointer to Python.
+/// Returns a [`BarSpecification`] as a C string pointer.
 #[no_mangle]
-pub unsafe extern "C" fn bar_specification_to_pystr(
-    bar_spec: &BarSpecification,
-) -> *mut ffi::PyObject {
-    string_to_pystr(bar_spec.to_string().as_str())
-}
-#[no_mangle]
-pub extern "C" fn bar_specification_free(bar_spec: BarSpecification) {
-    drop(bar_spec); // Memory freed here
+pub extern "C" fn bar_specification_to_cstr(bar_spec: &BarSpecification) -> *const c_char {
+    string_to_cstr(&bar_spec.to_string())
 }
 
 #[no_mangle]
@@ -94,8 +82,9 @@ pub extern "C" fn bar_specification_new(
     aggregation: u8,
     price_type: u8,
 ) -> BarSpecification {
-    let aggregation = BarAggregation::from(aggregation);
-    let price_type = PriceType::from(price_type);
+    let aggregation =
+        BarAggregation::from_repr(aggregation as usize).expect("cannot parse enum value");
+    let price_type = PriceType::from_repr(price_type as usize).expect("cannot parse enum value");
     BarSpecification {
         step,
         aggregation,
@@ -105,27 +94,27 @@ pub extern "C" fn bar_specification_new(
 
 #[no_mangle]
 pub extern "C" fn bar_specification_eq(lhs: &BarSpecification, rhs: &BarSpecification) -> u8 {
-    (lhs == rhs) as u8
+    u8::from(lhs == rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_specification_lt(lhs: &BarSpecification, rhs: &BarSpecification) -> u8 {
-    (lhs < rhs) as u8
+    u8::from(lhs < rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_specification_le(lhs: &BarSpecification, rhs: &BarSpecification) -> u8 {
-    (lhs <= rhs) as u8
+    u8::from(lhs <= rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_specification_gt(lhs: &BarSpecification, rhs: &BarSpecification) -> u8 {
-    (lhs > rhs) as u8
+    u8::from(lhs > rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_specification_ge(lhs: &BarSpecification, rhs: &BarSpecification) -> u8 {
-    (lhs >= rhs) as u8
+    u8::from(lhs >= rhs)
 }
 
 #[repr(C)]
@@ -189,7 +178,8 @@ pub extern "C" fn bar_type_new(
     spec: BarSpecification,
     aggregation_source: u8,
 ) -> BarType {
-    let aggregation_source = AggregationSource::from(aggregation_source);
+    let aggregation_source = AggregationSource::from_repr(aggregation_source as usize)
+        .expect("error converting enum from integer");
     BarType {
         instrument_id,
         spec,
@@ -204,27 +194,27 @@ pub extern "C" fn bar_type_copy(bar_type: &BarType) -> BarType {
 
 #[no_mangle]
 pub extern "C" fn bar_type_eq(lhs: &BarType, rhs: &BarType) -> u8 {
-    (lhs == rhs) as u8
+    u8::from(lhs == rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_type_lt(lhs: &BarType, rhs: &BarType) -> u8 {
-    (lhs < rhs) as u8
+    u8::from(lhs < rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_type_le(lhs: &BarType, rhs: &BarType) -> u8 {
-    (lhs <= rhs) as u8
+    u8::from(lhs <= rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_type_gt(lhs: &BarType, rhs: &BarType) -> u8 {
-    (lhs > rhs) as u8
+    u8::from(lhs > rhs)
 }
 
 #[no_mangle]
 pub extern "C" fn bar_type_ge(lhs: &BarType, rhs: &BarType) -> u8 {
-    (lhs >= rhs) as u8
+    u8::from(lhs >= rhs)
 }
 
 #[no_mangle]
@@ -234,16 +224,10 @@ pub extern "C" fn bar_type_hash(bar_type: &BarType) -> u64 {
     h.finish()
 }
 
-/// Returns a [BarType] as a Python str.
-///
-/// # Safety
-/// Returns a pointer to a valid Python UTF-8 string.
-/// - Assumes that since the data is originating from Rust, the GIL does not need
-/// to be acquired.
-/// - Assumes you are immediately returning this pointer to Python.
+/// Returns a [`BarType`] as a C string pointer.
 #[no_mangle]
-pub unsafe extern "C" fn bar_type_to_pystr(bar_type: &BarType) -> *mut ffi::PyObject {
-    string_to_pystr(bar_type.to_string().as_str())
+pub extern "C" fn bar_type_to_cstr(bar_type: &BarType) -> *const c_char {
+    string_to_cstr(&bar_type.to_string())
 }
 
 #[no_mangle]
@@ -260,8 +244,8 @@ pub struct Bar {
     pub low: Price,
     pub close: Price,
     pub volume: Quantity,
-    pub ts_event: Timestamp,
-    pub ts_init: Timestamp,
+    pub ts_event: UnixNanos,
+    pub ts_init: UnixNanos,
 }
 
 impl Display for Bar {
@@ -282,8 +266,8 @@ pub extern "C" fn bar_new(
     low: Price,
     close: Price,
     volume: Quantity,
-    ts_event: Timestamp,
-    ts_init: Timestamp,
+    ts_event: UnixNanos,
+    ts_init: UnixNanos,
 ) -> Bar {
     Bar {
         bar_type,
@@ -307,8 +291,8 @@ pub extern "C" fn bar_new_from_raw(
     price_prec: u8,
     volume: u64,
     size_prec: u8,
-    ts_event: Timestamp,
-    ts_init: Timestamp,
+    ts_event: UnixNanos,
+    ts_init: UnixNanos,
 ) -> Bar {
     Bar {
         bar_type,
@@ -322,16 +306,10 @@ pub extern "C" fn bar_new_from_raw(
     }
 }
 
-/// Returns a [Bar] as a Python str.
-///
-/// # Safety
-/// Returns a pointer to a valid Python UTF-8 string.
-/// - Assumes that since the data is originating from Rust, the GIL does not need
-/// to be acquired.
-/// - Assumes you are immediately returning this pointer to Python.
+/// Returns a [`Bar`] as a C string.
 #[no_mangle]
-pub unsafe extern "C" fn bar_to_pystr(bar: &Bar) -> *mut ffi::PyObject {
-    string_to_pystr(bar.to_string().as_str())
+pub extern "C" fn bar_to_cstr(bar: &Bar) -> *const c_char {
+    string_to_cstr(&bar.to_string())
 }
 
 #[no_mangle]
@@ -346,7 +324,7 @@ pub extern "C" fn bar_free(bar: Bar) {
 
 #[no_mangle]
 pub extern "C" fn bar_eq(lhs: &Bar, rhs: &Bar) -> u8 {
-    (lhs == rhs) as u8
+    u8::from(lhs == rhs)
 }
 
 #[no_mangle]
@@ -355,27 +333,19 @@ pub extern "C" fn bar_hash(bar: &Bar) -> u64 {
     bar.hash(&mut h);
     h.finish()
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 // Tests
 ////////////////////////////////////////////////////////////////////////////////
 #[cfg(test)]
 mod tests {
-    use crate::data::bar::Bar;
-    use crate::data::bar::BarSpecification;
-    use crate::data::bar::BarType;
-    use crate::enums::AggregationSource;
+    use super::*;
     use crate::enums::BarAggregation;
-    use crate::enums::PriceType;
-    use crate::identifiers::instrument_id::InstrumentId;
     use crate::identifiers::symbol::Symbol;
     use crate::identifiers::venue::Venue;
-    use crate::types::price::Price;
-    use crate::types::quantity::Quantity;
-    // use std::hash::Hash;
 
     #[test]
     fn test_bar_spec_equality() {
-        // Arrange
         let bar_spec1 = BarSpecification {
             step: 1,
             aggregation: BarAggregation::Minute,
@@ -392,7 +362,6 @@ mod tests {
             price_type: PriceType::Ask,
         };
 
-        // Act, Assert
         assert_eq!(bar_spec1, bar_spec1);
         assert_eq!(bar_spec1, bar_spec2);
         assert_ne!(bar_spec1, bar_spec3);
@@ -437,7 +406,6 @@ mod tests {
 
     #[test]
     fn test_bar_type_equality() {
-        // # Arrange
         let instrument_id1 = InstrumentId {
             symbol: Symbol::new("AUD/USD"),
             venue: Venue::new("SIM"),
@@ -454,20 +422,18 @@ mod tests {
         let bar_type1 = BarType {
             instrument_id: instrument_id1.clone(),
             spec: bar_spec.clone(),
-            aggregation_source: AggregationSource::EXTERNAL,
+            aggregation_source: AggregationSource::External,
         };
         let bar_type2 = BarType {
-            instrument_id: instrument_id1.clone(),
+            instrument_id: instrument_id1,
             spec: bar_spec.clone(),
-            aggregation_source: AggregationSource::EXTERNAL,
+            aggregation_source: AggregationSource::External,
         };
         let bar_type3 = BarType {
             instrument_id: instrument_id2,
-            spec: bar_spec.clone(),
-            aggregation_source: AggregationSource::EXTERNAL,
+            spec: bar_spec,
+            aggregation_source: AggregationSource::External,
         };
-
-        // # Act, Assert
         assert_eq!(bar_type1, bar_type1);
         assert_eq!(bar_type1, bar_type2);
         assert_ne!(bar_type1, bar_type3);
@@ -475,7 +441,6 @@ mod tests {
 
     #[test]
     fn test_bar_type_comparison() {
-        // # Arrange
         let instrument_id1 = InstrumentId {
             symbol: Symbol::new("AUD/USD"),
             venue: Venue::new("SIM"),
@@ -493,20 +458,19 @@ mod tests {
         let bar_type1 = BarType {
             instrument_id: instrument_id1.clone(),
             spec: bar_spec.clone(),
-            aggregation_source: AggregationSource::EXTERNAL,
+            aggregation_source: AggregationSource::External,
         };
         let bar_type2 = BarType {
-            instrument_id: instrument_id1.clone(),
+            instrument_id: instrument_id1,
             spec: bar_spec.clone(),
-            aggregation_source: AggregationSource::EXTERNAL,
+            aggregation_source: AggregationSource::External,
         };
         let bar_type3 = BarType {
-            instrument_id: instrument_id2.clone(),
-            spec: bar_spec.clone(),
-            aggregation_source: AggregationSource::EXTERNAL,
+            instrument_id: instrument_id2,
+            spec: bar_spec,
+            aggregation_source: AggregationSource::External,
         };
 
-        // # Act, Assert
         assert!(bar_type1 <= bar_type2);
         assert!(bar_type1 < bar_type3);
         assert!(bar_type3 > bar_type1);
@@ -526,9 +490,8 @@ mod tests {
         let bar_type = BarType {
             instrument_id,
             spec: bar_spec,
-            aggregation_source: AggregationSource::EXTERNAL,
+            aggregation_source: AggregationSource::External,
         };
-        // # Arrange
         let bar1 = Bar {
             bar_type: bar_type.clone(),
             open: Price::from("1.00001"),
@@ -541,7 +504,7 @@ mod tests {
         };
 
         let bar2 = Bar {
-            bar_type: bar_type.clone(),
+            bar_type,
             open: Price::from("1.00000"),
             high: Price::from("1.00004"),
             low: Price::from("1.00002"),
@@ -550,8 +513,6 @@ mod tests {
             ts_event: 0,
             ts_init: 0,
         };
-
-        // # Act, Assert
         assert_eq!(bar1, bar1);
         assert_ne!(bar1, bar2);
     }

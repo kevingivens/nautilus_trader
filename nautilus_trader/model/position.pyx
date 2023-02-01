@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,13 +13,11 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-import cython
-
 from nautilus_trader.core.correctness cimport Condition
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
-from nautilus_trader.model.c_enums.order_side cimport OrderSideParser
-from nautilus_trader.model.c_enums.position_side cimport PositionSide
-from nautilus_trader.model.c_enums.position_side cimport PositionSideParser
+from nautilus_trader.model.enums_c cimport OrderSide
+from nautilus_trader.model.enums_c cimport PositionSide
+from nautilus_trader.model.enums_c cimport order_side_to_str
+from nautilus_trader.model.enums_c cimport position_side_to_str
 from nautilus_trader.model.events.order cimport OrderFilled
 from nautilus_trader.model.identifiers cimport TradeId
 from nautilus_trader.model.instruments.base cimport Instrument
@@ -27,7 +25,6 @@ from nautilus_trader.model.objects cimport Price
 from nautilus_trader.model.objects cimport Quantity
 
 
-@cython.auto_pickle(True)
 cdef class Position:
     """
     Represents a position in a financial market.
@@ -92,10 +89,10 @@ cdef class Position:
         self.is_inverse = instrument.is_inverse
         self.quote_currency = instrument.quote_currency
         self.base_currency = instrument.get_base_currency()  # Can be None
-        self.cost_currency = instrument.get_cost_currency()
+        self.cost_currency = instrument.get_settlement_currency()
 
         self.realized_return = 0.0
-        self.realized_pnl = Money(0, self.cost_currency)
+        self.realized_pnl = None
 
         self.apply(fill)
 
@@ -118,7 +115,7 @@ cdef class Position:
 
         """
         cdef str quantity = " " if self.quantity._mem.raw == 0 else f" {self.quantity.to_str()} "
-        return f"{PositionSideParser.to_str(self.side)}{quantity}{self.instrument_id}"
+        return f"{position_side_to_str(self.side)}{quantity}{self.instrument_id}"
 
     cpdef dict to_dict(self):
         """
@@ -136,8 +133,8 @@ cdef class Position:
             "closing_order_id": self.closing_order_id.to_str() if self.closing_order_id is not None else None,
             "strategy_id": self.strategy_id.to_str(),
             "instrument_id": self.instrument_id.to_str(),
-            "entry": OrderSideParser.to_str(self.entry),
-            "side": PositionSideParser.to_str(self.side),
+            "entry": order_side_to_str(self.entry),
+            "side": position_side_to_str(self.side),
             "net_qty": self.net_qty,
             "quantity": str(self.quantity),
             "peak_qty": str(self.peak_qty),
@@ -362,7 +359,7 @@ cdef class Position:
             return PositionSide.SHORT
         else:
             raise ValueError(  # pragma: no cover (design-time error)
-                f"invalid `OrderSide`, was {side}",
+                f"invalid `OrderSide`, was {side}",  # pragma: no cover (design-time error)
             )
 
     @staticmethod
@@ -425,13 +422,16 @@ cdef class Position:
             self._sell_qty = Quantity.zero_c(precision=self.size_precision)
             self._commissions = {}
             self.opening_order_id = fill.client_order_id
+            self.closing_order_id = None
+            self.peak_qty = Quantity.zero_c(precision=self.size_precision)
             self.ts_init = fill.ts_init
             self.ts_opened = fill.ts_event
-            self.ts_last = fill.ts_event
             self.ts_closed = 0
             self.duration_ns = 0
             self.avg_px_open = fill.last_px.as_f64_c()
             self.avg_px_close = 0.0
+            self.realized_return = 0.0
+            self.realized_pnl = None
 
         self._events.append(fill)
         self._trade_ids.append(fill.trade_id)
@@ -449,7 +449,7 @@ cdef class Position:
             self._handle_sell_order_fill(fill)
         else:
             raise ValueError(  # pragma: no cover (design-time error)
-                f"invalid `OrderSide`, was {fill.order_side}",
+                f"invalid `OrderSide`, was {fill.order_side}",  # pragma: no cover (design-time error)
             )
 
         # Set quantities
@@ -577,8 +577,8 @@ cdef class Position:
         """
         Condition.not_none(last, "last")
 
-        cdef double pnl = self.realized_pnl.as_f64_c() + self.unrealized_pnl(last).as_f64_c()
-        return Money(pnl, self.cost_currency)
+        cdef double realized_pnl = self.realized_pnl.as_f64_c() if self.realized_pnl is not None else 0.0
+        return Money(realized_pnl + self.unrealized_pnl(last).as_f64_c(), self.cost_currency)
 
     cpdef list commissions(self):
         """
@@ -593,6 +593,7 @@ cdef class Position:
 
     cdef void _handle_buy_order_fill(self, OrderFilled fill) except *:
         # Initialize realized PnL for fill
+        cdef double realized_pnl
         if fill.commission.currency == self.cost_currency:
             realized_pnl = -fill.commission.as_f64_c()
         else:
@@ -614,7 +615,10 @@ cdef class Position:
             self.realized_return = self._calculate_return(self.avg_px_open, self.avg_px_close)
             realized_pnl += self._calculate_pnl(self.avg_px_open, last_px, last_qty)
 
-        self.realized_pnl = Money(self.realized_pnl.as_f64_c() + realized_pnl, self.cost_currency)
+        if self.realized_pnl is None:
+            self.realized_pnl = Money(realized_pnl, self.cost_currency)
+        else:
+            self.realized_pnl = Money(self.realized_pnl.as_f64_c() + realized_pnl, self.cost_currency)
 
         self._buy_qty.add_assign(last_qty_obj)
         self.net_qty += last_qty
@@ -622,6 +626,7 @@ cdef class Position:
 
     cdef void _handle_sell_order_fill(self, OrderFilled fill) except *:
         # Initialize realized PnL for fill
+        cdef double realized_pnl
         if fill.commission.currency == self.cost_currency:
             realized_pnl = -fill.commission.as_f64_c()
         else:
@@ -643,7 +648,10 @@ cdef class Position:
             self.realized_return = self._calculate_return(self.avg_px_open, self.avg_px_close)
             realized_pnl += self._calculate_pnl(self.avg_px_open, last_px, last_qty)
 
-        self.realized_pnl = Money(self.realized_pnl.as_f64_c() + realized_pnl, self.cost_currency)
+        if self.realized_pnl is None:
+            self.realized_pnl = Money(realized_pnl, self.cost_currency)
+        else:
+            self.realized_pnl = Money(self.realized_pnl.as_f64_c() + realized_pnl, self.cost_currency)
 
         self._sell_qty.add_assign(last_qty_obj)
         self.net_qty -= last_qty

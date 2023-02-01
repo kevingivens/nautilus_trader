@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -24,6 +24,7 @@ from nautilus_trader.adapters.binance.factories import BinanceLiveExecClientFact
 from nautilus_trader.config import CacheDatabaseConfig
 from nautilus_trader.config import InstrumentProviderConfig
 from nautilus_trader.config import TradingNodeConfig
+from nautilus_trader.config.live import LiveExecEngineConfig
 from nautilus_trader.examples.strategies.ema_cross_bracket import EMACrossBracket
 from nautilus_trader.examples.strategies.ema_cross_bracket import EMACrossBracketConfig
 from nautilus_trader.live.node import TradingNode
@@ -33,17 +34,16 @@ from nautilus_trader.live.node import TradingNode
 # *** IT IS NOT INTENDED TO BE USED TO TRADE LIVE WITH REAL MONEY. ***
 
 # *** THIS INTEGRATION IS STILL UNDER CONSTRUCTION. ***
-# *** PLEASE CONSIDER IT TO BE IN AN UNSTABLE BETA PHASE AND EXERCISE CAUTION. ***
+# *** CONSIDER IT TO BE IN AN UNSTABLE BETA PHASE AND EXERCISE CAUTION. ***
 
 # Configure the trading node
 config_node = TradingNodeConfig(
     trader_id="TESTER-001",
     log_level="INFO",
-    exec_engine={
-        "reconciliation": True,
-        "reconciliation_lookback_mins": 1440,
-    },
-    risk_engine={"debug": True},
+    exec_engine=LiveExecEngineConfig(
+        reconciliation=True,
+        reconciliation_lookback_mins=1440,
+    ),
     cache_database=CacheDatabaseConfig(type="in-memory"),
     data_clients={
         "BINANCE": BinanceDataClientConfig(
@@ -84,6 +84,7 @@ strat_config = EMACrossBracketConfig(
     bar_type="ETHUSDT-PERP.BINANCE-1-MINUTE-LAST-EXTERNAL",
     fast_ema_period=10,
     slow_ema_period=20,
+    bracket_distance_atr=1.0,
     trade_size=Decimal("0.010"),
     order_id_tag="001",
     emulation_trigger="BID_ASK",

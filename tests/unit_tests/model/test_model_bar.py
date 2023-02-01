@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,6 +14,7 @@
 # -------------------------------------------------------------------------------------------------
 
 import pickle
+from datetime import timedelta
 
 import pytest
 
@@ -28,8 +29,8 @@ from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestIdStubs.audusd_id()
@@ -85,6 +86,70 @@ class TestBarSpecification:
         assert repr(bar_spec) == "BarSpecification(1-MINUTE-BID)"
 
     @pytest.mark.parametrize(
+        "aggregation",
+        [
+            BarAggregation.TICK,
+            BarAggregation.MONTH,
+        ],
+    )
+    def test_timedelta_for_unsupported_aggregations_raises_value_error(self, aggregation):
+        # Arrange, Act, Assert
+        with pytest.raises(ValueError):
+            spec = BarSpecification(1, aggregation, price_type=PriceType.LAST)
+            _ = spec.timedelta
+
+    @pytest.mark.parametrize(
+        "step, aggregation, expected",
+        [
+            [
+                500,
+                BarAggregation.MILLISECOND,
+                timedelta(milliseconds=500),
+            ],
+            [
+                10,
+                BarAggregation.SECOND,
+                timedelta(seconds=10),
+            ],
+            [
+                5,
+                BarAggregation.MINUTE,
+                timedelta(minutes=5),
+            ],
+            [
+                1,
+                BarAggregation.HOUR,
+                timedelta(hours=1),
+            ],
+            [
+                1,
+                BarAggregation.DAY,
+                timedelta(days=1),
+            ],
+            [
+                1,
+                BarAggregation.WEEK,
+                timedelta(days=7),
+            ],
+        ],
+    )
+    def test_timedelta_given_various_values_returns_expected(
+        self,
+        step,
+        aggregation,
+        expected,
+    ):
+        # Arrange, Act
+        spec = BarSpecification(
+            step=step,
+            aggregation=aggregation,
+            price_type=PriceType.LAST,
+        )
+
+        # Assert
+        assert spec.timedelta == expected
+
+    @pytest.mark.parametrize(
         "value",
         ["", "1", "-1-TICK-MID", "1-TICK_MID"],
     )
@@ -119,7 +184,9 @@ class TestBarSpecification:
         ],
     )
     def test_from_str_given_various_valid_string_returns_expected_specification(
-        self, value, expected
+        self,
+        value,
+        expected,
     ):
         # Arrange, Act
         spec = BarSpecification.from_str(value)
@@ -285,9 +352,9 @@ class TestBarType:
                 ),
             ],
             [
-                "ETH-PERP.FTX-100-TICK-LAST-INTERNAL",
+                "ETHUSDT-PERP.BINANCE-100-TICK-LAST-INTERNAL",
                 BarType(
-                    InstrumentId(Symbol("ETH-PERP"), Venue("FTX")),
+                    InstrumentId(Symbol("ETHUSDT-PERP"), Venue("BINANCE")),
                     BarSpecification(100, BarAggregation.TICK, PriceType.LAST),
                     AggregationSource.INTERNAL,
                 ),
@@ -295,7 +362,9 @@ class TestBarType:
         ],
     )
     def test_from_str_given_various_valid_string_returns_expected_specification(
-        self, value, expected
+        self,
+        value,
+        expected,
     ):
         # Arrange, Act
         bar_type = BarType.from_str(value)
@@ -329,7 +398,7 @@ class TestBar:
                 Price.from_str("1.00000"),  # <-- High below open
                 Price.from_str("1.00000"),
                 Price.from_str("1.00000"),
-                Quantity.from_int(100000),
+                Quantity.from_int(100_000),
                 0,
                 0,
             )
@@ -343,7 +412,7 @@ class TestBar:
                 Price.from_str("1.00000"),  # <-- High below low
                 Price.from_str("1.00002"),
                 Price.from_str("1.00003"),
-                Quantity.from_int(100000),
+                Quantity.from_int(100_000),
                 0,
                 0,
             )
@@ -357,7 +426,7 @@ class TestBar:
                 Price.from_str("1.00000"),  # <-- High below close
                 Price.from_str("1.00000"),
                 Price.from_str("1.00001"),
-                Quantity.from_int(100000),
+                Quantity.from_int(100_000),
                 0,
                 0,
             )
@@ -371,7 +440,7 @@ class TestBar:
                 Price.from_str("1.00005"),
                 Price.from_str("1.00000"),
                 Price.from_str("0.99999"),  # <-- Close below low
-                Quantity.from_int(100000),
+                Quantity.from_int(100_000),
                 0,
                 0,
             )
@@ -385,7 +454,7 @@ class TestBar:
                 Price.from_str("1.00000"),
                 Price.from_str("1.00000"),
                 Price.from_str("1.00000"),
-                Quantity.from_int(100000),
+                Quantity.from_int(100_000),
                 0,
                 0,
             )
@@ -398,7 +467,7 @@ class TestBar:
             Price.from_str("1.00004"),
             Price.from_str("1.00001"),
             Price.from_str("1.00001"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -409,7 +478,7 @@ class TestBar:
             Price.from_str("1.00004"),
             Price.from_str("1.00000"),
             Price.from_str("1.00003"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -426,7 +495,7 @@ class TestBar:
             Price.from_str("1.00004"),
             Price.from_str("1.00000"),
             Price.from_str("1.00003"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -449,7 +518,7 @@ class TestBar:
             Price.from_str("1.00000"),
             Price.from_str("1.00000"),
             Price.from_str("1.00000"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -460,7 +529,7 @@ class TestBar:
             Price.from_str("1.00004"),
             Price.from_str("1.00000"),
             Price.from_str("1.00003"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -477,7 +546,7 @@ class TestBar:
             Price.from_str("1.00004"),
             Price.from_str("1.00000"),
             Price.from_str("1.00003"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )
@@ -516,7 +585,7 @@ class TestBar:
             Price.from_str("1.00004"),
             Price.from_str("1.00000"),
             Price.from_str("1.00003"),
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             0,
             0,
         )

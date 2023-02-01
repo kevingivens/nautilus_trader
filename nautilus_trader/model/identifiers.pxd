@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -46,7 +46,7 @@ cdef class InstrumentId(Identifier):
     """The instrument trading venue.\n\n:returns: `Venue`"""
 
     @staticmethod
-    cdef InstrumentId from_raw_c(InstrumentId_t raw)
+    cdef InstrumentId from_mem_c(InstrumentId_t mem)
 
     @staticmethod
     cdef InstrumentId from_str_c(str value)
@@ -79,6 +79,7 @@ cdef class AccountId(Identifier):
     cdef AccountId_t _mem
 
     cpdef str get_issuer(self)
+    cpdef str get_id(self)
 
 
 cdef class ClientOrderId(Identifier):
@@ -97,7 +98,7 @@ cdef class PositionId(Identifier):
     cdef PositionId_t _mem
 
     @staticmethod
-    cdef PositionId from_raw_c(PositionId_t raw)
+    cdef PositionId from_mem_c(PositionId_t mem)
     cdef bint is_virtual_c(self) except *
 
 
@@ -105,4 +106,4 @@ cdef class TradeId(Identifier):
     cdef TradeId_t _mem
 
     @staticmethod
-    cdef TradeId from_raw_c(TradeId_t raw)
+    cdef TradeId from_mem_c(TradeId_t mem)

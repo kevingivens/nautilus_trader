@@ -13,11 +13,11 @@
 | `master`  | ![version](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnautechsystems%2Fnautilus_trader%2Fmaster%2Fversion.json) | [![build](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml) |
 | `develop` | ![version](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnautechsystems%2Fnautilus_trader%2Fdevelop%2Fversion.json) | [![build](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml) |
 
-| Platform         | Rust      | Python |
-|:-----------------|:----------|:-------|
-| Linux (x86_64)   | `1.65.0+` | `3.9+` |
-| macOS (x86_64)   | `1.65.0+` | `3.9+` |
-| Windows (x86_64) | `1.65.0+` | `3.9+` |
+| Platform          | Rust      | Python |
+|:------------------|:----------|:-------|
+| Linux (x86\_64)   | `1.66.1+` | `3.9+` |
+| macOS (x86\_64)   | `1.66.1+` | `3.9+` |
+| Windows (x86\_64) | `1.66.1+` | `3.9+` |
 
 - **Website:** https://nautilustrader.io
 - **Docs:** https://docs.nautilustrader.io
@@ -112,7 +112,7 @@ eliminating many classes of bugs at compile-time.
 The project increasingly utilizes Rust for core performance-critical components. Python language binding is handled through
 Cython, with static libraries linked at compile-time before the wheel binaries are packaged, so a user
 does not need to have Rust installed to run NautilusTrader. In the future as more Rust code is introduced,
-[PyO3](https://pyo3.rs/v0.15.1/) will be leveraged for easier Python bindings.
+[PyO3](https://pyo3.rs/latest/) will be leveraged for easier Python bindings.
 
 ## Architecture (data flow)
 
@@ -157,6 +157,12 @@ To install the latest binary wheel from PyPI:
 Installation from source requires the `Python.h` header file, which is included in development releases such as `python-dev`.
 You'll also need the latest stable `rustc` and `cargo` to compile the Rust libraries.
 
+For MacBook Pro M1/M2, make sure your Python installed using pyenv is configured with `--enable-shared`:
+
+    PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install <python_version>
+
+See https://pyo3.rs/latest/getting_started#virtualenvs.
+
 It's possible to install from source using `pip` if you first install the build dependencies
 as specified in the `pyproject.toml`. However, we highly recommend installing using [poetry](https://python-poetry.org/) as below.
 
@@ -185,7 +191,7 @@ as specified in the `pyproject.toml`. However, we highly recommend installing us
 
        git clone https://github.com/nautechsystems/nautilus_trader
        cd nautilus_trader
-       poetry install --only main --extras "ib redis"
+       poetry install --only main --all-extras
 
 Refer to the [Installation Guide](https://docs.nautilustrader.io/getting_started/installation.html) for other options and further details.
 
@@ -205,18 +211,21 @@ point we will follow a formal process for releases, with deprecation periods for
 
 ## Makefile
 
-A `Makefile` is provided to automate most installation and build tasks. It provides the following targets:
-- `make install` -- Installs the package using poetry
+A `Makefile` is provided to automate most installation and build tasks for development. It provides the following targets:
+- `make install` -- Installs the main, dev and test dependencies then installs the package using poetry
+- `make install-just-deps` -- Installs just the main, dev and test dependencies (does not install package)
 - `make build` -- Runs the Cython build script
-- `make clean` -- Cleans all none source artifacts from the repository
+- `make clean` -- Cleans all non-source artifacts from the repository
 - `make docs` -- Builds the documentation HTML using Sphinx
 - `make pre-commit` -- Runs the pre-commit checks over all files
+- `make pytest` -- Runs all tests with `pytest` (except performance tests)
+- `make pytest-coverage` -- Same as `make pytest` and additionally runs with test coverage and produces a report
 
 ## Examples
 
 Indicators and strategies can be developed in both Python and Cython (although if performance and latency sensitivity are import we recommend Cython).
 The below are some examples of this:
-- [indicator](/examples/indicators/ema_py.py) example written in Python
+- [indicator](/examples/indicators/ema_python.py) example written in Python
 - [indicator](/nautilus_trader/indicators/) examples written in Cython
 - [strategy](/nautilus_trader/examples/strategies/) examples written in both Python and Cython
 - [backtest](/examples/backtest/) examples using a `BacktestEngine` directly
@@ -238,7 +247,16 @@ You can launch the backtest example container by running:
     docker pull ghcr.io/nautechsystems/jupyterlab:develop
     docker run -p 8888:8888 ghcr.io/nautechsystems/jupyterlab:develop
 
-Then navigate to the `backtest_example.ipynb` and run it!
+| :warning: WARNING                                                               |
+|:--------------------------------------------------------------------------------|
+
+**NautilusTrader currently exceeds the rate limit for Jupyter notebook logging (stdout output),
+this is why `log_level` in the examples is set to "ERROR". If you lower this level to see more
+logging then the notebook will hang during cell execution. A fix is currently
+being investigated which involves either raising the configured rate limits for
+Jupyter, or throttling the log flushing from Nautilus.**
+https://github.com/jupyterlab/jupyterlab/issues/12845
+https://github.com/deshaw/jupyterlab-limit-output
 
 ## Minimal Strategy
 
@@ -344,32 +362,41 @@ class EMACross(Strategy):
 ## Development
 
 We aim to provide the most pleasant developer experience possible for this hybrid codebase of Python, Cython and Rust.
-Please refer to the [Developer Guide](https://docs.nautilustrader.io/developer_guide/index.html) for helpful information.
+Refer to the [Developer Guide](https://docs.nautilustrader.io/developer_guide/index.html) for helpful information.
 
 ## Contributing
 
-Involvement from the trading community is a goal for this project, all help is welcome!
-Developers can open [issues](https://github.com/nautechsystems/nautilus_trader/issues) on GitHub to discuss proposed enhancements, changes, or
-to make bug reports. Questions and more general thoughts are best directed to a [discussions](https://github.com/nautechsystems/nautilus_trader/discussions) thread.
+Thank you for considering contributing to Nautilus Trader! We welcome any and all help to improve 
+the project. If you have an idea for an enhancement or a bug fix, the first step is to open an [issue](https://github.com/nautechsystems/nautilus_trader/issues) 
+on GitHub to discuss it with the team. This helps to ensure that your contribution will be 
+well-aligned with the goals of the project and avoids duplication of effort.
 
-Refer to the [CONTRIBUTING.md](https://github.com/nautechsystems/nautilus_trader/blob/master/CONTRIBUTING.md) for further information.
+Once you're ready to start working on your contribution, make sure to follow the guidelines 
+outlined in the [CONTRIBUTING.md](https://github.com/nautechsystems/nautilus_trader/blob/develop/CONTRIBUTING.md) file. This includes signing a Contributor License Agreement (CLA) 
+to ensure that your contributions can be included in the project.
 
-Please make all pull requests to the `develop` branch.
+Note that all pull requests should be made to the `develop` branch. This is where new features 
+and improvements are integrated before being released to the public.
+
+Thank you again for your interest in Nautilus Trader! We look forward to reviewing your contributions and working with you to improve the project.
 
 ## Community
-Chat with contributors and active users of NautilusTrader on our [Discord](https://discord.gg/AUWVs3XaCS) server!
-This is also the best place to monitor announcements, and learn about the latest features as they become available.
+Join our community of users and contributors on [Discord](https://discord.gg/AUWVs3XaCS) to chat 
+and stay up-to-date with the latest announcements and features of NautilusTrader. Whether you're a 
+developer looking to contribute or just want to learn more about the platform, all are welcome on our server.
 
 ## License
 
-NautilusTrader is licensed under the [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html).
-
-Contributors are also required to sign a standard Contributor License Agreement (CLA), which is administered automatically through [CLA Assistant](https://cla-assistant.io/).
+The source code for NautilusTrader is available on GitHub under the [GNU Lesser General Public License v3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html).
+Contributions to the project are welcome and require the completion of a standard Contributor License Agreement (CLA).
 
 ---
 
-Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
-https://nautilustrader.io
+NautilusTrader is developed and maintained by Nautech Systems, a technology 
+company specializing in the development of high-performance trading systems. 
+For more information, visit https://nautilustrader.io.
+
+Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 
 ![nautechsystems](https://github.com/nautechsystems/nautilus_trader/blob/develop/docs/_images/ns-logo.png?raw=true "nautechsystems")
 <img src="https://github.com/nautechsystems/nautilus_trader/blob/develop/docs/_images/ferris.png" width="128">

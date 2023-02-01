@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,7 +15,6 @@
 
 import asyncio
 import concurrent.futures
-import pathlib
 import platform
 import signal
 import socket
@@ -31,10 +30,10 @@ from nautilus_trader.common.actor import Actor
 from nautilus_trader.common.clock import Clock
 from nautilus_trader.common.clock import LiveClock
 from nautilus_trader.common.clock import TestClock
+from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.logging import LiveLogger
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.common.logging import LoggerAdapter
-from nautilus_trader.common.logging import LogLevel
 from nautilus_trader.common.logging import nautilus_header
 from nautilus_trader.config import ActorFactory
 from nautilus_trader.config import CacheConfig
@@ -62,7 +61,6 @@ from nautilus_trader.live.execution_engine import LiveExecutionEngine
 from nautilus_trader.live.risk_engine import LiveRiskEngine
 from nautilus_trader.model.identifiers import TraderId
 from nautilus_trader.msgbus.bus import MessageBus
-from nautilus_trader.persistence.catalog import resolve_path
 from nautilus_trader.persistence.streaming import StreamingFeatherWriter
 from nautilus_trader.portfolio.base import PortfolioFacade
 from nautilus_trader.portfolio.portfolio import Portfolio
@@ -135,7 +133,6 @@ class NautilusKernel:
         If `name` is not a valid string.
     TypeError
         If any configuration object is not of the expected type.
-
     """
 
     def __init__(  # noqa (too complex)
@@ -148,6 +145,7 @@ class NautilusKernel:
         data_config: Union[DataEngineConfig, LiveDataEngineConfig],
         risk_config: Union[RiskEngineConfig, LiveRiskEngineConfig],
         exec_config: Union[ExecEngineConfig, LiveExecEngineConfig],
+        instance_id: Optional[UUID4] = None,
         emulator_config: Optional[OrderEmulatorConfig] = None,
         streaming_config: Optional[StreamingConfig] = None,
         actor_configs: Optional[list[ImportableActorConfig]] = None,
@@ -194,12 +192,14 @@ class NautilusKernel:
         PyCondition.type_or_none(streaming_config, StreamingConfig, "streaming_config")
 
         self._environment = environment
+        self._load_state = load_state
+        self._save_state = save_state
 
         # Identifiers
         self._name = name
         self._trader_id = trader_id
         self._machine_id = socket.gethostname()
-        self._instance_id = UUID4()
+        self._instance_id = UUID4(instance_id) if instance_id is not None else UUID4()
         self._ts_created = time.time_ns()
 
         # Components
@@ -225,7 +225,7 @@ class NautilusKernel:
             )
         else:
             raise NotImplementedError(  # pragma: no cover (design-time error)
-                f"environment {environment} not recognized",
+                f"environment {environment} not recognized",  # pragma: no cover (design-time error)
             )
 
         # Setup logging
@@ -237,17 +237,20 @@ class NautilusKernel:
         nautilus_header(self._log)
         self.log.info("Building system kernel...")
 
-        # Setup loop
-        self._loop = loop
-        if self._loop is not None:
-            self._executor = concurrent.futures.ThreadPoolExecutor()
-            self._loop.set_default_executor(self.executor)
-            self._loop.set_debug(loop_debug)
-            self._loop_sig_callback = loop_sig_callback
-            if platform.system() != "Windows":
-                # Windows does not support signal handling
-                # https://stackoverflow.com/questions/45987985/asyncio-loops-add-signal-handler-in-windows
-                self._setup_loop()
+        # Setup loop (if live)
+        if environment == Environment.LIVE:
+            self._loop: asyncio.AbstractEventLoop = loop or asyncio.get_event_loop()
+            if loop is not None:
+                self._executor = concurrent.futures.ThreadPoolExecutor()
+                self._loop.set_default_executor(self.executor)
+                self._loop.set_debug(loop_debug)
+                self._loop_sig_callback = loop_sig_callback
+                if platform.system() != "Windows":
+                    # Windows does not support signal handling
+                    # https://stackoverflow.com/questions/45987985/asyncio-loops-add-signal-handler-in-windows
+                    self._setup_loop()
+        else:
+            self._loop = None
 
         if cache_database_config is None or cache_database_config.type == "in-memory":
             cache_db = None
@@ -261,7 +264,7 @@ class NautilusKernel:
         else:
             raise ValueError(
                 "The `cache_db_config.type` is unrecognized. "
-                "Please use one of {{'in-memory', 'redis'}}.",
+                "Use one of {{'in-memory', 'redis'}}.",
             )
 
         ########################################################################
@@ -379,7 +382,7 @@ class NautilusKernel:
             loop=self._loop,
         )
 
-        if load_state:
+        if self._load_state:
             self._trader.load()
 
         # Setup writer
@@ -401,7 +404,7 @@ class NautilusKernel:
         self.log.info(f"Initialized in {build_time_ms}ms.")
 
     def __del__(self) -> None:
-        if self._writer and not self._writer.closed:
+        if hasattr(self, "_writer") and self._writer and not self._writer.closed:
             self._writer.close()
 
     def _setup_loop(self) -> None:
@@ -423,13 +426,8 @@ class NautilusKernel:
 
     def _setup_streaming(self, config: StreamingConfig) -> None:
         # Setup persistence
-        catalog = config.as_catalog()
-        persistence_dir = pathlib.Path(config.catalog_path) / self._environment.value
-        parent_path = resolve_path(persistence_dir, fs=config.fs)
-        if not catalog.fs.exists(parent_path):
-            catalog.fs.mkdir(parent_path)
 
-        path = resolve_path(persistence_dir / f"{self.instance_id}.feather", fs=config.fs)
+        path = f"{config.catalog_path}/{self._environment.value}/{self.instance_id}.feather"
         self._writer = StreamingFeatherWriter(
             path=path,
             fs_protocol=config.fs_protocol,
@@ -453,13 +451,13 @@ class NautilusKernel:
         return self._environment
 
     @property
-    def loop(self) -> Optional[AbstractEventLoop]:
+    def loop(self) -> AbstractEventLoop:
         """
         Return the kernels event loop.
 
         Returns
         -------
-        AbstractEventLoop or ``None``
+        AbstractEventLoop
 
         """
         return self._loop
@@ -547,6 +545,30 @@ class NautilusKernel:
 
         """
         return self._ts_created
+
+    @property
+    def load_state(self) -> bool:
+        """
+        If the kernel has been configured to load actor and strategy state.
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._load_state
+
+    @property
+    def save_state(self) -> bool:
+        """
+        If the kernel has been configured to save actor and strategy state.
+
+        Returns
+        -------
+        bool
+
+        """
+        return self._save_state
 
     @property
     def clock(self) -> Clock:
@@ -700,8 +722,7 @@ class NautilusKernel:
         called after disposal.
 
         """
-        self.trader.dispose()
-
+        # Stop all engines
         if self.data_engine.is_running:
             self.data_engine.stop()
         if self.risk_engine.is_running:
@@ -709,9 +730,16 @@ class NautilusKernel:
         if self.exec_engine.is_running:
             self.exec_engine.stop()
 
-        self.data_engine.dispose()
-        self.risk_engine.dispose()
-        self.exec_engine.dispose()
+        # Dispose all engines
+        if not self.data_engine.is_disposed:
+            self.data_engine.dispose()
+        if not self.risk_engine.is_disposed:
+            self.risk_engine.dispose()
+        if not self.exec_engine.is_disposed:
+            self.exec_engine.dispose()
+
+        if not self.trader.is_disposed:
+            self.trader.dispose()
 
         if self._writer:
             self._writer.close()
@@ -763,5 +791,5 @@ class NautilusKernel:
                         "message": "unhandled exception during asyncio.run() shutdown",
                         "exception": task.exception(),
                         "task": task,
-                    }
+                    },
                 )

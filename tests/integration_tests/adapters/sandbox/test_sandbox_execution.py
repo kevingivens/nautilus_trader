@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -21,9 +21,9 @@ from nautilus_trader.adapters.sandbox.execution import SandboxExecutionClient
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.backtest.exchange import SimulatedExchange
 from nautilus_trader.common.clock import LiveClock
+from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.logging import LiveLogger
 from nautilus_trader.common.logging import LoggerAdapter
-from nautilus_trader.common.logging import LogLevel
 from nautilus_trader.config import LiveExecEngineConfig
 from nautilus_trader.live.data_engine import LiveDataEngine
 from nautilus_trader.live.execution_engine import LiveExecutionEngine
@@ -46,11 +46,11 @@ from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
-from tests.integration_tests.adapters.betfair.test_kit import TestCommandStubs
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.execution import TestExecStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.commands import TestCommandStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.execution import TestExecStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 class TestSandboxExecutionClient:
@@ -132,20 +132,24 @@ class TestSandboxExecutionClient:
         self.msgbus.subscribe("*", listener)
         self.msgbus.deregister(endpoint="ExecEngine.execute", handler=self.exec_engine.execute)
         self.msgbus.register(
-            endpoint="ExecEngine.execute", handler=handler(self.exec_engine.execute)
+            endpoint="ExecEngine.execute",
+            handler=handler(self.exec_engine.execute),
         )
         self.msgbus.deregister(endpoint="ExecEngine.process", handler=self.exec_engine.process)
         self.msgbus.register(
-            endpoint="ExecEngine.process", handler=handler(self.exec_engine.process)
+            endpoint="ExecEngine.process",
+            handler=handler(self.exec_engine.process),
         )
         self.msgbus.deregister(
-            endpoint="Portfolio.update_account", handler=self.portfolio.update_account
+            endpoint="Portfolio.update_account",
+            handler=self.portfolio.update_account,
         )
         self.msgbus.register(
-            endpoint="Portfolio.update_account", handler=handler(self.portfolio.update_account)
+            endpoint="Portfolio.update_account",
+            handler=handler(self.portfolio.update_account),
         )
         self.cache.add_quote_tick(
-            TestDataStubs.quote_tick_3decimal(instrument_id=self.instrument.id)
+            TestDataStubs.quote_tick_3decimal(instrument_id=self.instrument.id),
         )
 
     def _make_quote_tick(self):
@@ -169,7 +173,7 @@ class TestSandboxExecutionClient:
         # Arrange
         self.client.connect()
         command = TestCommandStubs.submit_order_command(
-            order=TestExecStubs.limit_order(instrument_id=self.instrument.id)
+            order=TestExecStubs.limit_order(instrument_id=self.instrument.id),
         )
 
         # Act
@@ -191,16 +195,16 @@ class TestSandboxExecutionClient:
             order=TestExecStubs.limit_order(
                 instrument_id=self.instrument.id,
                 price=Price.from_str("0.01"),
-            )
+            ),
         )
         self.client.submit_order(submit_order_command)
         self.client.on_data(self._make_quote_tick())
         order_accepted = self.messages[1]
 
         # Act
+
         command = TestCommandStubs.modify_order_command(
-            instrument_id=order_accepted.instrument_id,
-            client_order_id=order_accepted.client_order_id,
+            order=order_accepted,
             price=Price.from_str("0.01"),
             quantity=Quantity.from_int(200),
         )
@@ -222,7 +226,7 @@ class TestSandboxExecutionClient:
             order=TestExecStubs.limit_order(
                 instrument_id=self.instrument.id,
                 price=Price.from_str("0.01"),
-            )
+            ),
         )
         self.client.submit_order(submit_order_command)
         self.client.on_data(self._make_quote_tick())
@@ -251,7 +255,7 @@ class TestSandboxExecutionClient:
             order=TestExecStubs.limit_order(
                 instrument_id=self.instrument.id,
                 price=Price.from_str("0.01"),
-            )
+            ),
         )
         self.client.submit_order(submit_order_command)
         self.client.on_data(self._make_quote_tick())
@@ -282,7 +286,7 @@ class TestSandboxExecutionClient:
             order=TestExecStubs.limit_order(
                 instrument_id=self.instrument.id,
                 price=Price.from_str("0.01"),
-            )
+            ),
         )
         self.client.submit_order(submit_order_command)
         self.client.on_data(self._make_quote_tick())

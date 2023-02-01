@@ -20,6 +20,7 @@ from unittest.mock import MagicMock
 import pytest
 from ib_insync import CFD
 from ib_insync import Bond
+from ib_insync import ContractDetails
 from ib_insync import Crypto
 from ib_insync import Forex
 from ib_insync import Future
@@ -30,8 +31,8 @@ from nautilus_trader.adapters.interactive_brokers.providers import (
     InteractiveBrokersInstrumentProvider,
 )
 from nautilus_trader.common.clock import LiveClock
+from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.logging import LiveLogger
-from nautilus_trader.common.logging import LogLevel
 from nautilus_trader.config import InstrumentProviderConfig
 from nautilus_trader.model.enums import AssetClass
 from nautilus_trader.model.enums import AssetType
@@ -40,7 +41,7 @@ from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Price
-from tests.integration_tests.adapters.interactive_brokers.test_kit import IBTestDataStubs
+from tests.integration_tests.adapters.interactive_brokers.test_kit import IBTestProviderStubs
 
 
 class TestIBInstrumentProvider:
@@ -54,7 +55,9 @@ class TestIBInstrumentProvider:
             level_stdout=LogLevel.DEBUG,
         )
         self.provider = InteractiveBrokersInstrumentProvider(
-            client=self.ib, logger=self.logger, config=InstrumentProviderConfig()
+            client=self.ib,
+            logger=self.logger,
+            config=InstrumentProviderConfig(),
         )
 
     @staticmethod
@@ -62,6 +65,18 @@ class TestIBInstrumentProvider:
         future: asyncio.Future = asyncio.Future()
         future.set_result(value)
         return future
+
+    def mock_ib_contract_calls(self, mocker, contract_details: ContractDetails):
+        mocker.patch.object(
+            self.provider._client,
+            "reqContractDetailsAsync",
+            return_value=self.async_return_value([contract_details]),
+        )
+        mocker.patch.object(
+            self.provider._client,
+            "qualifyContractsAsync",
+            return_value=self.async_return_value([contract_details.contract]),
+        )
 
     @pytest.mark.parametrize(
         "filters, expected",
@@ -126,51 +141,35 @@ class TestIBInstrumentProvider:
     @pytest.mark.asyncio
     async def test_load_equity_contract_instrument(self, mocker):
         # Arrange
-        instrument_id = InstrumentId.from_str("AAPL.NASDAQ")
-        contract = IBTestDataStubs.contract(symbol="AAPL")
-        contract_details = IBTestDataStubs.contract_details("AAPL")
-        mocker.patch.object(
-            self.provider._client,
-            "reqContractDetailsAsync",
-            return_value=self.async_return_value([contract_details]),
-        )
-        mocker.patch.object(
-            self.provider._client,
-            "qualifyContractsAsync",
-            return_value=self.async_return_value([contract]),
+        instrument_id = InstrumentId.from_str("AAPL.AMEX")
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.aapl_equity_contract_details(),
         )
 
         # Act
-        await self.provider.load(secType="STK", symbol="AAPL", exchange="NASDAQ")
+        await self.provider.load(secType="STK", symbol="AAPL", exchange="AMEX")
         equity = self.provider.find(instrument_id)
 
         # Assert
-        assert InstrumentId(symbol=Symbol("AAPL"), venue=Venue("NASDAQ")) == equity.id
+        assert InstrumentId(symbol=Symbol("AAPL"), venue=Venue("AMEX")) == equity.id
         assert equity.asset_class == AssetClass.EQUITY
         assert equity.asset_type == AssetType.SPOT
-        assert 100 == equity.multiplier
+        assert 1 == equity.multiplier
         assert Price.from_str("0.01") == equity.price_increment
         assert 2, equity.price_precision
 
     @pytest.mark.asyncio
     async def test_load_futures_contract_instrument(self, mocker):
         # Arrange
-        instrument_id = InstrumentId.from_str("CLZ2.NYMEX")
-        contract = IBTestDataStubs.contract(symbol="CLZ2", exchange="NYMEX")
-        contract_details = IBTestDataStubs.contract_details("CLZ2")
-        mocker.patch.object(
-            self.provider._client,
-            "reqContractDetailsAsync",
-            return_value=self.async_return_value([contract_details]),
-        )
-        mocker.patch.object(
-            self.provider._client,
-            "qualifyContractsAsync",
-            return_value=self.async_return_value([contract]),
+        instrument_id = InstrumentId.from_str("CLZ3.NYMEX")
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.cl_future_contract_details(),
         )
 
         # Act
-        await self.provider.load(symbol="CLZ2", exchange="NYMEX")
+        await self.provider.load(symbol="CLZ3", exchange="NYMEX")
         future = self.provider.find(instrument_id)
 
         # Assert
@@ -183,32 +182,22 @@ class TestIBInstrumentProvider:
     @pytest.mark.asyncio
     async def test_load_options_contract_instrument(self, mocker):
         # Arrange
-        instrument_id = InstrumentId.from_str("AAPL211217C00160000.SMART")
-        contract = IBTestDataStubs.contract(
-            secType="OPT", symbol="AAPL211217C00160000", exchange="NASDAQ"
-        )
-        contract_details = IBTestDataStubs.contract_details("AAPL211217C00160000")
-        mocker.patch.object(
-            self.provider._client,
-            "reqContractDetailsAsync",
-            return_value=self.async_return_value([contract_details]),
-        )
-        mocker.patch.object(
-            self.provider._client,
-            "qualifyContractsAsync",
-            return_value=self.async_return_value([contract]),
+        instrument_id = InstrumentId.from_str("TSLA230120C00100000.MIAX")
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.tsla_option_contract_details(),
         )
 
         # Act
-        await self.provider.load(secType="OPT", symbol="AAPL211217C00160000", exchange="SMART")
+        await self.provider.load(secType="OPT", symbol="TSLA230120C00100000", exchange="MIAX")
         option = self.provider.find(instrument_id)
 
         # Assert
         assert option.id == instrument_id
         assert option.asset_class == AssetClass.EQUITY
         assert option.multiplier == 100
-        assert option.expiry_date == datetime.date(2021, 12, 17)
-        assert option.strike_price == Price.from_str("160.0")
+        assert option.expiry_date == datetime.date(2023, 1, 20)
+        assert option.strike_price == Price.from_str("100.0")
         assert option.kind == OptionKind.CALL
         assert option.price_increment == Price.from_str("0.01")
         assert option.price_precision == 2
@@ -217,18 +206,9 @@ class TestIBInstrumentProvider:
     async def test_load_forex_contract_instrument(self, mocker):
         # Arrange
         instrument_id = InstrumentId.from_str("EUR/USD.IDEALPRO")
-        contract = IBTestDataStubs.contract(secType="CASH", symbol="EURUSD", exchange="IDEALPRO")
-        contract_details = IBTestDataStubs.contract_details("EURUSD")
-        contract_details.minSize = 1
-        mocker.patch.object(
-            self.provider._client,
-            "reqContractDetailsAsync",
-            return_value=self.async_return_value([contract_details]),
-        )
-        mocker.patch.object(
-            self.provider._client,
-            "qualifyContractsAsync",
-            return_value=self.async_return_value([contract]),
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.eurusd_forex_contract_details(),
         )
 
         # Act
@@ -245,26 +225,51 @@ class TestIBInstrumentProvider:
     @pytest.mark.asyncio
     async def test_contract_id_to_instrument_id(self, mocker):
         # Arrange
-        contract = IBTestDataStubs.contract(symbol="CLZ2", exchange="NYMEX")
-        contract_details = IBTestDataStubs.contract_details("CLZ2")
-        mocker.patch.object(
-            self.provider._client,
-            "qualifyContractsAsync",
-            return_value=self.async_return_value([contract]),
-        )
-        mocker.patch.object(
-            self.provider._client,
-            "reqContractDetailsAsync",
-            return_value=self.async_return_value([contract_details]),
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.cl_future_contract_details(),
         )
 
         # Act
-        await self.provider.load(symbol="CLZ2", exchange="NYMEX")
+        await self.provider.load(symbol="CLZ3", exchange="NYMEX")
 
         # Assert
-        expected = {138979238: InstrumentId.from_str("CLZ2.NYMEX")}
+        expected = {174230596: InstrumentId.from_str("CLZ3.NYMEX")}
         assert self.provider.contract_id_to_instrument_id == expected
 
-    def test_none_filters(self):
+    @pytest.mark.asyncio
+    async def test_none_filters(self):
         # Act, Arrange, Assert
         self.provider.load_all(None)
+
+    @pytest.mark.asyncio
+    async def test_instrument_filter_callable_none(self, mocker):
+        # Arrange
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.aapl_equity_contract_details(),
+        )
+
+        # Act
+        await self.provider.load()
+
+        # Assert
+        assert len(self.provider.get_all()) == 1
+
+    @pytest.mark.asyncio
+    async def test_instrument_filter_callable_option_filter(self, mocker):
+        # Arrange
+        self.mock_ib_contract_calls(
+            mocker=mocker,
+            contract_details=IBTestProviderStubs.tsla_option_contract_details(),
+        )
+
+        # Act
+        self.provider.config.filter_callable = (
+            "tests.integration_tests.adapters.interactive_brokers.test_kit:filter_out_options"
+        )
+        await self.provider.load()
+        option_instruments = self.provider.get_all()
+
+        # Assert
+        assert len(option_instruments) == 0

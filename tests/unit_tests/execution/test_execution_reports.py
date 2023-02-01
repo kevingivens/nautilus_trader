@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -41,7 +41,7 @@ from nautilus_trader.model.identifiers import VenueOrderId
 from nautilus_trader.model.objects import Money
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_IDEALPRO = TestIdStubs.audusd_idealpro_id()
@@ -104,7 +104,7 @@ class TestExecutionReports:
             venue_position_id=PositionId("2"),
             trade_id=TradeId("3"),
             order_side=OrderSide.BUY,
-            last_qty=Quantity.from_int(10000000),
+            last_qty=Quantity.from_int(10_000_000),
             last_px=Price.from_str("100.50"),
             commission=Money("4.50", USD),
             liquidity_side=LiquiditySide.TAKER,

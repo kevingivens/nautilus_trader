@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,20 +17,19 @@
 import pandas as pd
 
 from nautilus_trader.adapters.betfair.common import BETFAIR_VENUE
-from nautilus_trader.adapters.betfair.parsing import on_market_update
-from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
+from nautilus_trader.adapters.betfair.parsing.streaming import BetfairParser
+from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.examples.strategies.orderbook_imbalance import OrderBookImbalance
 from nautilus_trader.examples.strategies.orderbook_imbalance import OrderBookImbalanceConfig
-from nautilus_trader.model.currencies import USD
+from nautilus_trader.model.currencies import GBP
 from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import BookType
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.objects import Money
 from tests.integration_tests.adapters.betfair.test_kit import BetfairDataProvider
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
 
 
 if __name__ == "__main__":
@@ -43,33 +42,33 @@ if __name__ == "__main__":
     # Add a trading venue (multiple venues possible)
     engine.add_venue(
         venue=BETFAIR_VENUE,
-        oms_type=OMSType.NETTING,
+        oms_type=OmsType.NETTING,
         account_type=AccountType.CASH,  # Spot CASH account (not for perpetuals or futures)
-        base_currency=USD,  # Multi-currency account
-        starting_balances=[Money(100_000, USD)],
+        base_currency=GBP,  # Multi-currency account
+        starting_balances=[Money(100_000, GBP)],
         book_type=BookType.L2_MBP,
     )
 
     # Add instruments
     instruments = [
-        BetfairTestStubs.betting_instrument(
-            market_id="1.180737206", selection_id="19248890", handicap="0.0"
+        TestInstrumentProvider.betting_instrument(
+            market_id="1.166811431",
+            selection_id="19248890",
+            handicap="0.0",
         ),
-        BetfairTestStubs.betting_instrument(
-            market_id="1.180737206", selection_id="38848248", handicap="0.0"
+        TestInstrumentProvider.betting_instrument(
+            market_id="1.166811431",
+            selection_id="38848248",
+            handicap="0.0",
         ),
     ]
     engine.add_instrument(instruments[0])
     engine.add_instrument(instruments[1])
 
     # Add data
-    provider = BetfairInstrumentProvider.from_instruments(instruments)
-    raw = [msg for msg in BetfairDataProvider.raw_market_updates()]
-    updates = [
-        upd
-        for update in raw
-        for upd in on_market_update(instrument_provider=provider, update=update)
-    ]
+    raw = [msg for msg in BetfairDataProvider.market_updates()]
+    parser = BetfairParser()
+    updates = [upd for update in raw for upd in parser.parse(update)]
     engine.add_data(updates, client_id=ClientId("BETFAIR"))
 
     # Configure your strategy
@@ -79,7 +78,7 @@ if __name__ == "__main__":
                 instrument_id=instrument.id.value,
                 max_trade_size=10,
                 order_id_tag=instrument.selection_id,
-            )
+            ),
         )
         for instrument in instruments
     ]

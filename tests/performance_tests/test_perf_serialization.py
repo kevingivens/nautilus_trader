@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -25,8 +25,8 @@ from nautilus_trader.model.identifiers import StrategyId
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.serialization.msgpack.serializer import MsgPackSerializer
-from tests.test_kit.performance import PerformanceHarness
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.performance import PerformanceHarness
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD = TestIdStubs.audusd_id()
@@ -48,7 +48,7 @@ class TestSerializationPerformance(PerformanceHarness):
         self.order = self.order_factory.market(
             AUDUSD,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         self.command = SubmitOrder(

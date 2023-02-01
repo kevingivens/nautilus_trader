@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -72,7 +72,7 @@ def ensure_plotting(func):
             assert hvplot.pandas
         except ImportError:
             raise ImportError(
-                "Failed to import plotting library - install in notebook via `%pip install hvplot`"
+                "Failed to import plotting library - install in notebook via `%pip install hvplot`",
             )
         return func(*args, **kwargs)
 

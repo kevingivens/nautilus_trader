@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,8 +20,8 @@ import pytest
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import TestClock
+from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.logging import Logger
-from nautilus_trader.common.logging import LogLevel
 from nautilus_trader.config import DataEngineConfig
 from nautilus_trader.config import ExecEngineConfig
 from nautilus_trader.config import RiskEngineConfig
@@ -58,15 +58,15 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
+from nautilus_trader.test_kit.mocks.cache_database import MockCacheDatabase
+from nautilus_trader.test_kit.mocks.exec_clients import MockExecutionClient
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.strategy import Strategy
-from tests.test_kit.mocks.cache_database import MockCacheDatabase
-from tests.test_kit.mocks.exec_clients import MockExecutionClient
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
-ETHUSD_FTX = TestInstrumentProvider.ethusd_ftx()
+ETHUSDT_PERP_BINANCE = TestInstrumentProvider.ethusdt_perp_binance()
 
 
 class TestOrderEmulatorWithSingleOrders:
@@ -96,7 +96,7 @@ class TestOrderEmulatorWithSingleOrders:
             database=self.cache_db,
             logger=self.logger,
         )
-        self.cache.add_instrument(ETHUSD_FTX)
+        self.cache.add_instrument(ETHUSDT_PERP_BINANCE)
 
         self.portfolio = Portfolio(
             msgbus=self.msgbus,
@@ -138,7 +138,7 @@ class TestOrderEmulatorWithSingleOrders:
             logger=self.logger,
         )
 
-        self.venue = Venue("FTX")
+        self.venue = Venue("BINANCE")
         self.exec_client = MockExecutionClient(
             client_id=ClientId(self.venue.value),
             venue=self.venue,
@@ -150,7 +150,7 @@ class TestOrderEmulatorWithSingleOrders:
             logger=self.logger,
         )
 
-        update = TestEventStubs.margin_account_state(account_id=AccountId("FTX-001"))
+        update = TestEventStubs.margin_account_state(account_id=AccountId("BINANCE-001"))
         self.portfolio.update_account(update)
         self.exec_engine.register_client(self.exec_client)
 
@@ -171,12 +171,26 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.start()
 
     def test_emulator_reset(self):
-        # Arrange, Act, Assert
+        # Arrange
+        self.emulator.stop()
+
+        # Act, Assert
         self.emulator.reset()
 
     def test_emulator_dispose(self):
-        # Arrange, Act, Assert
+        # Arrange
+        self.emulator.stop()
+
+        # Act, Assert
         self.emulator.dispose()
+
+    def test_create_matching_core_twice_raises_exception(self):
+        # Arrange
+        self.emulator.create_matching_core(ETHUSDT_PERP_BINANCE)
+
+        # Act, Assert
+        with pytest.raises(RuntimeError):
+            self.emulator.create_matching_core(ETHUSDT_PERP_BINANCE)
 
     def test_subscribed_quotes_when_nothing_subscribed_returns_empty_list(self):
         # Arrange, Act
@@ -208,7 +222,7 @@ class TestOrderEmulatorWithSingleOrders:
 
     def test_get_matching_core_when_no_emulations_returns_none(self):
         # Arrange, Act
-        matching_core = self.emulator.get_matching_core(ETHUSD_FTX.id)
+        matching_core = self.emulator.get_matching_core(ETHUSDT_PERP_BINANCE.id)
 
         # Assert
         assert matching_core is None
@@ -216,7 +230,7 @@ class TestOrderEmulatorWithSingleOrders:
     def test_process_quote_tick_when_no_matching_core_setup_logs_and_does_nothing(self):
         # Arrange
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -234,10 +248,10 @@ class TestOrderEmulatorWithSingleOrders:
     def test_process_trade_tick_when_no_matching_core_setup_logs_and_does_nothing(self):
         # Arrange
         tick = TradeTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             price=Price.from_str("5010.0"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -267,17 +281,17 @@ class TestOrderEmulatorWithSingleOrders:
     def test_submit_limit_order_with_emulation_trigger_not_supported_then_cancels(self):
         # Arrange
         order = self.strategy.order_factory.limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=OrderSide.BUY,
             quantity=Quantity.from_int(10),
-            price=ETHUSD_FTX.make_price(2000),
-            emulation_trigger=TriggerType.INDEX,
+            price=ETHUSDT_PERP_BINANCE.make_price(2000),
+            emulation_trigger=TriggerType.INDEX_PRICE,
         )
 
         # Act
         self.strategy.submit_order(order)
 
-        matching_core = self.emulator.get_matching_core(ETHUSD_FTX.id)
+        matching_core = self.emulator.get_matching_core(ETHUSDT_PERP_BINANCE.id)
 
         # Assert
         assert matching_core is None
@@ -330,50 +344,124 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=OrderSide.BUY,
             quantity=Quantity.from_int(10),
-            price=ETHUSD_FTX.make_price(2000),
+            price=ETHUSDT_PERP_BINANCE.make_price(2000),
             emulation_trigger=emulation_trigger,
         )
 
         # Act
         self.strategy.submit_order(order)
 
-        matching_core = self.emulator.get_matching_core(ETHUSD_FTX.id)
+        matching_core = self.emulator.get_matching_core(ETHUSDT_PERP_BINANCE.id)
 
         # Assert
         assert matching_core is not None
         assert order in matching_core.get_orders()
         assert len(self.emulator.get_submit_order_commands()) == 1
-        assert self.emulator.subscribed_quotes == [InstrumentId.from_str("ETH/USD.FTX")]
+        assert self.emulator.subscribed_quotes == [InstrumentId.from_str("ETHUSDT-PERP.BINANCE")]
 
     def test_submit_order_with_emulation_trigger_last_subscribes_to_data(self):
         # Arrange
         order = self.strategy.order_factory.limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=OrderSide.BUY,
             quantity=Quantity.from_int(10),
-            price=ETHUSD_FTX.make_price(2000),
-            emulation_trigger=TriggerType.LAST,
+            price=ETHUSDT_PERP_BINANCE.make_price(2000),
+            emulation_trigger=TriggerType.LAST_TRADE,
         )
 
         # Act
         self.strategy.submit_order(order)
 
-        matching_core = self.emulator.get_matching_core(ETHUSD_FTX.id)
+        matching_core = self.emulator.get_matching_core(ETHUSDT_PERP_BINANCE.id)
 
         # Assert
         assert matching_core is not None
         assert order in matching_core.get_orders()
         assert len(self.emulator.get_submit_order_commands()) == 1
-        assert self.emulator.subscribed_trades == [InstrumentId.from_str("ETH/USD.FTX")]
+        assert self.emulator.subscribed_trades == [InstrumentId.from_str("ETHUSDT-PERP.BINANCE")]
+
+    def test_cancel_all_with_emulated_order_cancels_order(self):
+        # Arrange
+        order = self.strategy.order_factory.limit(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            order_side=OrderSide.BUY,
+            quantity=Quantity.from_int(10),
+            price=ETHUSDT_PERP_BINANCE.make_price(2000),
+            emulation_trigger=TriggerType.LAST_TRADE,
+        )
+
+        self.strategy.submit_order(order)
+
+        # Act
+        self.strategy.cancel_all_orders(ETHUSDT_PERP_BINANCE.id)
+
+        # Assert
+        assert order.is_canceled
+
+    def test_cancel_all_buy_orders_with_emulated_orders_cancels_buy_order(self):
+        # Arrange
+        order1 = self.strategy.order_factory.limit(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            order_side=OrderSide.BUY,
+            quantity=Quantity.from_int(10),
+            price=ETHUSDT_PERP_BINANCE.make_price(2000),
+            emulation_trigger=TriggerType.LAST_TRADE,
+        )
+
+        order2 = self.strategy.order_factory.limit(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            order_side=OrderSide.SELL,
+            quantity=Quantity.from_int(10),
+            price=ETHUSDT_PERP_BINANCE.make_price(2010),
+            emulation_trigger=TriggerType.LAST_TRADE,
+        )
+
+        self.strategy.submit_order(order1)
+        self.strategy.submit_order(order2)
+
+        # Act
+        self.strategy.cancel_all_orders(ETHUSDT_PERP_BINANCE.id, order_side=OrderSide.BUY)
+
+        # Assert
+        assert order1.is_canceled
+        assert not order2.is_canceled
+
+    def test_cancel_all_sell_orders_with_emulated_orders_cancels_sell_order(self):
+        # Arrange
+        order1 = self.strategy.order_factory.limit(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            order_side=OrderSide.BUY,
+            quantity=Quantity.from_int(10),
+            price=ETHUSDT_PERP_BINANCE.make_price(2000),
+            emulation_trigger=TriggerType.LAST_TRADE,
+        )
+
+        order2 = self.strategy.order_factory.limit(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            order_side=OrderSide.SELL,
+            quantity=Quantity.from_int(10),
+            price=ETHUSDT_PERP_BINANCE.make_price(2010),
+            emulation_trigger=TriggerType.LAST_TRADE,
+        )
+
+        self.strategy.submit_order(order1)
+        self.strategy.submit_order(order2)
+
+        # Act
+        self.strategy.cancel_all_orders(ETHUSDT_PERP_BINANCE.id, order_side=OrderSide.SELL)
+
+        # Assert
+        assert not order1.is_canceled
+        assert order2.is_canceled
 
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5000)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5000)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5000)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5000)],
         ],
     )
     def test_submit_limit_order_last_then_triggered_releases_market_order(
@@ -383,20 +471,20 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             price=trigger_price,
-            emulation_trigger=TriggerType.LAST,
+            emulation_trigger=TriggerType.LAST_TRADE,
         )
 
         self.strategy.submit_order(order)
 
         tick = TradeTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             price=Price.from_str("5000.0"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -408,7 +496,7 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.MARKET
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 2
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderInitialized)
@@ -417,8 +505,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5000)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5000)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5000)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5000)],
         ],
     )
     def test_submit_limit_order_bid_ask_then_triggered_releases_market_order(
@@ -428,7 +516,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             price=trigger_price,
@@ -438,9 +526,9 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
-            bid=ETHUSD_FTX.make_price(5000),
-            ask=ETHUSD_FTX.make_price(5000),
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            bid=ETHUSDT_PERP_BINANCE.make_price(5000),
+            ask=ETHUSDT_PERP_BINANCE.make_price(5000),
             bid_size=Quantity.from_int(1),
             ask_size=Quantity.from_int(1),
             ts_event=0,
@@ -453,7 +541,7 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.MARKET
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 2
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderInitialized)
@@ -462,8 +550,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5000)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5000)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5000)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5000)],
         ],
     )
     def test_submit_limit_if_touched_then_triggered_releases_limit_order(
@@ -473,10 +561,10 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.limit_if_touched(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
-            price=ETHUSD_FTX.make_price(5000),
+            price=ETHUSDT_PERP_BINANCE.make_price(5000),
             trigger_price=trigger_price,
             emulation_trigger=TriggerType.DEFAULT,
         )
@@ -484,9 +572,9 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
-            bid=ETHUSD_FTX.make_price(5000),
-            ask=ETHUSD_FTX.make_price(5000),
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            bid=ETHUSDT_PERP_BINANCE.make_price(5000),
+            ask=ETHUSDT_PERP_BINANCE.make_price(5000),
             bid_size=Quantity.from_int(1),
             ask_size=Quantity.from_int(1),
             ts_event=0,
@@ -499,17 +587,18 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.LIMIT
-        assert order.emulation_trigger == TriggerType.NONE
-        assert len(order.events) == 2
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
+        assert len(order.events) == 3
         assert isinstance(order.events[0], OrderInitialized)
-        assert isinstance(order.events[1], OrderInitialized)
+        assert isinstance(order.events[1], OrderTriggered)
+        assert isinstance(order.events[2], OrderInitialized)
         assert self.exec_client.calls == ["_start", "submit_order"]
 
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5000)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5000)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5000)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5000)],
         ],
     )
     def test_submit_stop_limit_order_then_triggered_releases_limit_order(
@@ -519,7 +608,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.stop_limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             price=trigger_price,
@@ -530,9 +619,9 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
-            bid=ETHUSD_FTX.make_price(5000),
-            ask=ETHUSD_FTX.make_price(5000),
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            bid=ETHUSDT_PERP_BINANCE.make_price(5000),
+            ask=ETHUSDT_PERP_BINANCE.make_price(5000),
             bid_size=Quantity.from_int(1),
             ask_size=Quantity.from_int(1),
             ts_event=0,
@@ -546,7 +635,7 @@ class TestOrderEmulatorWithSingleOrders:
         assert order.is_triggered
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.LIMIT
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 3
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderTriggered)
@@ -556,8 +645,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5060)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5070)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5070)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5060)],
         ],
     )
     def test_submit_market_if_touched_order_then_triggered_releases_market_order(
@@ -567,7 +656,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.market_if_touched(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             trigger_price=trigger_price,
@@ -578,7 +667,7 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -593,7 +682,7 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.MARKET
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 2
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderInitialized)
@@ -602,8 +691,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5060)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5070)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5060)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5070)],
         ],
     )
     def test_submit_stop_market_order_then_triggered_releases_market_order(
@@ -613,7 +702,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.stop_market(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             trigger_price=trigger_price,
@@ -624,7 +713,7 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -639,7 +728,7 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.MARKET
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 2
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderInitialized)
@@ -648,8 +737,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, expected_trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5075)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5055)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5075)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5055)],
         ],
     )
     def test_submit_trailing_stop_market_order_with_no_trigger_price_then_updates(
@@ -659,7 +748,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.trailing_stop_market(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             trigger_type=TriggerType.BID_ASK,
@@ -669,7 +758,7 @@ class TestOrderEmulatorWithSingleOrders:
         )
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -695,8 +784,16 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, trigger_price, expected_trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5075), ETHUSD_FTX.make_price(5070)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5055), ETHUSD_FTX.make_price(5060)],
+            [
+                OrderSide.BUY,
+                ETHUSDT_PERP_BINANCE.make_price(5075),
+                ETHUSDT_PERP_BINANCE.make_price(5070),
+            ],
+            [
+                OrderSide.SELL,
+                ETHUSDT_PERP_BINANCE.make_price(5055),
+                ETHUSDT_PERP_BINANCE.make_price(5060),
+            ],
         ],
     )
     def test_submit_trailing_stop_market_order_with_trigger_price_then_updates(
@@ -707,7 +804,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.trailing_stop_market(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             trigger_type=TriggerType.BID_ASK,
@@ -718,7 +815,7 @@ class TestOrderEmulatorWithSingleOrders:
         )
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -730,10 +827,10 @@ class TestOrderEmulatorWithSingleOrders:
         self.data_engine.process(tick)
 
         tick = TradeTick(  # <-- extraneous trade tick
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             price=Price.from_str("5010.0"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -745,7 +842,7 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5065.0"),
             ask=Price.from_str("5065.0"),
             bid_size=Quantity.from_int(1),
@@ -767,8 +864,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5075)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5055)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5075)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5055)],
         ],
     )
     def test_submit_trailing_stop_market_order_with_trigger_price_then_triggers(
@@ -778,7 +875,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.trailing_stop_market(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             trigger_type=TriggerType.BID_ASK,
@@ -789,7 +886,7 @@ class TestOrderEmulatorWithSingleOrders:
         )
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -804,7 +901,7 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5055.0"),
             ask=Price.from_str("5075.0"),
             bid_size=Quantity.from_int(1),
@@ -817,7 +914,7 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.MARKET
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 2
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderInitialized)
@@ -825,8 +922,16 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, price, expected_trigger_price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5070), ETHUSD_FTX.make_price(5075)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5060), ETHUSD_FTX.make_price(5055)],
+            [
+                OrderSide.BUY,
+                ETHUSDT_PERP_BINANCE.make_price(5070),
+                ETHUSDT_PERP_BINANCE.make_price(5075),
+            ],
+            [
+                OrderSide.SELL,
+                ETHUSDT_PERP_BINANCE.make_price(5060),
+                ETHUSDT_PERP_BINANCE.make_price(5055),
+            ],
         ],
     )
     def test_submit_trailing_stop_limit_order_with_no_trigger_price_then_updates(
@@ -837,7 +942,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.trailing_stop_limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             limit_offset=Decimal(5),
@@ -849,7 +954,7 @@ class TestOrderEmulatorWithSingleOrders:
         )
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -877,15 +982,15 @@ class TestOrderEmulatorWithSingleOrders:
         [
             [
                 OrderSide.BUY,
-                ETHUSD_FTX.make_price(5075),
-                ETHUSD_FTX.make_price(5070),
-                ETHUSD_FTX.make_price(5070),
+                ETHUSDT_PERP_BINANCE.make_price(5075),
+                ETHUSDT_PERP_BINANCE.make_price(5070),
+                ETHUSDT_PERP_BINANCE.make_price(5070),
             ],
             [
                 OrderSide.SELL,
-                ETHUSD_FTX.make_price(5055),
-                ETHUSD_FTX.make_price(5060),
-                ETHUSD_FTX.make_price(5060),
+                ETHUSDT_PERP_BINANCE.make_price(5055),
+                ETHUSDT_PERP_BINANCE.make_price(5060),
+                ETHUSDT_PERP_BINANCE.make_price(5060),
             ],
         ],
     )
@@ -898,7 +1003,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.trailing_stop_limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             limit_offset=Decimal(5),
@@ -911,7 +1016,7 @@ class TestOrderEmulatorWithSingleOrders:
         )
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -926,7 +1031,7 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5065.0"),
             ask=Price.from_str("5065.0"),
             bid_size=Quantity.from_int(1),
@@ -948,8 +1053,8 @@ class TestOrderEmulatorWithSingleOrders:
     @pytest.mark.parametrize(
         "order_side, price",
         [
-            [OrderSide.BUY, ETHUSD_FTX.make_price(5070)],
-            [OrderSide.SELL, ETHUSD_FTX.make_price(5060)],
+            [OrderSide.BUY, ETHUSDT_PERP_BINANCE.make_price(5070)],
+            [OrderSide.SELL, ETHUSDT_PERP_BINANCE.make_price(5060)],
         ],
     )
     def test_submit_trailing_stop_limit_order_with_trigger_price_then_triggers(
@@ -959,7 +1064,7 @@ class TestOrderEmulatorWithSingleOrders:
     ):
         # Arrange
         order = self.strategy.order_factory.trailing_stop_limit(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             order_side=order_side,
             quantity=Quantity.from_int(10),
             limit_offset=Decimal(5),
@@ -972,7 +1077,7 @@ class TestOrderEmulatorWithSingleOrders:
         )
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5060.0"),
             ask=Price.from_str("5070.0"),
             bid_size=Quantity.from_int(1),
@@ -987,7 +1092,7 @@ class TestOrderEmulatorWithSingleOrders:
         self.strategy.submit_order(order)
 
         tick = QuoteTick(
-            instrument_id=ETHUSD_FTX.id,
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
             bid=Price.from_str("5055.0"),
             ask=Price.from_str("5075.0"),
             bid_size=Quantity.from_int(1),
@@ -1001,8 +1106,66 @@ class TestOrderEmulatorWithSingleOrders:
         # Assert
         order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
         assert order.order_type == OrderType.LIMIT
-        assert order.emulation_trigger == TriggerType.NONE
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
         assert len(order.events) == 3
         assert isinstance(order.events[0], OrderInitialized)
         assert isinstance(order.events[1], OrderTriggered)
         assert isinstance(order.events[2], OrderInitialized)
+
+    @pytest.mark.parametrize(
+        "order_side, trigger_price, price",
+        [
+            [
+                OrderSide.BUY,
+                ETHUSDT_PERP_BINANCE.make_price(5070),
+                ETHUSDT_PERP_BINANCE.make_price(5070),
+            ],
+            [
+                OrderSide.SELL,
+                ETHUSDT_PERP_BINANCE.make_price(5060),
+                ETHUSDT_PERP_BINANCE.make_price(5060),
+            ],
+        ],
+    )
+    def test_submit_limit_if_touched_immediately_triggered_releases_limit_order(
+        self,
+        order_side,
+        trigger_price,
+        price,
+    ):
+        # Arrange
+        tick = QuoteTick(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            bid=Price.from_str("5060.0"),
+            ask=Price.from_str("5070.0"),
+            bid_size=Quantity.from_int(1),
+            ask_size=Quantity.from_int(1),
+            ts_event=0,
+            ts_init=0,
+        )
+
+        self.emulator.create_matching_core(ETHUSDT_PERP_BINANCE)
+        self.emulator.on_quote_tick(tick)
+
+        # Act
+        order = self.strategy.order_factory.limit_if_touched(
+            instrument_id=ETHUSDT_PERP_BINANCE.id,
+            order_side=order_side,
+            quantity=Quantity.from_int(10),
+            price=price,
+            trigger_price=trigger_price,
+            trigger_type=TriggerType.BID_ASK,
+            emulation_trigger=TriggerType.BID_ASK,
+        )
+
+        self.strategy.submit_order(order)
+
+        # Assert
+        order = self.cache.order(order.client_order_id)  # Recover transformed order from cache
+        assert order.order_type == OrderType.LIMIT
+        assert order.emulation_trigger == TriggerType.NO_TRIGGER
+        assert len(order.events) == 3
+        assert isinstance(order.events[0], OrderInitialized)
+        assert isinstance(order.events[1], OrderTriggered)
+        assert isinstance(order.events[2], OrderInitialized)
+        assert self.exec_client.calls == ["_start", "submit_order"]

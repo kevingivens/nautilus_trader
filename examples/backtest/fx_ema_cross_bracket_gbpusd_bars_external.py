@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -24,13 +24,15 @@ from nautilus_trader.backtest.data.wranglers import BarDataWrangler
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.backtest.models import FillModel
+from nautilus_trader.backtest.modules import FXRolloverInterestConfig
 from nautilus_trader.backtest.modules import FXRolloverInterestModule
+from nautilus_trader.config.common import RiskEngineConfig
 from nautilus_trader.examples.strategies.ema_cross_bracket import EMACrossBracket
 from nautilus_trader.examples.strategies.ema_cross_bracket import EMACrossBracketConfig
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.data.bar import BarType
 from nautilus_trader.model.enums import AccountType
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Money
 
@@ -40,10 +42,9 @@ if __name__ == "__main__":
     config = BacktestEngineConfig(
         trader_id="BACKTESTER-001",
         log_level="INFO",
-        risk_engine={
-            "bypass": True,  # Example of bypassing pre-trade risk checks for backtests
-            "max_notional_per_order": {"GBP/USD.SIM": 2_000_000},
-        },
+        risk_engine=RiskEngineConfig(
+            bypass=True,  # Example of bypassing pre-trade risk checks for backtests
+        ),
     )
 
     # Build backtest engine
@@ -53,7 +54,8 @@ if __name__ == "__main__":
     # the data is coming from packaged test data.
     provider = TestDataProvider()
     interest_rate_data = provider.read_csv("short-term-interest.csv")
-    fx_rollover_interest = FXRolloverInterestModule(rate_data=interest_rate_data)
+    config = FXRolloverInterestConfig(interest_rate_data)
+    fx_rollover_interest = FXRolloverInterestModule(config=config)
 
     # Create a fill model (optional)
     fill_model = FillModel(
@@ -67,10 +69,10 @@ if __name__ == "__main__":
     SIM = Venue("SIM")
     engine.add_venue(
         venue=SIM,
-        oms_type=OMSType.HEDGING,  # Venue will generate position IDs
+        oms_type=OmsType.HEDGING,  # Venue will generate position IDs
         account_type=AccountType.MARGIN,
         base_currency=USD,  # Standard single-currency account
-        starting_balances=[Money(1_000_000, USD)],  # Single-currency or multi-currency accounts
+        starting_balances=[Money(100_000, USD)],  # Single-currency or multi-currency accounts
         fill_model=fill_model,
         modules=[fx_rollover_interest],
     )
@@ -106,7 +108,7 @@ if __name__ == "__main__":
         fast_ema_period=10,
         slow_ema_period=20,
         bracket_distance_atr=3.0,
-        trade_size=Decimal(1_000_000),
+        trade_size=Decimal(1_000),
     )
     # Instantiate and add your strategy
     strategy = EMACrossBracket(config=config)

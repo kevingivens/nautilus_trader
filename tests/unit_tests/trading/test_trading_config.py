@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -18,13 +18,12 @@ import msgspec
 from nautilus_trader.config import ImportableStrategyConfig
 from nautilus_trader.config import StrategyFactory
 from nautilus_trader.examples.strategies.ema_cross import EMACross
-from nautilus_trader.examples.strategies.ema_cross import EMACrossConfig
 
 
 class TestStrategyFactory:
     def test_create_from_path(self):
         # Arrange
-        config = EMACrossConfig(
+        config = dict(
             instrument_id="AUD/USD.SIM",
             bar_type="AUD/USD.SIM-15-MINUTE-BID-EXTERNAL",
             trade_size=1_000_000,
@@ -43,9 +42,9 @@ class TestStrategyFactory:
         # Assert
         assert isinstance(strategy, EMACross)
         assert (
-            repr(config) == "EMACrossConfig(strategy_id=None, order_id_tag=None, oms_type=None, "
-            "instrument_id='AUD/USD.SIM', bar_type='AUD/USD.SIM-15-MINUTE-BID-EXTERNAL', "
-            "fast_ema_period=10, slow_ema_period=20, trade_size=Decimal('1000000'))"  # noqa
+            repr(config)
+            == "{'instrument_id': 'AUD/USD.SIM', 'bar_type': 'AUD/USD.SIM-15-MINUTE-BID-EXTERNAL',"
+            " 'trade_size': 1000000, 'fast_ema_period': 10, 'slow_ema_period': 20}"  # noqa
         )
 
     def test_create_from_raw(self):
@@ -61,11 +60,11 @@ class TestStrategyFactory:
                     "atr_multiple": "6.0",
                     "trade_size": "0.01",
                 },
-            }
+            },
         )
 
         # Act
-        config = ImportableStrategyConfig.parse_raw(raw)
+        config = ImportableStrategyConfig.parse(raw)
 
         # Assert
         assert isinstance(config, ImportableStrategyConfig)

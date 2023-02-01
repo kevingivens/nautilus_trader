@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,7 +13,7 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-from nautilus_trader.model.orderbook.data cimport Order
+from nautilus_trader.model.orderbook.data cimport BookOrder
 
 
 cdef class Level:
@@ -23,9 +23,9 @@ cdef class Level:
     """The orders at the level.\n\n:returns: `list[Order]`"""
 
     cpdef void bulk_add(self, list orders) except *
-    cpdef void add(self, Order order) except *
-    cpdef void update(self, Order order) except *
-    cpdef void delete(self, Order order) except *
+    cpdef void add(self, BookOrder order) except *
+    cpdef void update(self, BookOrder order) except *
+    cpdef void delete(self, BookOrder order) except *
 
     cpdef double volume(self) except *
     cpdef double exposure(self)

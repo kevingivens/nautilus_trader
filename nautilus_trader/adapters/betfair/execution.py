@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,27 +20,34 @@ from typing import Optional
 
 import msgspec
 import pandas as pd
+from betfair_parser.spec.streaming import STREAM_DECODER
+from betfair_parser.spec.streaming.ocm import OCM
+from betfair_parser.spec.streaming.ocm import UnmatchedOrder
+from betfair_parser.spec.streaming.status import Connection
+from betfair_parser.spec.streaming.status import Status
 
 from nautilus_trader.accounting.factory import AccountFactory
 from nautilus_trader.adapters.betfair.client.core import BetfairClient
 from nautilus_trader.adapters.betfair.client.exceptions import BetfairAPIError
 from nautilus_trader.adapters.betfair.common import B2N_ORDER_STREAM_SIDE
+from nautilus_trader.adapters.betfair.common import BETFAIR_PRICE_PRECISION
 from nautilus_trader.adapters.betfair.common import BETFAIR_QUANTITY_PRECISION
 from nautilus_trader.adapters.betfair.common import BETFAIR_VENUE
 from nautilus_trader.adapters.betfair.common import price_to_probability
 from nautilus_trader.adapters.betfair.common import probability_to_price
-from nautilus_trader.adapters.betfair.parsing import bet_to_order_status_report
-from nautilus_trader.adapters.betfair.parsing import betfair_account_to_account_state
-from nautilus_trader.adapters.betfair.parsing import order_cancel_all_to_betfair
-from nautilus_trader.adapters.betfair.parsing import order_cancel_to_betfair
-from nautilus_trader.adapters.betfair.parsing import order_submit_to_betfair
-from nautilus_trader.adapters.betfair.parsing import order_update_to_betfair
-from nautilus_trader.adapters.betfair.parsing import parse_handicap
+from nautilus_trader.adapters.betfair.parsing.common import betfair_instrument_id
+from nautilus_trader.adapters.betfair.parsing.requests import bet_to_order_status_report
+from nautilus_trader.adapters.betfair.parsing.requests import betfair_account_to_account_state
+from nautilus_trader.adapters.betfair.parsing.requests import order_cancel_all_to_betfair
+from nautilus_trader.adapters.betfair.parsing.requests import order_cancel_to_betfair
+from nautilus_trader.adapters.betfair.parsing.requests import order_submit_to_betfair
+from nautilus_trader.adapters.betfair.parsing.requests import order_update_to_betfair
+from nautilus_trader.adapters.betfair.parsing.requests import parse_handicap
 from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
 from nautilus_trader.adapters.betfair.sockets import BetfairOrderStreamClient
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import LiveClock
-from nautilus_trader.common.logging import LogColor
+from nautilus_trader.common.enums import LogColor
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.core.datetime import millis_to_nanos
@@ -51,7 +58,6 @@ from nautilus_trader.execution.messages import CancelAllOrders
 from nautilus_trader.execution.messages import CancelOrder
 from nautilus_trader.execution.messages import ModifyOrder
 from nautilus_trader.execution.messages import SubmitOrder
-from nautilus_trader.execution.messages import SubmitOrderList
 from nautilus_trader.execution.reports import OrderStatusReport
 from nautilus_trader.execution.reports import PositionStatusReport
 from nautilus_trader.execution.reports import TradeReport
@@ -59,7 +65,8 @@ from nautilus_trader.live.execution_client import LiveExecutionClient
 from nautilus_trader.model.currency import Currency
 from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import LiquiditySide
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
+from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.enums import OrderType
 from nautilus_trader.model.events.account import AccountState
 from nautilus_trader.model.identifiers import AccountId
@@ -117,7 +124,7 @@ class BetfairExecutionClient(LiveExecutionClient):
             loop=loop,
             client_id=ClientId(BETFAIR_VENUE.value),
             venue=BETFAIR_VENUE,
-            oms_type=OMSType.NETTING,
+            oms_type=OmsType.NETTING,
             account_type=AccountType.BETTING,
             base_currency=base_currency,
             instrument_provider=instrument_provider
@@ -138,7 +145,7 @@ class BetfairExecutionClient(LiveExecutionClient):
 
         self.venue_order_id_to_client_order_id: dict[VenueOrderId, ClientOrderId] = {}
         self.pending_update_order_client_ids: set[tuple[ClientOrderId, VenueOrderId]] = set()
-        self.published_executions: dict[ClientOrderId, TradeId] = defaultdict(list)
+        self.published_executions: dict[ClientOrderId, list[TradeId]] = defaultdict(list)
 
         self._set_account_id(AccountId(f"{BETFAIR_VENUE}-001"))
         AccountFactory.register_calculated_account(BETFAIR_VENUE.value)
@@ -148,14 +155,6 @@ class BetfairExecutionClient(LiveExecutionClient):
         return self._instrument_provider
 
     # -- CONNECTION HANDLERS ----------------------------------------------------------------------
-
-    def connect(self):
-        self._log.info("Connecting...")
-        self._loop.create_task(self._connect())
-
-    def disconnect(self):
-        self._log.info("Disconnecting...")
-        self._loop.create_task(self._disconnect())
 
     async def _connect(self):
         self._log.info("Connecting to BetfairClient...")
@@ -169,9 +168,6 @@ class BetfairExecutionClient(LiveExecutionClient):
         ]
         await asyncio.gather(*aws)
         self.create_task(self.watch_stream())
-        self._set_connected(True)
-        assert self.is_connected
-        self._log.info("Connected.")
 
     async def _disconnect(self) -> None:
         # Close socket
@@ -182,14 +178,11 @@ class BetfairExecutionClient(LiveExecutionClient):
         self._log.info("Closing BetfairClient...")
         await self._client.disconnect()
 
-        self._set_connected(False)
-        self._log.info("Disconnected.")
-
     async def watch_stream(self):
         """Ensure socket stream is connected"""
-        while True:
+        while self.stream.is_running:
             if not self.stream.is_connected:
-                self.stream.connect()
+                await self.stream.connect()
             await asyncio.sleep(1)
 
     # -- ERROR HANDLING ---------------------------------------------------------------------------
@@ -291,11 +284,6 @@ class BetfairExecutionClient(LiveExecutionClient):
 
     # -- COMMAND HANDLERS -------------------------------------------------------------------------
 
-    def submit_order(self, command: SubmitOrder) -> None:
-        PyCondition.not_none(command, "command")
-
-        self.create_task(self._submit_order(command))
-
     async def _submit_order(self, command: SubmitOrder) -> None:
         self._log.debug(f"Received submit_order {command}")
 
@@ -342,9 +330,9 @@ class BetfairExecutionClient(LiveExecutionClient):
                 self._log.debug("Generated _generate_order_rejected")
                 return
             else:
-                venue_order_id = VenueOrderId(report["betId"])
+                venue_order_id = VenueOrderId(str(report["betId"]))
                 self._log.debug(
-                    f"Matching venue_order_id: {venue_order_id} to client_order_id: {client_order_id}"
+                    f"Matching venue_order_id: {venue_order_id} to client_order_id: {client_order_id}",
                 )
                 self.venue_order_id_to_client_order_id[venue_order_id] = client_order_id
                 self.generate_order_accepted(
@@ -355,15 +343,6 @@ class BetfairExecutionClient(LiveExecutionClient):
                     ts_event=self._clock.timestamp_ns(),
                 )
                 self._log.debug("Generated _generate_order_accepted")
-
-    def submit_order_list(self, command: SubmitOrderList):
-        # TODO(cs): Implement
-        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
-
-    def modify_order(self, command: ModifyOrder) -> None:
-        PyCondition.not_none(command, "command")
-
-        self.create_task(self._modify_order(command))
 
     async def _modify_order(self, command: ModifyOrder) -> None:
         self._log.debug(f"Received modify_order {command}")
@@ -382,7 +361,7 @@ class BetfairExecutionClient(LiveExecutionClient):
 
         if existing_order is None:
             self._log.warning(
-                f"Attempting to update order that does not exist in the cache: {command}"
+                f"Attempting to update order that does not exist in the cache: {command}",
             )
             self.generate_order_modify_rejected(
                 strategy_id=command.strategy_id,
@@ -416,7 +395,7 @@ class BetfairExecutionClient(LiveExecutionClient):
             instrument=instrument,
         )
         self.pending_update_order_client_ids.add(
-            (command.client_order_id, existing_order.venue_order_id)
+            (command.client_order_id, existing_order.venue_order_id),
         )
         try:
             result = await self._client.replace_orders(**kw)
@@ -452,7 +431,9 @@ class BetfairExecutionClient(LiveExecutionClient):
             # Check the venue_order_id that has been deleted currently exists on our order
             deleted_bet_id = report["cancelInstructionReport"]["instruction"]["betId"]
             self._log.debug(f"{existing_order}, {deleted_bet_id}")
-            assert existing_order.venue_order_id == VenueOrderId(deleted_bet_id)
+            assert existing_order.venue_order_id == VenueOrderId(
+                deleted_bet_id,
+            ), f"{deleted_bet_id} != {existing_order.venue_order_id}"
 
             update_instruction = report["placeInstructionReport"]
             venue_order_id = VenueOrderId(update_instruction["betId"])
@@ -467,17 +448,12 @@ class BetfairExecutionClient(LiveExecutionClient):
                     precision=BETFAIR_QUANTITY_PRECISION,
                 ),
                 price=price_to_probability(
-                    str(update_instruction["instruction"]["limitOrder"]["price"])
+                    str(update_instruction["instruction"]["limitOrder"]["price"]),
                 ),
                 trigger_price=None,  # Not applicable for Betfair
                 ts_event=self._clock.timestamp_ns(),
                 venue_order_id_modified=True,
             )
-
-    def cancel_order(self, command: CancelOrder) -> None:
-        PyCondition.not_none(command, "command")
-
-        self.create_task(self._cancel_order(command))
 
     async def _cancel_order(self, command: CancelOrder) -> None:
         self._log.debug(f"Received cancel order: {command}")
@@ -531,7 +507,7 @@ class BetfairExecutionClient(LiveExecutionClient):
                 return
 
             self._log.debug(
-                f"Matching venue_order_id: {venue_order_id} to client_order_id: {command.client_order_id}"
+                f"Matching venue_order_id: {venue_order_id} to client_order_id: {command.client_order_id}",
             )
             self.venue_order_id_to_client_order_id[venue_order_id] = command.client_order_id
             self.generate_order_canceled(
@@ -543,10 +519,9 @@ class BetfairExecutionClient(LiveExecutionClient):
             )
             self._log.debug("Sent order cancel")
 
-    def cancel_all_orders(self, command: CancelAllOrders) -> None:
-        PyCondition.not_none(command, "command")
-
-        open_orders = self._cache.open_orders(
+    # TODO(cs): Currently not in use as old behavior restored to cancel orders individually
+    async def _cancel_all_orders(self, command: CancelAllOrders) -> None:
+        open_orders = self._cache.orders_open(
             instrument_id=command.instrument_id,
             side=command.order_side,
         )
@@ -572,8 +547,6 @@ class BetfairExecutionClient(LiveExecutionClient):
         #
         # self.create_task(self._cancel_order(command))
 
-    # TODO(cs): Currently not in use as old behavior restored to cancel orders individually
-    async def _cancel_all_orders(self, command: CancelAllOrders) -> None:
         # TODO(cs): I've had to duplicate the logic as couldn't refactor and tease
         #  apart the cancel rejects and trade report. This will possibly fail
         #  badly if there are any API errors...
@@ -625,7 +598,7 @@ class BetfairExecutionClient(LiveExecutionClient):
                 # return
 
             self._log.debug(
-                f"Matching venue_order_id: {venue_order_id} to client_order_id: {command.client_order_id}"
+                f"Matching venue_order_id: {venue_order_id} to client_order_id: {command.client_order_id}",
             )
             self.venue_order_id_to_client_order_id[venue_order_id] = command.client_order_id
             self.generate_order_canceled(
@@ -665,16 +638,6 @@ class BetfairExecutionClient(LiveExecutionClient):
 
     # -- DEBUGGING --------------------------------------------------------------------------------
 
-    def create_task(self, coro):
-        self._loop.create_task(self._check_task(coro))
-
-    async def _check_task(self, coro):
-        try:
-            awaitable = await coro
-            return awaitable
-        except Exception as e:
-            self._log.exception("Unhandled exception", e)
-
     def client(self) -> BetfairClient:
         return self._client
 
@@ -682,35 +645,77 @@ class BetfairExecutionClient(LiveExecutionClient):
 
     def handle_order_stream_update(self, raw: bytes) -> None:
         """Handle an update from the order stream socket"""
-        update = msgspec.json.decode(raw)
-        self.create_task(self._handle_order_stream_update(update=update))
+        update = STREAM_DECODER.decode(raw)
+        if isinstance(update, OCM):
+            self.create_task(self._handle_order_stream_update(update))
+        elif isinstance(update, Connection):
+            pass
+        elif isinstance(update, Status):
+            self._handle_status_message(update=update)
+        else:
+            raise RuntimeError
 
-    async def _handle_order_stream_update(self, update: dict):
-        for market in update.get("oc", []):
-            # market_id = market["id"]
-            for selection in market.get("orc", []):
-                if selection.get("fullImage", False):
-                    # TODO (bm) - need to replace orders for this selection - probably via a recon
-                    self._log.debug("Received full order image")
-                for order_update in selection.get("uo", []):
-                    await self._check_order_update(order_update)
-                    if order_update["status"] == "E":
-                        self._handle_stream_executable_order_update(update=order_update)
-                    elif order_update["status"] == "EC":
-                        self._handle_stream_execution_complete_order_update(update=order_update)
+    async def _handle_order_stream_update(self, order_change_message: OCM):
+        for market in order_change_message.oc:
+            for selection in market.orc:
+                for unmatched_order in selection.uo:
+                    await self._check_order_update(unmatched_order=unmatched_order)
+                    if unmatched_order.status == "E":
+                        self._handle_stream_executable_order_update(unmatched_order=unmatched_order)
+                    elif unmatched_order.status == "EC":
+                        self._handle_stream_execution_complete_order_update(
+                            unmatched_order=unmatched_order,
+                        )
                     else:
-                        self._log.warning(f"Unknown order state: {order_update}")
+                        self._log.warning(f"Unknown order state: {unmatched_order}")
+                if selection.fullImage:
+                    self.check_cache_against_order_image(order_change_message)
+                    continue
 
-    async def _check_order_update(self, update: dict):
+    def check_cache_against_order_image(self, order_change_message: OCM):
+        for market in order_change_message.oc:
+            for selection in market.orc:
+                instrument_id = betfair_instrument_id(
+                    market_id=market.id,
+                    runner_id=str(selection.id),
+                    runner_handicap=selection.hc,
+                )
+                orders = self._cache.orders()
+                venue_orders = {o.venue_order_id: o for o in orders}
+                for unmatched_order in selection.uo:
+                    # We can match on venue_order_id here
+                    order = venue_orders.get(VenueOrderId(unmatched_order.id))
+                    if order is not None:
+                        continue  # Order exists
+                    self._log.error(f"UNKNOWN ORDER NOT IN CACHE: {unmatched_order=} ")
+                matched_orders = [(OrderSide.SELL, lay) for lay in selection.ml] + [
+                    (OrderSide.BUY, back) for back in selection.mb
+                ]
+                for side, matched_order in matched_orders:
+                    # We don't get much information from Betfair here, try our best to match order
+                    price = price_to_probability(str(matched_order.price))
+                    quantity = Quantity(matched_order.size, precision=BETFAIR_QUANTITY_PRECISION)
+                    order = [
+                        o
+                        for o in orders
+                        if o.side == side and o.price == price and o.quantity == quantity
+                    ]
+                    if order:
+                        continue
+                    else:
+                        self._log.error(f"UNKNOWN FILL: {instrument_id=} {matched_order}")
+
+    async def _check_order_update(self, unmatched_order: UnmatchedOrder):
         """
         Ensure we have a client_order_id, instrument and order for this venue order update
         """
-        venue_order_id = VenueOrderId(str(update["id"]))
+        venue_order_id = VenueOrderId(str(unmatched_order.id))
         client_order_id = await self.wait_for_order(
-            venue_order_id=venue_order_id, timeout_seconds=10.0
+            venue_order_id=venue_order_id,
+            timeout_seconds=10.0,
         )
         if client_order_id is None:
-            self._log.warning(f"Can't find client_order_id for {update}")
+            self._log.warning(f"Can't find client_order_id for {unmatched_order}")
             return
         PyCondition.type(client_order_id, ClientOrderId, "client_order_id")
         order = self._cache.order(client_order_id)
@@ -718,11 +723,11 @@ class BetfairExecutionClient(LiveExecutionClient):
         instrument = self._cache.instrument(order.instrument_id)
         PyCondition.not_none(instrument, "instrument")
 
-    def _handle_stream_executable_order_update(self, update: dict) -> None:
+    def _handle_stream_executable_order_update(self, unmatched_order: UnmatchedOrder) -> None:
         """
         Handle update containing "E" (executable) order update
         """
-        venue_order_id = VenueOrderId(update["id"])
+        venue_order_id = VenueOrderId(unmatched_order.id)
         client_order_id = self.venue_order_id_to_client_order_id[venue_order_id]
         order = self._cache.order(client_order_id)
         instrument = self._cache.instrument(order.instrument_id)
@@ -730,7 +735,9 @@ class BetfairExecutionClient(LiveExecutionClient):
         # Check if this is the first time seeing this order (backtest or replay)
         if venue_order_id in self.venue_order_id_to_client_order_id:
             # We've already sent an accept for this order in self._submit_order
-            self._log.debug(f"Skipping order_accept as order exists: venue_order_id={update['id']}")
+            self._log.debug(
+                f"Skipping order_accept as order exists: venue_order_id={unmatched_order.id}",
+            )
         else:
             raise RuntimeError()
             # self.generate_order_accepted(
@@ -742,11 +749,14 @@ class BetfairExecutionClient(LiveExecutionClient):
             # )
 
         # Check for any portion executed
-        if update["sm"] > 0 and update["sm"] > order.filled_qty:
-            trade_id = create_trade_id(update)
+        if unmatched_order.sm > 0 and unmatched_order.sm > order.filled_qty:
+            trade_id = create_trade_id(unmatched_order)
             if trade_id not in self.published_executions[client_order_id]:
-                fill_qty = update["sm"] - order.filled_qty
-                fill_price = self._determine_fill_price(update=update, order=order)
+                fill_qty = unmatched_order.sm - order.filled_qty
+                fill_price = self._determine_fill_price(
+                    unmatched_order=unmatched_order,
+                    order=order,
+                )
                 self.generate_order_filled(
                     strategy_id=order.strategy_id,
                     instrument_id=order.instrument_id,
@@ -754,60 +764,67 @@ class BetfairExecutionClient(LiveExecutionClient):
                     venue_order_id=venue_order_id,
                     venue_position_id=None,  # Can be None
                     trade_id=trade_id,
-                    order_side=B2N_ORDER_STREAM_SIDE[update["side"]],
+                    order_side=B2N_ORDER_STREAM_SIDE[unmatched_order.side],
                     order_type=OrderType.LIMIT,
                     last_qty=Quantity(fill_qty, BETFAIR_QUANTITY_PRECISION),
                     last_px=price_to_probability(str(fill_price)),
-                    # avg_px=Decimal(order['avp']),
                     quote_currency=instrument.quote_currency,
                     commission=Money(0, self.base_currency),
-                    liquidity_side=LiquiditySide.NONE,
-                    ts_event=millis_to_nanos(update["md"]),
+                    liquidity_side=LiquiditySide.NO_LIQUIDITY_SIDE,
+                    ts_event=millis_to_nanos(unmatched_order.md),
                 )
                 self.published_executions[client_order_id].append(trade_id)
 
-    def _determine_fill_price(self, update: dict, order: Order):
-        if "avp" not in update:
+    def _determine_fill_price(self, unmatched_order: UnmatchedOrder, order: Order):
+        if not unmatched_order.avp:
             # We don't have any specifics about the fill, assume it was filled at our price
-            return update["p"]
+            return unmatched_order.p
         if order.filled_qty == 0:
             # New fill, simply return average price
-            return update["avp"]
+            return unmatched_order.avp
         else:
-            new_price = price_to_probability(str(update["avp"]))
+            new_price = price_to_probability(str(unmatched_order.avp))
             prev_price = order.avg_px
             if prev_price == new_price:
                 # Matched at same price
-                return update["avp"]
+                return unmatched_order.avp
             else:
-                prev_price = probability_to_price(order.avg_px)
+                avg_price = Price(order.avg_px, precision=BETFAIR_PRICE_PRECISION)
+                prev_price = probability_to_price(avg_price)
                 prev_size = order.filled_qty
-                new_price = Price.from_str(str(update["avp"]))
-                new_size = update["sm"] - prev_size
+                new_price = Price(unmatched_order.avp, precision=BETFAIR_PRICE_PRECISION)
+                new_size = unmatched_order.sm - prev_size
                 total_size = prev_size + new_size
-                price = (new_price - ((prev_price * (prev_size / total_size)))) / (
+                price = (new_price - (prev_price * (prev_size / total_size))) / (
                     new_size / total_size
                 )
                 self._log.debug(
-                    f"Calculating fill price {prev_price=} {prev_size=} {new_price=} {new_size=} == {price=}"
+                    f"Calculating fill price {prev_price=} {prev_size=} {new_price=} {new_size=} == {price=}",
                 )
                 return price
 
-    def _handle_stream_execution_complete_order_update(self, update: dict) -> None:
+    def _handle_stream_execution_complete_order_update(
+        self,
+        unmatched_order: UnmatchedOrder,
+    ) -> None:
         """
         Handle "EC" (execution complete) order updates
         """
-        venue_order_id = VenueOrderId(str(update["id"]))
+        venue_order_id = VenueOrderId(str(unmatched_order.id))
         client_order_id = self._cache.client_order_id(venue_order_id=venue_order_id)
         order = self._cache.order(client_order_id=client_order_id)
         instrument = self._cache.instrument(order.instrument_id)
+        assert instrument
 
-        if update["sm"] > 0 and update["sm"] > order.filled_qty:
+        if unmatched_order.sm > 0 and unmatched_order.sm > order.filled_qty:
             self._log.debug("")
-            trade_id = create_trade_id(update)
+            trade_id = create_trade_id(unmatched_order)
             if trade_id not in self.published_executions[client_order_id]:
-                fill_qty = update["sm"] - order.filled_qty
-                fill_price = self._determine_fill_price(update=update, order=order)
+                fill_qty = unmatched_order.sm - order.filled_qty
+                fill_price = self._determine_fill_price(
+                    unmatched_order=unmatched_order,
+                    order=order,
+                )
                 # At least some part of this order has been filled
                 self.generate_order_filled(
                     strategy_id=order.strategy_id,
@@ -816,7 +833,7 @@ class BetfairExecutionClient(LiveExecutionClient):
                     venue_order_id=venue_order_id,
                     venue_position_id=None,  # Can be None
                     trade_id=trade_id,
-                    order_side=B2N_ORDER_STREAM_SIDE[update["side"]],
+                    order_side=B2N_ORDER_STREAM_SIDE[unmatched_order.side],
                     order_type=OrderType.LIMIT,
                     last_qty=Quantity(fill_qty, BETFAIR_QUANTITY_PRECISION),
                     last_px=price_to_probability(str(fill_price)),
@@ -824,24 +841,24 @@ class BetfairExecutionClient(LiveExecutionClient):
                     # avg_px=order['avp'],
                     commission=Money(0, self.base_currency),
                     liquidity_side=LiquiditySide.TAKER,  # TODO - Fix this?
-                    ts_event=millis_to_nanos(update["md"]),
+                    ts_event=millis_to_nanos(unmatched_order.md),
                 )
                 self.published_executions[client_order_id].append(trade_id)
 
-        cancel_qty = update["sc"] + update["sl"] + update["sv"]
+        cancel_qty = unmatched_order.sc + unmatched_order.sl + unmatched_order.sv
         if cancel_qty > 0 and not order.is_closed:
             assert (
-                update["sm"] + cancel_qty == update["s"]
-            ), f"Size matched + canceled != total: {update}"
+                unmatched_order.sm + cancel_qty == unmatched_order.s
+            ), f"Size matched + canceled != total: {unmatched_order}"
             # If this is the result of a ModifyOrder, we don't want to emit a cancel
 
             key = (client_order_id, venue_order_id)
             self._log.debug(
-                f"cancel key: {key}, pending_update_order_client_ids: {self.pending_update_order_client_ids}"
+                f"cancel key: {key}, pending_update_order_client_ids: {self.pending_update_order_client_ids}",
             )
             if key not in self.pending_update_order_client_ids:
                 # The remainder of this order has been canceled
-                cancelled_ts = update.get("cd") or update.get("ld") or update.get("md")
+                cancelled_ts = unmatched_order.cd or unmatched_order.ld or unmatched_order.md
                 if cancelled_ts is not None:
                     cancelled_ts = millis_to_nanos(cancelled_ts)
                 else:
@@ -860,14 +877,10 @@ class BetfairExecutionClient(LiveExecutionClient):
             # This execution is complete - no need to track this anymore
             del self.published_executions[client_order_id]
 
-    def _handle_stream_execution_matched_fills(self, selection: dict) -> None:
-        for _ in selection.get("mb", []):
-            pass
-        for _ in selection.get("ml", []):
-            pass
-
     async def wait_for_order(
-        self, venue_order_id: VenueOrderId, timeout_seconds=10.0
+        self,
+        venue_order_id: VenueOrderId,
+        timeout_seconds=10.0,
     ) -> Optional[ClientOrderId]:
         """
         We may get an order update from the socket before our submit_order
@@ -886,7 +899,7 @@ class BetfairExecutionClient(LiveExecutionClient):
             if venue_order_id in self.venue_order_id_to_client_order_id:
                 client_order_id = self.venue_order_id_to_client_order_id[venue_order_id]
                 self._log.debug(
-                    f"Found order in {nanos_to_secs(now - start)} sec: {client_order_id}"
+                    f"Found order in {nanos_to_secs(now - start)} sec: {client_order_id}",
                 )
                 return client_order_id
             now = self._clock.timestamp_ns()
@@ -894,24 +907,33 @@ class BetfairExecutionClient(LiveExecutionClient):
         self._log.warning(
             f"Failed to find venue_order_id: {venue_order_id} "
             f"after {timeout_seconds} seconds"
-            f"\nexisting: {self.venue_order_id_to_client_order_id})"
+            f"\nexisting: {self.venue_order_id_to_client_order_id})",
         )
         return None
 
+    def _handle_status_message(self, update: Status):
+        if update.statusCode == "FAILURE" and update.connectionClosed:
+            self._log.error(str(update))
+            if update.errorCode == "MAX_CONNECTION_LIMIT_EXCEEDED":
+                raise RuntimeError("No more connections available")
+            else:
+                self._log.info("Attempting reconnect")
+                self._loop.create_task(self.stream.reconnect())
 
-def create_trade_id(uo: dict) -> TradeId:
+
+def create_trade_id(uo: UnmatchedOrder) -> TradeId:
     data: bytes = msgspec.json.encode(
         (
-            uo["id"],
-            uo["p"],
-            uo["s"],
-            uo["side"],
-            uo["pt"],
-            uo["ot"],
-            uo["pd"],
-            uo.get("md"),
-            uo.get("avp"),
-            uo.get("sm"),
-        )
+            uo.id,
+            uo.p,
+            uo.s,
+            uo.side,
+            uo.pt,
+            uo.ot,
+            uo.pd,
+            uo.md,
+            uo.avp,
+            uo.sm,
+        ),
     )
     return TradeId(hashlib.sha1(data).hexdigest())  # noqa (S303 insecure SHA1)

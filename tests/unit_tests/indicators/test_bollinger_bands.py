@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,7 +15,7 @@
 
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.indicators.bollinger_bands import BollingerBands
-from tests.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -72,7 +72,7 @@ class TestBollingerBands:
 
         # Assert
         assert indicator.has_inputs
-        assert indicator.middle == 1.1666916666666667
+        assert indicator.middle == 1.0000200000000001
 
     def test_handle_trade_tick_updates_indicator(self):
         # Arrange

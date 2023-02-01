@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -18,8 +18,8 @@ from nautilus_trader.model.orderbook.book import L1OrderBook
 from nautilus_trader.model.orderbook.book import L2OrderBook
 from nautilus_trader.model.orderbook.book import L3OrderBook
 from nautilus_trader.model.orderbook.error import BookIntegrityError
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 def test_l3_feed():
@@ -39,14 +39,14 @@ def test_l3_feed():
                 book.check_integrity()
             except BookIntegrityError:
                 book.delete(order=m["order"])
-                skip_deletes.append(m["order"].id)
-        elif m["op"] == "delete" and m["order"].id not in skip_deletes:
+                skip_deletes.append(m["order"].order_id)
+        elif m["op"] == "delete" and m["order"].order_id not in skip_deletes:
             book.delete(order=m["order"])
         book.check_integrity()
     assert i == 100_047
     assert book.best_ask_level().price == 61405.27923706
     assert book.best_ask_level().volume() == 0.12227
-    assert book.best_bid_level().price == Price.from_int(61391)
+    assert book.best_bid_level().price == Price.from_int(61_391)
     assert book.best_bid_level().volume() == 1
 
 
@@ -67,7 +67,7 @@ def test_l2_feed():
     for i, m in enumerate(TestDataStubs.l2_feed()):
         if not m or m["op"] == "trade":
             pass
-        elif (i, m["order"].id) in skip:
+        elif (i, m["order"].order_id) in skip:
             continue
         elif m["op"] == "update":
             book.update(order=m["order"])

@@ -3,8 +3,10 @@
 The NautilusTrader design allows for integrating data publishers and/or trading venues
 through adapter implementations, these can be found in the top level `adapters` subpackage. 
 
-A full integration adapter is typically comprised of the following main components:
+An integrations adapter is _typically_ comprised of the following main components:
 
+- `HttpClient`
+- `WebSocketClient`
 - `InstrumentProvider`
 - `DataClient`
 - `ExecutionClient`
@@ -66,7 +68,7 @@ InstrumentProviderConfig(load_all=True)
 - Only those instruments explicitly specified in the configuration are loaded on start:
 
 ```python
-InstrumentProviderConfig(load_ids=["BTCUSDT-PERP.FTX", "ETHUSDT-PERP.FTX"])
+InstrumentProviderConfig(load_ids=["BTCUSDT-PERP.BINANCE", "ETHUSDT-PERP.BINANCE"])
 ```
 
 ## Data Clients

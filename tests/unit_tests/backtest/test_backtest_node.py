@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,8 +13,9 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-import json
 from decimal import Decimal
+
+import msgspec.json
 
 from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.backtest.node import BacktestNode
@@ -24,13 +25,13 @@ from nautilus_trader.config import BacktestVenueConfig
 from nautilus_trader.config import ImportableStrategyConfig
 from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.persistence.funcs import parse_bytes
-from tests.test_kit.mocks.data import aud_usd_data_loader
-from tests.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.mocks.data import aud_usd_data_loader
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
 
 
 class TestBacktestNode:
     def setup(self):
-        self.catalog = data_catalog_setup()
+        self.catalog = data_catalog_setup(protocol="memory", path="/.nautilus/catalog")
         self.venue_config = BacktestVenueConfig(
             name="SIM",
             oms_type="HEDGING",
@@ -59,16 +60,16 @@ class TestBacktestNode:
                     trade_size=Decimal(1_000_000),
                     order_id_tag="001",
                 ),
-            )
+            ),
         ]
         self.backtest_configs = [
             BacktestRunConfig(
                 engine=BacktestEngineConfig(strategies=self.strategies),
                 venues=[self.venue_config],
                 data=[self.data_config],
-            )
+            ),
         ]
-        aud_usd_data_loader()  # Load sample data
+        aud_usd_data_loader(self.catalog)  # Load sample data
 
     def test_init(self):
         node = BacktestNode(configs=self.backtest_configs)
@@ -118,7 +119,7 @@ class TestBacktestNode:
 
     def test_node_config_from_raw(self):
         # Arrange
-        raw = json.dumps(
+        raw = msgspec.json.encode(
             {
                 "engine": {
                     "trader_id": "Test-111",
@@ -131,7 +132,7 @@ class TestBacktestNode:
                         "account_type": "MARGIN",
                         "base_currency": "USD",
                         "starting_balances": ["1000000 USD"],
-                    }
+                    },
                 ],
                 "data": [
                     {
@@ -141,7 +142,7 @@ class TestBacktestNode:
                         "instrument_id": "AUD/USD.SIM",
                         "start_time": 1580398089820000000,
                         "end_time": 1580504394501000000,
-                    }
+                    },
                 ],
                 "strategies": [
                     {
@@ -155,13 +156,13 @@ class TestBacktestNode:
                             "trade_size": 1_000_000,
                             "order_id_tag": "001",
                         },
-                    }
+                    },
                 ],
-            }
+            },
         )
 
         # Act
-        config = BacktestRunConfig.parse_raw(raw)
+        config = BacktestRunConfig.parse(raw)
         node = BacktestNode(configs=[config])
 
         # Assert

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -37,8 +37,8 @@ from nautilus_trader.model.identifiers import TradeId
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 ETHUSDT_BINANCE = TestInstrumentProvider.ethusdt_binance()
@@ -318,7 +318,7 @@ class TestBinanceSpotDataClient:
             instrument_id=ETHUSDT_BINANCE.id,
             price=Price.from_str("4149.74000000"),
             size=Quantity.from_str("0.43870000"),
-            aggressor_side=AggressorSide.SELL,
+            aggressor_side=AggressorSide.SELLER,
             trade_id=TradeId("705291099"),
             ts_event=1639351062243000064,
             ts_init=handler[0].ts_init,

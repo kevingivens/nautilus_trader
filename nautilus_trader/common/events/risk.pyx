@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -12,7 +12,8 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
-import json
+
+import re
 
 import msgspec
 
@@ -21,8 +22,9 @@ from libc.stdint cimport uint64_t
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.message cimport Event
 from nautilus_trader.core.uuid cimport UUID4
-from nautilus_trader.model.c_enums.trading_state cimport TradingState
-from nautilus_trader.model.c_enums.trading_state cimport TradingStateParser
+from nautilus_trader.model.enums_c cimport TradingState
+from nautilus_trader.model.enums_c cimport trading_state_from_str
+from nautilus_trader.model.enums_c cimport trading_state_to_str
 from nautilus_trader.model.identifiers cimport TraderId
 
 
@@ -92,7 +94,7 @@ cdef class TradingStateChanged(RiskEvent):
         return (
             f"{type(self).__name__}("
             f"trader_id={self.trader_id.to_str()}, "
-            f"state={TradingStateParser.to_str(self.state)}, "
+            f"state={trading_state_to_str(self.state)}, "
             f"config={self.config}, "
             f"event_id={self.id.to_str()})"
         )
@@ -101,7 +103,7 @@ cdef class TradingStateChanged(RiskEvent):
         return (
             f"{type(self).__name__}("
             f"trader_id={self.trader_id.to_str()}, "
-            f"state={TradingStateParser.to_str(self.state)}, "
+            f"state={trading_state_to_str(self.state)}, "
             f"config={self.config}, "
             f"event_id={self.id.to_str()}, "
             f"ts_init={self.ts_init})"
@@ -112,8 +114,8 @@ cdef class TradingStateChanged(RiskEvent):
         Condition.not_none(values, "values")
         return TradingStateChanged(
             trader_id=TraderId(values["trader_id"]),
-            state=TradingStateParser.from_str(values["state"]),
-            config=json.loads(values["config"]),
+            state=trading_state_from_str(values["state"]),
+            config=msgspec.json.decode(values["config"]),
             event_id=UUID4(values["event_id"]),
             ts_event=values["ts_event"],
             ts_init=values["ts_init"],
@@ -126,19 +128,20 @@ cdef class TradingStateChanged(RiskEvent):
         try:
             config_bytes = msgspec.json.encode(obj.config)
         except TypeError as e:
-            if str(e).startswith("Type is not JSON serializable"):
-                type_str = str(e).split(":")[1].strip()
+            match = re.match("Encoding objects of type (\w+) is unsupported", str(e))
+            if match:
+                type_str = match.groups()[0]
                 raise TypeError(
-                    f"Cannot serialize config as {e}. "
+                    f"Serialization failed: `{e}`. "
                     f"You can register a new serializer for `{type_str}` through "
-                    f"`Default.register_serializer`.",
+                    f"`nautilus_trader.config.backtest.register_json_encoding`.",
                 )
             else:
                 raise e
         return {
             "type": "TradingStateChanged",
             "trader_id": obj.trader_id.to_str(),
-            "state": TradingStateParser.to_str(obj.state),
+            "state": trading_state_to_str(obj.state),
             "config": config_bytes,
             "event_id": obj.id.to_str(),
             "ts_event": obj.ts_event,

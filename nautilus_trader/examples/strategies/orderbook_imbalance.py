@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,11 +17,15 @@ from decimal import Decimal
 from typing import Optional
 
 from nautilus_trader.config import StrategyConfig
+from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.model.enums import BookType
 from nautilus_trader.model.enums import OrderSide
+from nautilus_trader.model.enums import TimeInForce
+from nautilus_trader.model.enums import book_type_from_str
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.instruments.base import Instrument
 from nautilus_trader.model.orderbook.book import OrderBook
+from nautilus_trader.model.orderbook.data import BookOrder
 from nautilus_trader.model.orderbook.data import OrderBookData
 from nautilus_trader.trading.strategy import Strategy
 
@@ -50,7 +54,7 @@ class OrderBookImbalanceConfig(StrategyConfig):
     order_id_tag : str
         The unique order ID tag for the strategy. Must be unique
         amongst all running strategies for a particular trader ID.
-    oms_type : OMSType
+    oms_type : OmsType
         The order management system type for the strategy. This will determine
         how the `ExecutionEngine` handles position IDs (see docs).
     """
@@ -59,6 +63,8 @@ class OrderBookImbalanceConfig(StrategyConfig):
     max_trade_size: Decimal
     trigger_min_size: float = 100.0
     trigger_imbalance_ratio: float = 0.20
+    book_type: str = "L2_MBP"
+    use_quote_ticks: bool = False
 
 
 class OrderBookImbalance(Strategy):
@@ -83,8 +89,10 @@ class OrderBookImbalance(Strategy):
         self.max_trade_size = Decimal(config.max_trade_size)
         self.trigger_min_size = config.trigger_min_size
         self.trigger_imbalance_ratio = config.trigger_imbalance_ratio
-
         self.instrument: Optional[Instrument] = None
+        if self.config.use_quote_ticks:
+            assert self.config.book_type == "L1_TBBO"
+        self.book_type: BookType = book_type_from_str(self.config.book_type)
         self._book = None  # type: Optional[OrderBook]
 
     def on_start(self):
@@ -95,14 +103,13 @@ class OrderBookImbalance(Strategy):
             self.stop()
             return
 
-        self.subscribe_order_book_deltas(
-            instrument_id=self.instrument.id,
-            book_type=BookType.L2_MBP,
-        )
-        self._book = OrderBook.create(
-            instrument=self.instrument,
-            book_type=BookType.L2_MBP,
-        )
+        if self.config.use_quote_ticks:
+            book_type = BookType.L1_TBBO
+            self.subscribe_quote_ticks(instrument_id=self.instrument.id)
+        else:
+            book_type = book_type_from_str(self.config.book_type)
+            self.subscribe_order_book_deltas(instrument_id=self.instrument.id, book_type=book_type)
+        self._book = OrderBook.create(instrument=self.instrument, book_type=book_type)
 
     def on_order_book_delta(self, data: OrderBookData):
         """Actions to be performed when a delta is received."""
@@ -111,6 +118,25 @@ class OrderBookImbalance(Strategy):
             return
 
         self._book.apply(data)
+        if self._book.spread():
+            self.check_trigger()
+
+    def on_quote_tick(self, tick: QuoteTick):
+        """Actions to be performed when a delta is received."""
+        bid = BookOrder(
+            price=tick.bid.as_double(),
+            size=tick.bid_size.as_double(),
+            side=OrderSide.BUY,
+        )
+        ask = BookOrder(
+            price=tick.ask.as_double(),
+            size=tick.ask_size.as_double(),
+            side=OrderSide.SELL,
+        )
+
+        self._book.clear()
+        self._book.update(bid)
+        self._book.update(ask)
         if self._book.spread():
             self.check_trigger()
 
@@ -130,23 +156,28 @@ class OrderBookImbalance(Strategy):
             self.log.error("No instrument loaded.")
             return
 
-        bid_volume = self._book.best_bid_qty()
-        ask_volume = self._book.best_ask_qty()
-        if not (bid_volume and ask_volume):
+        bid_size = self._book.best_bid_qty()
+        ask_size = self._book.best_ask_qty()
+        if not (bid_size and ask_size):
             return
 
-        self.log.info(f"Book: {self._book.best_bid_price()} @ {self._book.best_ask_price()}")
-        smaller = min(bid_volume, ask_volume)
-        larger = max(bid_volume, ask_volume)
+        smaller = min(bid_size, ask_size)
+        larger = max(bid_size, ask_size)
         ratio = smaller / larger
+        self.log.info(
+            f"Book: {self._book.best_bid_price()} @ {self._book.best_ask_price()} ({ratio=:0.2f})",
+        )
         if larger > self.trigger_min_size and ratio < self.trigger_imbalance_ratio:
-            if bid_volume > ask_volume:
+            if len(self.cache.orders_inflight(strategy_id=self.id)) > 0:
+                pass
+            elif bid_size > ask_size:
                 order = self.order_factory.limit(
                     instrument_id=self.instrument.id,
                     price=self.instrument.make_price(self._book.best_ask_price()),
                     order_side=OrderSide.BUY,
-                    quantity=self.instrument.make_qty(ask_volume),
+                    quantity=self.instrument.make_qty(ask_size),
                     post_only=False,
+                    time_in_force=TimeInForce.FOK,
                 )
                 self.submit_order(order)
             else:
@@ -154,8 +185,9 @@ class OrderBookImbalance(Strategy):
                     instrument_id=self.instrument.id,
                     price=self.instrument.make_price(self._book.best_bid_price()),
                     order_side=OrderSide.SELL,
-                    quantity=self.instrument.make_qty(bid_volume),
+                    quantity=self.instrument.make_qty(bid_size),
                     post_only=False,
+                    time_in_force=TimeInForce.FOK,
                 )
                 self.submit_order(order)
 

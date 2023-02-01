@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,10 +13,11 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+from datetime import timedelta
 from decimal import Decimal
 from typing import Optional
 
-from nautilus_trader.common.logging import LogColor
+from nautilus_trader.common.enums import LogColor
 from nautilus_trader.config import StrategyConfig
 from nautilus_trader.core.data import Data
 from nautilus_trader.core.message import Event
@@ -26,6 +27,8 @@ from nautilus_trader.model.data.bar import Bar
 from nautilus_trader.model.data.bar import BarType
 from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.model.enums import OrderSide
+from nautilus_trader.model.enums import OrderType
+from nautilus_trader.model.enums import TimeInForce
 from nautilus_trader.model.enums import TriggerType
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.instruments.base import Instrument
@@ -37,7 +40,7 @@ from nautilus_trader.trading.strategy import Strategy
 # *** IT IS NOT INTENDED TO BE USED TO TRADE LIVE WITH REAL MONEY. ***
 
 
-class EMACrossBracketConfig(StrategyConfig):
+class EMACrossBracketConfig(StrategyConfig, kw_only=True):
     """
     Configuration for ``EMACrossBracket`` instances.
 
@@ -47,35 +50,36 @@ class EMACrossBracketConfig(StrategyConfig):
         The instrument ID for the strategy.
     bar_type : BarType
         The bar type for the strategy.
-    atr_period : int
-        The period for the ATR indicator.
-    fast_ema_period : int
-        The fast EMA period.
-    slow_ema_period : int
-        The slow EMA period.
-    bracket_distance : float
-        The SL and TP bracket distance from entry ATR multiple.
     trade_size : str
         The position size per trade (interpreted as Decimal).
+    atr_period : int, default 20
+        The period for the ATR indicator.
+    fast_ema_period : int, default 10
+        The fast EMA period.
+    slow_ema_period : int, default 20
+        The slow EMA period.
+    bracket_distance_atr : float, default 3.0
+        The SL and TP bracket distance from entry ATR multiple.
+    emulation_trigger : str, default 'NO_TRIGGER'
+        The emulation trigger for submitting emulated orders.
+        If ``None`` then orders will not be emulated.
     order_id_tag : str
         The unique order ID tag for the strategy. Must be unique
         amongst all running strategies for a particular trader ID.
-    emulation_trigger : str, optional
-        The emulation trigger for submitting emulated orders.
-        If ``None`` then orders will not be emulated.
-    oms_type : OMSType
+    oms_type : OmsType
         The order management system type for the strategy. This will determine
         how the `ExecutionEngine` handles position IDs (see docs).
     """
 
     instrument_id: str
     bar_type: str
+    trade_size: Decimal
     atr_period: int = 20
     fast_ema_period: int = 10
     slow_ema_period: int = 20
     bracket_distance_atr: float = 3.0
-    trade_size: Decimal
-    emulation_trigger: str = "NONE"
+    emulation_trigger: str = "NO_TRIGGER"
+    manage_gtd_expiry: bool = True
 
 
 class EMACrossBracket(Strategy):
@@ -128,7 +132,7 @@ class EMACrossBracket(Strategy):
 
         # Subscribe to live data
         self.subscribe_bars(self.bar_type)
-        # self.subscribe_quote_ticks(self.instrument_id)
+        self.subscribe_quote_ticks(self.instrument_id)
 
     def on_quote_tick(self, tick: QuoteTick):
         """
@@ -194,16 +198,21 @@ class EMACrossBracket(Strategy):
             return
 
         bracket_distance: float = self.bracket_distance_atr * self.atr.value
-        order_list: OrderList = self.order_factory.bracket_market(
+        order_list: OrderList = self.order_factory.bracket(
             instrument_id=self.instrument_id,
             order_side=OrderSide.BUY,
             quantity=self.instrument.make_qty(self.trade_size),
-            stop_loss=self.instrument.make_price(last_bar.close - bracket_distance),
-            take_profit=self.instrument.make_price(last_bar.close + bracket_distance),
+            time_in_force=TimeInForce.GTD,
+            expire_time=self.clock.utc_now() + timedelta(seconds=30),
+            entry_price=self.instrument.make_price(last_bar.close),  # TODO
+            entry_trigger_price=self.instrument.make_price(last_bar.close),  # TODO
+            sl_trigger_price=self.instrument.make_price(last_bar.close - bracket_distance),
+            tp_price=self.instrument.make_price(last_bar.close + bracket_distance),
+            entry_order_type=OrderType.LIMIT_IF_TOUCHED,
             emulation_trigger=self.emulation_trigger,
         )
 
-        self.submit_order_list(order_list)
+        self.submit_order_list(order_list, manage_gtd_expiry=True)
 
     def sell(self, last_bar: Bar):
         """
@@ -214,16 +223,21 @@ class EMACrossBracket(Strategy):
             return
 
         bracket_distance: float = self.bracket_distance_atr * self.atr.value
-        order_list: OrderList = self.order_factory.bracket_market(
+        order_list: OrderList = self.order_factory.bracket(
             instrument_id=self.instrument_id,
             order_side=OrderSide.SELL,
             quantity=self.instrument.make_qty(self.trade_size),
-            stop_loss=self.instrument.make_price(last_bar.close + bracket_distance),
-            take_profit=self.instrument.make_price(last_bar.close - bracket_distance),
+            time_in_force=TimeInForce.GTD,
+            expire_time=self.clock.utc_now() + timedelta(seconds=30),
+            entry_price=self.instrument.make_price(last_bar.close),  # TODO
+            entry_trigger_price=self.instrument.make_price(last_bar.close),  # TODO
+            sl_trigger_price=self.instrument.make_price(last_bar.close + bracket_distance),
+            tp_price=self.instrument.make_price(last_bar.close - bracket_distance),
+            entry_order_type=OrderType.LIMIT_IF_TOUCHED,
             emulation_trigger=self.emulation_trigger,
         )
 
-        self.submit_order_list(order_list)
+        self.submit_order_list(order_list, manage_gtd_expiry=True)
 
     def on_data(self, data: Data):
         """
@@ -258,7 +272,7 @@ class EMACrossBracket(Strategy):
 
         # Unsubscribe from data
         self.unsubscribe_bars(self.bar_type)
-        # self.unsubscribe_quote_ticks(self.instrument_id)
+        self.unsubscribe_quote_ticks(self.instrument_id)
 
     def on_reset(self):
         """

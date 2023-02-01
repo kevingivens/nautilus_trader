@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -12,22 +12,19 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
-
 import fsspec
 
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.model.identifiers import Venue
-from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 from nautilus_trader.persistence.external.core import write_objects
 from nautilus_trader.persistence.external.metadata import load_mappings
-from tests.test_kit.mocks.data import data_catalog_setup
-from tests.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
 class TestPersistenceBatching:
     def setup(self):
-        data_catalog_setup()
-        self.catalog = ParquetDataCatalog.from_env()
+        self.catalog = data_catalog_setup(protocol="memory")
         self.fs: fsspec.AbstractFileSystem = self.catalog.fs
 
     def test_metadata_multiple_instruments(self):
@@ -41,11 +38,11 @@ class TestPersistenceBatching:
         write_objects(self.catalog, [audusd_trade, gbpusd_trade])
 
         # Assert
-        meta = load_mappings(fs=self.fs, path="/.nautilus/catalog/data/trade_tick.parquet")
+        meta = load_mappings(fs=self.fs, path=f"{self.catalog.path}/data/trade_tick.parquet")
         expected = {
             "instrument_id": {
                 "GBP/USD.OANDA": "GBP-USD.OANDA",
                 "AUD/USD.OANDA": "AUD-USD.OANDA",
-            }
+            },
         }
         assert meta == expected

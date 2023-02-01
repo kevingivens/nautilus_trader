@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,18 +13,14 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-import pathlib
-from functools import partial
 
 import msgspec
 import pandas as pd
 
 from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.backtest.data.wranglers import BarDataWrangler
 from nautilus_trader.backtest.data.wranglers import QuoteTickDataWrangler
 from nautilus_trader.model.instruments.currency_pair import CurrencyPair
-from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 from nautilus_trader.persistence.external.core import make_raw_files
 from nautilus_trader.persistence.external.core import process_files
 from nautilus_trader.persistence.external.core import process_raw_file
@@ -33,21 +29,18 @@ from nautilus_trader.persistence.external.readers import CSVReader
 from nautilus_trader.persistence.external.readers import LinePreprocessor
 from nautilus_trader.persistence.external.readers import ParquetReader
 from nautilus_trader.persistence.external.readers import TextReader
+from nautilus_trader.test_kit.mocks.data import MockReader
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.data import TestInstrumentProvider
+from tests import TEST_DATA_DIR
 from tests.integration_tests.adapters.betfair.test_kit import BetfairDataProvider
 from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.mocks.data import MockReader
-from tests.test_kit.mocks.data import data_catalog_setup
-from tests.test_kit.stubs.data import TestDataStubs
-
-
-TEST_DATA_DIR = str(pathlib.Path(PACKAGE_ROOT).joinpath("data"))
 
 
 class TestPersistenceParsers:
     def setup(self):
-        data_catalog_setup()
-        self.catalog = ParquetDataCatalog.from_env()
+        self.catalog = data_catalog_setup(protocol="memory")
         self.reader = MockReader()
         self.line_preprocessor = TestLineProcessor()
 
@@ -60,33 +53,30 @@ class TestPersistenceParsers:
     def test_line_preprocessor_post_process(self):
         obj = TestDataStubs.trade_tick_5decimal()
         data = {
-            "ts_init": int(pd.Timestamp("2021-06-29T06:04:11.943000", tz="UTC").to_datetime64())
+            "ts_init": int(pd.Timestamp("2021-06-29T06:04:11.943000", tz="UTC").to_datetime64()),
         }
         obj = self.line_preprocessor.post_process(obj=obj, state=data)
         assert obj.ts_init == 1624946651943000000
 
     def test_byte_reader_parser(self):
-        def block_parser(block: bytes, instrument_provider):
+        def block_parser(block: bytes):
             for raw in block.split(b"\\n"):
                 ts, line = raw.split(b" - ")
                 state = {"ts_init": int(pd.Timestamp(ts.decode(), tz="UTC").to_datetime64())}
                 line = line.strip().replace(b"b'", b"")
                 msgspec.json.decode(line)
                 for obj in BetfairTestStubs.parse_betfair(
-                    line, instrument_provider=instrument_provider
+                    line,
                 ):
                     values = obj.to_dict(obj)
                     values["ts_init"] = state["ts_init"]
                     yield obj.from_dict(values)
 
         provider = BetfairInstrumentProvider.from_instruments(
-            [BetfairTestStubs.betting_instrument()]
+            [TestInstrumentProvider.betting_instrument()],
         )
         block = BetfairDataProvider.badly_formatted_log()
-        reader = ByteReader(
-            block_parser=partial(block_parser, instrument_provider=provider),
-            instrument_provider=provider,
-        )
+        reader = ByteReader(block_parser=block_parser, instrument_provider=provider)
 
         data = list(reader.parse(block=block))
         result = [pd.Timestamp(d.ts_init).isoformat() for d in data]
@@ -244,7 +234,7 @@ class TestPersistenceParsers:
         def parser(data):
             if data is None:
                 return
-            data.loc[:, "timestamp"] = pd.to_datetime(data["timestamp"])
+            data.loc[:, "timestamp"] = pd.to_datetime(data.index)
             data = data.set_index("timestamp")[["bid", "ask", "bid_size", "ask_size"]]
             instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
             wrangler = QuoteTickDataWrangler(instrument)
@@ -252,9 +242,9 @@ class TestPersistenceParsers:
             yield from ticks
 
         reader = ParquetReader(parser=parser)
-        raw_file = make_raw_files(glob_path=f"{TEST_DATA_DIR}/binance-btcusdt-quotes.parquet")[0]
+        raw_file = make_raw_files(glob_path=f"{TEST_DATA_DIR}/quote_tick_data.parquet")[0]
         result = process_raw_file(catalog=self.catalog, raw_file=raw_file, reader=reader)
-        assert result == 451
+        assert result == 9500
 
 
 class TestLineProcessor(LinePreprocessor):

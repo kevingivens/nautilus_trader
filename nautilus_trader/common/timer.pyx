@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,7 +15,6 @@
 
 from typing import Callable
 
-from cpython.object cimport PyObject
 from libc.stdint cimport uint64_t
 
 from threading import Timer as TimerThread
@@ -24,10 +23,12 @@ from nautilus_trader.common.timer cimport TimeEvent
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.message cimport Event
 from nautilus_trader.core.rust.common cimport time_event_free
-from nautilus_trader.core.rust.common cimport time_event_name
+from nautilus_trader.core.rust.common cimport time_event_name_cstr
 from nautilus_trader.core.rust.common cimport time_event_new
 from nautilus_trader.core.rust.core cimport nanos_to_secs
-from nautilus_trader.core.rust.core cimport uuid4_copy
+from nautilus_trader.core.rust.core cimport uuid4_clone
+from nautilus_trader.core.string cimport cstr_to_pystr
+from nautilus_trader.core.string cimport pystr_to_cstr
 from nautilus_trader.core.uuid cimport UUID4
 
 
@@ -58,8 +59,8 @@ cdef class TimeEvent(Event):
         super().__init__(event_id, ts_event, ts_init)
 
         self._mem = time_event_new(
-            <PyObject *>name,
-            uuid4_copy(&event_id._mem),
+            pystr_to_cstr(name),
+            uuid4_clone(&event_id._mem),
             ts_event,
             ts_init,
         )
@@ -69,7 +70,7 @@ cdef class TimeEvent(Event):
             time_event_free(self._mem)  # `self._mem` moved to Rust (then dropped)
 
     cdef str to_str(self):
-        return <str>time_event_name(&self._mem)
+        return cstr_to_pystr(time_event_name_cstr(&self._mem))
 
     def __eq__(self, TimeEvent other) -> bool:
         return self.to_str() == other.to_str()
@@ -98,15 +99,15 @@ cdef class TimeEvent(Event):
         str
 
         """
-        return <str>time_event_name(&self._mem)
+        return cstr_to_pystr(time_event_name_cstr((&self._mem)))
 
     @staticmethod
-    cdef TimeEvent from_raw_c(TimeEvent_t raw):
+    cdef TimeEvent from_mem_c(TimeEvent_t mem):
         cdef TimeEvent event = TimeEvent.__new__(TimeEvent)
-        event._mem = raw
-        event.id = UUID4.from_raw_c(raw.event_id)
-        event.ts_event = raw.ts_event
-        event.ts_init = raw.ts_init
+        event._mem = mem
+        event.id = UUID4.from_mem_c(mem.event_id)
+        event.ts_event = mem.ts_event
+        event.ts_init = mem.ts_init
         return event
 
 
@@ -156,7 +157,7 @@ cdef class TimeEventHandler:
 
 cdef class LiveTimer:
     """
-    The abstract base class for all live timers.
+    The base class for all live timers.
 
     Parameters
     ----------

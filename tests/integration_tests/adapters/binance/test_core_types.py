@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -21,8 +21,8 @@ from nautilus_trader.adapters.binance.common.types import BinanceTicker
 from nautilus_trader.model.data.bar import BarType
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 class TestBinanceDataTypes:
@@ -182,7 +182,7 @@ class TestBinanceDataTypes:
         # Act, Assert
         assert (
             repr(bar)
-            == "BinanceBar(bar_type=BTCUSDT.BINANCE-1-MINUTE-LAST-EXTERNAL, open=0.01634790, high=0.01640000, low=0.01575800, close=0.01577100, volume=148976.11427815, quote_volume=2434.19055334, count=100, taker_buy_base_volume=1756.87402397, taker_buy_quote_volume=28.46694368, taker_sell_base_volume=147219.24025418, taker_sell_quote_volume=2405.72360966, ts_event=1650000000000000000,ts_init=1650000000000000000)"  # noqa
+            == "BinanceBar(bar_type=BTCUSDT.BINANCE-1-MINUTE-LAST-EXTERNAL, open=0.01634790, high=0.01640000, low=0.01575800, close=0.01577100, volume=148976.11427815, quote_volume=2434.19055334, count=100, taker_buy_base_volume=1756.87402397, taker_buy_quote_volume=28.46694368, taker_sell_base_volume=147219.24025418, taker_sell_quote_volume=2405.72360966, ts_event=1650000000000000000, ts_init=1650000000000000000)"  # noqa
         )
 
     def test_binance_bar_to_from_dict(self):
@@ -254,7 +254,7 @@ class TestBinanceDataTypes:
         assert unpickled == bar
         assert (
             repr(bar)
-            == "BinanceBar(bar_type=BTCUSDT.BINANCE-1-MINUTE-LAST-EXTERNAL, open=0.01634790, high=0.01640000, low=0.01575800, close=0.01577100, volume=148976.11427815, quote_volume=2434.19055334, count=100, taker_buy_base_volume=1756.87402397, taker_buy_quote_volume=28.46694368, taker_sell_base_volume=147219.24025418, taker_sell_quote_volume=2405.72360966, ts_event=1650000000000000000,ts_init=1650000000000000000)"  # noqa
+            == "BinanceBar(bar_type=BTCUSDT.BINANCE-1-MINUTE-LAST-EXTERNAL, open=0.01634790, high=0.01640000, low=0.01575800, close=0.01577100, volume=148976.11427815, quote_volume=2434.19055334, count=100, taker_buy_base_volume=1756.87402397, taker_buy_quote_volume=28.46694368, taker_sell_base_volume=147219.24025418, taker_sell_quote_volume=2405.72360966, ts_event=1650000000000000000, ts_init=1650000000000000000)"  # noqa
         )
         assert unpickled.quote_volume == bar.quote_volume
         assert unpickled.count == bar.count

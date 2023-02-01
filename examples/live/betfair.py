@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -59,7 +59,7 @@ async def main(market_id: str):
     )
     await provider.load_all_async()
     instruments = provider.list_all()
-    print(f"Found instruments:\n{instruments}")
+    print(f"Found instruments:\n{[ins.id for ins in instruments]}")
 
     # Determine account currency
     account = await client.get_account_details()
@@ -67,7 +67,7 @@ async def main(market_id: str):
     # Configure trading node
     config = TradingNodeConfig(
         timeout_connection=30.0,
-        log_level="DEBUG",
+        log_level="INFO",
         cache_database=CacheDatabaseConfig(type="in-memory"),
         data_clients={
             "BETFAIR": BetfairDataClientConfig(
@@ -93,9 +93,9 @@ async def main(market_id: str):
         OrderBookImbalance(
             config=OrderBookImbalanceConfig(
                 instrument_id=instrument.id.value,
-                max_trade_size=10,
+                max_trade_size=5,
                 order_id_tag=instrument.selection_id,
-            )
+            ),
         )
         for instrument in instruments
     ]
@@ -123,4 +123,4 @@ if __name__ == "__main__":
     # Update the market ID with something coming up in `Next Races` from
     # https://www.betfair.com.au/exchange/plus/
     # The market ID will appear in the browser query string.
-    asyncio.run(main(market_id="1.200150918"))
+    asyncio.run(main(market_id="1.207188674"))

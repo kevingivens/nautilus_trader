@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,17 +15,13 @@
 
 import importlib
 import importlib.util
-from typing import Any, FrozenSet, Optional
+from typing import Any, Optional
 
-import frozendict
 import fsspec
-import pydantic
-from pydantic import ConstrainedStr
-from pydantic import Field
-from pydantic import PositiveInt
-from pydantic import validator
+import msgspec
 
 from nautilus_trader.common import Environment
+from nautilus_trader.config.validation import PositiveInt
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 
@@ -37,7 +33,7 @@ def resolve_path(path: str):
     return cls
 
 
-class NautilusConfig(pydantic.BaseModel):
+class NautilusConfig(msgspec.Struct, kw_only=True):
     """
     The base class for all Nautilus configuration objects.
     """
@@ -58,6 +54,58 @@ class NautilusConfig(pydantic.BaseModel):
         """
         return cls.__module__ + ":" + cls.__qualname__
 
+    def dict(self) -> dict[str, Any]:
+        """
+        Return a dictionary representation of the configuration.
+
+        Returns
+        -------
+        dict[str, Any]
+
+        """
+        return {k: getattr(self, k) for k in self.__struct_fields__}
+
+    def json(self) -> bytes:
+        """
+        Return serialized JSON encoded bytes.
+
+        Returns
+        -------
+        bytes
+
+        """
+        return msgspec.json.encode(self)
+
+    @classmethod
+    def parse(cls, raw: bytes) -> Any:
+        """
+        Return a decoded object of the given `cls`.
+
+        Parameters
+        ----------
+        cls : type
+            The type to decode to.
+        raw : bytes
+            The raw bytes to decode.
+
+        Returns
+        -------
+        Any
+
+        """
+        return msgspec.json.decode(raw, type=cls)
+
+    def validate(self) -> bool:
+        """
+        Return whether the configuration can be represented as valid JSON.
+
+        Returns
+        -------
+        bool
+
+        """
+        return bool(msgspec.json.decode(self.json(), type=self.__class__))
+
 
 class CacheConfig(NautilusConfig):
     """
@@ -65,9 +113,9 @@ class CacheConfig(NautilusConfig):
 
     Parameters
     ----------
-    tick_capacity : int
+    tick_capacity : PositiveInt
         The maximum length for internal tick dequeues.
-    bar_capacity : int
+    bar_capacity : PositiveInt
         The maximum length for internal bar dequeues.
     """
 
@@ -84,16 +132,25 @@ class CacheDatabaseConfig(NautilusConfig):
     type : str, {'in-memory', 'redis'}, default 'in-memory'
         The database type.
     host : str, default 'localhost'
-        The database host address (default for Redis).
-    port : int, default 6379
-        The database port (default for Redis).
+        The database host address.
+    port : int, optional
+        The database port.
+    username : str, optional
+        The account username for the database connection.
+    password : str, optional
+        The account password for the database connection.
+    ssl : bool, default False
+        If database should use an SSL enabled connection.
     flush : bool, default False
         If database should be flushed before start.
     """
 
     type: str = "in-memory"
     host: str = "localhost"
-    port: int = 6379
+    port: Optional[int] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    ssl: bool = False
     flush: bool = False
 
 
@@ -109,18 +166,12 @@ class InstrumentProviderConfig(NautilusConfig):
         The list of instrument IDs to be loaded on start (if `load_all_instruments` is False).
     filters : frozendict, optional
         The venue specific instrument loading filters to apply.
+    filter_callable: str, optional
+        A fully qualified path to a callable that takes a single argument, `instrument` and returns a bool, indicating
+        whether the instrument should be loaded
     log_warnings : bool, default True
         If parser warnings should be logged.
     """
-
-    class Config:
-        """The base model config"""
-
-        arbitrary_types_allowed = True
-
-    @validator("filters")
-    def validate_filters(cls, value):
-        return frozendict.frozendict(value) if value is not None else None
 
     def __eq__(self, other):
         return (
@@ -133,8 +184,9 @@ class InstrumentProviderConfig(NautilusConfig):
         return hash((self.load_all, self.load_ids, self.filters))
 
     load_all: bool = False
-    load_ids: Optional[FrozenSet[str]] = None
+    load_ids: Optional[frozenset[str]] = None
     filters: Optional[dict[str, Any]] = None
+    filter_callable: Optional[str] = None
     log_warnings: bool = True
 
 
@@ -144,10 +196,16 @@ class DataEngineConfig(NautilusConfig):
 
     Parameters
     ----------
-    debug : bool
+    build_time_bars_with_no_updates : bool, default True
+        If time bar aggregators will build and emit bars with no new market updates.
+    validate_data_sequence : bool, default False
+        If data objects timestamp sequencing will be validated and handled.
+    debug : bool, default False
         If debug mode is active (will provide extra debug logging).
     """
 
+    build_time_bars_with_no_updates: bool = True
+    validate_data_sequence: bool = False
     debug: bool = False
 
 
@@ -157,20 +215,26 @@ class RiskEngineConfig(NautilusConfig):
 
     Parameters
     ----------
-    bypass : bool
-        If True then all risk checks are bypassed (will still check for duplicate IDs).
-    max_order_rate : str, default 100/00:00:01
-        The maximum order rate per timedelta.
-    max_notional_per_order : dict[str, str]
+    bypass : bool, default False
+        If True then will bypass all pre-trade risk checks and rate limits (will still check for duplicate IDs).
+    deny_modify_pending_update : bool, default True
+        If deny `ModifyOrder` commands when an order is in a `PENDING_UPDATE` state.
+    max_order_submit_rate : str, default 100/00:00:01
+        The maximum rate of submit order commands per timedelta.
+    max_order_modify_rate : str, default 100/00:00:01
+        The maximum rate of modify order commands per timedelta.
+    max_notional_per_order : dict[str, int], default empty dict
         The maximum notional value of an order per instrument ID.
         The value should be a valid decimal format.
-    debug : bool
+    debug : bool, default False
         If debug mode is active (will provide extra debug logging).
     """
 
     bypass: bool = False
-    max_order_rate: ConstrainedStr = ConstrainedStr("100/00:00:01")
-    max_notional_per_order: dict[str, str] = {}
+    deny_modify_pending_update: bool = True
+    max_order_submit_rate: str = "100/00:00:01"
+    max_order_modify_rate: str = "100/00:00:01"
+    max_notional_per_order: dict[str, int] = {}
     debug: bool = False
 
 
@@ -183,8 +247,8 @@ class ExecEngineConfig(NautilusConfig):
     load_cache : bool, default True
         If the cache should be loaded on initialization.
     allow_cash_positions : bool, default True
-        If unleveraged spot cash assets should track positions.
-    debug : bool
+        If unleveraged spot/cash assets should generate positions.
+    debug : bool, default False
         If debug mode is active (will provide extra debug logging).
     """
 
@@ -197,8 +261,6 @@ class OrderEmulatorConfig(NautilusConfig):
     """
     Configuration for ``OrderEmulator`` instances.
     """
-
-    pass
 
 
 class StreamingConfig(NautilusConfig):
@@ -230,10 +292,6 @@ class StreamingConfig(NautilusConfig):
     def fs(self):
         return fsspec.filesystem(protocol=self.fs_protocol, **(self.fs_storage_options or {}))
 
-    @classmethod
-    def from_catalog(cls, catalog: ParquetDataCatalog, **kwargs):
-        return cls(catalog_path=str(catalog.path), fs_protocol=catalog.fs.protocol, **kwargs)
-
     def as_catalog(self) -> ParquetDataCatalog:
         return ParquetDataCatalog(
             path=self.catalog_path,
@@ -242,7 +300,7 @@ class StreamingConfig(NautilusConfig):
         )
 
 
-class ActorConfig(NautilusConfig):
+class ActorConfig(NautilusConfig, kw_only=True):
     """
     The base model for all actor configurations.
 
@@ -302,12 +360,12 @@ class ActorFactory:
 
         """
         PyCondition.type(config, ImportableActorConfig, "config")
-        strategy_cls = resolve_path(config.actor_path)
+        actor_cls = resolve_path(config.actor_path)
         config_cls = resolve_path(config.config_path)
-        return strategy_cls(config=config_cls(**config.config))
+        return actor_cls(config=config_cls(**config.config))
 
 
-class StrategyConfig(NautilusConfig):
+class StrategyConfig(NautilusConfig, kw_only=True):
     """
     The base model for all trading strategy configurations.
 
@@ -318,10 +376,9 @@ class StrategyConfig(NautilusConfig):
     order_id_tag : str, optional
         The unique order ID tag for the strategy. Must be unique
         amongst all running strategies for a particular trader ID.
-    oms_type : OMSType, optional
+    oms_type : OmsType, optional
         The order management system type for the strategy. This will determine
         how the `ExecutionEngine` handles position IDs (see docs).
-
     """
 
     strategy_id: Optional[str] = None
@@ -419,16 +476,49 @@ class NautilusKernelConfig(NautilusConfig):
 
     environment: Environment
     trader_id: str
+    instance_id: Optional[str] = None
     cache: Optional[CacheConfig] = None
     cache_database: Optional[CacheDatabaseConfig] = None
-    data_engine: DataEngineConfig = None
-    risk_engine: RiskEngineConfig = None
-    exec_engine: ExecEngineConfig = None
+    data_engine: Optional[DataEngineConfig] = None
+    risk_engine: Optional[RiskEngineConfig] = None
+    exec_engine: Optional[ExecEngineConfig] = None
     streaming: Optional[StreamingConfig] = None
-    actors: list[ImportableActorConfig] = Field(default_factory=list)
-    strategies: list[ImportableStrategyConfig] = Field(default_factory=list)
+    actors: list[ImportableActorConfig] = []
+    strategies: list[ImportableStrategyConfig] = []
     load_state: bool = False
     save_state: bool = False
     loop_debug: bool = False
     log_level: str = "INFO"
     bypass_logging: bool = False
+
+
+class ImportableFactoryConfig(NautilusConfig):
+    """
+    Represents an importable (json) Factory config.
+    """
+
+    path: str
+
+    def create(self):
+        cls = resolve_path(self.path)
+        return cls()
+
+
+class ImportableConfig(NautilusConfig):
+    """
+    Represents an importable (typically live data or execution) client configuration.
+    """
+
+    path: str
+    config: dict = {}
+    factory: Optional[ImportableFactoryConfig] = None
+
+    @staticmethod
+    def is_importable(data: dict):
+        return set(data) == {"path", "config"}
+
+    def create(self):
+        assert ":" in self.path, "`path` variable should be of the form `path.to.module:class`"
+        cls = resolve_path(self.path)
+        cfg = msgspec.json.encode(self.config)
+        return msgspec.json.decode(cfg, type=cls)

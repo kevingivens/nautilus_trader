@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -16,14 +16,15 @@
 import pytest
 
 from nautilus_trader.accounting.accounts.betting import BettingAccount
+from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.common.clock import TestClock
 from nautilus_trader.common.factories import OrderFactory
 from nautilus_trader.core.uuid import UUID4
-from nautilus_trader.model.c_enums.order_side import OrderSideParser
 from nautilus_trader.model.currencies import GBP
 from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import LiquiditySide
 from nautilus_trader.model.enums import OrderSide
+from nautilus_trader.model.enums import order_side_from_str
 from nautilus_trader.model.events.account import AccountState
 from nautilus_trader.model.identifiers import AccountId
 from nautilus_trader.model.identifiers import PositionId
@@ -33,17 +34,16 @@ from nautilus_trader.model.objects import Money
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.model.position import Position
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.execution import TestExecStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.execution import TestExecStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 class TestBettingAccount:
     def setup(self):
         # Fixture Setup
         self.trader_id = TestIdStubs.trader_id()
-        self.instrument = BetfairTestStubs.betting_instrument()
+        self.instrument = TestInstrumentProvider.betting_instrument()
         self.order_factory = OrderFactory(
             trader_id=self.trader_id,
             strategy_id=StrategyId("S-001"),
@@ -208,7 +208,7 @@ class TestBettingAccount:
         # Act
         result = account.calculate_balance_locked(
             instrument=self.instrument,
-            side=OrderSideParser.from_str_py(side),
+            side=order_side_from_str(side),
             quantity=Quantity.from_int(quantity),
             price=Price.from_str(price),
         )
@@ -267,5 +267,5 @@ class TestBettingAccount:
                 instrument=self.instrument,
                 last_qty=Quantity.from_int(1),
                 last_px=Price.from_str("1"),
-                liquidity_side=LiquiditySide.NONE,
+                liquidity_side=LiquiditySide.NO_LIQUIDITY_SIDE,
             )

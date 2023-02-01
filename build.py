@@ -5,6 +5,7 @@ import os
 import platform
 import shutil
 import subprocess
+import sysconfig
 from datetime import datetime
 from pathlib import Path
 
@@ -27,55 +28,71 @@ ANNOTATION_MODE = bool(os.getenv("ANNOTATION_MODE", ""))
 PARALLEL_BUILD = True if os.getenv("PARALLEL_BUILD", "true") == "true" else False
 # If COPY_TO_SOURCE is enabled, copy built *.so files back into the source tree
 COPY_TO_SOURCE = True if os.getenv("COPY_TO_SOURCE", "true") == "true" else False
+# If PyO3 only then don't build C extensions to reduce compilation time
+PYO3_ONLY = False if os.getenv("PYO3_ONLY", "") == "" else True
 
+if PROFILE_MODE:
+    # For subsequent debugging, the C source needs to be in the same tree as
+    # the Cython code (not in a separate build directory).
+    BUILD_DIR = None
+elif ANNOTATION_MODE:
+    BUILD_DIR = "build/annotated"
+else:
+    BUILD_DIR = "build/optimized"
 
 ################################################################################
 #  RUST BUILD
 ################################################################################
-if platform.system() == "Windows":
+if platform.system() != "Darwin":
     # Use clang as the default compiler
     os.environ["CC"] = "clang"
     os.environ["LDSHARED"] = "clang -shared"
+
+TARGET_DIR = os.path.join(os.getcwd(), "nautilus_core", "target", BUILD_MODE)
+
+if platform.system() == "Windows":
     # https://docs.microsoft.com/en-US/cpp/error-messages/tool-errors/linker-tools-error-lnk1181?view=msvc-170&viewFallbackFrom=vs-2019
-    target_dir = os.path.join(os.getcwd(), "nautilus_core", "target", BUILD_MODE)
-    os.environ["LIBPATH"] = os.environ.get("LIBPATH", "") + f":{target_dir}"
+    os.environ["LIBPATH"] = os.environ.get("LIBPATH", "") + f":{TARGET_DIR}"
     RUST_LIB_PFX = ""
-    RUST_LIB_EXT = "lib"
-    TARGET_DIR = "x86_64-pc-windows-msvc/"
-else:
+    RUST_STATIC_LIB_EXT = "lib"
+    RUST_DYLIB_EXT = "dll"
+    TARGET_DIR = TARGET_DIR.replace(BUILD_MODE, "x86_64-pc-windows-msvc/" + BUILD_MODE)
+elif platform.system() == "Darwin":
     RUST_LIB_PFX = "lib"
-    RUST_LIB_EXT = "a"
-    TARGET_DIR = ""
+    RUST_STATIC_LIB_EXT = "a"
+    RUST_DYLIB_EXT = "dylib"
+else:  # Linux
+    RUST_LIB_PFX = "lib"
+    RUST_STATIC_LIB_EXT = "a"
+    RUST_DYLIB_EXT = "so"
 
 # Directories with headers to include
-RUST_INCLUDES = [
-    "nautilus_trader/common/includes",
-    "nautilus_trader/core/includes",
-    "nautilus_trader/model/includes",
-    "nautilus_trader/persistence/includes",
-]
-
+RUST_INCLUDES = ["nautilus_trader/core/includes"]
 RUST_LIBS = [
-    f"nautilus_core/target/{TARGET_DIR}{BUILD_MODE}/{RUST_LIB_PFX}nautilus_common.{RUST_LIB_EXT}",
-    f"nautilus_core/target/{TARGET_DIR}{BUILD_MODE}/{RUST_LIB_PFX}nautilus_core.{RUST_LIB_EXT}",
-    f"nautilus_core/target/{TARGET_DIR}{BUILD_MODE}/{RUST_LIB_PFX}nautilus_model.{RUST_LIB_EXT}",
-    f"nautilus_core/target/{TARGET_DIR}{BUILD_MODE}/{RUST_LIB_PFX}nautilus_persistence.{RUST_LIB_EXT}",
+    f"{TARGET_DIR}/{RUST_LIB_PFX}nautilus_common.{RUST_STATIC_LIB_EXT}",
+    f"{TARGET_DIR}/{RUST_LIB_PFX}nautilus_core.{RUST_STATIC_LIB_EXT}",
+    f"{TARGET_DIR}/{RUST_LIB_PFX}nautilus_model.{RUST_STATIC_LIB_EXT}",
+    f"{TARGET_DIR}/{RUST_LIB_PFX}nautilus_persistence.{RUST_STATIC_LIB_EXT}",
 ]
-# Later we can be more selective about which libs are included where - to optimize binary sizes
 
 
 def _build_rust_libs() -> None:
-    build_options = ""
-    extra_flags = ""
-    if platform.system() == "Windows":
-        extra_flags = " --target x86_64-pc-windows-msvc"
+    try:
+        # Build the Rust libraries using Cargo
+        build_options = ""
+        extra_flags = ""
+        if platform.system() == "Windows":
+            extra_flags = " --target x86_64-pc-windows-msvc"
 
-    build_options += " --release" if BUILD_MODE == "release" else ""
-    # Build the Rust libraries using Cargo
-    print("Compiling Rust libraries...")
-    build_cmd = f"(cd nautilus_core && cargo build{build_options}{extra_flags} --all-features)"
-    print(build_cmd)
-    os.system(build_cmd)  # noqa
+        build_options += " --release" if BUILD_MODE == "release" else ""
+        print("Compiling Rust libraries...")
+        build_cmd = f"(cd nautilus_core && cargo build{build_options}{extra_flags} --all-features)"
+        print(build_cmd)
+        os.system(build_cmd)  # noqa
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(
+            f"Error running cargo: {e.stderr.decode()}",
+        ) from e
 
 
 ################################################################################
@@ -114,9 +131,15 @@ def _build_extensions() -> list[Extension]:
         define_macros.append(("CYTHON_TRACE", "1"))
 
     extra_compile_args = []
-    if BUILD_MODE == "release" and platform.system() != "Windows":
-        extra_compile_args.append("-O2")
-        extra_compile_args.append("-pipe")
+    if platform.system() == "Darwin":
+        extra_compile_args.append("-Wno-unreachable-code-fallthrough")
+
+    if platform.system() != "Windows":
+        # Suppress warnings produced by Cython boilerplate
+        extra_compile_args.append("-Wno-parentheses-equality")
+        if BUILD_MODE == "release":
+            extra_compile_args.append("-O2")
+            extra_compile_args.append("-pipe")
 
     extra_link_args = RUST_LIBS
     if platform.system() == "Windows":
@@ -135,7 +158,7 @@ def _build_extensions() -> list[Extension]:
         Extension(
             name=str(pyx.relative_to(".")).replace(os.path.sep, ".")[:-4],
             sources=[str(pyx)],
-            include_dirs=[".", np.get_include()] + RUST_INCLUDES,
+            include_dirs=[np.get_include()] + RUST_INCLUDES,
             define_macros=define_macros,
             language="c",
             extra_link_args=extra_link_args,
@@ -146,30 +169,23 @@ def _build_extensions() -> list[Extension]:
 
 
 def _build_distribution(extensions: list[Extension]) -> Distribution:
-    # Build a Distribution using cythonize()
-    # Determine the build output directory
-    if PROFILE_MODE:
-        # For subsequent debugging, the C source needs to be in
-        # the same tree as the Cython code (not in a separate build directory).
-        build_dir = None
-    elif ANNOTATION_MODE:
-        build_dir = "build/annotated"
-    else:
-        build_dir = "build/optimized"
+    nthreads = os.cpu_count() or 1
+    if platform.system() == "Windows":
+        nthreads = min(nthreads, 60)
+    print(f"nthreads={nthreads}")
 
-    print(f"build_dir={build_dir}")
     distribution = Distribution(
         dict(
             name="nautilus_trader",
             ext_modules=cythonize(
                 module_list=extensions,
                 compiler_directives=CYTHON_COMPILER_DIRECTIVES,
-                nthreads=os.cpu_count() or 1,
-                build_dir=build_dir,
+                nthreads=nthreads,
+                build_dir=BUILD_DIR,
                 gdb_debug=PROFILE_MODE,
             ),
             zip_safe=False,
-        )
+        ),
     )
     return distribution
 
@@ -190,25 +206,88 @@ def _copy_build_dir_to_project(cmd: build_ext) -> None:
     print("Copied all compiled dynamic library files into source")
 
 
-def build() -> None:
+def _copy_rust_dylibs_to_project() -> None:
+    # https://pyo3.rs/latest/building_and_distribution#manual-builds
+    ext_suffix = sysconfig.get_config_var("EXT_SUFFIX")
+    src = f"{TARGET_DIR}/{RUST_LIB_PFX}nautilus_pyo3.{RUST_DYLIB_EXT}"
+    dst = f"nautilus_trader/core/nautilus_pyo3{ext_suffix}"
+    shutil.copyfile(src=src, dst=dst)
+
+    print(f"Copied {src} to {dst}")
+
+
+def _get_clang_version() -> str:
+    try:
+        result = subprocess.run(
+            "clang --version",
+            check=True,
+            shell=True,
+            capture_output=True,
+        )
+        output = (
+            result.stdout.decode()
+            .splitlines()[0]
+            .lstrip("Apple ")
+            .lstrip("Ubuntu ")
+            .lstrip("clang version ")
+        )
+        return output
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(
+            f"Error running clang: {e.stderr.decode()}",
+        ) from e
+    except FileNotFoundError as e:
+        if "clang" in e.strerror:
+            raise RuntimeError(
+                "You are installing from source which requires the Clang compiler to be installed.",
+            ) from e
+        raise
+
+
+def _get_rustc_version() -> str:
+    try:
+        result = subprocess.run(
+            "rustc --version",
+            check=True,
+            shell=True,
+            capture_output=True,
+        )
+        output = result.stdout.decode().lstrip("rustc ")[:-1]
+        return output
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(
+            f"Error running rustc: {e.stderr.decode()}",
+        ) from e
+    except FileNotFoundError as e:
+        if "rustc" in e.strerror:
+            raise RuntimeError(
+                "You are installing from source which requires the Rust compiler to "
+                "be installed. Find more information at https://www.rust-lang.org/tools/install",
+            ) from e
+        raise
+
+
+def build(pyo3_only=False) -> None:
     """Construct the extensions and distribution."""  # noqa
     _build_rust_libs()
+    _copy_rust_dylibs_to_project()
 
-    # Create C Extensions to feed into cythonize()
-    extensions = _build_extensions()
-    distribution = _build_distribution(extensions)
+    if not PYO3_ONLY:
+        # Create C Extensions to feed into cythonize()
+        extensions = _build_extensions()
+        distribution = _build_distribution(extensions)
 
-    # Build and run the command
-    print("Compiling C extension modules...")
-    cmd: build_ext = build_ext(distribution)
-    if PARALLEL_BUILD:
-        cmd.parallel = os.cpu_count()
-    cmd.ensure_finalized()
-    cmd.run()
+        # Build and run the command
+        print("Compiling C extension modules...")
+        cmd: build_ext = build_ext(distribution)
+        if PARALLEL_BUILD:
+            cmd.parallel = os.cpu_count()
+        cmd.ensure_finalized()
+        cmd.run()
 
-    if COPY_TO_SOURCE:
-        # Copy the build back into the source tree for development and wheel packaging
-        _copy_build_dir_to_project(cmd)
+        if COPY_TO_SOURCE:
+            # Copy the build back into the source tree for development and wheel packaging
+            _copy_build_dir_to_project(cmd)
 
 
 if __name__ == "__main__":
@@ -216,37 +295,23 @@ if __name__ == "__main__":
     print("=====================================================================")
     print("Nautilus Builder")
     print("=====================================================================\033[0m")
-
-    ts_start = datetime.utcnow()
-
-    # Work around a Cython problem in Python 3.8.x on macOS
-    # https://github.com/cython/cython/issues/3262
-    if platform.system() == "Darwin":
-        print("macOS: Setting multiprocessing method to 'fork'.")
-        try:
-            # noinspection PyUnresolvedReferences
-            import multiprocessing
-
-            multiprocessing.set_start_method("fork", force=True)
-        except ImportError:
-            print("multiprocessing not available")  # pragma: no cover
-
-    rustc_version = subprocess.check_output(["rustc", "--version"])  # noqa
     print(f"System: {platform.system()} {platform.machine()}")
-    print(f"Rust:   {rustc_version.lstrip(b'rustc ').decode()[:-1]}")
+    print(f"Clang:  {_get_clang_version()}")
+    print(f"Rust:   {_get_rustc_version()}")
     print(f"Python: {platform.python_version()}")
     print(f"Cython: {cython_compiler_version}")
-    print(f"NumPy:  {np.__version__}")
-    print("")
+    print(f"NumPy:  {np.__version__}\n")
 
-    print("Starting build...")
     print(f"BUILD_MODE={BUILD_MODE}")
+    print(f"BUILD_DIR={BUILD_DIR}")
     print(f"PROFILE_MODE={PROFILE_MODE}")
     print(f"ANNOTATION_MODE={ANNOTATION_MODE}")
     print(f"PARALLEL_BUILD={PARALLEL_BUILD}")
     print(f"COPY_TO_SOURCE={COPY_TO_SOURCE}")
-    print("")
+    print(f"PYO3_ONLY={PYO3_ONLY}\n")
 
+    print("Starting build...")
+    ts_start = datetime.utcnow()
     build()
     print(f"Build time: {datetime.utcnow() - ts_start}")
     print("\033[32m" + "Build completed" + "\033[0m")

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -91,7 +91,7 @@ BETFAIR_PRICE_TIERS = [
     (100, 1010, 10),
 ]
 BETFAIR_PRICES = list(
-    reversed(TieredTickScheme(name="betfair_prob", tiers=BETFAIR_PRICE_TIERS).ticks)
+    reversed(TieredTickScheme(name="betfair_prob", tiers=BETFAIR_PRICE_TIERS).ticks),
 )
 BETFAIR_PROBABILITIES = [
     Price(Price.from_int(1) / tick, precision=BETFAIR_PRICE_PRECISION) for tick in BETFAIR_PRICES
@@ -110,7 +110,8 @@ BETFAIR_TICK_SCHEME = TieredTickScheme(
     tiers=[
         (start, stop, stop - start)
         for start, stop in zip(
-            BETFAIR_PROBABILITIES, BETFAIR_PROBABILITIES[1:] + [Price.from_int(1)]
+            BETFAIR_PROBABILITIES,
+            BETFAIR_PROBABILITIES[1:] + [Price.from_int(1)],
         )
     ],
 )

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -286,7 +286,7 @@ cdef class Trader(Component):
         # Check for duplicate `order_id_tag`
         if strategy.order_id_tag in order_id_tags:
             raise RuntimeError(
-                f"strategy `order_id_tag` conflict for '{strategy.order_id_tag}', please "
+                f"strategy `order_id_tag` conflict for '{strategy.order_id_tag}', "
                 f"explicitly define all `order_id_tag` values in your strategy configs",
             )
 
@@ -463,15 +463,25 @@ cdef class Trader(Component):
 
     cpdef void save(self) except *:
         """
-        Save all strategy states to the execution cache.
+        Save all actor and strategy states to the cache.
         """
+        cdef Actor actor
+        for actor in self._actors:
+            self._cache.update_actor(actor)
+
+        cdef Strategy strategy
         for strategy in self._strategies:
             self._cache.update_strategy(strategy)
 
     cpdef void load(self) except *:
         """
-        Load all strategy states from the execution cache.
+        Load all actor and strategy states from the cache.
         """
+        cdef Actor actor
+        for actor in self._actors:
+            self._cache.load_actor(actor)
+
+        cdef Strategy strategy
         for strategy in self._strategies:
             self._cache.load_strategy(strategy)
 

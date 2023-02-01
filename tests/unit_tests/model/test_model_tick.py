@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,8 +14,6 @@
 # -------------------------------------------------------------------------------------------------
 
 import pickle
-
-import pytest
 
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.model.data.tick import QuoteTick
@@ -57,22 +55,6 @@ class TestQuoteTick:
         assert str(tick) == "AUD/USD.SIM,1.00000,1.00001,1,1,3"
         assert repr(tick) == "QuoteTick(AUD/USD.SIM,1.00000,1.00001,1,1,3)"
 
-    def test_extract_price_with_invalid_price_raises_value_error(self):
-        # Arrange
-        tick = QuoteTick(
-            instrument_id=AUDUSD_SIM.id,
-            bid=Price.from_str("1.00000"),
-            ask=Price.from_str("1.00001"),
-            bid_size=Quantity.from_int(1),
-            ask_size=Quantity.from_int(1),
-            ts_event=0,
-            ts_init=0,
-        )
-
-        # Act, Assert
-        with pytest.raises(ValueError):
-            tick.extract_price(0)
-
     def test_extract_price_with_various_price_types_returns_expected_values(self):
         # Arrange
         tick = QuoteTick(
@@ -95,30 +77,14 @@ class TestQuoteTick:
         assert result2 == Price.from_str("1.000005")
         assert result3 == Price.from_str("1.00000")
 
-    def test_extract_volume_with_invalid_price_raises_value_error(self):
-        # Arrange
-        tick = QuoteTick(
-            instrument_id=AUDUSD_SIM.id,
-            bid=Price.from_str("1.00000"),
-            ask=Price.from_str("1.00001"),
-            bid_size=Quantity.from_int(1),
-            ask_size=Quantity.from_int(1),
-            ts_event=0,
-            ts_init=0,
-        )
-
-        # Act, Assert
-        with pytest.raises(ValueError):
-            tick.extract_volume(0)
-
     def test_extract_volume_with_various_price_types_returns_expected_values(self):
         # Arrange
         tick = QuoteTick(
             instrument_id=AUDUSD_SIM.id,
             bid=Price.from_str("1.00000"),
             ask=Price.from_str("1.00001"),
-            bid_size=Quantity.from_int(500000),
-            ask_size=Quantity.from_int(800000),
+            bid_size=Quantity.from_int(500_000),
+            ask_size=Quantity.from_int(800_000),
             ts_event=0,
             ts_init=0,
         )
@@ -129,9 +95,9 @@ class TestQuoteTick:
         result3 = tick.extract_volume(PriceType.BID)
 
         # Assert
-        assert result1 == Quantity.from_int(800000)
-        assert result2 == Quantity.from_int(650000)  # Average size
-        assert result3 == Quantity.from_int(500000)
+        assert result1 == Quantity.from_int(800_000)
+        assert result2 == Quantity.from_int(650_000)  # Average size
+        assert result3 == Quantity.from_int(500_000)
 
     def test_to_dict_returns_expected_dict(self):
         # Arrange
@@ -176,7 +142,7 @@ class TestQuoteTick:
         result = QuoteTick.from_dict(QuoteTick.to_dict(tick))
 
         # Assert
-        assert tick == result
+        assert result == tick
 
     def test_from_raw_returns_expected_tick(self):
         # Arrange, Act
@@ -233,8 +199,8 @@ class TestTradeTick:
         tick = TradeTick(
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("1.00000"),
-            size=Quantity.from_int(50000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(50_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456789"),
             ts_event=1,
             ts_init=2,
@@ -242,16 +208,16 @@ class TestTradeTick:
 
         # Act, Assert
         assert isinstance(hash(tick), int)
-        assert str(tick) == "AUD/USD.SIM,1.00000,50000,BUY,123456789,1"
-        assert repr(tick) == "TradeTick(AUD/USD.SIM,1.00000,50000,BUY,123456789,1)"
+        assert str(tick) == "AUD/USD.SIM,1.00000,50000,BUYER,123456789,1"
+        assert repr(tick) == "TradeTick(AUD/USD.SIM,1.00000,50000,BUYER,123456789,1)"
 
     def test_to_dict_returns_expected_dict(self):
         # Arrange
         tick = TradeTick(
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("1.00000"),
-            size=Quantity.from_int(10000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(10_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456789"),
             ts_event=1,
             ts_init=2,
@@ -266,7 +232,7 @@ class TestTradeTick:
             "instrument_id": "AUD/USD.SIM",
             "price": "1.00000",
             "size": "10000",
-            "aggressor_side": "BUY",
+            "aggressor_side": "BUYER",
             "trade_id": "123456789",
             "ts_event": 1,
             "ts_init": 2,
@@ -277,8 +243,8 @@ class TestTradeTick:
         tick = TradeTick(
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("1.00000"),
-            size=Quantity.from_int(10000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(10_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456789"),
             ts_event=1,
             ts_init=2,
@@ -288,15 +254,15 @@ class TestTradeTick:
         result = TradeTick.from_dict(TradeTick.to_dict(tick))
 
         # Assert
-        assert tick == result
+        assert result == tick
 
     def test_pickling_round_trip_results_in_expected_tick(self):
         # Arrange
         tick = TradeTick(
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("1.00000"),
-            size=Quantity.from_int(50000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(50_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456789"),
             ts_event=1,
             ts_init=2,
@@ -308,7 +274,7 @@ class TestTradeTick:
 
         # Assert
         assert unpickled == tick
-        assert repr(unpickled) == "TradeTick(AUD/USD.SIM,1.00000,50000,BUY,123456789,1)"
+        assert repr(unpickled) == "TradeTick(AUD/USD.SIM,1.00000,50000,BUYER,123456789,1)"
 
     def test_from_raw_returns_expected_tick(self):
         # Arrange, Act
@@ -320,7 +286,7 @@ class TestTradeTick:
             5,
             10000000000000,
             0,
-            AggressorSide.BUY,
+            AggressorSide.BUYER,
             trade_id,
             1,
             2,
@@ -330,7 +296,7 @@ class TestTradeTick:
         assert tick.instrument_id == AUDUSD_SIM.id
         assert tick.trade_id == trade_id
         assert tick.price == Price.from_str("1.00001")
-        assert tick.size == Quantity.from_int(10000)
-        assert tick.aggressor_side == AggressorSide.BUY
+        assert tick.size == Quantity.from_int(10_000)
+        assert tick.aggressor_side == AggressorSide.BUYER
         assert tick.ts_event == 1
         assert tick.ts_init == 2

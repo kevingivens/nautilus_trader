@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,18 +14,19 @@
 // -------------------------------------------------------------------------------------------------
 
 use std::collections::HashMap;
+use std::ffi::c_char;
 use std::ops::{Deref, DerefMut};
 use std::ptr::null;
 
+use nautilus_core::correctness;
+use nautilus_core::datetime::{nanos_to_millis, nanos_to_secs};
+use nautilus_core::string::cstr_to_string;
+use nautilus_core::time::UnixNanos;
 use pyo3::prelude::*;
 use pyo3::types::{PyList, PyString};
 use pyo3::{ffi, AsPyPointer};
 
 use crate::timer::{TestTimer, TimeEvent, Vec_TimeEvent};
-use nautilus_core::correctness;
-use nautilus_core::datetime::{nanos_to_millis, nanos_to_secs};
-use nautilus_core::string::pystr_to_string;
-use nautilus_core::time::Timestamp;
 
 /// Represents a type of clock.
 /// # Notes
@@ -58,7 +59,7 @@ trait Clock {
     fn set_time_alert_ns(
         &mut self,
         name: String,
-        alert_time_ns: Timestamp,
+        alert_time_ns: UnixNanos,
         callback: Option<Box<dyn Fn(TimeEvent)>>,
     );
 
@@ -69,18 +70,18 @@ trait Clock {
         &mut self,
         name: String,
         interval_ns: u64,
-        start_time_ns: Timestamp,
-        stop_time_ns: Option<Timestamp>,
+        start_time_ns: UnixNanos,
+        stop_time_ns: Option<UnixNanos>,
         callback: Option<Box<dyn Fn(TimeEvent)>>,
     );
 
-    fn next_time_ns(&mut self, name: &str) -> Timestamp;
+    fn next_time_ns(&mut self, name: &str) -> UnixNanos;
     fn cancel_timer(&mut self, name: &str);
     fn cancel_timers(&mut self);
 }
 
 pub struct TestClock {
-    pub time_ns: Timestamp,
+    pub time_ns: UnixNanos,
     pub timers: HashMap<String, TestTimer>,
     pub handlers: HashMap<String, Box<dyn Fn(TimeEvent)>>,
     pub default_handler: Option<Box<dyn Fn(TimeEvent)>>,
@@ -88,12 +89,12 @@ pub struct TestClock {
 
 impl TestClock {
     #[allow(dead_code)] // Temporary
-    fn set_time(&mut self, to_time_ns: Timestamp) {
+    fn set_time(&mut self, to_time_ns: UnixNanos) {
         self.time_ns = to_time_ns
     }
 
     #[inline]
-    pub fn advance_time(&mut self, to_time_ns: Timestamp, set_time: bool) -> Vec<TimeEvent> {
+    pub fn advance_time(&mut self, to_time_ns: UnixNanos, set_time: bool) -> Vec<TimeEvent> {
         // Time should increase monotonically
         assert!(
             to_time_ns >= self.time_ns,
@@ -174,7 +175,7 @@ impl Clock for TestClock {
     fn set_time_alert_ns(
         &mut self,
         name: String,
-        alert_time_ns: Timestamp,
+        alert_time_ns: UnixNanos,
         callback: Option<Box<dyn Fn(TimeEvent)>>,
     ) {
         correctness::valid_string(&name, "`Timer` name");
@@ -202,8 +203,8 @@ impl Clock for TestClock {
         &mut self,
         name: String,
         interval_ns: u64,
-        start_time_ns: Timestamp,
-        stop_time_ns: Option<Timestamp>,
+        start_time_ns: UnixNanos,
+        stop_time_ns: Option<UnixNanos>,
         callback: Option<Box<dyn Fn(TimeEvent)>>,
     ) {
         correctness::valid_string(&name, "`Timer` name");
@@ -220,7 +221,7 @@ impl Clock for TestClock {
         self.timers.insert(name, timer);
     }
 
-    fn next_time_ns(&mut self, name: &str) -> Timestamp {
+    fn next_time_ns(&mut self, name: &str) -> UnixNanos {
         let timer = self.timers.get(name);
         match timer {
             None => 0,
@@ -306,28 +307,28 @@ pub extern "C" fn test_clock_timer_count(clock: &mut CTestClock) -> usize {
 }
 
 /// # Safety
-/// - Assumes `name` is borrowed from a valid Python UTF-8 `str`.
+/// - Assumes `name_ptr` is a valid C string pointer.
 #[no_mangle]
 pub unsafe extern "C" fn test_clock_set_time_alert_ns(
     clock: &mut CTestClock,
-    name: *mut ffi::PyObject,
-    alert_time_ns: Timestamp,
+    name_ptr: *const c_char,
+    alert_time_ns: UnixNanos,
 ) {
-    let name = pystr_to_string(name);
+    let name = cstr_to_string(name_ptr);
     clock.set_time_alert_ns(name, alert_time_ns, None);
 }
 
 /// # Safety
-/// - Assumes `name` is borrowed from a valid Python UTF-8 `str`.
+/// - Assumes `name_ptr` is a valid C string pointer.
 #[no_mangle]
 pub unsafe extern "C" fn test_clock_set_timer_ns(
     clock: &mut CTestClock,
-    name: *mut ffi::PyObject,
+    name_ptr: *const c_char,
     interval_ns: u64,
-    start_time_ns: Timestamp,
-    stop_time_ns: Timestamp,
+    start_time_ns: UnixNanos,
+    stop_time_ns: UnixNanos,
 ) {
-    let name = pystr_to_string(name);
+    let name = cstr_to_string(name_ptr);
     let stop_time_ns = match stop_time_ns {
         0 => None,
         _ => Some(stop_time_ns),
@@ -355,28 +356,31 @@ pub unsafe extern "C" fn test_clock_advance_time(
     }
 }
 
+// TODO: This struct implementation potentially leaks memory
+// TODO: Skip clippy check for now since it requires large modification
+#[allow(clippy::drop_non_drop)]
 #[no_mangle]
 pub extern "C" fn vec_time_events_drop(v: Vec_TimeEvent) {
     drop(v); // Memory freed here
 }
 
 /// # Safety
-/// - Assumes `name` is borrowed from a valid Python UTF-8 `str`.
+/// - Assumes `name_ptr` is a valid C string pointer.
 #[no_mangle]
 pub unsafe extern "C" fn test_clock_next_time_ns(
     clock: &mut CTestClock,
-    name: *mut ffi::PyObject,
-) -> Timestamp {
-    let name = pystr_to_string(name);
-    clock.next_time_ns(name.as_str())
+    name_ptr: *const c_char,
+) -> UnixNanos {
+    let name = cstr_to_string(name_ptr);
+    clock.next_time_ns(&name)
 }
 
 /// # Safety
-/// - Assumes `name` is borrowed from a valid Python UTF-8 `str`.
+/// - Assumes `name_ptr` is a valid C string pointer.
 #[no_mangle]
-pub unsafe extern "C" fn test_clock_cancel_timer(clock: &mut CTestClock, name: *mut ffi::PyObject) {
-    let name = pystr_to_string(name);
-    clock.cancel_timer(name.as_str());
+pub unsafe extern "C" fn test_clock_cancel_timer(clock: &mut CTestClock, name_ptr: *const c_char) {
+    let name = cstr_to_string(name_ptr);
+    clock.cancel_timer(&name);
 }
 
 #[no_mangle]
@@ -395,7 +399,6 @@ mod tests {
     fn test_set_timer_ns() {
         let mut clock = TestClock::new();
         clock.set_timer_ns(String::from("TEST_TIME1"), 10, 0, None, None);
-
         assert_eq!(clock.timer_names(), ["TEST_TIME1"]);
         assert_eq!(clock.timer_count(), 1);
     }
@@ -404,9 +407,7 @@ mod tests {
     fn test_advance_within_stop_time() {
         let mut clock = TestClock::new();
         clock.set_timer_ns(String::from("TEST_TIME1"), 1, 1, Some(3), None);
-
         clock.advance_time(2, true);
-
         assert_eq!(clock.timer_names(), ["TEST_TIME1"]);
         assert_eq!(clock.timer_count(), 1);
     }
@@ -415,9 +416,7 @@ mod tests {
     fn test_advance_time_to_stop_time_with_set_time_true() {
         let mut clock = TestClock::new();
         clock.set_timer_ns(String::from("TEST_TIME1"), 2, 0, Some(3), None);
-
         clock.advance_time(3, true);
-
         assert_eq!(clock.timer_names().len(), 1);
         assert_eq!(clock.timer_count(), 1);
         assert_eq!(clock.time_ns, 3);
@@ -427,9 +426,7 @@ mod tests {
     fn test_advance_time_to_stop_time_with_set_time_false() {
         let mut clock = TestClock::new();
         clock.set_timer_ns(String::from("TEST_TIME1"), 2, 0, Some(3), None);
-
         clock.advance_time(3, false);
-
         assert_eq!(clock.timer_names().len(), 1);
         assert_eq!(clock.timer_count(), 1);
         assert_eq!(clock.time_ns, 0);

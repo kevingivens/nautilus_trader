@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,16 +17,16 @@ import asyncio
 from decimal import Decimal
 
 from nautilus_trader.adapters.betfair.common import BETFAIR_VENUE
+from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.common.clock import LiveClock
+from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.logging import LiveLogger
-from nautilus_trader.common.logging import LogLevel
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
-from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.execution import TestExecStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.execution import TestExecStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 class TestBetfairAccount:
@@ -38,7 +38,7 @@ class TestBetfairAccount:
         self.clock = LiveClock()
         self.venue = BETFAIR_VENUE
         self.account = TestExecStubs.betting_account()
-        self.instrument = BetfairTestStubs.betting_instrument()
+        self.instrument = TestInstrumentProvider.betting_instrument()
 
         # Setup logging
         self.logger = LiveLogger(loop=self.loop, clock=self.clock, level_stdout=LogLevel.DEBUG)
@@ -50,7 +50,7 @@ class TestBetfairAccount:
         )
 
         self.cache = TestComponentStubs.cache()
-        self.cache.add_instrument(BetfairTestStubs.betting_instrument())
+        self.cache.add_instrument(self.instrument)
 
     def test_betting_instrument_notional_value(self):
         notional = self.instrument.notional_value(

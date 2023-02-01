@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -44,9 +44,9 @@ from nautilus_trader.cache.base cimport CacheFacade
 from nautilus_trader.common.actor cimport Actor
 from nautilus_trader.common.clock cimport LiveClock
 from nautilus_trader.common.clock cimport TestClock
+from nautilus_trader.common.enums_c cimport log_level_from_str
 from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.common.logging cimport LoggerAdapter
-from nautilus_trader.common.logging cimport LogLevelParser
 from nautilus_trader.common.logging cimport log_memory
 from nautilus_trader.common.timer cimport TimeEventHandler
 from nautilus_trader.core.correctness cimport Condition
@@ -54,15 +54,18 @@ from nautilus_trader.core.data cimport Data
 from nautilus_trader.core.datetime cimport maybe_dt_to_unix_nanos
 from nautilus_trader.core.datetime cimport unix_nanos_to_dt
 from nautilus_trader.core.uuid cimport UUID4
-from nautilus_trader.model.c_enums.account_type cimport AccountType
-from nautilus_trader.model.c_enums.aggregation_source cimport AggregationSource
-from nautilus_trader.model.c_enums.book_type cimport BookType
-from nautilus_trader.model.c_enums.oms_type cimport OMSType
 from nautilus_trader.model.data.bar cimport Bar
 from nautilus_trader.model.data.base cimport GenericData
 from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
+from nautilus_trader.model.data.venue cimport InstrumentStatusUpdate
+from nautilus_trader.model.data.venue cimport VenueStatusUpdate
+from nautilus_trader.model.enums_c cimport AccountType
+from nautilus_trader.model.enums_c cimport AggregationSource
+from nautilus_trader.model.enums_c cimport BookType
+from nautilus_trader.model.enums_c cimport OmsType
 from nautilus_trader.model.identifiers cimport ClientId
+from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.identifiers cimport TraderId
 from nautilus_trader.model.identifiers cimport Venue
 from nautilus_trader.model.instruments.base cimport Instrument
@@ -122,15 +125,18 @@ cdef class BacktestEngine:
             environment=Environment.BACKTEST,
             name=type(self).__name__,
             trader_id=TraderId(config.trader_id),
+            instance_id=config.instance_id,
             cache_config=config.cache or CacheConfig(),
-            cache_database_config=CacheDatabaseConfig(type="in-memory", flush=True),
+            cache_database_config=config.cache_database or CacheDatabaseConfig(),
             data_config=config.data_engine or DataEngineConfig(),
             risk_config=config.risk_engine or RiskEngineConfig(),
             exec_config=config.exec_engine or ExecEngineConfig(),
             streaming_config=config.streaming,
             actor_configs=config.actors,
             strategy_configs=config.strategies,
-            log_level=LogLevelParser.from_str(config.log_level.upper()),
+            load_state=config.load_state,
+            save_state=config.save_state,
+            log_level=log_level_from_str(config.log_level.upper()),
             bypass_logging=config.bypass_logging,
         )
 
@@ -346,20 +352,21 @@ cdef class BacktestEngine:
 
     def add_venue(
         self,
-        Venue venue,
-        OMSType oms_type,
-        AccountType account_type,
-        Currency base_currency,
-        list starting_balances,
-        default_leverage = None,
-        dict leverages = None,
-        list modules = None,
-        FillModel fill_model = None,
-        LatencyModel latency_model = None,
-        BookType book_type = BookType.L1_TBBO,
-        bint routing: bool = False,
-        bint frozen_account = False,
-        bint reject_stop_orders: bool = True,
+        venue: Venue,
+        oms_type: OmsType,
+        account_type: AccountType,
+        starting_balances: list[Money],
+        base_currency: Optional[Currency] = None,
+        default_leverage: Optional[Decimal] = None,
+        leverages: Optional[dict[InstrumentId, Decimal]] = None,
+        modules: Optional[list[SimulationModule]] = None,
+        fill_model: Optional[FillModel] = None,
+        latency_model: Optional[LatencyModel] = None,
+        book_type: BookType = BookType.L1_TBBO,
+        routing: bool = False,
+        frozen_account: bool = False,
+        reject_stop_orders: bool = True,
+        support_gtd_orders: bool = True,
     ) -> None:
         """
         Add a `SimulatedExchange` with the given parameters to the backtest engine.
@@ -368,20 +375,20 @@ cdef class BacktestEngine:
         ----------
         venue : Venue
             The venue ID.
-        oms_type : OMSType {``HEDGING``, ``NETTING``}
+        oms_type : OmsType {``HEDGING``, ``NETTING``}
             The order management system type for the exchange. If ``HEDGING`` will
             generate new position IDs.
         account_type : AccountType
             The account type for the client.
-        base_currency : Currency, optional
-            The account base currency for the client. Use ``None`` for multi-currency accounts.
         starting_balances : list[Money]
             The starting account balances (specify one for a single asset account).
+        base_currency : Currency, optional
+            The account base currency for the client. Use ``None`` for multi-currency accounts.
         default_leverage : Decimal, optional
             The account default leverage (for margin accounts).
-        leverages : dict[InstrumentId, Decimal]
+        leverages : dict[InstrumentId, Decimal], optional
             The instrument specific leverage configuration (for margin accounts).
-        modules : list[SimulationModule, optional
+        modules : list[SimulationModule], optional
             The simulation modules to load into the exchange.
         fill_model : FillModel, optional
             The fill model for the exchange.
@@ -395,6 +402,8 @@ cdef class BacktestEngine:
             If the account for this exchange is frozen (balances will not change).
         reject_stop_orders : bool, default True
             If stop orders are rejected on submission if trigger price is in the market.
+        support_gtd_orders : bool, default True
+            If orders with GTD time in force will be supported by the venue.
 
         Raises
         ------
@@ -423,8 +432,8 @@ cdef class BacktestEngine:
             venue=venue,
             oms_type=oms_type,
             account_type=account_type,
-            base_currency=base_currency,
             starting_balances=starting_balances,
+            base_currency=base_currency,
             default_leverage=default_leverage,
             leverages=leverages or {},
             instruments=[],
@@ -438,6 +447,7 @@ cdef class BacktestEngine:
             logger=self.kernel.logger,
             frozen_account=frozen_account,
             reject_stop_orders=reject_stop_orders,
+            support_gtd_orders=support_gtd_orders,
         )
 
         self._venues[venue] = exchange
@@ -502,7 +512,7 @@ cdef class BacktestEngine:
         if instrument.id.venue not in self._venues:
             raise InvalidConfiguration(
                 "Cannot add an `Instrument` object without first adding its associated venue. "
-                f"Please add the {instrument.id.venue} venue using the `add_venue` method."
+                f"Add the {instrument.id.venue} venue using the `add_venue` method."
             )
 
         # TODO(cs): validate the instrument is correct for the venue
@@ -555,7 +565,7 @@ cdef class BacktestEngine:
             Condition.true(
                 first.instrument_id in self.kernel.cache.instrument_ids(),
                 f"`Instrument` {first.instrument_id} for the given data not found in the cache. "
-                "Please add the instrument through `add_instrument()` prior to adding related data.",
+                "Add the instrument through `add_instrument()` prior to adding related data.",
             )
             # Check client has been registered
             self._add_market_data_client_if_not_exists(first.instrument_id.venue)
@@ -564,7 +574,7 @@ cdef class BacktestEngine:
             Condition.true(
                 first.bar_type.instrument_id in self.kernel.cache.instrument_ids(),
                 f"`Instrument` {first.bar_type.instrument_id} for the given data not found in the cache. "
-                "Please add the instrument through `add_instrument()` prior to adding related data.",
+                "Add the instrument through `add_instrument()` prior to adding related data.",
             )
             Condition.equal(
                 first.bar_type.aggregation_source,
@@ -817,12 +827,12 @@ cdef class BacktestEngine:
         If more data than can fit in memory is to be run through the backtest
         engine, then streaming mode can be utilized. The expected sequence is as
         follows:
-        - Add initial data batch and strategies.
-        - Call `run_streaming()`.
-        - Call `clear_data()`.
-        - Add next batch of data stream.
-        - Call `run_streaming()`.
-        - Call `end_streaming()` when there is no more data to run on.
+         - Add initial data batch and strategies.
+         - Call `run_streaming()`.
+         - Call `clear_data()`.
+         - Add next batch of data stream.
+         - Call `run_streaming()`.
+         - Call `end_streaming()` when there is no more data to run on.
 
         Parameters
         ----------
@@ -979,6 +989,10 @@ cdef class BacktestEngine:
                 self._venues[data.instrument_id.venue].process_trade_tick(data)
             elif isinstance(data, Bar):
                 self._venues[data.bar_type.instrument_id.venue].process_bar(data)
+            elif isinstance(data, VenueStatusUpdate):
+                self._venues[data.venue].process_venue_status(data)
+            elif isinstance(data, InstrumentStatusUpdate):
+                self._venues[data.instrument_id.venue].process_instrument_status(data)
 
             self._data_engine.process(data)
 

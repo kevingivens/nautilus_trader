@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,12 +17,13 @@ import asyncio
 import sys
 
 import pytest
+import pytest_asyncio
 
 from nautilus_trader.network.http import HttpClient
-from tests.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
 
 
-@pytest.fixture()
+@pytest_asyncio.fixture()
 async def client():
     client = HttpClient(
         loop=asyncio.get_event_loop(),

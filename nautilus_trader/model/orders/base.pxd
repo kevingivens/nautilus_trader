@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,14 +17,14 @@ from libc.stdint cimport uint64_t
 
 from nautilus_trader.core.fsm cimport FiniteStateMachine
 from nautilus_trader.core.uuid cimport UUID4
-from nautilus_trader.model.c_enums.contingency_type cimport ContingencyType
-from nautilus_trader.model.c_enums.liquidity_side cimport LiquiditySide
-from nautilus_trader.model.c_enums.order_side cimport OrderSide
-from nautilus_trader.model.c_enums.order_status cimport OrderStatus
-from nautilus_trader.model.c_enums.order_type cimport OrderType
-from nautilus_trader.model.c_enums.position_side cimport PositionSide
-from nautilus_trader.model.c_enums.time_in_force cimport TimeInForce
-from nautilus_trader.model.c_enums.trigger_type cimport TriggerType
+from nautilus_trader.model.enums_c cimport ContingencyType
+from nautilus_trader.model.enums_c cimport LiquiditySide
+from nautilus_trader.model.enums_c cimport OrderSide
+from nautilus_trader.model.enums_c cimport OrderStatus
+from nautilus_trader.model.enums_c cimport OrderType
+from nautilus_trader.model.enums_c cimport PositionSide
+from nautilus_trader.model.enums_c cimport TimeInForce
+from nautilus_trader.model.enums_c cimport TriggerType
 from nautilus_trader.model.events.order cimport OrderAccepted
 from nautilus_trader.model.events.order cimport OrderCanceled
 from nautilus_trader.model.events.order cimport OrderDenied
@@ -45,7 +45,12 @@ from nautilus_trader.model.identifiers cimport StrategyId
 from nautilus_trader.model.identifiers cimport TradeId
 from nautilus_trader.model.identifiers cimport TraderId
 from nautilus_trader.model.identifiers cimport VenueOrderId
+from nautilus_trader.model.objects cimport Price
 from nautilus_trader.model.objects cimport Quantity
+
+
+cdef tuple VALID_STOP_ORDER_TYPES
+cdef tuple VALID_LIMIT_ORDER_TYPES
 
 
 cdef class Order:
@@ -54,6 +59,7 @@ cdef class Order:
     cdef list _trade_ids
     cdef FiniteStateMachine _fsm
     cdef OrderStatus _previous_status
+    cdef Price _triggered_price
 
     cdef readonly TraderId trader_id
     """The trader ID associated with the position.\n\n:returns: `TraderId`"""
@@ -115,6 +121,8 @@ cdef class Order:
     cpdef str info(self)
     cpdef dict to_dict(self)
 
+    cdef void set_triggered_price_c(self, Price triggered_price) except *
+    cdef Price get_triggered_price_c(self)
     cdef OrderStatus status_c(self) except *
     cdef OrderInitialized init_event_c(self)
     cdef OrderEvent last_event_c(self)
@@ -164,3 +172,6 @@ cdef class Order:
     cdef void _filled(self, OrderFilled event) except *
     cdef double _calculate_avg_px(self, double last_qty, double last_px)
     cdef void _set_slippage(self) except *
+
+    @staticmethod
+    cdef void _hydrate_initial_events(Order original, Order transformed) except *

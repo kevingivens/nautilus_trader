@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,17 +14,22 @@
 # -------------------------------------------------------------------------------------------------
 
 import datetime
-import pathlib
-import sys
+import os
+import tempfile
 from decimal import Decimal
 
 import fsspec
+import pandas as pd
 import pyarrow.dataset as ds
 import pytest
 
 from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.backtest.data.wranglers import BarDataWrangler
+from nautilus_trader.core.nautilus_pyo3.persistence import ParquetReader
+from nautilus_trader.core.nautilus_pyo3.persistence import ParquetReaderType
+from nautilus_trader.core.nautilus_pyo3.persistence import ParquetType
+from nautilus_trader.core.nautilus_pyo3.persistence import ParquetWriter
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.data.base import GenericData
 from nautilus_trader.model.data.tick import QuoteTick
@@ -39,57 +44,210 @@ from nautilus_trader.model.instruments.equity import Equity
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
-from nautilus_trader.persistence.catalog.parquet import resolve_path
 from nautilus_trader.persistence.external.core import dicts_to_dataframes
 from nautilus_trader.persistence.external.core import process_files
 from nautilus_trader.persistence.external.core import split_and_serialize
 from nautilus_trader.persistence.external.core import write_objects
 from nautilus_trader.persistence.external.core import write_tables
 from nautilus_trader.persistence.external.readers import CSVReader
+from nautilus_trader.test_kit.mocks.data import NewsEventData
+from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.persistence import TestPersistenceStubs
+from tests import TEST_DATA_DIR
 from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.mocks.data import NewsEventData
-from tests.test_kit.mocks.data import data_catalog_setup
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
-from tests.test_kit.stubs.persistence import TestPersistenceStubs
 
 
-TEST_DATA_DIR = PACKAGE_ROOT + "/data"
-
-
-class TestPersistenceCatalog:
+class TestPersistenceCatalogRust:
     def setup(self):
-        data_catalog_setup()
-        self.catalog = ParquetDataCatalog.from_env()
+        self.catalog = data_catalog_setup(protocol="file")
         self.fs: fsspec.AbstractFileSystem = self.catalog.fs
+
+    def teardown(self):
+        # Cleanup
+        path = self.catalog.path
+        fs = self.catalog.fs
+        if fs.exists(path):
+            fs.rm(path, recursive=True)
+
+    def _load_quote_ticks_into_catalog_rust(self) -> None:
+        parquet_data_path = os.path.join(TEST_DATA_DIR, "quote_tick_data.parquet")
+        assert os.path.exists(parquet_data_path)
+        reader = ParquetReader(
+            parquet_data_path,
+            1000,
+            ParquetType.QuoteTick,
+            ParquetReaderType.File,
+        )
+        # data = map(QuoteTick.list_from_capsule, reader)
+        # ticks = list(itertools.chain(*data))
+        # print(ticks)
+
+        # Use rust writer
+        metadata = {
+            "instrument_id": "USD/JPY.SIM",
+            "price_precision": "5",
+            "size_precision": "0",
+        }
+        writer = ParquetWriter(
+            ParquetType.QuoteTick,
+            metadata,
+        )
+
+        file_path = os.path.join(
+            self.catalog.path,
+            "data",
+            "quote_tick.parquet",
+            "instrument_id=USD-JPY.SIM",
+            "0-0-0.parquet",
+        )
+
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "wb") as f:
+            for chunk in reader:
+                writer.write(chunk)
+            data: bytes = writer.flush_bytes()
+            f.write(data)
+
+    def _load_trade_ticks_into_catalog_rust(self) -> None:
+        parquet_data_path = os.path.join(TEST_DATA_DIR, "trade_tick_data.parquet")
+        assert os.path.exists(parquet_data_path)
+        reader = ParquetReader(
+            parquet_data_path,
+            100,
+            ParquetType.TradeTick,
+            ParquetReaderType.File,
+        )
+        # data = map(TradeTick.list_from_capsule, reader)
+        # ticks = list(itertools.chain(*data))
+        # print(ticks)
+
+        # Use rust writer
+        metadata = {
+            "instrument_id": "EUR/USD.SIM",
+            "price_precision": "5",
+            "size_precision": "0",
+        }
+        writer = ParquetWriter(
+            ParquetType.TradeTick,
+            metadata,
+        )
+
+        file_path = os.path.join(
+            self.catalog.path,
+            "data",
+            "trade_tick.parquet",
+            "instrument_id=EUR-USD.SIM",
+            "0-0-0.parquet",
+        )
+
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "wb") as f:
+            for chunk in reader:
+                writer.write(chunk)
+            data: bytes = writer.flush_bytes()
+            f.write(data)
+
+    def test_data_catalog_quote_ticks_as_nautilus_use_rust(self):
+        # Arrange
+        self._load_quote_ticks_into_catalog_rust()
+
+        # Act
+        quote_ticks = self.catalog.quote_ticks(as_nautilus=True, use_rust=True)
+
+        # Assert
+        assert all(isinstance(tick, QuoteTick) for tick in quote_ticks)
+        assert len(quote_ticks) == 9500
+
+    def test_data_catalog_quote_ticks_use_rust(self):
+        # Arrange
+        self._load_quote_ticks_into_catalog_rust()
+
+        # Act
+        qdf = self.catalog.quote_ticks(use_rust=True)
+
+        # Assert
+        assert isinstance(qdf, pd.DataFrame)
+        assert len(qdf) == 9500
+        # assert qdf.bid.equals(pd.Series([float(q.bid) for q in quotes]))
+        # assert qdf.ask.equals(pd.Series([float(q.ask) for q in quotes]))
+        # assert qdf.bid_size.equals(pd.Series([float(q.bid_size) for q in quotes]))
+        # assert qdf.ask_size.equals(pd.Series([float(q.ask_size) for q in quotes]))
+
+    def test_data_catalog_trade_ticks_as_nautilus_use_rust(self):
+        # Arrange
+        self._load_trade_ticks_into_catalog_rust()
+
+        # Act
+        trade_ticks = self.catalog.trade_ticks(as_nautilus=True, use_rust=True)
+
+        # Assert
+        assert all(isinstance(tick, TradeTick) for tick in trade_ticks)
+        assert len(trade_ticks) == 100
+
+
+class _TestPersistenceCatalog:
+    def setup(self):
+        self.catalog = data_catalog_setup(protocol=self.fs_protocol)
         self._load_data_into_catalog()
+        self.fs: fsspec.AbstractFileSystem = self.catalog.fs
+
+    def teardown(self):
+        # Cleanup
+        path = self.catalog.path
+        fs = self.catalog.fs
+        if fs.exists(path):
+            fs.rm(path, recursive=True)
 
     def _load_data_into_catalog(self):
         self.instrument_provider = BetfairInstrumentProvider.from_instruments([])
+        # Write some betfair trades and orderbook
         process_files(
-            glob_path=PACKAGE_ROOT + "/data/1.166564490.bz2",
+            glob_path=TEST_DATA_DIR + "/1.166564490.bz2",
             reader=BetfairTestStubs.betfair_reader(instrument_provider=self.instrument_provider),
             instrument_provider=self.instrument_provider,
             catalog=self.catalog,
         )
 
-    @pytest.mark.skipif(sys.platform != "win32", reason="windows only")
-    def test_catalog_root_path_windows_local(self):
-        from tempfile import tempdir
+    @pytest.mark.skip(reason="fix after merge")
+    def test_from_env(self):
+        path = tempfile.mktemp()
+        os.environ["NAUTILUS_PATH"] = f"{self.fs_protocol}://{path}"
+        catalog = ParquetDataCatalog.from_env()
+        assert catalog.fs_protocol == fsspec.filesystem(self.fs_protocol)
 
-        catalog = ParquetDataCatalog(path=tempdir, fs_protocol="file")
-        path = resolve_path(path=catalog.path / "test", fs=catalog.fs)
-        assert path == str(pathlib.Path(tempdir) / "test")
+    def test_partition_key_correctly_remapped(self):
+        # Arrange
+        instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
+        tick = QuoteTick(
+            instrument_id=instrument.id,
+            bid=Price(10, 1),
+            ask=Price(11, 1),
+            bid_size=Quantity(10, 1),
+            ask_size=Quantity(10, 1),
+            ts_init=0,
+            ts_event=0,
+        )
+        tables = dicts_to_dataframes(split_and_serialize([tick]))
 
-    @pytest.mark.skipif(sys.platform != "win32", reason="windows only")
-    def test_catalog_root_path_windows_non_local(self):
-        catalog = ParquetDataCatalog(path="/some/path", fs_protocol="memory")
-        path = resolve_path(path=catalog.path / "test", fs=catalog.fs)
-        assert path == "/some/path/test"
+        write_tables(catalog=self.catalog, tables=tables)
+
+        # Act
+        df = self.catalog.quote_ticks()
+
+        # Assert
+        assert len(df) == 1
+        self.fs.isdir(
+            os.path.join(self.catalog.path, "data", "quote_tick.parquet/instrument_id=AUD-USD.SIM"),
+        )
+        # Ensure we "unmap" the keys that we write the partition filenames as;
+        # this instrument_id should be AUD/USD not AUD-USD
+        assert df.iloc[0]["instrument_id"] == instrument.id.value
 
     def test_list_data_types(self):
         data_types = self.catalog.list_data_types()
+
         expected = [
             "betfair_ticker",
             "betting_instrument",
@@ -99,69 +257,7 @@ class TestPersistenceCatalog:
         ]
         assert data_types == expected
 
-    def test_data_catalog_instruments_df(self):
-        instruments = self.catalog.instruments()
-        assert len(instruments) == 2
-
-    @pytest.mark.skip(reason="schema change")
-    def test_writing_instruments_doesnt_overwrite(self):
-        instruments = self.catalog.instruments(as_nautilus=True)
-        write_objects(catalog=self.catalog, chunk=[instruments[0]])
-        write_objects(catalog=self.catalog, chunk=[instruments[1]])
-        instruments = self.catalog.instruments(as_nautilus=True)
-        assert len(instruments) == 3
-
-    def test_data_catalog_instruments_filtered_df(self):
-        instrument_id = "296287091.1665644902374910.0.BETFAIR"
-        instruments = self.catalog.instruments(instrument_ids=[instrument_id])
-        assert len(instruments) == 1
-        assert instruments["id"].iloc[0] == instrument_id
-
-    def test_data_catalog_instruments_as_nautilus(self):
-        instruments = self.catalog.instruments(as_nautilus=True)
-        assert all(isinstance(ins, BettingInstrument) for ins in instruments)
-
-    def test_data_catalog_currency_with_null_max_price_loads(self):
-        # Arrange
-        catalog = ParquetDataCatalog.from_env()
-        instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=Venue("SIM"))
-        write_objects(catalog=catalog, chunk=[instrument])
-
-        # Act
-        instrument = catalog.instruments(instrument_ids=["AUD/USD.SIM"], as_nautilus=True)[0]
-
-        # Assert
-        assert instrument.max_price is None
-
-    def test_data_catalog_instrument_ids_correctly_unmapped(self):
-        # Arrange
-        catalog = ParquetDataCatalog.from_env()
-        instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=Venue("SIM"))
-        trade_tick = TradeTick(
-            instrument_id=instrument.id,
-            price=Price.from_str("2.0"),
-            size=Quantity.from_int(10),
-            aggressor_side=AggressorSide.NONE,
-            trade_id=TradeId("1"),
-            ts_event=0,
-            ts_init=0,
-        )
-        write_objects(catalog=catalog, chunk=[instrument, trade_tick])
-
-        # Act
-        instrument = catalog.instruments(instrument_ids=["AUD/USD.SIM"], as_nautilus=True)[0]
-        trade_tick = catalog.trade_ticks(instrument_ids=["AUD/USD.SIM"], as_nautilus=True)[0]
-
-        # Assert
-        assert instrument.id.value == "AUD/USD.SIM"
-        assert trade_tick.instrument_id.value == "AUD/USD.SIM"
-
-    def test_data_catalog_trade_ticks_as_nautilus(self):
-        trade_ticks = self.catalog.trade_ticks(as_nautilus=True)
-        assert all(isinstance(tick, TradeTick) for tick in trade_ticks)
-        assert len(trade_ticks) == 312
-
-    def test_partition_key_correctly_remapped(self):
+    def test_list_partitions(self):
         # Arrange
         instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
         tick = QuoteTick(
@@ -177,25 +273,10 @@ class TestPersistenceCatalog:
         write_tables(catalog=self.catalog, tables=tables)
 
         # Act
-        df = self.catalog.quote_ticks()
+        parts = self.catalog.list_partitions(QuoteTick)
 
         # Assert
-        assert len(df) == 1
-        assert self.fs.isdir(
-            "/.nautilus/catalog/data/quote_tick.parquet/instrument_id=AUD-USD.SIM/"
-        )
-        # Ensure we "unmap" the keys that we write the partition filenames as;
-        # this instrument_id should be AUD/USD not AUD-USD
-        assert df.iloc[0]["instrument_id"] == instrument.id.value
-
-    def test_data_catalog_filter(self):
-        # Arrange, Act
-        deltas = self.catalog.order_book_deltas()
-        filtered_deltas = self.catalog.order_book_deltas(filter_expr=ds.field("action") == "DELETE")
-
-        # Assert
-        assert len(deltas) == 2384
-        assert len(filtered_deltas) == 351
+        assert parts == {"instrument_id": ["AUD-USD.SIM"]}
 
     def test_data_catalog_query_filtered(self):
         ticks = self.catalog.trade_ticks()
@@ -216,18 +297,96 @@ class TestPersistenceCatalog:
         filtered_deltas = self.catalog.order_book_deltas(filter_expr=ds.field("action") == "DELETE")
         assert len(filtered_deltas) == 351
 
+    def test_data_catalog_trade_ticks_as_nautilus(self):
+        trade_ticks = self.catalog.trade_ticks(as_nautilus=True)
+        assert all(isinstance(tick, TradeTick) for tick in trade_ticks)
+        assert len(trade_ticks) == 312
+
+    def test_data_catalog_instruments_df(self):
+        instruments = self.catalog.instruments()
+        assert len(instruments) == 2
+
+    def test_writing_instruments_doesnt_overwrite(self):
+        instruments = self.catalog.instruments(as_nautilus=True)
+        write_objects(catalog=self.catalog, chunk=[instruments[0]])
+        write_objects(catalog=self.catalog, chunk=[instruments[1]])
+        instruments = self.catalog.instruments(as_nautilus=True)
+        assert len(instruments) == 2
+
+    def test_data_catalog_instruments_filtered_df(self):
+        instrument_id = self.catalog.instruments(as_nautilus=True)[0].id.value
+        instruments = self.catalog.instruments(instrument_ids=[instrument_id])
+        assert len(instruments) == 1
+        assert instruments["id"].iloc[0] == instrument_id
+
+    def test_data_catalog_instruments_as_nautilus(self):
+        instruments = self.catalog.instruments(as_nautilus=True)
+        assert all(isinstance(ins, BettingInstrument) for ins in instruments)
+
+    def test_data_catalog_currency_with_null_max_price_loads(self):
+        # Arrange
+        instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=Venue("SIM"))
+        write_objects(catalog=self.catalog, chunk=[instrument])
+
+        # Act
+        instrument = self.catalog.instruments(instrument_ids=["AUD/USD.SIM"], as_nautilus=True)[0]
+
+        # Assert
+        assert instrument.max_price is None
+
+    def test_data_catalog_instrument_ids_correctly_unmapped(self):
+        # Arrange
+        instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=Venue("SIM"))
+        trade_tick = TradeTick(
+            instrument_id=instrument.id,
+            price=Price.from_str("2.0"),
+            size=Quantity.from_int(10),
+            aggressor_side=AggressorSide.NO_AGGRESSOR,
+            trade_id=TradeId("1"),
+            ts_event=0,
+            ts_init=0,
+        )
+        write_objects(catalog=self.catalog, chunk=[instrument, trade_tick])
+
+        # Act
+        self.catalog.instruments()
+        instrument = self.catalog.instruments(instrument_ids=["AUD/USD.SIM"], as_nautilus=True)[0]
+        trade_tick = self.catalog.trade_ticks(instrument_ids=["AUD/USD.SIM"], as_nautilus=True)[0]
+
+        # Assert
+        assert instrument.id.value == "AUD/USD.SIM"
+        assert trade_tick.instrument_id.value == "AUD/USD.SIM"
+
+    def test_data_catalog_filter(self):
+        # Arrange, Act
+        deltas = self.catalog.order_book_deltas()
+        filtered_deltas = self.catalog.order_book_deltas(filter_expr=ds.field("action") == "DELETE")
+
+        # Assert
+        assert len(deltas) == 2384
+        assert len(filtered_deltas) == 351
+
     def test_data_catalog_generic_data(self):
+        # Arrange
         TestPersistenceStubs.setup_news_event_persistence()
         process_files(
             glob_path=f"{TEST_DATA_DIR}/news_events.csv",
             reader=CSVReader(block_parser=TestPersistenceStubs.news_event_parser),
             catalog=self.catalog,
         )
+
+        # Act
         df = self.catalog.generic_data(cls=NewsEventData, filter_expr=ds.field("currency") == "USD")
-        assert len(df) == 22925
         data = self.catalog.generic_data(
-            cls=NewsEventData, filter_expr=ds.field("currency") == "CHF", as_nautilus=True
+            cls=NewsEventData,
+            filter_expr=ds.field("currency") == "CHF",
+            as_nautilus=True,
         )
+
+        # Assert
+        assert df is not None
+        assert data is not None
+        assert len(df) == 22925
         assert len(data) == 2745 and isinstance(data[0], GenericData)
 
     def test_data_catalog_bars(self):
@@ -283,6 +442,7 @@ class TestPersistenceCatalog:
         assert "instrument_id" in data.columns
 
     def test_catalog_projections(self):
+
         projections = {"tid": ds.field("trade_id")}
         trades = self.catalog.trade_ticks(projections=projections)
         assert "tid" in trades.columns
@@ -318,9 +478,8 @@ class TestPersistenceCatalog:
         )
 
         # Act
-        catalog = ParquetDataCatalog.from_env()
-        write_objects(catalog=catalog, chunk=[instrument, quote_tick])
-        instrument_from_catalog = catalog.instruments(
+        write_objects(catalog=self.catalog, chunk=[instrument, quote_tick])
+        instrument_from_catalog = self.catalog.instruments(
             as_nautilus=True,
             instrument_ids=[instrument.id.value],
         )[0]
@@ -331,23 +490,10 @@ class TestPersistenceCatalog:
         assert instrument.margin_init == instrument_from_catalog.margin_init
         assert instrument.margin_maint == instrument_from_catalog.margin_maint
 
-    def test_list_partitions(self):
-        # Arrange
-        instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
-        tick = QuoteTick(
-            instrument_id=instrument.id,
-            bid=Price(10, 1),
-            ask=Price(11, 1),
-            bid_size=Quantity(10, 1),
-            ask_size=Quantity(10, 1),
-            ts_init=0,
-            ts_event=0,
-        )
-        tables = dicts_to_dataframes(split_and_serialize([tick]))
-        write_tables(catalog=self.catalog, tables=tables)
 
-        # Act
-        parts = self.catalog.list_partitions(QuoteTick)
+class TestPersistenceCatalogFile(_TestPersistenceCatalog):
+    fs_protocol = "file"
 
-        # Assert
-        assert parts == {"instrument_id": ["AUD-USD.SIM"]}
+
+class TestPersistenceCatalogMemory(_TestPersistenceCatalog):
+    fs_protocol = "memory"

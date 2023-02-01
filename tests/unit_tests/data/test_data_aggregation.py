@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,6 +14,7 @@
 # -------------------------------------------------------------------------------------------------
 
 import os
+from datetime import timedelta
 from decimal import Decimal
 
 import pandas as pd
@@ -26,6 +27,7 @@ from nautilus_trader.backtest.data.wranglers import QuoteTickDataWrangler
 from nautilus_trader.backtest.data.wranglers import TradeTickDataWrangler
 from nautilus_trader.common.clock import TestClock
 from nautilus_trader.common.logging import Logger
+from nautilus_trader.core.datetime import dt_to_unix_nanos
 from nautilus_trader.data.aggregation import BarBuilder
 from nautilus_trader.data.aggregation import TickBarAggregator
 from nautilus_trader.data.aggregation import TimeBarAggregator
@@ -43,10 +45,11 @@ from nautilus_trader.model.enums import PriceType
 from nautilus_trader.model.identifiers import TradeId
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from tests.test_kit import PACKAGE_ROOT
-from tests.test_kit.mocks.object_storer import ObjectStorer
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.mocks.object_storer import ObjectStorer
+from nautilus_trader.test_kit.stubs import UNIX_EPOCH
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
+from tests import TEST_DATA_DIR
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -300,7 +303,7 @@ class TestTickBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("1.00001"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -387,7 +390,7 @@ class TestTickBarAggregator:
             instrument_id=instrument.id,
             price=Price.from_str("1.00001"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -397,7 +400,7 @@ class TestTickBarAggregator:
             instrument_id=instrument.id,
             price=Price.from_str("1.00002"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123457"),
             ts_event=0,
             ts_init=0,
@@ -407,7 +410,7 @@ class TestTickBarAggregator:
             instrument_id=instrument.id,
             price=Price.from_str("1.00000"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123458"),
             ts_event=0,
             ts_init=0,
@@ -456,7 +459,7 @@ class TestTickBarAggregator:
         assert last_bar.high == Price.from_str("0.670345")
         assert last_bar.low == Price.from_str("0.670225")
         assert last_bar.close == Price.from_str("0.670230")
-        assert last_bar.volume == Quantity.from_int(100000000)
+        assert last_bar.volume == Quantity.from_int(100_000_000)
 
     def test_run_trade_ticks_through_aggregator_results_in_expected_bars(self):
         # Arrange
@@ -509,8 +512,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00001"),
             ask=Price.from_str("1.00004"),
-            bid_size=Quantity.from_int(3000),
-            ask_size=Quantity.from_int(2000),
+            bid_size=Quantity.from_int(3_000),
+            ask_size=Quantity.from_int(2_000),
             ts_event=0,
             ts_init=0,
         )
@@ -539,7 +542,7 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             price=Price.from_str("1.00001"),
             size=Quantity.from_int(1),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -569,8 +572,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00001"),
             ask=Price.from_str("1.00004"),
-            bid_size=Quantity.from_int(3000),
-            ask_size=Quantity.from_int(2000),
+            bid_size=Quantity.from_int(3_000),
+            ask_size=Quantity.from_int(2_000),
             ts_event=0,
             ts_init=0,
         )
@@ -579,8 +582,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00002"),
             ask=Price.from_str("1.00005"),
-            bid_size=Quantity.from_int(4000),
-            ask_size=Quantity.from_int(2000),
+            bid_size=Quantity.from_int(4_000),
+            ask_size=Quantity.from_int(2_000),
             ts_event=0,
             ts_init=0,
         )
@@ -589,8 +592,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00000"),
             ask=Price.from_str("1.00003"),
-            bid_size=Quantity.from_int(3000),
-            ask_size=Quantity.from_int(2000),
+            bid_size=Quantity.from_int(3_000),
+            ask_size=Quantity.from_int(2_000),
             ts_event=0,
             ts_init=0,
         )
@@ -606,7 +609,7 @@ class TestVolumeBarAggregator:
         assert bar_store.get_store()[0].high == Price.from_str("1.00002")
         assert bar_store.get_store()[0].low == Price.from_str("1.00000")
         assert bar_store.get_store()[0].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[0].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[0].volume == Quantity.from_int(10_000)
 
     def test_handle_trade_tick_when_volume_at_threshold_sends_bar_to_handler(self):
         # Arrange
@@ -625,8 +628,8 @@ class TestVolumeBarAggregator:
         tick1 = TradeTick(
             instrument_id=instrument.id,
             price=Price.from_str("1.00001"),
-            size=Quantity.from_int(3000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(3_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -635,8 +638,8 @@ class TestVolumeBarAggregator:
         tick2 = TradeTick(
             instrument_id=instrument.id,
             price=Price.from_str("1.00002"),
-            size=Quantity.from_int(4000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(4_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123457"),
             ts_event=0,
             ts_init=0,
@@ -645,8 +648,8 @@ class TestVolumeBarAggregator:
         tick3 = TradeTick(
             instrument_id=instrument.id,
             price=Price.from_str("1.00000"),
-            size=Quantity.from_int(3000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(3_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123458"),
             ts_event=0,
             ts_init=0,
@@ -663,7 +666,7 @@ class TestVolumeBarAggregator:
         assert bar_store.get_store()[0].high == Price.from_str("1.00002")
         assert bar_store.get_store()[0].low == Price.from_str("1.00000")
         assert bar_store.get_store()[0].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[0].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[0].volume == Quantity.from_int(10_000)
 
     def test_handle_quote_tick_when_volume_beyond_threshold_sends_bars_to_handler(self):
         # Arrange
@@ -683,8 +686,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00001"),
             ask=Price.from_str("1.00004"),
-            bid_size=Quantity.from_int(2000),
-            ask_size=Quantity.from_int(2000),
+            bid_size=Quantity.from_int(2_000),
+            ask_size=Quantity.from_int(2_000),
             ts_event=0,
             ts_init=0,
         )
@@ -693,8 +696,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00002"),
             ask=Price.from_str("1.00005"),
-            bid_size=Quantity.from_int(3000),
-            ask_size=Quantity.from_int(3000),
+            bid_size=Quantity.from_int(3_000),
+            ask_size=Quantity.from_int(3_000),
             ts_event=0,
             ts_init=0,
         )
@@ -703,8 +706,8 @@ class TestVolumeBarAggregator:
             instrument_id=instrument.id,
             bid=Price.from_str("1.00000"),
             ask=Price.from_str("1.00003"),
-            bid_size=Quantity.from_int(25000),
-            ask_size=Quantity.from_int(25000),
+            bid_size=Quantity.from_int(25_000),
+            ask_size=Quantity.from_int(25_000),
             ts_event=0,
             ts_init=0,
         )
@@ -720,17 +723,17 @@ class TestVolumeBarAggregator:
         assert bar_store.get_store()[0].high == Price.from_str("1.00002")
         assert bar_store.get_store()[0].low == Price.from_str("1.00000")
         assert bar_store.get_store()[0].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[0].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[0].volume == Quantity.from_int(10_000)
         assert bar_store.get_store()[1].open == Price.from_str("1.00000")
         assert bar_store.get_store()[1].high == Price.from_str("1.00000")
         assert bar_store.get_store()[1].low == Price.from_str("1.00000")
         assert bar_store.get_store()[1].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[1].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[1].volume == Quantity.from_int(10_000)
         assert bar_store.get_store()[2].open == Price.from_str("1.00000")
         assert bar_store.get_store()[2].high == Price.from_str("1.00000")
         assert bar_store.get_store()[2].low == Price.from_str("1.00000")
         assert bar_store.get_store()[2].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[2].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[2].volume == Quantity.from_int(10_000)
 
     def test_handle_trade_tick_when_volume_beyond_threshold_sends_bars_to_handler(self):
         # Arrange
@@ -749,8 +752,8 @@ class TestVolumeBarAggregator:
         tick1 = TradeTick(
             instrument_id=instrument.id,
             price=Price.from_str("1.00001"),
-            size=Quantity.from_int(2000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(2_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -759,8 +762,8 @@ class TestVolumeBarAggregator:
         tick2 = TradeTick(
             instrument_id=instrument.id,
             price=Price.from_str("1.00002"),
-            size=Quantity.from_int(3000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(3_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123457"),
             ts_event=0,
             ts_init=0,
@@ -769,8 +772,8 @@ class TestVolumeBarAggregator:
         tick3 = TradeTick(
             instrument_id=instrument.id,
             price=Price.from_str("1.00000"),
-            size=Quantity.from_int(25000),
-            aggressor_side=AggressorSide.BUY,
+            size=Quantity.from_int(25_000),
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123458"),
             ts_event=0,
             ts_init=0,
@@ -787,17 +790,17 @@ class TestVolumeBarAggregator:
         assert bar_store.get_store()[0].high == Price.from_str("1.00002")
         assert bar_store.get_store()[0].low == Price.from_str("1.00000")
         assert bar_store.get_store()[0].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[0].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[0].volume == Quantity.from_int(10_000)
         assert bar_store.get_store()[1].open == Price.from_str("1.00000")
         assert bar_store.get_store()[1].high == Price.from_str("1.00000")
         assert bar_store.get_store()[1].low == Price.from_str("1.00000")
         assert bar_store.get_store()[1].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[1].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[1].volume == Quantity.from_int(10_000)
         assert bar_store.get_store()[2].open == Price.from_str("1.00000")
         assert bar_store.get_store()[2].high == Price.from_str("1.00000")
         assert bar_store.get_store()[2].low == Price.from_str("1.00000")
         assert bar_store.get_store()[2].close == Price.from_str("1.00000")
-        assert bar_store.get_store()[2].volume == Quantity.from_int(10000)
+        assert bar_store.get_store()[2].volume == Quantity.from_int(10_000)
 
     def test_run_quote_ticks_through_aggregator_results_in_expected_bars(self):
         # Arrange
@@ -832,7 +835,7 @@ class TestVolumeBarAggregator:
         assert last_bar.high == Price.from_str("0.670705")
         assert last_bar.low == Price.from_str("0.670370")
         assert last_bar.close == Price.from_str("0.670655")
-        assert last_bar.volume == Quantity.from_int(1000)
+        assert last_bar.volume == Quantity.from_int(1_000)
 
     def test_run_trade_ticks_through_aggregator_results_in_expected_bars(self):
         # Arrange
@@ -863,7 +866,7 @@ class TestVolumeBarAggregator:
         assert last_bar.high == Price.from_str("425.20")
         assert last_bar.low == Price.from_str("424.69")
         assert last_bar.close == Price.from_str("425.06")
-        assert last_bar.volume == Quantity.from_int(1000)
+        assert last_bar.volume == Quantity.from_int(1_000)
 
 
 class TestTestValueBarAggregator:
@@ -885,8 +888,8 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             bid=Price.from_str("1.00001"),
             ask=Price.from_str("1.00004"),
-            bid_size=Quantity.from_int(3000),
-            ask_size=Quantity.from_int(2000),
+            bid_size=Quantity.from_int(3_000),
+            ask_size=Quantity.from_int(2_000),
             ts_event=0,
             ts_init=0,
         )
@@ -916,7 +919,7 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("15000.00"),
             size=Quantity.from_str("3.5"),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -947,8 +950,8 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             bid=Price.from_str("1.00001"),
             ask=Price.from_str("1.00004"),
-            bid_size=Quantity.from_int(20000),
-            ask_size=Quantity.from_int(20000),
+            bid_size=Quantity.from_int(20_000),
+            ask_size=Quantity.from_int(20_000),
             ts_event=0,
             ts_init=0,
         )
@@ -957,8 +960,8 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             bid=Price.from_str("1.00002"),
             ask=Price.from_str("1.00005"),
-            bid_size=Quantity.from_int(60000),
-            ask_size=Quantity.from_int(20000),
+            bid_size=Quantity.from_int(60_000),
+            ask_size=Quantity.from_int(20_000),
             ts_event=0,
             ts_init=0,
         )
@@ -967,8 +970,8 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             bid=Price.from_str("1.00000"),
             ask=Price.from_str("1.00003"),
-            bid_size=Quantity.from_int(30500),
-            ask_size=Quantity.from_int(20000),
+            bid_size=Quantity.from_int(30_500),
+            ask_size=Quantity.from_int(20_000),
             ts_event=0,
             ts_init=0,
         )
@@ -1005,7 +1008,7 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("20.00001"),
             size=Quantity.from_str("3000.00"),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123456"),
             ts_event=0,
             ts_init=0,
@@ -1015,7 +1018,7 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("20.00002"),
             size=Quantity.from_str("4000.00"),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123457"),
             ts_event=0,
             ts_init=0,
@@ -1025,7 +1028,7 @@ class TestTestValueBarAggregator:
             instrument_id=AUDUSD_SIM.id,
             price=Price.from_str("20.00000"),
             size=Quantity.from_str("5000.00"),
-            aggressor_side=AggressorSide.BUY,
+            aggressor_side=AggressorSide.BUYER,
             trade_id=TradeId("123458"),
             ts_event=0,
             ts_init=0,
@@ -1083,7 +1086,7 @@ class TestTestValueBarAggregator:
         assert last_bar.high == Price.from_str("0.671330")
         assert last_bar.low == Price.from_str("0.670370")
         assert last_bar.close == Price.from_str("0.670630")
-        assert last_bar.volume == Quantity.from_int(1491)
+        assert last_bar.volume == Quantity.from_int(1_491)
 
     def test_run_trade_ticks_through_aggregator_results_in_expected_bars(self):
         # Arrange
@@ -1266,7 +1269,7 @@ class TestTimeBarAggregator:
     )
     def test_aggregation_for_same_sec_and_minute_intervals(self, step, aggregation):
         # Arrange - prepare data
-        path = os.path.join(PACKAGE_ROOT, "data", "binance-btcusdt-quotes.parquet")
+        path = os.path.join(TEST_DATA_DIR, "binance-btcusdt-quotes.parquet")
         df_ticks = ParquetTickDataLoader.load(path)
 
         wrangler = QuoteTickDataWrangler(BTCUSDT_BINANCE)
@@ -1303,3 +1306,35 @@ class TestTimeBarAggregator:
         assert handler[0].volume == Quantity.from_str("6.169286")
         assert handler[0].ts_event == 1610064002000000000
         assert handler[0].ts_init == 1610064002000000000
+
+    def test_do_not_build_bars_with_no_updates(self):
+        # Arrange
+        path = os.path.join(TEST_DATA_DIR, "binance-btcusdt-quotes.parquet")
+        df_ticks = ParquetTickDataLoader.load(path)
+
+        wrangler = QuoteTickDataWrangler(BTCUSDT_BINANCE)
+        ticks = wrangler.process(df_ticks)
+
+        clock = TestClock()
+        bar_store = []
+        instrument_id = TestIdStubs.audusd_id()
+        bar_spec = BarSpecification(1, BarAggregation.MINUTE, PriceType.MID)
+        bar_type = BarType(instrument_id, bar_spec)
+
+        # Act
+        aggregator = TimeBarAggregator(
+            AUDUSD_SIM,
+            bar_type,
+            bar_store.append,
+            clock,
+            Logger(clock),
+            build_bars_with_no_updates=False,  # <-- set this True and test will fail
+        )
+        aggregator.handle_quote_tick(ticks[0])
+
+        events = clock.advance_time(dt_to_unix_nanos(UNIX_EPOCH + timedelta(minutes=5)))
+        for event in events:
+            event.handle()
+
+        # Assert
+        assert len(bar_store) == 1  # <-- only 1 bar even after 5 minutes

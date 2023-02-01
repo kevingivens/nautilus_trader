@@ -8,7 +8,7 @@ Using the basic building blocks of data ingest and order management (which we wi
 below), it's possible to implement any type of trading strategy including directional, momentum, re-balancing,
 pairs, market making etc.
 
-Please refer to the [API Reference](../api_reference/trading.md#strategy) for a complete description
+Refer to the `Strategy` in the [API Reference](../api_reference/trading.md) for a complete description
 of all the possible functionality.
 
 There are two main parts of a Nautilus trading strategy:
@@ -72,8 +72,8 @@ class MyStrategy(Strategy):
 # trading strategy to initialize.
 
 config = MyStrategyConfig(
-    instrument_id="ETH-PERP.FTX",
-    bar_type="ETH-PERP.FTX-1000-TICK[LAST]-INTERNAL",
+    instrument_id="ETHUSDT-PERP.BINANCE",
+    bar_type="ETHUSDT-PERP.BINANCE-1000-TICK[LAST]-INTERNAL",
     trade_size=Decimal(1),
     order_id_tag="001",
 )
@@ -105,4 +105,16 @@ example the above config would result in a strategy ID of `MyStrategy-001`.
 
 ```{tip}
 See the `StrategyId` [documentation](../api_reference/model/identifiers.md) for further details.
+```
+
+### Managed GTD expiry
+It's possible for the strategy to manage expiry for orders with a time in force of GTD (_Good 'till Date_).
+This may be desirable if the exchange/broker does not support this time in force option, or for any
+reason you prefer the strategy to manage this.
+
+Simply set the `manage_gtd_expiry` boolean flag on the `submit_order()` or `submit_order_list()` methods
+to `True`. This will then start a timer, when the timer expires the order will be canceled (if not already closed).
+
+```python
+strategy.submit_order(order, manage_gtd_expiry=True)
 ```

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -40,9 +40,9 @@ from nautilus_trader.model.objects import Money
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 from nautilus_trader.model.position import Position
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.execution import TestExecStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.execution import TestExecStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
@@ -532,9 +532,9 @@ class TestCashAccount:
         with pytest.raises(ValueError):
             account.calculate_commission(
                 instrument=instrument,
-                last_qty=Quantity.from_int(100000),
+                last_qty=Quantity.from_int(100_000),
                 last_px=Price.from_str("11450.50"),
-                liquidity_side=LiquiditySide.NONE,
+                liquidity_side=LiquiditySide.NO_LIQUIDITY_SIDE,
             )
 
     @pytest.mark.parametrize(
@@ -552,7 +552,7 @@ class TestCashAccount:
         # Act
         result = account.calculate_commission(
             instrument=instrument,
-            last_qty=Quantity.from_int(100000),
+            last_qty=Quantity.from_int(100_000),
             last_px=Price.from_str("11450.50"),
             liquidity_side=LiquiditySide.MAKER,
             inverse_as_quote=inverse_as_quote,
@@ -569,7 +569,7 @@ class TestCashAccount:
         # Act
         result = account.calculate_commission(
             instrument=instrument,
-            last_qty=Quantity.from_int(1500000),
+            last_qty=Quantity.from_int(1_500_000),
             last_px=Price.from_str("0.80050"),
             liquidity_side=LiquiditySide.TAKER,
         )
@@ -585,7 +585,7 @@ class TestCashAccount:
         # Act
         result = account.calculate_commission(
             instrument=instrument,
-            last_qty=Quantity.from_int(100000),
+            last_qty=Quantity.from_int(100_000),
             last_px=Price.from_str("11450.50"),
             liquidity_side=LiquiditySide.TAKER,
         )
@@ -601,7 +601,7 @@ class TestCashAccount:
         # Act
         result = account.calculate_commission(
             instrument=instrument,
-            last_qty=Quantity.from_int(2200000),
+            last_qty=Quantity.from_int(2_200_000),
             last_px=Price.from_str("120.310"),
             liquidity_side=LiquiditySide.TAKER,
         )

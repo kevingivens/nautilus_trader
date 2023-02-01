@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -62,8 +62,8 @@ ERROR_CODES = {
     },
     "DSC-0034": {
         "kind": "UnknownCaller",
-        "reason": "A valid and active App Key hasn't been provided in the request. Please check that your App Key "
-        "is active. Please see Application Keys for further information regarding App Keys.",
+        "reason": "A valid and active App Key hasn't been provided in the request. Check that your App Key "
+        "is active. See Application Keys for further information regarding App Keys.",
     },
     "DSC-0035": {"kind": "UnrecognisedCredentials", "reason": " "},
     "DSC-0036": {"kind": "InvalidCredentials", "reason": " "},

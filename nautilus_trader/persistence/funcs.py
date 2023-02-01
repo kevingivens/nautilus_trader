@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,15 +13,7 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-import hashlib
 from typing import Union
-
-import cloudpickle
-
-
-def tokenize(obj: object) -> str:
-    value: bytes = cloudpickle.dumps(obj)
-    return hashlib.sha256(value).hexdigest()
 
 
 # Taken from https://github.com/dask/dask/blob/261bf174931580230717abca93fe172e166cc1e8/dask/utils.py

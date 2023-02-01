@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,9 +20,9 @@ from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.identifiers import PositionId
 from nautilus_trader.model.identifiers import TradeId
 from nautilus_trader.model.position import Position
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.events import TestEventStubs
-from tests.test_kit.stubs.execution import TestExecStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.events import TestEventStubs
+from nautilus_trader.test_kit.stubs.execution import TestExecStubs
 
 
 def _make_order_events(order, **kwargs):
@@ -57,10 +57,14 @@ def nautilus_objects() -> list[Any]:
     closed_position.apply(sell_filled)
 
     return [
+        # DATA
         TestDataStubs.ticker(),
         TestDataStubs.quote_tick_5decimal(),
         TestDataStubs.trade_tick_5decimal(),
         TestDataStubs.bar_5decimal(),
+        TestDataStubs.instrument_status_update(),
+        TestDataStubs.instrument_close(),
+        # EVENTS
         TestDataStubs.venue_status_update(),
         TestDataStubs.instrument_status_update(),
         TestEventStubs.component_state_changed(),

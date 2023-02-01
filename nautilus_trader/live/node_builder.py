@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,12 +14,13 @@
 # -------------------------------------------------------------------------------------------------
 
 import asyncio
-from typing import FrozenSet
 
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import LiveClock
 from nautilus_trader.common.logging import LiveLogger
 from nautilus_trader.common.logging import LoggerAdapter
+from nautilus_trader.config import ImportableConfig
+from nautilus_trader.config import LiveDataClientConfig
 from nautilus_trader.config import LiveExecClientConfig
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.live.data_engine import LiveDataEngine
@@ -136,7 +137,7 @@ class TradingNodeBuilder:
 
         self._exec_factories[name] = factory
 
-    def build_data_clients(self, config: dict):
+    def build_data_clients(self, config: dict[str, ImportableConfig]):
         """
         Build the data clients with the given configuration.
 
@@ -151,10 +152,14 @@ class TradingNodeBuilder:
         if not config:
             self._log.warning("No `data_clients` configuration found.")
 
-        for parts, client_config in config.items():
+        for parts, cfg in config.items():
             name = parts.partition("-")[0]
-            if name not in self._data_factories and client_config.factory is not None:
-                self._data_factories[name] = client_config.factory
+            if isinstance(cfg, ImportableConfig):
+                if name not in self._data_factories and cfg.factory is not None:
+                    self._data_factories[name] = cfg.factory.create()
+                client_config: LiveDataClientConfig = cfg.create()
+            else:
+                client_config: LiveDataClientConfig = cfg  # type: ignore
             factory = self._data_factories[name]
 
             client = factory.create(
@@ -174,13 +179,13 @@ class TradingNodeBuilder:
                 self._data_engine.register_default_client(client)
 
             # Venue routing config
-            venues = client_config.routing.venues or []
+            venues: frozenset[str] = client_config.routing.venues or frozenset()
             for venue in venues:
                 if not isinstance(venue, Venue):
                     venue = Venue(venue)
                 self._data_engine.register_venue_routing(client, venue)
 
-    def build_exec_clients(self, config: dict[str, LiveExecClientConfig]):
+    def build_exec_clients(self, config: dict[str, ImportableConfig]):
         """
         Build the execution clients with the given configuration.
 
@@ -195,10 +200,14 @@ class TradingNodeBuilder:
         if not config:
             self._log.warning("No `exec_clients` configuration found.")
 
-        for parts, client_config in config.items():
+        for parts, cfg in config.items():
             name = parts.partition("-")[0]
-            if name not in self._exec_factories and client_config.factory is not None:
-                self._exec_factories[name] = client_config.factory
+            if isinstance(cfg, ImportableConfig):
+                if name not in self._exec_factories and cfg.factory is not None:
+                    self._exec_factories[name] = cfg.factory.create()
+                client_config: LiveExecClientConfig = cfg.create()
+            else:
+                client_config: LiveExecClientConfig = cfg  # type: ignore
             factory = self._exec_factories[name]
 
             client = factory.create(
@@ -218,7 +227,7 @@ class TradingNodeBuilder:
                 self._exec_engine.register_default_client(client)
 
             # Venue routing config
-            venues: FrozenSet[str] = client_config.routing.venues or frozenset()
+            venues: frozenset[str] = client_config.routing.venues or frozenset()
             for venue in venues:
                 if not isinstance(venue, Venue):
                     venue = Venue(venue)

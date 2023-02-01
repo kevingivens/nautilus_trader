@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -28,7 +28,7 @@ from nautilus_trader.model.currencies import BTC
 from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import LiquiditySide
-from nautilus_trader.model.enums import OMSType
+from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.enums import OrderSide
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Money
@@ -37,10 +37,10 @@ from nautilus_trader.model.objects import Quantity
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
-from tests.test_kit.mocks.strategies import MockStrategy
-from tests.test_kit.stubs.component import TestComponentStubs
-from tests.test_kit.stubs.data import TestDataStubs
-from tests.test_kit.stubs.identifiers import TestIdStubs
+from nautilus_trader.test_kit.mocks.strategies import MockStrategy
+from nautilus_trader.test_kit.stubs.component import TestComponentStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
 
 XBTUSD_BITMEX = TestInstrumentProvider.xbtusd_bitmex()
@@ -99,7 +99,7 @@ class TestBitmexExchange:
 
         self.exchange = SimulatedExchange(
             venue=Venue("BITMEX"),
-            oms_type=OMSType.NETTING,
+            oms_type=OmsType.NETTING,
             account_type=AccountType.MARGIN,
             base_currency=BTC,
             starting_balances=[Money(20, BTC)],
@@ -151,8 +151,8 @@ class TestBitmexExchange:
             instrument_id=XBTUSD_BITMEX.id,
             bid=Price.from_str("11493.0"),
             ask=Price.from_str("11493.5"),
-            bid_size=Quantity.from_int(1500000),
-            ask_size=Quantity.from_int(1500000),
+            bid_size=Quantity.from_int(1_500_000),
+            ask_size=Quantity.from_int(1_500_000),
             ts_event=0,
             ts_init=0,
         )
@@ -163,13 +163,13 @@ class TestBitmexExchange:
         order_market = self.strategy.order_factory.market(
             XBTUSD_BITMEX.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
         )
 
         order_limit = self.strategy.order_factory.limit(
             XBTUSD_BITMEX.id,
             OrderSide.BUY,
-            Quantity.from_int(100000),
+            Quantity.from_int(100_000),
             Price.from_str("11492.5"),
         )
 
@@ -183,8 +183,8 @@ class TestBitmexExchange:
             instrument_id=XBTUSD_BITMEX.id,
             bid=Price.from_str("11491.0"),
             ask=Price.from_str("11491.5"),
-            bid_size=Quantity.from_int(1500000),
-            ask_size=Quantity.from_int(1500000),
+            bid_size=Quantity.from_int(1_500_000),
+            ask_size=Quantity.from_int(1_500_000),
             ts_event=0,
             ts_init=0,
         )
@@ -193,7 +193,8 @@ class TestBitmexExchange:
         self.portfolio.update_quote_tick(quote2)
 
         # Assert
+        assert order_limit.avg_px == 11492.5
         assert self.strategy.object_storer.get_store()[2].liquidity_side == LiquiditySide.TAKER
         assert self.strategy.object_storer.get_store()[7].liquidity_side == LiquiditySide.MAKER
         assert self.strategy.object_storer.get_store()[2].commission == Money(0.00652543, BTC)
-        assert self.strategy.object_storer.get_store()[7].commission == Money(-0.00217552, BTC)
+        assert self.strategy.object_storer.get_store()[7].commission == Money(-0.00217533, BTC)

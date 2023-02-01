@@ -1,33 +1,35 @@
 [package]
 name = "nautilus_model"
-version = "0.1.0"
-authors = ["Nautech Systems <info@nautechsystems.io>"]
-edition = "2021"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
 
 [lib]
 name = "nautilus_model"
 crate-type = ["rlib", "staticlib"]
 
 [dependencies]
+derive_builder = "0.12.0"
 nautilus_core = { path = "../core" }
-pyo3 = { version = "0.17.3" }
+pyo3.workspace = true
+rust-fsm.workspace = true
+strum.workspace = true
+thiserror.workspace = true
 
 [features]
-extension-module = [
-    "pyo3/extension-module",
-    "nautilus_core/extension-module",
-]
+extension-module = ["pyo3/extension-module", "nautilus_core/extension-module"]
 default = []
 
 [dev-dependencies]
-criterion = "0.4.0"
-iai = "0.1"
-rstest = "0.15.0"
+criterion.workspace = true
+iai.workspace = true
+rstest.workspace = true
 
 [build-dependencies]
-cbindgen = "0.24.3"
+cbindgen.workspace = true
 
 [[bench]]
 name = "criterion_fixed_precision_benchmark"
 harness = false
-

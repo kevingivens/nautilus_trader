@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -27,6 +27,8 @@ from nautilus_trader.adapters.betfair.client.enums import MarketProjection
 from nautilus_trader.adapters.betfair.client.enums import MarketSort
 from nautilus_trader.adapters.betfair.client.exceptions import BetfairAPIError
 from nautilus_trader.adapters.betfair.client.exceptions import BetfairError
+from nautilus_trader.adapters.betfair.client.spec import ClearedOrder
+from nautilus_trader.adapters.betfair.client.spec import ClearedOrdersResponse
 from nautilus_trader.adapters.betfair.client.util import parse_params
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.network.http import HttpClient
@@ -52,13 +54,13 @@ class BetfairClient(HttpClient):
         cert_dir: str,
         loop: asyncio.AbstractEventLoop,
         logger: Logger,
-        ssl: bool = True,
+        ssl: Optional[ssl.SSLContext] = None,
     ):
         super().__init__(
             loop=loop,
             logger=logger,
             ssl=ssl,
-            ssl_context=self.ssl_context(cert_dir=cert_dir) if ssl else None,
+            ssl_context=ssl or self.ssl_context(cert_dir=cert_dir),
             connector_kwargs={"enable_cleanup_closed": True, "force_close": True},
         )
         self.username = username
@@ -80,8 +82,8 @@ class BetfairClient(HttpClient):
     @staticmethod
     def ssl_context(cert_dir):
         files = list(pathlib.Path(cert_dir).glob("*"))
-        cert_file = next((p for p in files if p.suffix == ".crt"))
-        key_file = next((p for p in files if p.suffix == ".key"))
+        cert_file = next(p for p in files if p.suffix == ".crt")
+        key_file = next(p for p in files if p.suffix == ".key")
         context = ssl.create_default_context()
         context.load_cert_chain(certfile=cert_file, keyfile=key_file)
         return context
@@ -91,7 +93,11 @@ class BetfairClient(HttpClient):
         return await super().request(method=method, url=url, **kwargs)
 
     async def rpc_post(
-        self, url, method, params: Optional[dict] = None, data: Optional[dict] = None
+        self,
+        url,
+        method,
+        params: Optional[dict] = None,
+        data: Optional[dict] = None,
     ) -> dict:
         data = {**self.JSON_RPC_DEFAULTS, "method": method, **(data or {}), "params": params or {}}
         try:
@@ -136,6 +142,8 @@ class BetfairClient(HttpClient):
         data = msgspec.json.decode(resp.data)
         if data["loginStatus"] == "SUCCESS":
             self.session_token = data["sessionToken"]
+        else:
+            raise BetfairError(f"Login failed: {resp.data}")
 
     async def list_navigation(self):
         """
@@ -256,7 +264,7 @@ class BetfairClient(HttpClient):
         index = from_record or 0
         while more_available:
             params["fromRecord"] = index
-            resp = await self.rpc_post(
+            resp: dict = await self.rpc_post(
                 url=self.BETTING_URL,
                 method="SportsAPING/v1.0/listCurrentOrders",
                 params=params,
@@ -285,7 +293,7 @@ class BetfairClient(HttpClient):
         locale: str = None,
         from_record: int = None,
         record_count: int = None,
-    ) -> list[dict]:
+    ) -> list[ClearedOrder]:
         params = parse_params(**locals())
         cleared_orders = []
         more_available = True
@@ -294,13 +302,15 @@ class BetfairClient(HttpClient):
             params["fromRecord"] = index
             if settled_date_from or settled_date_to:
                 params["settledDateRange"] = {"from": settled_date_from, "to": settled_date_to}
-            resp = await self.rpc_post(
+            data = await self.rpc_post(
                 url=self.BETTING_URL,
                 method="SportsAPING/v1.0/listClearedOrders",
                 params=params,
             )
-            order_chunk = resp["clearedOrders"]
+            raw = msgspec.json.encode(data)
+            response: ClearedOrdersResponse = msgspec.json.decode(raw, type=ClearedOrdersResponse)
+            order_chunk = response.clearedOrders
             cleared_orders.extend(order_chunk)
-            more_available = resp["moreAvailable"]
+            more_available = response.moreAvailable
             index += len(order_chunk)
         return cleared_orders

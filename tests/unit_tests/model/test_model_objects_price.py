@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -171,7 +171,10 @@ class TestPrice:
         ],
     )
     def test_instantiate_with_various_precisions_returns_expected_decimal(
-        self, value, precision, expected
+        self,
+        value,
+        precision,
+        expected,
     ):
         # Arrange, Act
         decimal_object = Price(value, precision)
@@ -408,8 +411,8 @@ class TestPrice:
         result = value1 / value2
 
         # Assert
-        assert expected_type == type(result)
-        assert expected_value == result
+        assert isinstance(result, expected_type)
+        assert result == expected_value
 
     @pytest.mark.parametrize(
         "value1, value2, expected_type, expected_value",
@@ -437,8 +440,8 @@ class TestPrice:
         result = value1 // value2
 
         # Assert
-        assert expected_type == type(result)
-        assert expected_value == result
+        assert type(result) == expected_type
+        assert result == expected_value
 
     @pytest.mark.parametrize(
         "value1, value2, expected_type, expected_value",
@@ -464,8 +467,8 @@ class TestPrice:
         result = value1 % value2  # noqa (not modulo formatting)
 
         # Assert
-        assert expected_type == type(result)
-        assert expected_value == result
+        assert type(result) == expected_type
+        assert result == expected_value
 
     @pytest.mark.parametrize(
         "value1, value2, expected",
@@ -485,7 +488,7 @@ class TestPrice:
         result = max(value1, value2)
 
         # Assert
-        assert expected == result
+        assert result == expected
 
     @pytest.mark.parametrize(
         "value1, value2, expected",
@@ -555,7 +558,7 @@ class TestPrice:
         result = repr(Price(1.1, 1))
 
         # Assert
-        assert "Price('1.1')" == result
+        assert result == "Price('1.1')"
 
     @pytest.mark.parametrize(
         "value, precision, expected",

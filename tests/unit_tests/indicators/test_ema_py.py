@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2022 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,10 +13,10 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-from examples.indicators.ema_py import PyExponentialMovingAverage
+from examples.indicators.ema_python import PyExponentialMovingAverage
 from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.model.enums import PriceType
-from tests.test_kit.stubs.data import TestDataStubs
+from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
 AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
