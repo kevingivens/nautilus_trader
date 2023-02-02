@@ -828,20 +828,32 @@ which can be used together or separately depending on the users needs.
            <p>
             <code class="docutils literal notranslate">
              <span class="pre">
-              BinanceDataClient
+              BinanceSpotDataClient
              </span>
             </code>
-            provides a market data feed manager
+            /
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              BinanceFuturesDataClient
+             </span>
+            </code>
+            provide a market data feed manager
            </p>
           </li>
           <li>
            <p>
             <code class="docutils literal notranslate">
              <span class="pre">
-              BinanceExecutionClient
+              BinanceSpotExecutionClient
              </span>
             </code>
-            provides an account management and trade execution gateway
+            /
+            <code class="docutils literal notranslate">
+             <span class="pre">
+              BinanceFuturesExecutionClient
+             </span>
+            </code>
+            provide an account management and trade execution gateway
            </p>
           </li>
           <li>
@@ -1540,9 +1552,20 @@ credentials are valid and have trading permissions.
             <p>
              <code class="docutils literal notranslate">
               <span class="pre">
-               MARGIN
+               MARGIN_CROSS
               </span>
              </code>
+             (Margin shared between open positions.)
+            </p>
+           </li>
+           <li>
+            <p>
+             <code class="docutils literal notranslate">
+              <span class="pre">
+               MARGIN_ISOLATED
+              </span>
+             </code>
+             (Margin assigned to a single position.)
             </p>
            </li>
            <li>
@@ -1690,7 +1713,7 @@ example below:
           <div class="highlight-python notranslate">
            <div class="highlight">
             <pre><span></span><span class="n">instrument_provider</span><span class="o">=</span><span class="n">InstrumentProviderConfig</span><span class="p">(</span>
-    <span class="n">load_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+    <span class="n">load_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">log_warnings</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 </pre>
