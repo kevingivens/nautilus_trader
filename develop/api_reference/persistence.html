@@ -1123,8 +1123,66 @@
            </code>
           </p>
           <p>
-           Provides a wrapper of fsspec.OpenFile that processes a raw file and writes to parquet.
+           Provides a wrapper of
+           <cite>
+            fsspec.OpenFile
+           </cite>
+           that processes a raw file and writes to parquet.
           </p>
+          <dl class="field-list simple">
+           <dt class="field-odd">
+            Parameters
+            <span class="colon">
+             :
+            </span>
+           </dt>
+           <dd class="field-odd">
+            <ul class="simple">
+             <li>
+              <p>
+               <strong>
+                open_file
+               </strong>
+               (
+               <em>
+                fsspec.core.OpenFile
+               </em>
+               ) – The fsspec.OpenFile source of this data.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                block_size
+               </strong>
+               (
+               <em>
+                int
+               </em>
+               ) – The max block (chunk) size in bytes to read from the file.
+              </p>
+             </li>
+             <li>
+              <p>
+               <strong>
+                progress
+               </strong>
+               (
+               <em>
+                bool
+               </em>
+               <em>
+                ,
+               </em>
+               <em>
+                default False
+               </em>
+               ) – If a progress bar should be shown when processing this individual file.
+              </p>
+             </li>
+            </ul>
+           </dd>
+          </dl>
          </dd>
         </dl>
         <dl class="py function">
