@@ -25940,6 +25940,17 @@ will be appended with ‘F’.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
+              int
+             </span>
+             <span class="pre">
+              rate_limit=100000
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
               bool
              </span>
              <span class="pre">
@@ -26057,6 +26068,24 @@ will be appended with ‘F’.
                  LogLevel
                 </em>
                 ) – The minimum log level for logging messages to stdout.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 rate_limit
+                </strong>
+                (
+                <em>
+                 int
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default 100_000
+                </em>
+                ) – The maximum messages per second which can be flushed to stdout or stderr.
                </p>
               </li>
               <li>
