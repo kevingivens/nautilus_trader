@@ -79,6 +79,7 @@ class ParquetDataCatalog(BaseDataCatalog):
         self.fs: fsspec.AbstractFileSystem = fsspec.filesystem(
             self.fs_protocol, **self.fs_storage_options
         )
+        self.store_url = "mem://"
 
         path = make_path_posix(path)
 

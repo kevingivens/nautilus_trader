@@ -28,6 +28,7 @@ import pyarrow as pa
 import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 from fsspec.core import OpenFile
+from plateau.io.eager import store_dataframes_as_dataset
 from pyarrow import ArrowInvalid
 from tqdm import tqdm
 
@@ -345,6 +346,12 @@ def write_parquet(
 def write_objects(catalog: ParquetDataCatalog, chunk: list, **kwargs):
     serialized = split_and_serialize(objs=chunk)
     tables = dicts_to_dataframes(serialized)
+    for cls, df in tables.items():
+        store_dataframes_as_dataset(
+            catalog.store_url,
+            cls.__name__,
+            [df],
+        )
     write_tables(catalog=catalog, tables=tables, **kwargs)
 
 
