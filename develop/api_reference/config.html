@@ -5441,31 +5441,14 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              bypass
+              bypass:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -5475,31 +5458,14 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              deny_modify_pending_update
+              deny_modify_pending_update:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               True
              </span>
@@ -5509,31 +5475,14 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_order_submit_rate
+              max_order_submit_rate:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               '100/00:00:01'
              </span>
@@ -5543,31 +5492,14 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_order_modify_rate
+              max_order_modify_rate:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               '100/00:00:01'
              </span>
@@ -5577,56 +5509,10 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_notional_per_order
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              dict
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
+              max_notional_per_order:
              </span>
              <span class="pre">
-              str
-             </span>
-             <span class="p">
-              <span class="pre">
-               ,
-              </span>
-             </span>
-             <span class="w">
-             </span>
-             <span class="pre">
-              int
-             </span>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              {}
+              dict[str
              </span>
             </span>
            </em>
@@ -5634,31 +5520,28 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              debug
+              int]
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
              </span>
             </span>
-            <span class="w">
-            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
+             <span class="pre">
+              debug:
+             </span>
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -10278,19 +10161,10 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              environment
+              environment:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Environment
+              ~nautilus_trader.common.Environment
              </span>
             </span>
            </em>
@@ -10298,17 +10172,8 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              trader_id
+              trader_id:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
@@ -10318,572 +10183,218 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              instance_id
+              instance_id:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              ~typing.Optional[str]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
              </span>
             </span>
-            <span class="w">
-            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
              <span class="pre">
-              Optional
+              cache:
              </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.CacheConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              cache_database:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.CacheDatabaseConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              data_engine:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.DataEngineConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              risk_engine:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.RiskEngineConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              exec_engine:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.ExecEngineConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              streaming:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.StreamingConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              actors:
+             </span>
+             <span class="pre">
+              list[nautilus_trader.config.common.ImportableActorConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              strategies:
+             </span>
+             <span class="pre">
+              list[nautilus_trader.config.common.ImportableStrategyConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              load_state:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              save_state:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              loop_debug:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              log_level:
              </span>
              <span class="pre">
               str
              </span>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              cache
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.CacheConfig" title="nautilus_trader.config.common.CacheConfig">
-              <span class="pre">
-               CacheConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              cache_database
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.CacheDatabaseConfig" title="nautilus_trader.config.common.CacheDatabaseConfig">
-              <span class="pre">
-               CacheDatabaseConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              data_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.DataEngineConfig" title="nautilus_trader.config.common.DataEngineConfig">
-              <span class="pre">
-               DataEngineConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              risk_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.RiskEngineConfig" title="nautilus_trader.config.common.RiskEngineConfig">
-              <span class="pre">
-               RiskEngineConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              exec_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ExecEngineConfig" title="nautilus_trader.config.common.ExecEngineConfig">
-              <span class="pre">
-               ExecEngineConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              streaming
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.StreamingConfig" title="nautilus_trader.config.common.StreamingConfig">
-              <span class="pre">
-               StreamingConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              actors
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              list
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableActorConfig" title="nautilus_trader.config.common.ImportableActorConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableActorConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              []
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              strategies
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              list
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableStrategyConfig" title="nautilus_trader.config.common.ImportableStrategyConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableStrategyConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              []
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              load_state
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              save_state
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              loop_debug
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              log_level
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              str
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               'INFO'
              </span>
@@ -10893,31 +10404,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              log_rate_limit
+              log_rate_limit:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               int
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               100000
              </span>
@@ -10927,31 +10421,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              bypass_logging
+              bypass_logging:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -12081,17 +11558,8 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              path
+              path:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
@@ -12101,33 +11569,16 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              config
+              config:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               dict
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
-              {}
+              &lt;factory&gt;
              </span>
             </span>
            </em>
@@ -12135,46 +11586,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              factory
+              factory:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              ~typing.Optional[~nautilus_trader.config.common.ImportableFactoryConfig]
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableFactoryConfig" title="nautilus_trader.config.common.ImportableFactoryConfig">
-              <span class="pre">
-               ImportableFactoryConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               None
              </span>
@@ -14394,31 +13813,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              environment
+              environment:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              ~nautilus_trader.common.Environment
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Environment
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               Environment.BACKTEST
              </span>
@@ -14428,31 +13830,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              trader_id
+              trader_id:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               'BACKTESTER-001'
              </span>
@@ -14462,560 +13847,290 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              instance_id
+              instance_id:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              ~typing.Optional[str]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
              </span>
             </span>
-            <span class="w">
-            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
              <span class="pre">
-              Optional
+              cache:
              </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.CacheConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              cache_database:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.CacheDatabaseConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              data_engine:
+             </span>
+             <span class="pre">
+              ~nautilus_trader.config.common.DataEngineConfig
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              DataEngineConfig(build_time_bars_with_no_updates=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              validate_data_sequence=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug=False)
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              risk_engine:
+             </span>
+             <span class="pre">
+              ~nautilus_trader.config.common.RiskEngineConfig
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              RiskEngineConfig(bypass=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              deny_modify_pending_update=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_submit_rate='100/00:00:01'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_modify_rate='100/00:00:01'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_notional_per_order={}
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug=False)
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              exec_engine:
+             </span>
+             <span class="pre">
+              ~nautilus_trader.config.common.ExecEngineConfig
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              ExecEngineConfig(load_cache=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              allow_cash_positions=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug=False)
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              streaming:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.StreamingConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              actors:
+             </span>
+             <span class="pre">
+              list[nautilus_trader.config.common.ImportableActorConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              strategies:
+             </span>
+             <span class="pre">
+              list[nautilus_trader.config.common.ImportableStrategyConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              load_state:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              save_state:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              loop_debug:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              log_level:
              </span>
              <span class="pre">
               str
              </span>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              cache
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.CacheConfig" title="nautilus_trader.config.common.CacheConfig">
-              <span class="pre">
-               CacheConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              cache_database
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.CacheDatabaseConfig" title="nautilus_trader.config.common.CacheDatabaseConfig">
-              <span class="pre">
-               CacheDatabaseConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              data_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <a class="reference internal" href="#nautilus_trader.config.common.DataEngineConfig" title="nautilus_trader.config.common.DataEngineConfig">
-              <span class="pre">
-               DataEngineConfig
-              </span>
-             </a>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              DataEngineConfig(build_time_bars_with_no_updates=True,
-             </span>
-             <span class="pre">
-              validate_data_sequence=False,
-             </span>
-             <span class="pre">
-              debug=False)
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              risk_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <a class="reference internal" href="#nautilus_trader.config.common.RiskEngineConfig" title="nautilus_trader.config.common.RiskEngineConfig">
-              <span class="pre">
-               RiskEngineConfig
-              </span>
-             </a>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              RiskEngineConfig(bypass=False,
-             </span>
-             <span class="pre">
-              deny_modify_pending_update=True,
-             </span>
-             <span class="pre">
-              max_order_submit_rate='100/00:00:01',
-             </span>
-             <span class="pre">
-              max_order_modify_rate='100/00:00:01',
-             </span>
-             <span class="pre">
-              max_notional_per_order={},
-             </span>
-             <span class="pre">
-              debug=False)
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              exec_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <a class="reference internal" href="#nautilus_trader.config.common.ExecEngineConfig" title="nautilus_trader.config.common.ExecEngineConfig">
-              <span class="pre">
-               ExecEngineConfig
-              </span>
-             </a>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              ExecEngineConfig(load_cache=True,
-             </span>
-             <span class="pre">
-              allow_cash_positions=True,
-             </span>
-             <span class="pre">
-              debug=False)
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              streaming
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.StreamingConfig" title="nautilus_trader.config.common.StreamingConfig">
-              <span class="pre">
-               StreamingConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              actors
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              list
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableActorConfig" title="nautilus_trader.config.common.ImportableActorConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableActorConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              []
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              strategies
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              list
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableStrategyConfig" title="nautilus_trader.config.common.ImportableStrategyConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableStrategyConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              []
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              load_state
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              save_state
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              loop_debug
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              log_level
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              str
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               'INFO'
              </span>
@@ -15025,31 +14140,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              log_rate_limit
+              log_rate_limit:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               int
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               100000
              </span>
@@ -15059,31 +14157,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              bypass_logging
+              bypass_logging:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -15093,31 +14174,14 @@ how the
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              run_analysis
+              run_analysis:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               True
              </span>
@@ -17139,31 +16203,14 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              bypass
+              bypass:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -17173,31 +16220,14 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              deny_modify_pending_update
+              deny_modify_pending_update:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               True
              </span>
@@ -17207,31 +16237,14 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_order_submit_rate
+              max_order_submit_rate:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               '100/00:00:01'
              </span>
@@ -17241,31 +16254,14 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_order_modify_rate
+              max_order_modify_rate:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               '100/00:00:01'
              </span>
@@ -17275,56 +16271,10 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              max_notional_per_order
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              dict
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
+              max_notional_per_order:
              </span>
              <span class="pre">
-              str
-             </span>
-             <span class="p">
-              <span class="pre">
-               ,
-              </span>
-             </span>
-             <span class="w">
-             </span>
-             <span class="pre">
-              int
-             </span>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              {}
+              dict[str
              </span>
             </span>
            </em>
@@ -17332,31 +16282,28 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              debug
+              int]
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
              </span>
             </span>
-            <span class="w">
-            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
+             <span class="pre">
+              debug:
+             </span>
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -17366,31 +16313,14 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              qsize
+              qsize:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               int
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               10000
              </span>
@@ -20217,31 +19147,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              environment
+              environment:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              ~nautilus_trader.common.Environment
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Environment
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               Environment.LIVE
              </span>
@@ -20251,31 +19164,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              trader_id
+              trader_id:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               str
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               'TRADER-001'
              </span>
@@ -20285,581 +19181,346 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              instance_id
+              instance_id:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              ~typing.Optional[str]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
              </span>
             </span>
-            <span class="w">
-            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
              <span class="pre">
-              Optional
+              cache:
              </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.CacheConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              cache_database:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.CacheDatabaseConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              data_engine:
+             </span>
+             <span class="pre">
+              ~nautilus_trader.config.live.LiveDataEngineConfig
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              LiveDataEngineConfig(build_time_bars_with_no_updates=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              validate_data_sequence=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              qsize=10000)
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              risk_engine:
+             </span>
+             <span class="pre">
+              ~nautilus_trader.config.live.LiveRiskEngineConfig
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              LiveRiskEngineConfig(bypass=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              deny_modify_pending_update=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_submit_rate='100/00:00:01'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_order_modify_rate='100/00:00:01'
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              max_notional_per_order={}
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              qsize=10000)
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              exec_engine:
+             </span>
+             <span class="pre">
+              ~nautilus_trader.config.live.LiveExecEngineConfig
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              LiveExecEngineConfig(load_cache=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              allow_cash_positions=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              debug=False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              reconciliation=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              reconciliation_lookback_mins=None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              inflight_check_interval_ms=5000
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              inflight_check_threshold_ms=1000
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              qsize=10000)
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              streaming:
+             </span>
+             <span class="pre">
+              ~typing.Optional[~nautilus_trader.config.common.StreamingConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              None
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              actors:
+             </span>
+             <span class="pre">
+              list[nautilus_trader.config.common.ImportableActorConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              strategies:
+             </span>
+             <span class="pre">
+              list[nautilus_trader.config.common.ImportableStrategyConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              load_state:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              save_state:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              loop_debug:
+             </span>
+             <span class="pre">
+              bool
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              False
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              log_level:
              </span>
              <span class="pre">
               str
              </span>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              cache
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.CacheConfig" title="nautilus_trader.config.common.CacheConfig">
-              <span class="pre">
-               CacheConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              cache_database
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.CacheDatabaseConfig" title="nautilus_trader.config.common.CacheDatabaseConfig">
-              <span class="pre">
-               CacheDatabaseConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              data_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <a class="reference internal" href="#nautilus_trader.config.live.LiveDataEngineConfig" title="nautilus_trader.config.live.LiveDataEngineConfig">
-              <span class="pre">
-               LiveDataEngineConfig
-              </span>
-             </a>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              LiveDataEngineConfig(build_time_bars_with_no_updates=True,
-             </span>
-             <span class="pre">
-              validate_data_sequence=False,
-             </span>
-             <span class="pre">
-              debug=False,
-             </span>
-             <span class="pre">
-              qsize=10000)
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              risk_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <a class="reference internal" href="#nautilus_trader.config.live.LiveRiskEngineConfig" title="nautilus_trader.config.live.LiveRiskEngineConfig">
-              <span class="pre">
-               LiveRiskEngineConfig
-              </span>
-             </a>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              LiveRiskEngineConfig(bypass=False,
-             </span>
-             <span class="pre">
-              deny_modify_pending_update=True,
-             </span>
-             <span class="pre">
-              max_order_submit_rate='100/00:00:01',
-             </span>
-             <span class="pre">
-              max_order_modify_rate='100/00:00:01',
-             </span>
-             <span class="pre">
-              max_notional_per_order={},
-             </span>
-             <span class="pre">
-              debug=False,
-             </span>
-             <span class="pre">
-              qsize=10000)
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              exec_engine
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <a class="reference internal" href="#nautilus_trader.config.live.LiveExecEngineConfig" title="nautilus_trader.config.live.LiveExecEngineConfig">
-              <span class="pre">
-               LiveExecEngineConfig
-              </span>
-             </a>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              LiveExecEngineConfig(load_cache=True,
-             </span>
-             <span class="pre">
-              allow_cash_positions=True,
-             </span>
-             <span class="pre">
-              debug=False,
-             </span>
-             <span class="pre">
-              reconciliation=True,
-             </span>
-             <span class="pre">
-              reconciliation_lookback_mins=None,
-             </span>
-             <span class="pre">
-              inflight_check_interval_ms=5000,
-             </span>
-             <span class="pre">
-              inflight_check_threshold_ms=1000,
-             </span>
-             <span class="pre">
-              qsize=10000)
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              streaming
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              Optional
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.StreamingConfig" title="nautilus_trader.config.common.StreamingConfig">
-              <span class="pre">
-               StreamingConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              None
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              actors
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              list
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableActorConfig" title="nautilus_trader.config.common.ImportableActorConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableActorConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              []
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              strategies
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              list
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableStrategyConfig" title="nautilus_trader.config.common.ImportableStrategyConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableStrategyConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              []
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              load_state
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              save_state
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              loop_debug
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              bool
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              False
-             </span>
-            </span>
-           </em>
-           ,
-           <em class="sig-param">
-            <span class="n">
-             <span class="pre">
-              log_level
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              str
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               'INFO'
              </span>
@@ -20869,31 +19530,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              log_rate_limit
+              log_rate_limit:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               int
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               100000
              </span>
@@ -20903,31 +19547,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              bypass_logging
+              bypass_logging:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               bool
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               False
              </span>
@@ -20937,58 +19564,10 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              data_clients
-             </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              dict
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
+              data_clients:
              </span>
              <span class="pre">
-              str
-             </span>
-             <span class="p">
-              <span class="pre">
-               ,
-              </span>
-             </span>
-             <span class="w">
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableConfig" title="nautilus_trader.config.common.ImportableConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
-             <span class="pre">
-              =
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
-             <span class="pre">
-              {}
+              dict[str
              </span>
             </span>
            </em>
@@ -20996,58 +19575,13 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              exec_clients
+              nautilus_trader.config.common.ImportableConfig]
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
-             <span class="pre">
-              dict
-             </span>
-             <span class="p">
-              <span class="pre">
-               [
-              </span>
-             </span>
-             <span class="pre">
-              str
-             </span>
-             <span class="p">
-              <span class="pre">
-               ,
-              </span>
-             </span>
-             <span class="w">
-             </span>
-             <a class="reference internal" href="#nautilus_trader.config.common.ImportableConfig" title="nautilus_trader.config.common.ImportableConfig">
-              <span class="pre">
-               nautilus_trader.config.common.ImportableConfig
-              </span>
-             </a>
-             <span class="p">
-              <span class="pre">
-               ]
-              </span>
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
-              {}
+              &lt;factory&gt;
              </span>
             </span>
            </em>
@@ -21055,31 +19589,39 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              timeout_connection
+              exec_clients:
              </span>
-            </span>
-            <span class="p">
              <span class="pre">
-              :
+              dict[str
              </span>
             </span>
-            <span class="w">
-            </span>
+           </em>
+           ,
+           <em class="sig-param">
             <span class="n">
+             <span class="pre">
+              nautilus_trader.config.common.ImportableConfig]
+             </span>
+             <span class="pre">
+              =
+             </span>
+             <span class="pre">
+              &lt;factory&gt;
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              timeout_connection:
+             </span>
              <span class="pre">
               float
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               10.0
              </span>
@@ -21089,31 +19631,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              timeout_reconciliation
+              timeout_reconciliation:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               float
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               10.0
              </span>
@@ -21123,31 +19648,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              timeout_portfolio
+              timeout_portfolio:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               float
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               10.0
              </span>
@@ -21157,31 +19665,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              timeout_disconnection
+              timeout_disconnection:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               float
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               10.0
              </span>
@@ -21191,31 +19682,14 @@ is checked with the venue.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              timeout_post_stop
+              timeout_post_stop:
              </span>
-            </span>
-            <span class="p">
-             <span class="pre">
-              :
-             </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="n">
              <span class="pre">
               float
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="o">
              <span class="pre">
               =
              </span>
-            </span>
-            <span class="w">
-            </span>
-            <span class="default_value">
              <span class="pre">
               10.0
              </span>
