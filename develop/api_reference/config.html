@@ -4882,7 +4882,41 @@ whether the instrument should be loaded
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              build_time_bars_with_no_updates
+              time_bars_build_with_no_updates
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              time_bars_timestamp_on_close
              </span>
             </span>
             <span class="p">
@@ -5019,7 +5053,7 @@ whether the instrument should be loaded
               <li>
                <p>
                 <strong>
-                 build_time_bars_with_no_updates
+                 time_bars_build_with_no_updates
                 </strong>
                 (
                 <em>
@@ -5032,6 +5066,29 @@ whether the instrument should be loaded
                  default True
                 </em>
                 ) – If time bar aggregators will build and emit bars with no new market updates.
+               </p>
+              </li>
+              <li>
+               <p>
+                <strong>
+                 time_bars_timestamp_on_close
+                </strong>
+                (
+                <em>
+                 bool
+                </em>
+                <em>
+                 ,
+                </em>
+                <em>
+                 default True
+                </em>
+                ) – If time bar aggregators will timestamp
+                <cite>
+                 ts_event
+                </cite>
+                on bar close.
+If False then will timestamp on bar open.
                </p>
               </li>
               <li>
@@ -13907,7 +13964,15 @@ how the
               =
              </span>
              <span class="pre">
-              DataEngineConfig(build_time_bars_with_no_updates=True
+              DataEngineConfig(time_bars_build_with_no_updates=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              time_bars_timestamp_on_close=True
              </span>
             </span>
            </em>
@@ -15650,7 +15715,41 @@ external inputs of venues and data.
            <em class="sig-param">
             <span class="n">
              <span class="pre">
-              build_time_bars_with_no_updates
+              time_bars_build_with_no_updates
+             </span>
+            </span>
+            <span class="p">
+             <span class="pre">
+              :
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="n">
+             <span class="pre">
+              bool
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="o">
+             <span class="pre">
+              =
+             </span>
+            </span>
+            <span class="w">
+            </span>
+            <span class="default_value">
+             <span class="pre">
+              True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              time_bars_timestamp_on_close
              </span>
             </span>
             <span class="p">
@@ -19241,7 +19340,15 @@ is checked with the venue.
               =
              </span>
              <span class="pre">
-              LiveDataEngineConfig(build_time_bars_with_no_updates=True
+              LiveDataEngineConfig(time_bars_build_with_no_updates=True
+             </span>
+            </span>
+           </em>
+           ,
+           <em class="sig-param">
+            <span class="n">
+             <span class="pre">
+              time_bars_timestamp_on_close=True
              </span>
             </span>
            </em>
