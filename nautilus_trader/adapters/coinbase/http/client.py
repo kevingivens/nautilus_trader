@@ -35,7 +35,7 @@ class CoinbaseHttpClient(HttpClient):
     Provides a `Coinbase` asynchronous HTTP client.
     """
 
-    BASE_URL = "https://www.deribit.com"
+    BASE_URL = 'https://api.coinbase.com/v2/'
 
     def __init__(
         self,
@@ -82,7 +82,7 @@ class CoinbaseHttpClient(HttpClient):
         uri,
         payload,
     ):
-        # https://docs.deribit.com/#authentication
+        # https://docs.cloud.coinbase.com/sign-in-with-coinbase/docs/api-key-authentication
 
         tstamp = self._clock.timestamp_ms()
 
@@ -97,11 +97,24 @@ class CoinbaseHttpClient(HttpClient):
         message = base_signature_string.encode()
         sig = hmac.new(byte_key, message, hashlib.sha256).hexdigest()
 
-        authorization = (
-            "deri-hmac-sha256 id=" + self._key + ",ts=" + tstamp + ",sig=" + sig + ",nonce=" + nonce
-        )
+        #authorization = (
+        #    "deri-hmac-sha256 id=" + self._key + ",ts=" + tstamp + ",sig=" + sig + ",nonce=" + nonce
+        #)
+
+        #return authorization
+    
+        # timestamp = str(int(time.time()))
+        # message = timestamp + request.method + request.path_url + (request.body or '')
+        # signature = hmac.new(self.secret_key, message, hashlib.sha256).hexdigest()
+
+        authorization  = {
+            'CB-ACCESS-SIGN': sig,
+            'CB-ACCESS-TIMESTAMP': tstamp,
+            'CB-ACCESS-KEY': self.api_key,
+        }
 
         return authorization
+
 
     async def _sign_request(
         self,
