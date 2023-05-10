@@ -18,9 +18,6 @@ from typing import Any, Optional
 
 import pandas as pd
 
-from nautilus_trader.backtest.data.providers import TestDataProvider
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
-from nautilus_trader.backtest.data.wranglers import QuoteTickDataWrangler
 from nautilus_trader.core.datetime import millis_to_nanos
 from nautilus_trader.model.data.bar import Bar
 from nautilus_trader.model.data.bar import BarSpecification
@@ -44,17 +41,19 @@ from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import TradeId
 from nautilus_trader.model.identifiers import Venue
-from nautilus_trader.model.instruments.base import Instrument
+from nautilus_trader.model.instruments import Instrument
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from nautilus_trader.model.orderbook.book import OrderBook
+from nautilus_trader.model.orderbook import OrderBook
+from nautilus_trader.model.orderbook import OrderBookDelta
+from nautilus_trader.model.orderbook import OrderBookDeltas
+from nautilus_trader.model.orderbook import OrderBookSnapshot
 from nautilus_trader.model.orderbook.data import BookOrder
-from nautilus_trader.model.orderbook.data import OrderBookDelta
-from nautilus_trader.model.orderbook.data import OrderBookDeltas
-from nautilus_trader.model.orderbook.data import OrderBookSnapshot
 from nautilus_trader.model.orderbook.ladder import Ladder
+from nautilus_trader.persistence.wranglers import QuoteTickDataWrangler
+from nautilus_trader.test_kit.providers import TestDataProvider
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
-from tests import TEST_DATA_DIR
 
 
 class TestDataStubs:
@@ -409,7 +408,7 @@ class TestDataStubs:
         return updates
 
     @staticmethod
-    def l2_feed() -> list:
+    def l2_feed(filename: str) -> list:
         def parse_line(d):
             if "status" in d:
                 return {}
@@ -448,12 +447,10 @@ class TestDataStubs:
                 ),
             }
 
-        return [
-            parse_line(line) for line in json.loads(open(TEST_DATA_DIR + "/L2_feed.json").read())
-        ]
+        return [parse_line(line) for line in json.loads(open(filename).read())]
 
     @staticmethod
-    def l3_feed():
+    def l3_feed(filename: str):
         def parser(data):
             parsed = data
             if not isinstance(parsed, list):
@@ -464,7 +461,7 @@ class TestDataStubs:
                 if not isinstance(updates[0], list):
                     updates = [updates]
             else:
-                raise KeyError()
+                raise KeyError
             if isinstance(updates, int):
                 print("Err", updates)
                 return
@@ -493,8 +490,4 @@ class TestDataStubs:
                         ),
                     )
 
-        return [
-            msg
-            for data in json.loads(open(TEST_DATA_DIR + "/L3_feed.json").read())
-            for msg in parser(data)
-        ]
+        return [msg for data in json.loads(open(filename).read()) for msg in parser(data)]

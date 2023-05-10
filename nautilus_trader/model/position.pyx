@@ -13,6 +13,11 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+from decimal import Decimal
+
+from libc.math cimport fabs
+from libc.math cimport fmin
+
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.model.enums_c cimport OrderSide
 from nautilus_trader.model.enums_c cimport PositionSide
@@ -73,7 +78,7 @@ cdef class Position:
         # Properties
         self.entry = fill.order_side
         self.side = Position.side_from_order_side(fill.order_side)
-        self.net_qty = 0.0
+        self.signed_qty = 0.0
         self.quantity = Quantity.zero_c(precision=instrument.size_precision)
         self.peak_qty = Quantity.zero_c(precision=instrument.size_precision)
         self.ts_init = fill.ts_init
@@ -135,7 +140,7 @@ cdef class Position:
             "instrument_id": self.instrument_id.to_str(),
             "entry": order_side_to_str(self.entry),
             "side": position_side_to_str(self.side),
-            "net_qty": self.net_qty,
+            "signed_qty": self.signed_qty,
             "quantity": str(self.quantity),
             "peak_qty": str(self.peak_qty),
             "ts_opened": self.ts_opened,
@@ -172,19 +177,19 @@ cdef class Position:
     cdef TradeId last_trade_id_c(self):
         return self._events[-1].trade_id
 
-    cdef int event_count_c(self) except *:
+    cdef int event_count_c(self):
         return len(self._events)
 
-    cdef bint is_open_c(self) except *:
+    cdef bint is_open_c(self):
         return self.side != PositionSide.FLAT
 
-    cdef bint is_closed_c(self) except *:
+    cdef bint is_closed_c(self):
         return self.side == PositionSide.FLAT
 
-    cdef bint is_long_c(self) except *:
+    cdef bint is_long_c(self):
         return self.side == PositionSide.LONG
 
-    cdef bint is_short_c(self) except *:
+    cdef bint is_short_c(self):
         return self.side == PositionSide.SHORT
 
     @property
@@ -352,7 +357,7 @@ cdef class Position:
         return self.is_short_c()
 
     @staticmethod
-    cdef PositionSide side_from_order_side_c(OrderSide side) except *:
+    cdef PositionSide side_from_order_side_c(OrderSide side):
         if side == OrderSide.BUY:
             return PositionSide.LONG
         elif side == OrderSide.SELL:
@@ -379,7 +384,22 @@ cdef class Position:
         """
         return Position.side_from_order_side_c(side)
 
-    cpdef bint is_opposite_side(self, OrderSide side) except *:
+    cpdef signed_decimal_qty(self):
+        """
+        Return a signed decimal representation of the position quantity.
+
+         - If the position is LONG, the value is positive (e.g. Decimal('10.25'))
+         - If the position is SHORT, the value is negative (e.g. Decimal('-10.25'))
+         - If the position is FLAT, the value is zero (e.g. Decimal('0'))
+
+        Returns
+        -------
+        Decimal
+
+        """
+        return Decimal(f"{self.signed_qty:.{self.size_precision}f}")
+
+    cpdef bint is_opposite_side(self, OrderSide side):
         """
         Return a value indicating whether the given order side is opposite to
         the current position side.
@@ -396,7 +416,7 @@ cdef class Position:
         """
         return self.side != Position.side_from_order_side_c(side)
 
-    cpdef void apply(self, OrderFilled fill) except *:
+    cpdef void apply(self, OrderFilled fill):
         """
         Applies the given order fill event to the position.
 
@@ -453,15 +473,15 @@ cdef class Position:
             )
 
         # Set quantities
-        self.quantity = Quantity(abs(self.net_qty), self.size_precision)
+        self.quantity = Quantity(abs(self.signed_qty), self.size_precision)
         if self.quantity._mem.raw > self.peak_qty._mem.raw:
             self.peak_qty = self.quantity
 
         # Set state
-        if self.net_qty > 0.0:
+        if self.signed_qty > 0.0:
             self.entry = OrderSide.BUY
             self.side = PositionSide.LONG
-        elif self.net_qty < 0.0:
+        elif self.signed_qty < 0.0:
             self.entry = OrderSide.SELL
             self.side = PositionSide.SHORT
         else:
@@ -490,9 +510,15 @@ cdef class Position:
         Condition.not_none(last, "last")
 
         if self.is_inverse:
-            return Money(self.quantity.as_f64_c() * self.multiplier.as_f64_c() * (1.0 / last.as_f64_c()), self.base_currency)
+            return Money(
+                self.quantity.as_f64_c() * self.multiplier.as_f64_c() * (1.0 / last.as_f64_c()),
+                self.base_currency,
+            )
         else:
-            return Money(self.quantity.as_f64_c() * self.multiplier.as_f64_c() * last.as_f64_c(), self.quote_currency)
+            return Money(
+                self.quantity.as_f64_c() * self.multiplier.as_f64_c() * last.as_f64_c(),
+                self.quote_currency,
+            )
 
     cpdef Money calculate_pnl(
         self,
@@ -591,7 +617,7 @@ cdef class Position:
         """
         return list(self._commissions.values())
 
-    cdef void _handle_buy_order_fill(self, OrderFilled fill) except *:
+    cdef void _handle_buy_order_fill(self, OrderFilled fill):
         # Initialize realized PnL for fill
         cdef double realized_pnl
         if fill.commission.currency == self.cost_currency:
@@ -603,14 +629,13 @@ cdef class Position:
         cdef double last_qty = fill.last_qty.as_f64_c()
         cdef Quantity last_qty_obj = fill.last_qty
         if self.base_currency is not None and fill.commission.currency == self.base_currency:
-            last_qty -= fill.commission.as_f64_c()
             last_qty_obj = Quantity(last_qty, self.size_precision)
 
         # LONG POSITION
-        if self.net_qty > 0:
+        if self.signed_qty > 0:
             self.avg_px_open = self._calculate_avg_px_open_px(last_px, last_qty)
         # SHORT POSITION
-        elif self.net_qty < 0:
+        elif self.signed_qty < 0:
             self.avg_px_close = self._calculate_avg_px_close_px(last_px, last_qty)
             self.realized_return = self._calculate_return(self.avg_px_open, self.avg_px_close)
             realized_pnl += self._calculate_pnl(self.avg_px_open, last_px, last_qty)
@@ -621,10 +646,10 @@ cdef class Position:
             self.realized_pnl = Money(self.realized_pnl.as_f64_c() + realized_pnl, self.cost_currency)
 
         self._buy_qty.add_assign(last_qty_obj)
-        self.net_qty += last_qty
-        self.net_qty = round(self.net_qty, self.size_precision)
+        self.signed_qty += last_qty
+        self.signed_qty = round(self.signed_qty, self.size_precision)
 
-    cdef void _handle_sell_order_fill(self, OrderFilled fill) except *:
+    cdef void _handle_sell_order_fill(self, OrderFilled fill):
         # Initialize realized PnL for fill
         cdef double realized_pnl
         if fill.commission.currency == self.cost_currency:
@@ -636,14 +661,13 @@ cdef class Position:
         cdef double last_qty = fill.last_qty.as_f64_c()
         cdef Quantity last_qty_obj = fill.last_qty
         if self.base_currency is not None and fill.commission.currency == self.base_currency:
-            last_qty -= fill.commission.as_f64_c()
             last_qty_obj = Quantity(last_qty, self.size_precision)
 
         # SHORT POSITION
-        if self.net_qty < 0:
+        if self.signed_qty < 0:
             self.avg_px_open = self._calculate_avg_px_open_px(last_px, last_qty)
         # LONG POSITION
-        elif self.net_qty > 0:
+        elif self.signed_qty > 0:
             self.avg_px_close = self._calculate_avg_px_close_px(last_px, last_qty)
             self.realized_return = self._calculate_return(self.avg_px_open, self.avg_px_close)
             realized_pnl += self._calculate_pnl(self.avg_px_open, last_px, last_qty)
@@ -654,8 +678,8 @@ cdef class Position:
             self.realized_pnl = Money(self.realized_pnl.as_f64_c() + realized_pnl, self.cost_currency)
 
         self._sell_qty.add_assign(last_qty_obj)
-        self.net_qty -= last_qty
-        self.net_qty = round(self.net_qty, self.size_precision)
+        self.signed_qty -= last_qty
+        self.signed_qty = round(self.signed_qty, self.size_precision)
 
     cdef double _calculate_avg_px_open_px(self, double last_px, double last_qty):
         return self._calculate_avg_px(self.quantity.as_f64_c(), self.avg_px_open, last_px, last_qty)
@@ -702,6 +726,9 @@ cdef class Position:
         double avg_px_close,
         double quantity,
     ):
+        # Only book open quantity towards PnL
+        quantity = fmin(quantity, fabs(self.signed_qty))
+
         if self.is_inverse:
             # In base currency
             return quantity * self.multiplier.as_f64_c() * self._calculate_points_inverse(avg_px_open, avg_px_close)

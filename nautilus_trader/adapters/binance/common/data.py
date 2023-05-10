@@ -53,7 +53,7 @@ from nautilus_trader.model.enums import PriceType
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
-from nautilus_trader.model.instruments.base import Instrument
+from nautilus_trader.model.instruments import Instrument
 from nautilus_trader.model.orderbook.data import OrderBookData
 from nautilus_trader.model.orderbook.data import OrderBookDeltas
 from nautilus_trader.model.orderbook.data import OrderBookSnapshot
@@ -111,7 +111,7 @@ class BinanceCommonDataClient(LiveMarketDataClient):
         account_type: BinanceAccountType,
         base_url_ws: Optional[str] = None,
         use_agg_trade_ticks: bool = False,
-    ):
+    ) -> None:
         super().__init__(
             loop=loop,
             client_id=ClientId(BINANCE_VENUE.value),
@@ -322,6 +322,7 @@ class BinanceCommonDataClient(LiveMarketDataClient):
         # Add delta stream buffer
         self._book_buffer[instrument_id] = []
 
+        snapshot: Optional[OrderBookSnapshot] = None
         if 0 < depth <= 20:
             if depth not in (5, 10, 20):
                 self._log.error(
@@ -339,7 +340,7 @@ class BinanceCommonDataClient(LiveMarketDataClient):
             while not self._ws_client.is_connected:
                 await asyncio.sleep(self._connect_websockets_interval)
 
-            snapshot: OrderBookSnapshot = await self._http_market.request_order_book_snapshot(
+            snapshot = await self._http_market.request_order_book_snapshot(
                 instrument_id=instrument_id,
                 limit=depth,
                 ts_init=self._clock.timestamp_ns(),
@@ -353,7 +354,7 @@ class BinanceCommonDataClient(LiveMarketDataClient):
 
         book_buffer = self._book_buffer.pop(instrument_id, [])
         for deltas in book_buffer:
-            if deltas.sequence <= snapshot.sequence:
+            if snapshot and deltas.sequence <= snapshot.sequence:
                 continue
             self._handle_data(deltas)
 
@@ -390,6 +391,7 @@ class BinanceCommonDataClient(LiveMarketDataClient):
             self._log.error(
                 f"Bar interval {bar_type.spec.step}{resolution} not supported by Binance.",
             )
+            return
 
         self._ws_client.subscribe_bars(
             symbol=bar_type.instrument_id.symbol.value,
@@ -449,8 +451,8 @@ class BinanceCommonDataClient(LiveMarketDataClient):
         instrument_id: InstrumentId,  # noqa
         limit: int,  # noqa
         correlation_id: UUID4,  # noqa
-        from_datetime: Optional[pd.Timestamp] = None,  # noqa
-        to_datetime: Optional[pd.Timestamp] = None,  # noqa
+        start: Optional[pd.Timestamp] = None,  # noqa
+        end: Optional[pd.Timestamp] = None,  # noqa
     ) -> None:
         self._log.error(
             "Cannot request historical quote ticks: not published by Binance.",
@@ -461,14 +463,14 @@ class BinanceCommonDataClient(LiveMarketDataClient):
         instrument_id: InstrumentId,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         if limit == 0 or limit > 1000:
             limit = 1000
 
         if not self._use_agg_trade_ticks:
-            if from_datetime is not None or to_datetime is not None:
+            if start is not None or end is not None:
                 self._log.warning(
                     "Trade ticks have been requested with a from/to time range, "
                     f"however the request will be for the most recent {limit}. "
@@ -483,10 +485,10 @@ class BinanceCommonDataClient(LiveMarketDataClient):
             # Convert from timestamps to milliseconds
             start_time_ms = None
             end_time_ms = None
-            if from_datetime:
-                start_time_ms = str(int(from_datetime.timestamp() * 1000))
-            if to_datetime:
-                end_time_ms = str(int(to_datetime.timestamp() * 1000))
+            if start:
+                start_time_ms = str(int(start.timestamp() * 1000))
+            if end:
+                end_time_ms = str(int(end.timestamp() * 1000))
             ticks = await self._http_market.request_agg_trade_ticks(
                 instrument_id=instrument_id,
                 limit=limit,
@@ -502,8 +504,8 @@ class BinanceCommonDataClient(LiveMarketDataClient):
         bar_type: BarType,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         if limit == 0 or limit > 1000:
             limit = 1000
@@ -534,6 +536,7 @@ class BinanceCommonDataClient(LiveMarketDataClient):
                 f"Cannot create Binance Kline interval. {bar_type.spec.step}{resolution} "
                 "not supported.",
             )
+            return
 
         if bar_type.spec.price_type != PriceType.LAST:
             self._log.error(
@@ -543,12 +546,12 @@ class BinanceCommonDataClient(LiveMarketDataClient):
             return
 
         start_time_ms = None
-        if from_datetime is not None:
-            start_time_ms = secs_to_millis(from_datetime.timestamp())
+        if start is not None:
+            start_time_ms = secs_to_millis(start.timestamp())
 
         end_time_ms = None
-        if to_datetime is not None:
-            end_time_ms = secs_to_millis(to_datetime.timestamp())
+        if end is not None:
+            end_time_ms = secs_to_millis(end.timestamp())
 
         bars = await self._http_market.request_binance_bars(
             bar_type=bar_type,
@@ -571,7 +574,9 @@ class BinanceCommonDataClient(LiveMarketDataClient):
 
     def _get_cached_instrument_id(self, symbol: str) -> InstrumentId:
         # Parse instrument ID
-        nautilus_symbol: str = BinanceSymbol(symbol).parse_binance_to_internal(
+        binance_symbol = BinanceSymbol(symbol)
+        assert binance_symbol
+        nautilus_symbol: str = binance_symbol.parse_binance_to_internal(
             self._binance_account_type,
         )
         instrument_id: Optional[InstrumentId] = self._instrument_ids.get(nautilus_symbol)

@@ -32,7 +32,7 @@ from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.identifiers import TraderId
 from nautilus_trader.model.identifiers import Venue
-from nautilus_trader.model.instruments.base import Instrument
+from nautilus_trader.model.instruments import Instrument
 from nautilus_trader.model.objects import Money
 from nautilus_trader.msgbus.bus import MessageBus
 from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
@@ -55,10 +55,11 @@ class TestComponentStubs:
         return Logger(
             clock=TestComponentStubs.clock(),
             level_stdout=log_level_from_str(level),
+            bypass=True,
         )
 
     @staticmethod
-    def msgbus():
+    def msgbus() -> MessageBus:
         return MessageBus(
             trader_id=TestIdStubs.trader_id(),
             clock=TestComponentStubs.clock(),
@@ -66,14 +67,14 @@ class TestComponentStubs:
         )
 
     @staticmethod
-    def cache():
+    def cache(logger: Optional[Logger] = None) -> Cache:
         return Cache(
             database=None,
-            logger=TestComponentStubs.logger(),
+            logger=logger or TestComponentStubs.logger(),
         )
 
     @staticmethod
-    def portfolio():
+    def portfolio() -> Portfolio:
         return Portfolio(
             msgbus=TestComponentStubs.msgbus(),
             clock=TestComponentStubs.clock(),
@@ -82,7 +83,7 @@ class TestComponentStubs:
         )
 
     @staticmethod
-    def trading_strategy():
+    def trading_strategy() -> Strategy:
         strategy = Strategy()
         strategy.register(
             trader_id=TraderId("TESTER-000"),
@@ -95,7 +96,7 @@ class TestComponentStubs:
         return strategy
 
     @staticmethod
-    def mock_live_data_engine():
+    def mock_live_data_engine() -> MockLiveDataEngine:
         return MockLiveDataEngine(
             loop=asyncio.get_event_loop(),
             msgbus=TestComponentStubs.msgbus(),
@@ -105,7 +106,7 @@ class TestComponentStubs:
         )
 
     @staticmethod
-    def mock_live_exec_engine():
+    def mock_live_exec_engine() -> MockLiveExecutionEngine:
         return MockLiveExecutionEngine(
             loop=asyncio.get_event_loop(),
             msgbus=TestComponentStubs.msgbus(),
@@ -115,7 +116,7 @@ class TestComponentStubs:
         )
 
     @staticmethod
-    def mock_live_risk_engine():
+    def mock_live_risk_engine() -> MockLiveRiskEngine:
         return MockLiveRiskEngine(
             loop=asyncio.get_event_loop(),
             portfolio=TestComponentStubs.portfolio(),
@@ -126,7 +127,7 @@ class TestComponentStubs:
         )
 
     @staticmethod
-    def order_factory():
+    def order_factory() -> OrderFactory:
         return OrderFactory(
             trader_id=TestIdStubs.trader_id(),
             strategy_id=TestIdStubs.strategy_id(),
@@ -146,7 +147,7 @@ class TestComponentStubs:
     def backtest_engine(
         config: Optional[BacktestEngineConfig] = None,
         instrument: Optional[Instrument] = None,
-        ticks: list[Data] = None,
+        ticks: Optional[list[Data]] = None,
         venue: Optional[Venue] = None,
         oms_type: Optional[OmsType] = None,
         account_type: Optional[AccountType] = None,

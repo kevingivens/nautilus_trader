@@ -20,11 +20,10 @@ from typing import Any
 import pytest
 from fsspec.implementations.memory import MemoryFileSystem
 
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.common.clock import TestClock
-from nautilus_trader.common.events.risk import TradingStateChanged
-from nautilus_trader.common.events.system import ComponentStateChanged
 from nautilus_trader.common.factories import OrderFactory
+from nautilus_trader.common.messages import ComponentStateChanged
+from nautilus_trader.common.messages import TradingStateChanged
 from nautilus_trader.model.enums import BookAction
 from nautilus_trader.model.enums import BookType
 from nautilus_trader.model.enums import OrderSide
@@ -41,6 +40,7 @@ from nautilus_trader.model.position import Position
 from nautilus_trader.persistence.catalog.parquet import ParquetDataCatalog
 from nautilus_trader.persistence.external.core import write_objects
 from nautilus_trader.serialization.arrow.serializer import ParquetSerializer
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 from nautilus_trader.test_kit.stubs.events import TestEventStubs
 from nautilus_trader.test_kit.stubs.execution import TestExecStubs

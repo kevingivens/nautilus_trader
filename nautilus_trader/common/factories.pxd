@@ -27,6 +27,7 @@ from nautilus_trader.model.enums_c cimport TimeInForce
 from nautilus_trader.model.enums_c cimport TrailingOffsetType
 from nautilus_trader.model.enums_c cimport TriggerType
 from nautilus_trader.model.identifiers cimport ClientOrderId
+from nautilus_trader.model.identifiers cimport ExecAlgorithmId
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.identifiers cimport OrderListId
 from nautilus_trader.model.identifiers cimport StrategyId
@@ -55,11 +56,11 @@ cdef class OrderFactory:
     cdef readonly StrategyId strategy_id
     """The order factories trading strategy ID.\n\n:returns: `StrategyId`"""
 
-    cpdef void set_client_order_id_count(self, int count) except *
-    cpdef void set_order_list_id_count(self, int count) except *
-    cpdef ClientOrderId generate_client_order_id(self) except *
-    cpdef OrderListId generate_order_list_id(self) except *
-    cpdef void reset(self) except *
+    cpdef void set_client_order_id_count(self, int count)
+    cpdef void set_order_list_id_count(self, int count)
+    cpdef ClientOrderId generate_client_order_id(self)
+    cpdef OrderListId generate_order_list_id(self)
+    cpdef void reset(self)
 
     cpdef OrderList create_list(self, list orders)
 
@@ -70,6 +71,8 @@ cdef class OrderFactory:
         Quantity quantity,
         TimeInForce time_in_force=*,
         bint reduce_only=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -85,6 +88,8 @@ cdef class OrderFactory:
         bint reduce_only=*,
         Quantity display_qty=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -99,6 +104,8 @@ cdef class OrderFactory:
         datetime expire_time=*,
         bint reduce_only=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -116,6 +123,8 @@ cdef class OrderFactory:
         bint reduce_only=*,
         Quantity display_qty=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -128,6 +137,8 @@ cdef class OrderFactory:
         datetime expire_time=*,
         bint reduce_only=*,
         Quantity display_qty=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -142,6 +153,8 @@ cdef class OrderFactory:
         datetime expire_time=*,
         bint reduce_only=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -159,6 +172,8 @@ cdef class OrderFactory:
         bint reduce_only=*,
         Quantity display_qty=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -175,6 +190,8 @@ cdef class OrderFactory:
         datetime expire_time=*,
         bint reduce_only=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -195,6 +212,8 @@ cdef class OrderFactory:
         bint reduce_only=*,
         Quantity display_qty=*,
         TriggerType emulation_trigger=*,
+        ExecAlgorithmId exec_algorithm_id=*,
+        dict exec_algorithm_params=*,
         str tags=*,
     )
 
@@ -216,4 +235,10 @@ cdef class OrderFactory:
         bint tp_post_only=*,
         TriggerType emulation_trigger=*,
         ContingencyType contingency_type=*,
+        ExecAlgorithmId entry_exec_algorithm_id=*,
+        ExecAlgorithmId sl_exec_algorithm_id=*,
+        ExecAlgorithmId tp_exec_algorithm_id=*,
+        dict entry_exec_algorithm_params=*,
+        dict tp_exec_algorithm_params=*,
+        dict sl_exec_algorithm_params=*,
     )

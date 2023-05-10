@@ -23,32 +23,31 @@ from libc.stdint cimport uint64_t
 
 from nautilus_trader.common.timer cimport LiveTimer
 from nautilus_trader.common.timer cimport TimeEvent
-from nautilus_trader.core.rust.common cimport CTestClock
+from nautilus_trader.core.rust.common cimport LiveClockAPI
+from nautilus_trader.core.rust.common cimport TestClockAPI
+from nautilus_trader.core.rust.core cimport CVec
 
 
 cdef class Clock:
-    cdef dict _handlers
-    cdef object _default_handler
-
-    cpdef double timestamp(self) except *
-    cpdef uint64_t timestamp_ms(self) except *
-    cpdef uint64_t timestamp_ns(self) except *
+    cpdef double timestamp(self)
+    cpdef uint64_t timestamp_ms(self)
+    cpdef uint64_t timestamp_ns(self)
     cpdef datetime utc_now(self)
     cpdef datetime local_now(self, tzinfo tz=*)
-    cpdef uint64_t next_time_ns(self, str name) except *
-    cpdef void register_default_handler(self, handler: Callable[[TimeEvent], None]) except *
+    cpdef uint64_t next_time_ns(self, str name)
+    cpdef void register_default_handler(self, handler: Callable[[TimeEvent], None])
     cpdef void set_time_alert(
         self,
         str name,
         datetime alert_time,
         callback: Callable[[TimeEvent], None]=*,
-    ) except *
+    )
     cpdef void set_time_alert_ns(
         self,
         str name,
         uint64_t alert_time_ns,
         callback: Callable[[TimeEvent], None]=*,
-    ) except *
+    )
     cpdef void set_timer(
         self,
         str name,
@@ -56,7 +55,7 @@ cdef class Clock:
         datetime start_time=*,
         datetime stop_time=*,
         callback: Callable[[TimeEvent], None]=*,
-    ) except *
+    )
     cpdef void set_timer_ns(
         self,
         str name,
@@ -64,37 +63,38 @@ cdef class Clock:
         uint64_t start_time_ns,
         uint64_t stop_time_ns,
         callback: Callable[[TimeEvent], None]=*,
-    ) except *
-    cpdef void cancel_timer(self, str name) except *
-    cpdef void cancel_timers(self) except *
+    )
+    cpdef void cancel_timer(self, str name)
+    cpdef void cancel_timers(self)
 
 
 cdef class TestClock(Clock):
-    cdef CTestClock _mem
+    cdef TestClockAPI _mem
 
-    cpdef void set_time(self, uint64_t to_time_ns) except *
+    cpdef void set_time(self, uint64_t to_time_ns)
+    cdef CVec advance_time_c(self, uint64_t to_time_ns, bint set_time=*)
     cpdef list advance_time(self, uint64_t to_time_ns, bint set_time=*)
 
 
 cdef class LiveClock(Clock):
+    cdef LiveClockAPI _mem
+    cdef object _default_handler
+    cdef dict _handlers
+
     cdef object _loop
-    cdef double _offset_secs
-    cdef int64_t _offset_ms
-    cdef int64_t _offset_ns
     cdef int _timer_count
     cdef dict _timers
     cdef LiveTimer[:] _stack
     cdef tzinfo _utc
     cdef uint64_t _next_event_time_ns
 
-    cpdef void set_offset(self, int64_t offset_ns) except *
-    cpdef void _raise_time_event(self, LiveTimer timer) except *
+    cpdef void _raise_time_event(self, LiveTimer timer)
 
-    cdef void _handle_time_event(self, TimeEvent event) except *
-    cdef void _add_timer(self, LiveTimer timer, handler: Callable[[TimeEvent], None]) except *
-    cdef void _remove_timer(self, LiveTimer timer) except *
-    cdef void _update_stack(self) except *
-    cdef void _update_timing(self) except *
+    cdef void _handle_time_event(self, TimeEvent event)
+    cdef void _add_timer(self, LiveTimer timer, handler: Callable[[TimeEvent], None])
+    cdef void _remove_timer(self, LiveTimer timer)
+    cdef void _update_stack(self)
+    cdef void _update_timing(self)
     cdef LiveTimer _create_timer(
         self,
         str name,

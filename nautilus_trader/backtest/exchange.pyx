@@ -95,6 +95,8 @@ cdef class SimulatedExchange:
         The order book type for the exchange.
     frozen_account : bool, default False
         If the account for this exchange is frozen (balances will not change).
+    bar_execution : bool, default True
+        If bars should be processed by the matching engine(s) (and move the market).
     reject_stop_orders : bool, default True
         If stop orders are rejected on submission if in the market.
     support_gtd_orders : bool, default True
@@ -135,6 +137,7 @@ cdef class SimulatedExchange:
         LatencyModel latency_model = None,
         BookType book_type = BookType.L1_TBBO,
         bint frozen_account = False,
+        bint bar_execution = True,
         bint reject_stop_orders = True,
         bint support_gtd_orders = True,
     ):
@@ -171,6 +174,7 @@ cdef class SimulatedExchange:
         self.is_frozen_account = frozen_account
 
         # Execution
+        self.bar_execution = bar_execution
         self.reject_stop_orders = reject_stop_orders
         self.support_gtd_orders = support_gtd_orders
         self.fill_model = fill_model
@@ -212,7 +216,7 @@ cdef class SimulatedExchange:
 
 # -- REGISTRATION ---------------------------------------------------------------------------------
 
-    cpdef void register_client(self, BacktestExecClient client) except *:
+    cpdef void register_client(self, BacktestExecClient client):
         """
         Register the given execution client with the simulated exchange.
 
@@ -228,7 +232,7 @@ cdef class SimulatedExchange:
 
         self._log.info(f"Registered ExecutionClient-{client}.")
 
-    cpdef void set_fill_model(self, FillModel fill_model) except *:
+    cpdef void set_fill_model(self, FillModel fill_model):
         """
         Set the fill model for all matching engines.
 
@@ -250,7 +254,7 @@ cdef class SimulatedExchange:
                 f"to {self.fill_model}.",
             )
 
-    cpdef void set_latency_model(self, LatencyModel latency_model) except *:
+    cpdef void set_latency_model(self, LatencyModel latency_model):
         """
         Change the latency model for this exchange.
 
@@ -266,13 +270,13 @@ cdef class SimulatedExchange:
 
         self._log.info("Changed latency model.")
 
-    cpdef void initialize_account(self) except *:
+    cpdef void initialize_account(self):
         """
         Initialize the account to the starting balances.
         """
         self._generate_fresh_account_state()
 
-    cpdef void add_instrument(self, Instrument instrument) except *:
+    cpdef void add_instrument(self, Instrument instrument):
         """
         Add the given instrument to the venue.
 
@@ -317,6 +321,7 @@ cdef class SimulatedExchange:
             cache=self.cache,
             clock=self._clock,
             logger=self._log.get_logger(),
+            bar_execution=self.bar_execution,
             reject_stop_orders=self.reject_stop_orders,
             support_gtd_orders=self.support_gtd_orders,
         )
@@ -536,7 +541,7 @@ cdef class SimulatedExchange:
 
 # -- COMMANDS -------------------------------------------------------------------------------------
 
-    cpdef void adjust_account(self, Money adjustment) except *:
+    cpdef void adjust_account(self, Money adjustment):
         """
         Adjust the account at the exchange with the given adjustment.
 
@@ -580,7 +585,7 @@ cdef class SimulatedExchange:
             ts_event=self._clock.timestamp_ns(),
         )
 
-    cpdef void send(self, TradingCommand command) except *:
+    cpdef void send(self, TradingCommand command):
         """
         Send the given trading command into the exchange.
 
@@ -613,7 +618,7 @@ cdef class SimulatedExchange:
         cdef (uint64_t, uint64_t) key = (ts, self._inflight_counter[ts])
         return key, command
 
-    cpdef void process_order_book(self, OrderBookData data) except *:
+    cpdef void process_order_book(self, OrderBookData data):
         """
         Process the exchanges market for the given order book data.
 
@@ -631,7 +636,7 @@ cdef class SimulatedExchange:
 
         matching_engine.process_order_book(data)
 
-    cpdef void process_quote_tick(self, QuoteTick tick) except *:
+    cpdef void process_quote_tick(self, QuoteTick tick):
         """
         Process the exchanges market for the given quote tick.
 
@@ -651,7 +656,7 @@ cdef class SimulatedExchange:
 
         matching_engine.process_quote_tick(tick)
 
-    cpdef void process_trade_tick(self, TradeTick tick) except *:
+    cpdef void process_trade_tick(self, TradeTick tick):
         """
         Process the exchanges market for the given trade tick.
 
@@ -671,7 +676,7 @@ cdef class SimulatedExchange:
 
         matching_engine.process_trade_tick(tick)
 
-    cpdef void process_bar(self, Bar bar) except *:
+    cpdef void process_bar(self, Bar bar):
         """
         Process the exchanges market for the given bar.
 
@@ -691,7 +696,7 @@ cdef class SimulatedExchange:
 
         matching_engine.process_bar(bar)
 
-    cpdef void process_venue_status(self, VenueStatusUpdate update) except *:
+    cpdef void process_venue_status(self, VenueStatusUpdate update):
         """
         Process the exchange for the given status.
 
@@ -707,7 +712,7 @@ cdef class SimulatedExchange:
         for matching_engine in self._matching_engines.values():
             matching_engine.process_status(update.status)
 
-    cpdef void process_instrument_status(self, InstrumentStatusUpdate update) except *:
+    cpdef void process_instrument_status(self, InstrumentStatusUpdate update):
         """
         Process a specific instrument status.
 
@@ -725,7 +730,7 @@ cdef class SimulatedExchange:
 
         matching_engine.process_status(update.status)
 
-    cpdef void process(self, uint64_t now_ns) except *:
+    cpdef void process(self, uint64_t ts_now):
         """
         Process the exchange to the gives time.
 
@@ -733,18 +738,18 @@ cdef class SimulatedExchange:
 
         Parameters
         ----------
-        now_ns : uint64_t
-            The UNIX timestamp (nanoseconds) now.
+        ts_now : uint64_t
+            The current UNIX timestamp (nanoseconds).
 
         """
-        self._clock.set_time(now_ns)
+        self._clock.set_time(ts_now)
 
         cdef:
             uint64_t ts
         while self._inflight_queue:
             # Peek at timestamp of next in-flight message
             ts = self._inflight_queue[0][0][0]
-            if ts <= now_ns:
+            if ts <= ts_now:
                 # Place message on queue to be processed
                 self._message_queue.put_nowait(self._inflight_queue.pop(0)[1])
                 self._inflight_counter.pop(ts, None)
@@ -772,9 +777,9 @@ cdef class SimulatedExchange:
         # Iterate over modules
         cdef SimulationModule module
         for module in self.modules:
-            module.process(now_ns)
+            module.process(ts_now)
 
-    cpdef void reset(self) except *:
+    cpdef void reset(self):
         """
         Reset the simulated exchange.
 
@@ -798,7 +803,7 @@ cdef class SimulatedExchange:
 
 # -- EVENT GENERATORS -----------------------------------------------------------------------------
 
-    cdef void _generate_fresh_account_state(self) except *:
+    cdef void _generate_fresh_account_state(self):
         cdef list balances = [
             AccountBalance(
                 total=money,

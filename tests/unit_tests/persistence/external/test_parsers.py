@@ -18,8 +18,6 @@ import msgspec
 import pandas as pd
 
 from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
-from nautilus_trader.backtest.data.wranglers import BarDataWrangler
-from nautilus_trader.backtest.data.wranglers import QuoteTickDataWrangler
 from nautilus_trader.model.instruments.currency_pair import CurrencyPair
 from nautilus_trader.persistence.external.core import make_raw_files
 from nautilus_trader.persistence.external.core import process_files
@@ -27,8 +25,9 @@ from nautilus_trader.persistence.external.core import process_raw_file
 from nautilus_trader.persistence.external.readers import ByteReader
 from nautilus_trader.persistence.external.readers import CSVReader
 from nautilus_trader.persistence.external.readers import LinePreprocessor
-from nautilus_trader.persistence.external.readers import ParquetReader
 from nautilus_trader.persistence.external.readers import TextReader
+from nautilus_trader.persistence.wranglers import BarDataWrangler
+from nautilus_trader.persistence.wranglers import QuoteTickDataWrangler
 from nautilus_trader.test_kit.mocks.data import MockReader
 from nautilus_trader.test_kit.mocks.data import data_catalog_setup
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
@@ -52,9 +51,7 @@ class TestPersistenceParsers:
 
     def test_line_preprocessor_post_process(self):
         obj = TestDataStubs.trade_tick_5decimal()
-        data = {
-            "ts_init": int(pd.Timestamp("2021-06-29T06:04:11.943000", tz="UTC").to_datetime64()),
-        }
+        data = {"ts_init": pd.Timestamp("2021-06-29T06:04:11.943000", tz="UTC").value}
         obj = self.line_preprocessor.post_process(obj=obj, state=data)
         assert obj.ts_init == 1624946651943000000
 
@@ -62,7 +59,7 @@ class TestPersistenceParsers:
         def block_parser(block: bytes):
             for raw in block.split(b"\\n"):
                 ts, line = raw.split(b" - ")
-                state = {"ts_init": int(pd.Timestamp(ts.decode(), tz="UTC").to_datetime64())}
+                state = {"ts_init": pd.Timestamp(ts.decode(), tz="UTC").value}
                 line = line.strip().replace(b"b'", b"")
                 msgspec.json.decode(line)
                 for obj in BetfairTestStubs.parse_betfair(
@@ -212,9 +209,9 @@ class TestPersistenceParsers:
         )
         assert sum(in_.values()) == 10
 
-    def test_text_reader(self):
+    def test_text_reader(self) -> None:
         provider = BetfairInstrumentProvider.from_instruments([])
-        reader = BetfairTestStubs.betfair_reader(provider)  # type: TextReader
+        reader: TextReader = BetfairTestStubs.betfair_reader(provider)
         raw_file = make_raw_files(glob_path=f"{TEST_DATA_DIR}/betfair/1.166811431.bz2")[0]
         result = process_raw_file(catalog=self.catalog, raw_file=raw_file, reader=reader)
         assert result == 22692
@@ -230,28 +227,28 @@ class TestPersistenceParsers:
         result = process_raw_file(catalog=self.catalog, raw_file=raw_file, reader=reader)
         assert result == 6
 
-    def test_parquet_reader(self):
-        def parser(data):
-            if data is None:
-                return
-            data.loc[:, "timestamp"] = pd.to_datetime(data.index)
-            data = data.set_index("timestamp")[["bid", "ask", "bid_size", "ask_size"]]
-            instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
-            wrangler = QuoteTickDataWrangler(instrument)
-            ticks = wrangler.process(data)
-            yield from ticks
-
-        reader = ParquetReader(parser=parser)
-        raw_file = make_raw_files(glob_path=f"{TEST_DATA_DIR}/quote_tick_data.parquet")[0]
-        result = process_raw_file(catalog=self.catalog, raw_file=raw_file, reader=reader)
-        assert result == 9500
+    # def test_parquet_reader(self):
+    #     def parser(data):
+    #         if data is None:
+    #             return
+    #         data.loc[:, "timestamp"] = pd.to_datetime(data.index)
+    #         data = data.set_index("timestamp")[["bid", "ask", "bid_size", "ask_size"]]
+    #         instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD")
+    #         wrangler = QuoteTickDataWrangler(instrument)
+    #         ticks = wrangler.process(data)
+    #         yield from ticks
+    #
+    #     reader = ParquetReader(parser=parser)
+    #     raw_file = make_raw_files(glob_path=f"{TEST_DATA_DIR}/quote_tick_data.parquet")[0]
+    #     result = process_raw_file(catalog=self.catalog, raw_file=raw_file, reader=reader)
+    #     assert result == 9500
 
 
 class TestLineProcessor(LinePreprocessor):
     @staticmethod
     def pre_process(line):
         ts, raw = line.split(b" - ")
-        data = {"ts_init": int(pd.Timestamp(ts.decode(), tz="UTC").to_datetime64())}
+        data = {"ts_init": pd.Timestamp(ts.decode(), tz="UTC").value}
         line = raw.strip()
         return line, data
 

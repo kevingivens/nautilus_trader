@@ -15,6 +15,8 @@
 
 from typing import Optional
 
+from libc.math cimport fmin
+
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.model.currency cimport Currency
 from nautilus_trader.model.enums_c cimport AccountType
@@ -62,7 +64,7 @@ cdef class CashAccount(Account):
 
         self._balances_locked: dict[InstrumentId, Money] = {}
 
-    cpdef void update_balance_locked(self, InstrumentId instrument_id, Money locked) except *:
+    cpdef void update_balance_locked(self, InstrumentId instrument_id, Money locked):
         """
         Update the balance locked for the given instrument ID.
 
@@ -90,7 +92,7 @@ cdef class CashAccount(Account):
         self._balances_locked[instrument_id] = locked
         self._recalculate_balance(locked.currency)
 
-    cpdef void clear_balance_locked(self, InstrumentId instrument_id) except *:
+    cpdef void clear_balance_locked(self, InstrumentId instrument_id):
         """
         Clear the balance locked for the given instrument ID.
 
@@ -108,10 +110,10 @@ cdef class CashAccount(Account):
 
 # -- CALCULATIONS ---------------------------------------------------------------------------------
 
-    cpdef bint is_unleveraged(self, InstrumentId instrument_id) except *:
+    cpdef bint is_unleveraged(self, InstrumentId instrument_id):
         return True
 
-    cdef void _recalculate_balance(self, Currency currency) except *:
+    cdef void _recalculate_balance(self, Currency currency):
         cdef AccountBalance current_balance = self._balances.get(currency)
         if current_balance is None:
             # TODO(cs): Temporary pending reimplementation of accounting
@@ -302,6 +304,10 @@ cdef class CashAccount(Account):
 
         cdef double fill_qty = fill.last_qty.as_f64_c()
         cdef double fill_px = fill.last_px.as_f64_c()
+
+        if position is not None:
+            # Only book open quantity towards realized PnL
+            fill_qty = fmin(fill_qty, position.quantity.as_f64_c())
 
         if fill.order_side == OrderSide.BUY:
             if base_currency and not self.base_currency:

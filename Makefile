@@ -4,19 +4,28 @@ IMAGE?=${REGISTRY}${PROJECT}
 GIT_TAG:=$(shell git rev-parse --abbrev-ref HEAD)
 IMAGE_FULL?=${IMAGE}:${GIT_TAG}
 .PHONY: install build clean docs format pre-commit
-.PHONY: clippy cargo-build cargo-update cargo-test cargo-test-arm64
+.PHONY: clippy cargo-build cargo-update cargo-test
 .PHONY: update docker-build docker-build-force docker-push
 .PHONY: docker-build-jupyter docker-push-jupyter
 .PHONY: pytest pytest-coverage
 
 install:
-	poetry install --with dev,test --all-extras
+	BUILD_MODE=release poetry install --with dev,test --all-extras
+
+install-debug:
+	BUILD_MODE=debug poetry install --with dev,test --all-extras
 
 install-just-deps:
 	poetry install --with dev,test --all-extras --no-root
 
+install-just-deps-all:
+	poetry install --with dev,test,docs --all-extras --no-root
+
 build: nautilus_trader
-	poetry run python build.py
+	BUILD_MODE=release poetry run python build.py
+
+build-debug: nautilus_trader
+	BUILD_MODE=debug poetry run python build.py
 
 clean:
 	git clean -fxd
@@ -29,6 +38,9 @@ format:
 
 pre-commit: format
 	pre-commit run --all-files
+
+ruff:
+	ruff check . --fix
 
 update:
 	(cd nautilus_core && cargo update)
@@ -45,9 +57,6 @@ cargo-update:
 
 cargo-test:
 	(cd nautilus_core && cargo test)
-
-cargo-test-arm64:
-	(cd nautilus_core && cargo test --features extension-module)
 
 docker-build: clean
 	docker pull ${IMAGE_FULL} || docker pull ${IMAGE}:develop ||  true

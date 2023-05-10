@@ -32,6 +32,8 @@ import cython
 from nautilus_trader.config import ImportableStrategyConfig
 from nautilus_trader.config import StrategyConfig
 
+from libc.stdint cimport uint64_t
+
 from nautilus_trader.cache.base cimport CacheFacade
 from nautilus_trader.common.actor cimport Actor
 from nautilus_trader.common.clock cimport Clock
@@ -45,9 +47,9 @@ from nautilus_trader.common.logging cimport LogColor
 from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.common.timer cimport TimeEvent
 from nautilus_trader.core.correctness cimport Condition
+from nautilus_trader.core.fsm cimport InvalidStateTrigger
 from nautilus_trader.core.message cimport Event
 from nautilus_trader.core.uuid cimport UUID4
-from nautilus_trader.execution.algorithm cimport ExecAlgorithmSpecification
 from nautilus_trader.execution.messages cimport CancelAllOrders
 from nautilus_trader.execution.messages cimport CancelOrder
 from nautilus_trader.execution.messages cimport ModifyOrder
@@ -59,16 +61,21 @@ from nautilus_trader.model.data.bar cimport Bar
 from nautilus_trader.model.data.bar cimport BarType
 from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
+from nautilus_trader.model.enums_c cimport OrderStatus
 from nautilus_trader.model.enums_c cimport TimeInForce
 from nautilus_trader.model.enums_c cimport oms_type_from_str
 from nautilus_trader.model.enums_c cimport order_side_to_str
 from nautilus_trader.model.enums_c cimport position_side_to_str
+from nautilus_trader.model.events.order cimport OrderCanceled
 from nautilus_trader.model.events.order cimport OrderCancelRejected
 from nautilus_trader.model.events.order cimport OrderDenied
 from nautilus_trader.model.events.order cimport OrderEvent
 from nautilus_trader.model.events.order cimport OrderModifyRejected
+from nautilus_trader.model.events.order cimport OrderPendingCancel
+from nautilus_trader.model.events.order cimport OrderPendingUpdate
 from nautilus_trader.model.events.order cimport OrderRejected
 from nautilus_trader.model.identifiers cimport ClientOrderId
+from nautilus_trader.model.identifiers cimport ExecAlgorithmId
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.identifiers cimport PositionId
 from nautilus_trader.model.identifiers cimport StrategyId
@@ -129,6 +136,7 @@ cdef class Strategy(Actor):
         # Configuration
         self.config = config
         self.oms_type = oms_type_from_str(str(config.oms_type).upper()) if config.oms_type else OmsType.UNSPECIFIED
+        self.external_order_claims = self._parse_external_order_claims(config.external_order_claims)
         self._manage_gtd_expiry = False
 
         # Indicators
@@ -148,6 +156,15 @@ cdef class Strategy(Actor):
         self.register_warning_event(OrderRejected)
         self.register_warning_event(OrderCancelRejected)
         self.register_warning_event(OrderModifyRejected)
+
+    def _parse_external_order_claims(
+        self,
+        config_claims: Optional[list[str]],
+    ) -> list[InstrumentId]:
+        if config_claims is None:
+            return []
+
+        return [InstrumentId.from_str(i) for i in config_claims]
 
     def to_importable_config(self) -> ImportableStrategyConfig:
         """
@@ -176,7 +193,7 @@ cdef class Strategy(Actor):
         """
         return self._indicators.copy()
 
-    cpdef bint indicators_initialized(self) except *:
+    cpdef bint indicators_initialized(self):
         """
         Return a value indicating whether all indicators are initialized.
 
@@ -197,7 +214,7 @@ cdef class Strategy(Actor):
 
 # -- REGISTRATION ---------------------------------------------------------------------------------
 
-    cpdef void on_start(self) except *:
+    cpdef void on_start(self):
         # Should override in subclass
         self.log.warning(
             "The `Strategy.on_start` handler was called when not overridden. "
@@ -205,7 +222,7 @@ cdef class Strategy(Actor):
             "occur here, such as subscribing/requesting data.",
         )
 
-    cpdef void on_stop(self) except *:
+    cpdef void on_stop(self):
         # Should override in subclass
         self.log.warning(
             "The `Strategy.on_stop` handler was called when not overridden. "
@@ -213,7 +230,7 @@ cdef class Strategy(Actor):
             "occur here, such as unsubscribing from data.",
         )
 
-    cpdef void on_resume(self) except *:
+    cpdef void on_resume(self):
         # Should override in subclass
         self.log.warning(
             "The `Strategy.on_resume` handler was called when not overridden. "
@@ -221,7 +238,7 @@ cdef class Strategy(Actor):
             "following a stop occur here."
         )
 
-    cpdef void on_reset(self) except *:
+    cpdef void on_reset(self):
         # Should override in subclass
         self.log.warning(
             "The `Strategy.on_reset` handler was called when not overridden. "
@@ -239,7 +256,7 @@ cdef class Strategy(Actor):
         CacheFacade cache,
         Clock clock,
         Logger logger,
-    ) except *:
+    ):
         """
         Register the strategy with a trader.
 
@@ -285,30 +302,11 @@ cdef class Strategy(Actor):
             clock=self.clock,
         )
 
-        cdef set client_order_ids = self.cache.client_order_ids(
-            venue=None,
-            instrument_id=None,
-            strategy_id=self.id,
-        )
-
-        cdef set order_list_ids = self.cache.order_list_ids(
-            venue=None,
-            instrument_id=None,
-            strategy_id=self.id,
-        )
-
-        cdef int order_id_count = len(client_order_ids)
-        cdef int order_list_id_count = len(order_list_ids)
-        self.order_factory.set_client_order_id_count(order_id_count)
-        self.order_factory.set_order_list_id_count(order_list_id_count)
-        self.log.info(f"Set ClientOrderIdGenerator client_order_id count to {order_id_count}.")
-        self.log.info(f"Set ClientOrderIdGenerator order_list_id count to {order_list_id_count}.")
-
         # Required subscriptions
         self._msgbus.subscribe(topic=f"events.order.{self.id}", handler=self.handle_event)
         self._msgbus.subscribe(topic=f"events.position.{self.id}", handler=self.handle_event)
 
-    cpdef void register_indicator_for_quote_ticks(self, InstrumentId instrument_id, Indicator indicator) except *:
+    cpdef void register_indicator_for_quote_ticks(self, InstrumentId instrument_id, Indicator indicator):
         """
         Register the given indicator with the strategy to receive quote tick
         data for the given instrument ID.
@@ -336,7 +334,7 @@ cdef class Strategy(Actor):
         else:
             self.log.error(f"Indicator {indicator} already registered for {instrument_id} quote ticks.")
 
-    cpdef void register_indicator_for_trade_ticks(self, InstrumentId instrument_id, Indicator indicator) except *:
+    cpdef void register_indicator_for_trade_ticks(self, InstrumentId instrument_id, Indicator indicator):
         """
         Register the given indicator with the strategy to receive trade tick
         data for the given instrument ID.
@@ -364,7 +362,7 @@ cdef class Strategy(Actor):
         else:
             self.log.error(f"Indicator {indicator} already registered for {instrument_id} trade ticks.")
 
-    cpdef void register_indicator_for_bars(self, BarType bar_type, Indicator indicator) except *:
+    cpdef void register_indicator_for_bars(self, BarType bar_type, Indicator indicator):
         """
         Register the given indicator with the strategy to receive bar data for the
         given bar type.
@@ -394,7 +392,29 @@ cdef class Strategy(Actor):
 
 # -- ACTION IMPLEMENTATIONS -----------------------------------------------------------------------
 
-    cpdef void _reset(self) except *:
+    cpdef void _start(self):
+        cdef set client_order_ids = self.cache.client_order_ids(
+            venue=None,
+            instrument_id=None,
+            strategy_id=self.id,
+        )
+
+        cdef set order_list_ids = self.cache.order_list_ids(
+            venue=None,
+            instrument_id=None,
+            strategy_id=self.id,
+        )
+
+        cdef int order_id_count = len(client_order_ids)
+        cdef int order_list_id_count = len(order_list_ids)
+        self.order_factory.set_client_order_id_count(order_id_count)
+        self.order_factory.set_order_list_id_count(order_list_id_count)
+        self.log.info(f"Set ClientOrderIdGenerator client_order_id count to {order_id_count}.")
+        self.log.info(f"Set ClientOrderIdGenerator order_list_id count to {order_list_id_count}.")
+
+        self.on_start()
+
+    cpdef void _reset(self):
         if self.order_factory:
             self.order_factory.reset()
 
@@ -412,14 +432,17 @@ cdef class Strategy(Actor):
         Order order,
         PositionId position_id = None,
         bint manage_gtd_expiry = False,
-        ExecAlgorithmSpecification exec_algorithm_spec = None,
         ClientId client_id = None,
-    ) except *:
+    ):
         """
         Submit the given order with optional position ID, execution algorithm
         and routing instructions.
 
-        A `SubmitOrder` command will be created and sent to the `RiskEngine`.
+        A `SubmitOrder` command will be created and sent to **either** an
+        `ExecAlgorithm`, the `OrderEmulator` or the `RiskEngine` (depending whether
+        the order is emulated and/or has an `exec_algorithm_id` specified).
+
+        If the client order ID is duplicate, then the order will be denied.
 
         Parameters
         ----------
@@ -430,11 +453,14 @@ cdef class Strategy(Actor):
             yet exist, then any position opened will have this identifier assigned.
         manage_gtd_expiry : bool, default False
             If any GTD time in force order expiry should be managed by the strategy.
-        exec_algorithm_spec : ExecAlgorithmSpecification, optional
-            The execution algorithm specification for the order.
         client_id : ClientId, optional
             The specific execution client ID for the command.
             If ``None`` then will be inferred from the venue in the instrument ID.
+
+        Raises
+        ------
+        ValueError
+            If `order.status` is not ``INITIALIZED``.
 
         Warning
         -------
@@ -445,12 +471,20 @@ cdef class Strategy(Actor):
         """
         Condition.true(self.trader_id is not None, "The strategy has not been registered")
         Condition.not_none(order, "order")
+        Condition.equal(order.status, OrderStatus.INITIALIZED, "order", "order_status")
 
         # Publish initialized event
         self._msgbus.publish_c(
             topic=f"events.order.{order.strategy_id.to_str()}",
             msg=order.init_event_c(),
         )
+
+        # Check for duplicate client order ID
+        if self.cache.order_exists(order.client_order_id):
+            self._deny_order(order, f"duplicate {repr(order.client_order_id)}")
+            return
+
+        self.cache.add_order(order, position_id)
 
         cdef SubmitOrder command = SubmitOrder(
             trader_id=self.trader_id,
@@ -459,7 +493,6 @@ cdef class Strategy(Actor):
             command_id=UUID4(),
             ts_init=self.clock.timestamp_ns(),
             position_id=position_id,
-            exec_algorithm_spec=exec_algorithm_spec,
             client_id=client_id,
         )
 
@@ -468,21 +501,30 @@ cdef class Strategy(Actor):
         if manage_gtd_expiry and order.time_in_force == TimeInForce.GTD:
             self._set_gtd_expiry(order)
 
-        self._send_risk_command(command)
+        # Route order
+        if order.is_emulated_c():
+            self._send_emulator_command(command)
+        elif order.exec_algorithm_id is not None:
+            self._send_algo_command(command)
+        else:
+            self._send_risk_command(command)
 
     cpdef void submit_order_list(
         self,
         OrderList order_list,
         PositionId position_id = None,
         bint manage_gtd_expiry = False,
-        list exec_algorithm_specs = None,
         ClientId client_id = None
-    ) except *:
+    ):
         """
         Submit the given order list with optional position ID, execution algorithm
         and routing instructions.
 
-        A `SubmitOrderList` command with be created and sent to the `RiskEngine`.
+        A `SubmitOrderList` command with be created and sent to **either** the
+        `OrderEmulator`, or the `RiskEngine` (depending whether an order is emulated).
+
+        If the order list ID is duplicate, or any client order ID is duplicate,
+        then all orders will be denied.
 
         Parameters
         ----------
@@ -493,11 +535,14 @@ cdef class Strategy(Actor):
             yet exist, then any position opened will have this identifier assigned.
         manage_gtd_expiry : bool, default False
             If any GTD time in force order expiry should be managed by the strategy.
-        exec_algorithm_specs : list[ExecAlgorithmSpecification], optional
-            The execution algorithm specifications for the orders.
         client_id : ClientId, optional
             The specific execution client ID for the command.
             If ``None`` then will be inferred from the venue in the instrument ID.
+
+        Raises
+        ------
+        ValueError
+            If any `order.status` is not ``INITIALIZED``.
 
         Warning
         -------
@@ -509,20 +554,43 @@ cdef class Strategy(Actor):
         Condition.true(self.trader_id is not None, "The strategy has not been registered")
         Condition.not_none(order_list, "order_list")
 
-        # Publish initialized events
         cdef Order order
         for order in order_list.orders:
+            Condition.equal(order.status, OrderStatus.INITIALIZED, "order", "order_status")
+            # Publish initialized event
             self._msgbus.publish_c(
-                    topic=f"events.order.{order.strategy_id.to_str()}",
+                topic=f"events.order.{order.strategy_id.to_str()}",
                 msg=order.init_event_c(),
             )
+
+        # Check for duplicate order list ID
+        if self.cache.order_list_exists(order_list.id):
+            self._deny_order_list(
+                order_list,
+                reason=f"duplicate {repr(order_list.id)}",
+            )
+            return
+
+        self.cache.add_order_list(order_list)
+
+        # Check for duplicate client order IDs
+        for order in order_list.orders:
+            if self.cache.order_exists(order.client_order_id):
+                for order in order_list.orders:
+                    self._deny_order(
+                        order,
+                        reason=f"duplicate {repr(order.client_order_id)}",
+                    )
+                return
+
+        for order in order_list.orders:
+            self.cache.add_order(order, position_id)
 
         cdef SubmitOrderList command = SubmitOrderList(
             trader_id=self.trader_id,
             strategy_id=self.id,
             order_list=order_list,
             position_id=position_id,
-            exec_algorithm_specs=exec_algorithm_specs,
             command_id=UUID4(),
             ts_init=self.clock.timestamp_ns(),
             client_id=client_id,
@@ -535,7 +603,13 @@ cdef class Strategy(Actor):
                 if order.time_in_force == TimeInForce.GTD:
                     self._set_gtd_expiry(order)
 
-        self._send_risk_command(command)
+        # Route order
+        if command.has_emulated_order:
+            self._send_emulator_command(command)
+        elif order_list.first.exec_algorithm_id is not None:
+            self._send_algo_command(command)
+        else:
+            self._send_risk_command(command)
 
     cpdef void modify_order(
         self,
@@ -544,13 +618,14 @@ cdef class Strategy(Actor):
         Price price = None,
         Price trigger_price = None,
         ClientId client_id = None,
-    ) except *:
+    ):
         """
         Modify the given order with optional parameters and routing instructions.
 
-        An `ModifyOrder` command is created and then sent to the
-        `ExecutionEngine`. Either one or both values must differ from the
-        original order for the command to be valid.
+        An `ModifyOrder` command will be created and then sent to **either** the
+        `OrderEmulator` or the `RiskEngine` (depending on whether the order is emulated).
+
+        At least one value must differ from the original order for the command to be valid.
 
         Will use an Order Cancel/Replace Request (a.k.a Order Modification)
         for FIX protocols, otherwise if order update is not available for
@@ -627,6 +702,23 @@ cdef class Strategy(Actor):
             )
             return  # Cannot send command
 
+        cdef OrderPendingUpdate event
+        if order.status != OrderStatus.INITIALIZED and not order.is_emulated_c():
+            # Generate and apply event
+            event = self._generate_order_pending_update(order)
+            try:
+                order.apply(event)
+                self.cache.update_order(order)
+            except InvalidStateTrigger as e:
+                self._log.warning(f"InvalidStateTrigger: {e}, did not apply {event}")
+                return
+
+            # Publish event
+            self._msgbus.publish_c(
+                topic=f"events.order.{order.strategy_id.to_str()}",
+                msg=event,
+            )
+
         cdef ModifyOrder command = ModifyOrder(
             trader_id=self.trader_id,
             strategy_id=self.id,
@@ -641,14 +733,17 @@ cdef class Strategy(Actor):
             client_id=client_id,
         )
 
-        self._send_risk_command(command)
+        if order.is_emulated_c():
+            self._send_emulator_command(command)
+        else:
+            self._send_risk_command(command)
 
-    cpdef void cancel_order(self, Order order, ClientId client_id = None) except *:
+    cpdef void cancel_order(self, Order order, ClientId client_id = None):
         """
         Cancel the given order with optional routing instructions.
 
-        A `CancelOrder` command will be created and then sent to the
-        `ExecutionEngine`.
+        A `CancelOrder` command will be created and then sent to **either** the
+        `OrderEmulator` or the `RiskEngine` (depending on whether the order is emulated).
 
         Logs an error if no `VenueOrderId` has been assigned to the order.
 
@@ -670,6 +765,23 @@ cdef class Strategy(Actor):
             )
             return  # Cannot send command
 
+        cdef OrderPendingCancel event
+        if order.status != OrderStatus.INITIALIZED and not order.is_emulated_c():
+            # Generate and apply event
+            event = self._generate_order_pending_cancel(order)
+            try:
+                order.apply(event)
+                self.cache.update_order(order)
+            except InvalidStateTrigger as e:
+                self._log.warning(f"InvalidStateTrigger: {e}, did not apply {event}")
+                return
+
+            # Publish event
+            self._msgbus.publish_c(
+                topic=f"events.order.{order.strategy_id.to_str()}",
+                msg=event,
+            )
+
         cdef CancelOrder command = CancelOrder(
             trader_id=self.trader_id,
             strategy_id=self.id,
@@ -681,16 +793,25 @@ cdef class Strategy(Actor):
             client_id=client_id,
         )
 
-        self._send_risk_command(command)
+        if order.exec_algorithm_id is not None:
+            self._send_algo_command(command)
+
+        if order.is_emulated_c():
+            self._send_emulator_command(command)
+        else:
+            self._send_risk_command(command)
 
     cpdef void cancel_all_orders(
         self,
         InstrumentId instrument_id,
         OrderSide order_side = OrderSide.NO_ORDER_SIDE,
         ClientId client_id = None,
-    ) except *:
+    ):
         """
         Cancel all orders for this strategy for the given instrument ID.
+
+        A `CancelAllOrders` command will be created and then sent to **both** the
+        `OrderEmulator` and the `RiskEngine`.
 
         Parameters
         ----------
@@ -741,6 +862,20 @@ cdef class Strategy(Actor):
                 f"{instrument_id.value} order{'' if emulated_count == 1 else 's'}...",
             )
 
+        cdef:
+            OrderPendingCancel event
+            Order order
+        for order in open_orders + emulated_orders:
+            if order.is_emulated_c():
+                continue
+            event = self._generate_order_pending_cancel(order)
+            try:
+                order.apply(event)
+                self.cache.update_order(order)
+            except InvalidStateTrigger as e:
+                self._log.warning(f"InvalidStateTrigger: {e}, did not apply {event}")
+                continue
+
         cdef CancelAllOrders command = CancelAllOrders(
             trader_id=self.trader_id,
             strategy_id=self.id,
@@ -751,14 +886,26 @@ cdef class Strategy(Actor):
             client_id=client_id,
         )
 
+        # Cancel all execution algorithm orders
+        cdef set exec_algorithm_ids = self.cache.exec_algorithm_ids()
+
+        cdef:
+            ExecAlgorithmId exec_algorithm_id
+        for exec_algorithm_id in exec_algorithm_ids:
+            exec_algorithm_orders = self.cache.orders_for_exec_algorithm(exec_algorithm_id)
+            for order in exec_algorithm_orders:
+                if order.strategy_id == self.id and not order.is_closed_c():
+                    self._cancel_algo_order(order)
+
         self._send_risk_command(command)
+        self._send_emulator_command(command)
 
     cpdef void close_position(
         self,
         Position position,
         ClientId client_id = None,
         str tags = None,
-    ) except *:
+    ):
         """
         Close the given position.
 
@@ -795,27 +942,12 @@ cdef class Strategy(Actor):
             quantity=position.quantity,
             time_in_force=TimeInForce.GTC,
             reduce_only=True,
+            exec_algorithm_id=None,
+            exec_algorithm_params=None,
             tags=tags,
         )
 
-        # Publish initialized event
-        self._msgbus.publish_c(
-            topic=f"events.order.{order.strategy_id.to_str()}",
-            msg=order.init_event_c(),
-        )
-
-        # Create command
-        cdef SubmitOrder command = SubmitOrder(
-            trader_id=self.trader_id,
-            strategy_id=self.id,
-            position_id=position.id,
-            order=order,
-            command_id=UUID4(),
-            ts_init=self.clock.timestamp_ns(),
-            client_id=client_id,
-        )
-
-        self._send_risk_command(command)
+        self.submit_order(order, position_id=position.id, client_id=client_id)
 
     cpdef void close_all_positions(
         self,
@@ -823,7 +955,7 @@ cdef class Strategy(Actor):
         PositionSide position_side = PositionSide.NO_POSITION_SIDE,
         ClientId client_id = None,
         str tags = None,
-    ) except *:
+    ):
         """
         Close all positions for the given instrument ID for this strategy.
 
@@ -864,7 +996,7 @@ cdef class Strategy(Actor):
         for position in positions_open:
             self.close_position(position, client_id, tags)
 
-    cpdef void query_order(self, Order order, ClientId client_id = None) except *:
+    cpdef void query_order(self, Order order, ClientId client_id = None):
         """
         Query the given order with optional routing instructions.
 
@@ -901,7 +1033,7 @@ cdef class Strategy(Actor):
     cdef str _get_gtd_expiry_timer_name(self, ClientOrderId client_order_id):
         return f"GTD-EXPIRY:{client_order_id.to_str()}"
 
-    cdef void _set_gtd_expiry(self, Order order) except *:
+    cdef void _set_gtd_expiry(self, Order order):
         self._log.info(
             f"Setting managed GTD expiry timer for {order.client_order_id} @ {order.expire_time}.",
             LogColor.BLUE,
@@ -915,16 +1047,17 @@ cdef class Strategy(Actor):
         # For now, we flip this opt-in flag
         self._manage_gtd_expiry = True
 
-    cdef void _cancel_gtd_expiry(self, Order order) except *:
+    cdef void _cancel_gtd_expiry(self, Order order):
         cdef str timer_name = self._get_gtd_expiry_timer_name(order.client_order_id)
+        cdef str expire_time_str = f" @ {order.expire_time}" if hasattr(order, "expire_time") else ""
         if timer_name in self._clock.timer_names:
             self._log.info(
-                f"Canceling managed GTD expiry timer for {order.client_order_id} @ {order.expire_time}.",
+                f"Canceling managed GTD expiry timer for {order.client_order_id}{expire_time_str}.",
                 LogColor.BLUE,
             )
             self._clock.cancel_timer(name=timer_name)
 
-    cpdef void _expire_gtd_order(self, TimeEvent event) except *:
+    cpdef void _expire_gtd_order(self, TimeEvent event):
         cdef ClientOrderId client_order_id = ClientOrderId(event.to_str().partition(":")[2])
         cdef Order order = self.cache.order(client_order_id)
         if order is None:
@@ -941,7 +1074,7 @@ cdef class Strategy(Actor):
 
     # -- HANDLERS -------------------------------------------------------------------------------------
 
-    cpdef void handle_quote_tick(self, QuoteTick tick) except *:
+    cpdef void handle_quote_tick(self, QuoteTick tick):
         """
         Handle the given quote tick.
 
@@ -973,7 +1106,7 @@ cdef class Strategy(Actor):
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
-    cpdef void handle_quote_ticks(self, list ticks) except *:
+    cpdef void handle_quote_ticks(self, list ticks):
         """
         Handle the given historical quote tick data by handling each tick individually.
 
@@ -1011,7 +1144,7 @@ cdef class Strategy(Actor):
                 self._handle_indicators_for_quote(indicators, tick)
             self.handle_historical_data(tick)
 
-    cpdef void handle_trade_tick(self, TradeTick tick) except *:
+    cpdef void handle_trade_tick(self, TradeTick tick):
         """
         Handle the given trade tick.
 
@@ -1043,7 +1176,7 @@ cdef class Strategy(Actor):
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
-    cpdef void handle_trade_ticks(self, list ticks) except *:
+    cpdef void handle_trade_ticks(self, list ticks):
         """
         Handle the given historical trade tick data by handling each tick individually.
 
@@ -1081,7 +1214,7 @@ cdef class Strategy(Actor):
                 self._handle_indicators_for_trade(indicators, tick)
             self.handle_historical_data(tick)
 
-    cpdef void handle_bar(self, Bar bar) except *:
+    cpdef void handle_bar(self, Bar bar):
         """
         Handle the given bar data.
 
@@ -1113,7 +1246,7 @@ cdef class Strategy(Actor):
 
     @cython.boundscheck(False)
     @cython.wraparound(False)
-    cpdef void handle_bars(self, list bars) except *:
+    cpdef void handle_bars(self, list bars):
         """
         Handle the given historical bar data by handling each bar individually.
 
@@ -1154,7 +1287,7 @@ cdef class Strategy(Actor):
                 self._handle_indicators_for_bar(indicators, bar)
             self.handle_historical_data(bar)
 
-    cpdef void handle_event(self, Event event) except *:
+    cpdef void handle_event(self, Event event):
         """
         Handle the given event.
 
@@ -1192,29 +1325,140 @@ cdef class Strategy(Actor):
 
 # -- HANDLERS -------------------------------------------------------------------------------------
 
-    cdef void _handle_indicators_for_quote(self, list indicators, QuoteTick tick) except *:
+    cdef void _handle_indicators_for_quote(self, list indicators, QuoteTick tick):
         cdef Indicator indicator
         for indicator in indicators:
             indicator.handle_quote_tick(tick)
 
-    cdef void _handle_indicators_for_trade(self, list indicators, TradeTick tick) except *:
+    cdef void _handle_indicators_for_trade(self, list indicators, TradeTick tick):
         cdef Indicator indicator
         for indicator in indicators:
             indicator.handle_trade_tick(tick)
 
-    cdef void _handle_indicators_for_bar(self, list indicators, Bar bar) except *:
+    cdef void _handle_indicators_for_bar(self, list indicators, Bar bar):
         cdef Indicator indicator
         for indicator in indicators:
             indicator.handle_bar(bar)
 
+# -- EVENTS ---------------------------------------------------------------------------------------
+
+    cdef OrderDenied _generate_order_denied(self, Order order, str reason):
+        cdef uint64_t ts_now = self._clock.timestamp_ns()
+        return OrderDenied(
+            trader_id=order.trader_id,
+            strategy_id=order.strategy_id,
+            instrument_id=order.instrument_id,
+            client_order_id=order.client_order_id,
+            reason=reason,
+            event_id=UUID4(),
+            ts_init=ts_now,
+        )
+
+    cdef OrderPendingUpdate _generate_order_pending_update(self, Order order):
+        cdef uint64_t ts_now = self._clock.timestamp_ns()
+        return OrderPendingUpdate(
+            trader_id=order.trader_id,
+            strategy_id=order.strategy_id,
+            instrument_id=order.instrument_id,
+            client_order_id=order.client_order_id,
+            venue_order_id=order.venue_order_id,
+            account_id=order.account_id,
+            event_id=UUID4(),
+            ts_event=ts_now,
+            ts_init=ts_now,
+        )
+
+    cdef OrderPendingCancel _generate_order_pending_cancel(self, Order order):
+        cdef uint64_t ts_now = self._clock.timestamp_ns()
+        return OrderPendingCancel(
+            trader_id=order.trader_id,
+            strategy_id=order.strategy_id,
+            instrument_id=order.instrument_id,
+            client_order_id=order.client_order_id,
+            venue_order_id=order.venue_order_id,
+            account_id=order.account_id,
+            event_id=UUID4(),
+            ts_event=ts_now,
+            ts_init=ts_now,
+        )
+
+    cdef OrderCanceled _generate_order_canceled(self, Order order):
+        cdef uint64_t ts_now = self._clock.timestamp_ns()
+        return OrderCanceled(
+            trader_id=order.trader_id,
+            strategy_id=order.strategy_id,
+            instrument_id=order.instrument_id,
+            client_order_id=order.client_order_id,
+            venue_order_id=order.venue_order_id,
+            account_id=order.account_id,
+            event_id=UUID4(),
+            ts_event=ts_now,
+            ts_init=ts_now,
+        )
+
+    cdef void _deny_order(self, Order order, str reason):
+        self._log.error(f"Order denied: {reason}.")
+
+        if not self.cache.order_exists(order.client_order_id):
+            self.cache.add_order(order, position_id=None)
+
+        # Generate event
+        cdef OrderDenied event = self._generate_order_denied(order, reason)
+
+        try:
+            order.apply(event)
+        except InvalidStateTrigger as e:
+            self._log.warning(f"InvalidStateTrigger: {e}, did not apply {event}")
+            return
+
+        self.cache.update_order(order)
+
+        # Publish denied event
+        self._msgbus.publish_c(
+            topic=f"events.order.{order.strategy_id.to_str()}",
+            msg=event,
+        )
+
+    cdef void _deny_order_list(self, OrderList order_list, str reason):
+        cdef Order order
+        for order in order_list.orders:
+            if not order.is_closed_c():
+                self._deny_order(order=order, reason=reason)
+
+    cdef void _cancel_algo_order(self, Order order):
+        # Generate event
+        cdef OrderCanceled event = self._generate_order_canceled(order)
+
+        try:
+            order.apply(event)
+        except InvalidStateTrigger as e:
+            self._log.warning(f"InvalidStateTrigger: {e}, did not apply {event}")
+            return
+
+        self.cache.update_order(order)
+
+        # Publish denied event
+        self._msgbus.publish_c(
+            topic=f"events.order.{order.strategy_id.to_str()}",
+            msg=event,
+        )
+
 # -- EGRESS ---------------------------------------------------------------------------------------
 
-    cdef void _send_risk_command(self, TradingCommand command) except *:
+    cdef void _send_emulator_command(self, TradingCommand command):
+        self._msgbus.send(endpoint="OrderEmulator.execute", msg=command)
+
+    cdef void _send_algo_command(self, TradingCommand command):
+        if not self.log.is_bypassed:
+            self.log.info(f"{CMD}{SENT} {command}.")
+        self._msgbus.send(endpoint=f"{command.exec_algorithm_id}.execute", msg=command)
+
+    cdef void _send_risk_command(self, TradingCommand command):
         if not self.log.is_bypassed:
             self.log.info(f"{CMD}{SENT} {command}.")
         self._msgbus.send(endpoint="RiskEngine.execute", msg=command)
 
-    cdef void _send_exec_command(self, TradingCommand command) except *:
+    cdef void _send_exec_command(self, TradingCommand command):
         if not self.log.is_bypassed:
             self.log.info(f"{CMD}{SENT} {command}.")
         self._msgbus.send(endpoint="ExecEngine.execute", msg=command)

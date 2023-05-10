@@ -22,7 +22,7 @@ from nautilus_trader.model.enums import OrderType
 from nautilus_trader.model.enums import PositionSide
 from nautilus_trader.model.enums import TimeInForce
 from nautilus_trader.model.enums import TriggerType
-from nautilus_trader.model.orders.base import Order
+from nautilus_trader.model.orders import Order
 
 
 """
@@ -177,9 +177,9 @@ class BinanceFuturesEnumParser(BinanceEnumParser):
             )
 
     def parse_binance_trigger_type(self, trigger_type: str) -> TriggerType:
-        if trigger_type == BinanceFuturesWorkingType.CONTRACT_PRICE:
+        if trigger_type == BinanceFuturesWorkingType.CONTRACT_PRICE.value:
             return TriggerType.LAST_TRADE
-        elif trigger_type == BinanceFuturesWorkingType.MARK_PRICE:
+        elif trigger_type == BinanceFuturesWorkingType.MARK_PRICE.value:
             return TriggerType.MARK_PRICE
         else:
             return None

@@ -83,7 +83,7 @@ class LiveDataClient(DataClient):
         clock: LiveClock,
         logger: Logger,
         config: Optional[dict[str, Any]] = None,
-    ):
+    ) -> None:
         super().__init__(
             client_id=client_id,
             venue=venue,
@@ -296,7 +296,7 @@ class LiveMarketDataClient(MarketDataClient):
         clock: LiveClock,
         logger: Logger,
         config: Optional[dict[str, Any]] = None,
-    ):
+    ) -> None:
         PyCondition.type(instrument_provider, InstrumentProvider, "instrument_provider")
 
         super().__init__(
@@ -430,12 +430,13 @@ class LiveMarketDataClient(MarketDataClient):
         instrument_ids = list(self._instrument_provider.get_all().keys())
         self.create_task(
             self._subscribe_instruments(),
+            log_msg=f"subscribe: instruments {self.venue}",
             actions=lambda: [self._add_subscription_instrument(i) for i in instrument_ids],
         )
 
     def subscribe_instrument(self, instrument_id: InstrumentId) -> None:
         self.create_task(
-            self._subscribe_instruments(),
+            self._subscribe_instrument(instrument_id),
             log_msg=f"subscribe: instrument {instrument_id}",
             actions=lambda: self._add_subscription_instrument(instrument_id),
         )
@@ -605,13 +606,13 @@ class LiveMarketDataClient(MarketDataClient):
             log_msg=f"request: {data_type}",
         )
 
-    def request_instrument(self, instrument_id: InstrumentId, correlation_id: UUID4):
+    def request_instrument(self, instrument_id: InstrumentId, correlation_id: UUID4) -> None:
         self.create_task(
             self._request_instrument(instrument_id, correlation_id),
             log_msg=f"request: instrument {instrument_id}",
         )
 
-    def request_instruments(self, venue: Venue, correlation_id: UUID4):
+    def request_instruments(self, venue: Venue, correlation_id: UUID4) -> None:
         self._log.debug(f"Request instruments for {venue} {correlation_id}.")
         self.create_task(
             self._request_instruments(venue, correlation_id),
@@ -622,8 +623,8 @@ class LiveMarketDataClient(MarketDataClient):
         instrument_id: InstrumentId,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         self._log.debug(f"Request quote ticks {instrument_id}.")
         self.create_task(
@@ -631,8 +632,8 @@ class LiveMarketDataClient(MarketDataClient):
                 instrument_id=instrument_id,
                 limit=limit,
                 correlation_id=correlation_id,
-                from_datetime=from_datetime,
-                to_datetime=to_datetime,
+                start=start,
+                end=end,
             ),
         )
 
@@ -641,8 +642,8 @@ class LiveMarketDataClient(MarketDataClient):
         instrument_id: InstrumentId,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         self._log.debug(f"Request trade ticks {instrument_id}.")
         self.create_task(
@@ -650,8 +651,8 @@ class LiveMarketDataClient(MarketDataClient):
                 instrument_id=instrument_id,
                 limit=limit,
                 correlation_id=correlation_id,
-                from_datetime=from_datetime,
-                to_datetime=to_datetime,
+                start=start,
+                end=end,
             ),
         )
 
@@ -660,8 +661,8 @@ class LiveMarketDataClient(MarketDataClient):
         bar_type: BarType,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         self._log.debug(f"Request bars {bar_type}.")
         self.create_task(
@@ -669,8 +670,8 @@ class LiveMarketDataClient(MarketDataClient):
                 bar_type=bar_type,
                 limit=limit,
                 correlation_id=correlation_id,
-                from_datetime=from_datetime,
-                to_datetime=to_datetime,
+                start=start,
+                end=end,
             ),
         )
 
@@ -814,12 +815,12 @@ class LiveMarketDataClient(MarketDataClient):
             "implement the `_request` coroutine",  # pragma: no cover
         )
 
-    async def _request_instrument(self, instrument_id: InstrumentId, correlation_id: UUID4):
+    async def _request_instrument(self, instrument_id: InstrumentId, correlation_id: UUID4) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_request_instrument` coroutine",  # pragma: no cover
         )
 
-    async def _request_instruments(self, venue: Venue, correlation_id: UUID4):
+    async def _request_instruments(self, venue: Venue, correlation_id: UUID4) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_request_instruments` coroutine",  # pragma: no cover
         )
@@ -829,8 +830,8 @@ class LiveMarketDataClient(MarketDataClient):
         instrument_id: InstrumentId,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_request_quote_ticks` coroutine",  # pragma: no cover
@@ -841,8 +842,8 @@ class LiveMarketDataClient(MarketDataClient):
         instrument_id: InstrumentId,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_request_trade_ticks` coroutine",  # pragma: no cover
@@ -853,8 +854,8 @@ class LiveMarketDataClient(MarketDataClient):
         bar_type: BarType,
         limit: int,
         correlation_id: UUID4,
-        from_datetime: Optional[pd.Timestamp] = None,
-        to_datetime: Optional[pd.Timestamp] = None,
+        start: Optional[pd.Timestamp] = None,
+        end: Optional[pd.Timestamp] = None,
     ) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_request_bars` coroutine",  # pragma: no cover

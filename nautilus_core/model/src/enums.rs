@@ -18,8 +18,10 @@ use std::fmt::Debug;
 use std::str::FromStr;
 
 use nautilus_core::string::{cstr_to_string, string_to_cstr};
+use pyo3::prelude::*;
 use strum::{Display, EnumString, FromRepr};
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -30,6 +32,7 @@ pub enum AccountType {
     Betting = 3,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -39,6 +42,7 @@ pub enum AggregationSource {
     Internal = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -49,6 +53,7 @@ pub enum AggressorSide {
     Seller = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -66,6 +71,7 @@ pub enum AssetClass {
     SportsBetting = 9,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -80,6 +86,7 @@ pub enum AssetType {
     Warrant = 7,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -103,6 +110,7 @@ pub enum BarAggregation {
     Month = 16,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -114,6 +122,7 @@ pub enum BookAction {
     Clear = 4,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -128,6 +137,7 @@ pub enum BookType {
     L3_MBO = 3,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -139,6 +149,7 @@ pub enum ContingencyType {
     Ouo = 3,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -148,6 +159,7 @@ pub enum CurrencyType {
     Fiat = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -157,6 +169,7 @@ pub enum DepthType {
     Exposure = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -166,6 +179,7 @@ pub enum InstrumentCloseType {
     ContractExpired = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -177,6 +191,7 @@ pub enum LiquiditySide {
     Taker = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -189,6 +204,7 @@ pub enum MarketStatus {
     PreClose = 5,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -199,6 +215,7 @@ pub enum OmsType {
     Hedging = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -208,6 +225,7 @@ pub enum OptionKind {
     Put = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -219,6 +237,7 @@ pub enum OrderSide {
     Sell = 2,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -238,6 +257,7 @@ pub enum OrderStatus {
     Filled = 12,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -254,6 +274,7 @@ pub enum OrderType {
     TrailingStopLimit = 9,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -266,6 +287,7 @@ pub enum PositionSide {
     Short = 3,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -277,6 +299,7 @@ pub enum PriceType {
     Last = 4,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -291,6 +314,7 @@ pub enum TimeInForce {
     AtTheClose = 7,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -301,6 +325,7 @@ pub enum TradingState {
     Reducing = 3,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -313,6 +338,7 @@ pub enum TrailingOffsetType {
     PriceTier = 4,
 }
 
+#[pyclass]
 #[repr(C)]
 #[derive(Copy, Clone, Debug, Hash, PartialEq, Eq, FromRepr, EnumString, Display)]
 #[strum(ascii_case_insensitive)]
@@ -329,8 +355,6 @@ pub enum TriggerType {
     MarkPrice = 8,
     IndexPrice = 9,
 }
-
-// TODO(cs): These should be macros
 
 #[no_mangle]
 pub extern "C" fn account_type_to_cstr(value: AccountType) -> *const c_char {

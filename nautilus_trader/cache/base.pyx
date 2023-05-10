@@ -20,8 +20,15 @@ from nautilus_trader.model.data.tick cimport QuoteTick
 from nautilus_trader.model.data.tick cimport TradeTick
 from nautilus_trader.model.data.ticker cimport Ticker
 from nautilus_trader.model.enums_c cimport PriceType
+from nautilus_trader.model.identifiers cimport AccountId
+from nautilus_trader.model.identifiers cimport ClientOrderId
+from nautilus_trader.model.identifiers cimport ExecAlgorithmId
 from nautilus_trader.model.identifiers cimport InstrumentId
+from nautilus_trader.model.identifiers cimport OrderListId
+from nautilus_trader.model.identifiers cimport PositionId
+from nautilus_trader.model.identifiers cimport StrategyId
 from nautilus_trader.model.identifiers cimport Venue
+from nautilus_trader.model.identifiers cimport VenueOrderId
 from nautilus_trader.model.instruments.base cimport Instrument
 
 
@@ -36,7 +43,7 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef void add(self, str key, bytes value) except *:
+    cpdef void add(self, str key, bytes value):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -82,43 +89,43 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int book_update_count(self, InstrumentId instrument_id) except *:
+    cpdef int book_update_count(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int ticker_count(self, InstrumentId instrument_id) except *:
+    cpdef int ticker_count(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int quote_tick_count(self, InstrumentId instrument_id) except *:
+    cpdef int quote_tick_count(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int trade_tick_count(self, InstrumentId instrument_id) except *:
+    cpdef int trade_tick_count(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int bar_count(self, BarType bar_type) except *:
+    cpdef int bar_count(self, BarType bar_type):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint has_order_book(self, InstrumentId instrument_id) except *:
+    cpdef bint has_order_book(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint has_tickers(self, InstrumentId instrument_id) except *:
+    cpdef bint has_tickers(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint has_quote_ticks(self, InstrumentId instrument_id) except *:
+    cpdef bint has_quote_ticks(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint has_trade_ticks(self, InstrumentId instrument_id) except *:
+    cpdef bint has_trade_ticks(self, InstrumentId instrument_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint has_bars(self, BarType bar_type) except *:
+    cpdef bint has_bars(self, BarType bar_type):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -128,7 +135,7 @@ cdef class CacheFacade:
         Currency from_currency,
         Currency to_currency,
         PriceType price_type=PriceType.MID,
-    ) except *:
+    ):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -210,6 +217,10 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
+    cpdef set exec_algorithm_ids(self):
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
 # -- ORDER QUERIES --------------------------------------------------------------------------------
 
     cpdef Order order(self, ClientOrderId client_order_id):
@@ -248,43 +259,51 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint order_exists(self, ClientOrderId client_order_id) except *:
+    cpdef list orders_for_exec_algorithm(self, ExecAlgorithmId exec_algorithm_id, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint is_order_open(self, ClientOrderId client_order_id) except *:
+    cpdef list orders_for_exec_spawn(self, ClientOrderId client_order_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint is_order_closed(self, ClientOrderId client_order_id) except *:
+    cpdef bint order_exists(self, ClientOrderId client_order_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint is_order_emulated(self, ClientOrderId client_order_id) except *:
+    cpdef bint is_order_open(self, ClientOrderId client_order_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint is_order_inflight(self, ClientOrderId client_order_id) except *:
+    cpdef bint is_order_closed(self, ClientOrderId client_order_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int orders_open_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE) except *:
+    cpdef bint is_order_emulated(self, ClientOrderId client_order_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int orders_closed_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE) except *:
+    cpdef bint is_order_inflight(self, ClientOrderId client_order_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int orders_emulated_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE) except *:
+    cpdef int orders_open_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int orders_inflight_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE) except *:
+    cpdef int orders_closed_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int orders_total_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE) except *:
+    cpdef int orders_emulated_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE):
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
+    cpdef int orders_inflight_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE):
+        """Abstract method (implement in subclass)."""
+        raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
+
+    cpdef int orders_total_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, OrderSide side = OrderSide.NO_ORDER_SIDE):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -298,7 +317,7 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint order_list_exists(self, OrderListId order_list_id) except *:
+    cpdef bint order_list_exists(self, OrderListId order_list_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -324,7 +343,7 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint position_exists(self, PositionId position_id) except *:
+    cpdef bint position_exists(self, PositionId position_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
@@ -336,23 +355,23 @@ cdef class CacheFacade:
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint is_position_open(self, PositionId position_id) except *:
+    cpdef bint is_position_open(self, PositionId position_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef bint is_position_closed(self, PositionId position_id) except *:
+    cpdef bint is_position_closed(self, PositionId position_id):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int positions_open_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, PositionSide side = PositionSide.NO_POSITION_SIDE) except *:
+    cpdef int positions_open_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, PositionSide side = PositionSide.NO_POSITION_SIDE):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int positions_closed_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None) except *:
+    cpdef int positions_closed_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 
-    cpdef int positions_total_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, PositionSide side = PositionSide.NO_POSITION_SIDE) except *:
+    cpdef int positions_total_count(self, Venue venue = None, InstrumentId instrument_id = None, StrategyId strategy_id = None, PositionSide side = PositionSide.NO_POSITION_SIDE):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method must be implemented in the subclass")  # pragma: no cover
 

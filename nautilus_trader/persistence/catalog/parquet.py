@@ -12,6 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
+
 import heapq
 import itertools
 import os
@@ -83,7 +84,7 @@ class ParquetDataCatalog(BaseDataCatalog):
             self.fs_protocol, **self.fs_storage_options
         )
 
-        path = make_path_posix(path)
+        path = make_path_posix(str(path))
 
         if (
             isinstance(self.fs, MemoryFileSystem)
@@ -253,13 +254,7 @@ class ParquetDataCatalog(BaseDataCatalog):
         end_nanos: Optional[int] = None,
         bar_spec: Optional[BarSpecification] = None,
     ) -> list[str]:
-        if instrument_id is None:
-            folder = self.path
-        else:
-            folder = self.make_path(cls=cls, instrument_id=instrument_id)
-
-        "/var/folders/fc/g4mqb35j0jvf7zpj4k76j4yw0000gn/T/tmp7cdq2cbx/data/order_book_data.parquet/instrument_id=1.166564490-237491-0.0.BETFAIR"
-        "/var/folders/fc/g4mqb35j0jvf7zpj4k76j4yw0000gn/T/tmp7cdq2cbx/data/order_book_data.parquet/instrument_id=1.166564490-237491-0.0.BETFAIR"
+        folder = self.make_path(cls=cls, instrument_id=instrument_id)
 
         if not self.fs.isdir(folder):
             return []

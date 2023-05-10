@@ -20,7 +20,7 @@ from nautilus_trader.config import LiveDataClientConfig
 from nautilus_trader.config import LiveExecClientConfig
 
 
-class BinanceDataClientConfig(LiveDataClientConfig):
+class BinanceDataClientConfig(LiveDataClientConfig, frozen=True):
     """
     Configuration for ``BinanceDataClient`` instances.
 
@@ -59,7 +59,7 @@ class BinanceDataClientConfig(LiveDataClientConfig):
     use_agg_trade_ticks: bool = False
 
 
-class BinanceExecClientConfig(LiveExecClientConfig):
+class BinanceExecClientConfig(LiveExecClientConfig, frozen=True):
     """
     Configuration for ``BinanceExecutionClient`` instances.
 
@@ -83,9 +83,6 @@ class BinanceExecClientConfig(LiveExecClientConfig):
         If client is connecting to Binance US.
     testnet : bool, default False
         If the client is connecting to a Binance testnet.
-    clock_sync_interval_secs : int, default 0
-        The interval (seconds) between syncing the Nautilus clock with the Binance server(s) clock.
-        If zero, then will *not* perform syncing.
     warn_gtd_to_gtc : bool, default True
         If log warning for GTD time in force transformed to GTC.
     """

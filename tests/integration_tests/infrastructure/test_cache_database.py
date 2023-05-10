@@ -13,14 +13,12 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+import sys
 from decimal import Decimal
 
 import pytest
 import redis
 
-from nautilus_trader.backtest.data.providers import TestDataProvider
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
-from nautilus_trader.backtest.data.wranglers import QuoteTickDataWrangler
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.common.clock import TestClock
@@ -28,11 +26,11 @@ from nautilus_trader.common.enums import LogLevel
 from nautilus_trader.common.factories import OrderFactory
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.config import CacheDatabaseConfig
+from nautilus_trader.config import LoggingConfig
 from nautilus_trader.core.uuid import UUID4
 from nautilus_trader.data.engine import DataEngine
 from nautilus_trader.examples.strategies.ema_cross import EMACross
 from nautilus_trader.examples.strategies.ema_cross import EMACrossConfig
-from nautilus_trader.execution.algorithm import ExecAlgorithmSpecification
 from nautilus_trader.execution.engine import ExecutionEngine
 from nautilus_trader.execution.messages import SubmitOrder
 from nautilus_trader.execution.messages import SubmitOrderList
@@ -53,15 +51,18 @@ from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Money
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from nautilus_trader.model.orders.limit import LimitOrder
-from nautilus_trader.model.orders.market import MarketOrder
+from nautilus_trader.model.orders import LimitOrder
+from nautilus_trader.model.orders import MarketOrder
 from nautilus_trader.model.position import Position
 from nautilus_trader.msgbus.bus import MessageBus
+from nautilus_trader.persistence.wranglers import QuoteTickDataWrangler
 from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
 from nautilus_trader.serialization.msgpack.serializer import MsgPackSerializer
 from nautilus_trader.test_kit.mocks.actors import MockActor
 from nautilus_trader.test_kit.mocks.strategies import MockStrategy
+from nautilus_trader.test_kit.providers import TestDataProvider
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.component import TestComponentStubs
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 from nautilus_trader.test_kit.stubs.events import TestEventStubs
@@ -74,7 +75,11 @@ AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
 
 # Requirements:
 # - A Redis instance listening on the default port 6379
-pytestmark = pytest.mark.redis
+
+pytestmark = pytest.mark.skipif(
+    sys.platform == "win32",
+    reason="not longer testing with Memurai database",
+)
 
 
 class TestRedisCacheDatabase:
@@ -915,22 +920,15 @@ class TestRedisCacheDatabase:
             quantity=Quantity.from_int(100_000),
             sl_trigger_price=Price.from_str("1.00000"),
             tp_price=Price.from_str("1.00100"),
+            entry_exec_algorithm_id=ExecAlgorithmId("VWAP"),
+            entry_exec_algorithm_params={"max_percentage": 100.0, "start": 0, "end": 1},
         )
-
-        exec_algorithm_specs = [
-            ExecAlgorithmSpecification(
-                client_order_id=bracket.first.client_order_id,
-                exec_algorithm_id=ExecAlgorithmId("VWAP"),
-                params={"max_percentage": 100.0, "start": 0, "end": 1},
-            ),
-        ]
 
         command = SubmitOrderList(
             trader_id=self.trader_id,
             strategy_id=StrategyId("S-001"),
             order_list=bracket,
             position_id=PositionId("P-001"),
-            exec_algorithm_specs=exec_algorithm_specs,
             command_id=UUID4(),
             ts_init=self.clock.timestamp_ns(),
         )
@@ -993,7 +991,7 @@ class TestRedisCacheDatabaseIntegrity:
     def setup(self):
         # Fixture Setup
         config = BacktestEngineConfig(
-            bypass_logging=False,
+            logging=LoggingConfig(bypass_logging=True),
             run_analysis=False,
             cache_database=CacheDatabaseConfig(),  # default redis
         )

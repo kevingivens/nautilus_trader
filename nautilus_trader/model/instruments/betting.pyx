@@ -93,7 +93,7 @@ cdef class BettingInstrument(Instrument):
         self.selection_name = selection_name
         self.selection_handicap = selection_handicap
         instrument_id = betfair_instrument_id(
-            market_id=market_id, runner_id=selection_id, runner_handicap=selection_handicap
+            market_id=market_id, selection_id=selection_id, selection_handicap=selection_handicap
         )
 
         super().__init__(
@@ -183,7 +183,7 @@ cdef class BettingInstrument(Instrument):
         return BettingInstrument.from_dict_c(values)
 
     @staticmethod
-    def to_dict(BettingInstrument obj):
+    def to_dict(BettingInstrument obj) -> dict[str, object]:
         """
         Return a dictionary representation of this object.
 

@@ -15,9 +15,11 @@
 
 from decimal import Decimal
 
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
+import pytest
+
 from nautilus_trader.indicators.average.dema import DoubleExponentialMovingAverage
 from nautilus_trader.model.enums import PriceType
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
@@ -119,7 +121,7 @@ class TestDoubleExponentialMovingAverage:
         self.dema.update_raw(3.00000)
 
         # Act, Assert
-        assert self.dema.value == 1.904583020285499
+        assert self.dema.value == pytest.approx(1.904583020285499, rel=1e-9)
 
     def test_reset_successfully_returns_indicator_to_fresh_state(self):
         # Arrange

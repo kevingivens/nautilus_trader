@@ -17,7 +17,6 @@ from decimal import Decimal
 
 import pytest
 
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.model.currencies import AUD
 from nautilus_trader.model.currencies import JPY
 from nautilus_trader.model.currencies import USD
@@ -29,8 +28,9 @@ from nautilus_trader.model.enums import PriceType
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
-from nautilus_trader.model.orderbook.book import L2OrderBook
-from nautilus_trader.model.orderbook.data import OrderBookSnapshot
+from nautilus_trader.model.orderbook import L2OrderBook
+from nautilus_trader.model.orderbook import OrderBookSnapshot
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.component import TestComponentStubs
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 

@@ -109,7 +109,7 @@ class LiveExecutionClient(ExecutionClient):
         clock: LiveClock,
         logger: Logger,
         config: Optional[dict[str, Any]] = None,
-    ):
+    ) -> None:
         PyCondition.type(instrument_provider, InstrumentProvider, "instrument_provider")
 
         super().__init__(
@@ -278,7 +278,7 @@ class LiveExecutionClient(ExecutionClient):
         venue_order_id: Optional[VenueOrderId] = None,
     ) -> Optional[OrderStatusReport]:
         """
-        Generate an order status report for the given order identifier parameter(s).
+        Generate an `OrderStatusReport` for the given order identifier parameter(s).
 
         If the order is not found, or an error occurs, then logs and returns ``None``.
 
@@ -311,7 +311,7 @@ class LiveExecutionClient(ExecutionClient):
         open_only: bool = False,
     ) -> list[OrderStatusReport]:
         """
-        Generate a list of order status reports with optional query filters.
+        Generate a list of `OrderStatusReport`s with optional query filters.
 
         The returned list may be empty if no orders match the given parameters.
 
@@ -341,7 +341,7 @@ class LiveExecutionClient(ExecutionClient):
         end: Optional[pd.Timestamp] = None,
     ) -> list[TradeReport]:
         """
-        Generate a list of trade reports with optional query filters.
+        Generate a list of `TradeReport`s with optional query filters.
 
         The returned list may be empty if no trades match the given parameters.
 
@@ -370,7 +370,7 @@ class LiveExecutionClient(ExecutionClient):
         end: Optional[pd.Timestamp] = None,
     ) -> list[PositionStatusReport]:
         """
-        Generate a list of position status reports with optional query filters.
+        Generate a list of `PositionStatusReport`s with optional query filters.
 
         The returned list may be empty if no positions match the given parameters.
 
@@ -395,7 +395,7 @@ class LiveExecutionClient(ExecutionClient):
         lookback_mins: Optional[int] = None,
     ) -> ExecutionMassStatus:
         """
-        Generate an execution mass status report.
+        Generate an `ExecutionMassStatus` report.
 
         Parameters
         ----------
@@ -419,7 +419,7 @@ class LiveExecutionClient(ExecutionClient):
             ts_init=self._clock.timestamp_ns(),
         )
 
-        since = None
+        since: Optional[pd.Timestamp] = None
         if lookback_mins is not None:
             since = self._clock.utc_now() - timedelta(minutes=lookback_mins)
 
@@ -433,12 +433,12 @@ class LiveExecutionClient(ExecutionClient):
             mass_status.add_order_reports(reports=reports[0])
             mass_status.add_trade_reports(reports=reports[1])
             mass_status.add_position_reports(reports=reports[2])
+
+            self.reconciliation_active = False
+
+            return mass_status
         except Exception as e:
             self._log.exception("Cannot reconcile execution state", e)
-
-        self.reconciliation_active = False
-
-        return mass_status
 
     async def _query_order(self, command: QueryOrder) -> None:
         self._log.debug(f"Synchronizing order status {command}.")

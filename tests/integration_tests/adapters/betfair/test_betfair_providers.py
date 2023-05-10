@@ -21,7 +21,7 @@ import pytest
 from betfair_parser.spec.streaming.mcm import MCM
 from betfair_parser.spec.streaming.mcm import MarketChange
 
-from nautilus_trader.adapters.betfair.parsing.streaming import BetfairParser
+from nautilus_trader.adapters.betfair.parsing.core import BetfairParser
 from nautilus_trader.adapters.betfair.providers import BetfairInstrumentProvider
 from nautilus_trader.adapters.betfair.providers import load_markets
 from nautilus_trader.adapters.betfair.providers import load_markets_metadata
@@ -36,14 +36,13 @@ from tests.integration_tests.adapters.betfair.test_kit import BetfairStreaming
 from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
 
 
-@pytest.mark.skip(reason="Flaky in CI")
 @pytest.mark.skipif(sys.platform == "win32", reason="Failing on windows")
 class TestBetfairInstrumentProvider:
     def setup(self):
         # Fixture Setup
         self.loop = asyncio.get_event_loop()
         self.clock = LiveClock()
-        self.logger = Logger(clock=self.clock)
+        self.logger = Logger(clock=self.clock, bypass=True)
         self.client = BetfairTestStubs.betfair_client(loop=self.loop, logger=self.logger)
         self.provider = BetfairInstrumentProvider(
             client=self.client,
@@ -130,14 +129,14 @@ class TestBetfairInstrumentProvider:
         instrument = self.provider.get_betting_instrument(**kw)
         assert instrument is None
 
-    def test_market_update_runner_removed(self):
+    def test_market_update_runner_removed(self) -> None:
         # Arrange
         raw = BetfairStreaming.market_definition_runner_removed()
         update = msgspec.json.decode(raw, type=MCM)
 
         mc: MarketChange = update.mc[0]
         market_def = mc.marketDefinition
-        market_def.marketId = mc.id
+        market_def = msgspec.structs.replace(market_def, marketId=mc.id)
         instruments = make_instruments(market_def, currency="GBP")
         self.provider.add_bulk(instruments)
 

@@ -19,6 +19,7 @@ from typing import Optional
 from nautilus_trader.config import StrategyConfig
 
 from nautilus_trader.common.logging cimport LogColor
+from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.data cimport Data
 from nautilus_trader.core.message cimport Event
 from nautilus_trader.indicators.average.ema cimport ExponentialMovingAverage
@@ -43,7 +44,7 @@ from nautilus_trader.trading.strategy cimport Strategy
 # raised exceptions to bubble up (otherwise they are ignored)
 
 
-class EMACrossConfig(StrategyConfig):
+class EMACrossConfig(StrategyConfig, frozen=True):
     """
     Configuration for ``EMACross`` instances.
 
@@ -56,9 +57,9 @@ class EMACrossConfig(StrategyConfig):
     trade_size : str
         The position size per trade (interpreted as Decimal).
     fast_ema_period : int, default 10
-        The fast EMA period.
+        The fast EMA period. Must be positive and less than `slow_ema_period`.
     slow_ema_period : int, default 20
-        The slow EMA period.
+        The slow EMA period. Must be positive and less than `fast_ema_period`.
     order_id_tag : str
         The unique order ID tag for the strategy. Must be unique
         amongst all running strategies for a particular trader ID.
@@ -87,15 +88,24 @@ cdef class EMACross(Strategy):
     ----------
     config : EMACrossConfig
         The configuration for the instance.
+
+    Raises
+    ------
+    ValueError
+        If `config.fast_ema_period` is not less than `config.slow_ema_period`.
     """
-    # Backing fields are necessary
+    # Backing fields are necessary for Cython
     cdef InstrumentId instrument_id
     cdef BarType bar_type
     cdef object trade_size
     cdef ExponentialMovingAverage fast_ema
     cdef ExponentialMovingAverage slow_ema
 
-    def __init__(self, config not None: EMACrossConfig):
+    def __init__(self, config not None: EMACrossConfig) -> None:
+        Condition.true(
+            config.fast_ema_period < config.slow_ema_period,
+            "{config.fast_ema_period=} must be less than {config.slow_ema_period=}",
+        )
         super().__init__(config)
 
         # Configuration
@@ -109,7 +119,7 @@ cdef class EMACross(Strategy):
 
         self.instrument: Optional[Instrument] = None  # Initialized in on_start
 
-    cpdef void on_start(self) except *:
+    cpdef void on_start(self):
         """Actions to be performed on strategy start."""
         self.instrument = self.cache.instrument(self.instrument_id)
         if self.instrument is None:
@@ -127,7 +137,7 @@ cdef class EMACross(Strategy):
         # Subscribe to live data
         self.subscribe_bars(self.bar_type)
 
-    cpdef void on_instrument(self, Instrument instrument) except *:
+    cpdef void on_instrument(self, Instrument instrument):
         """
         Actions to be performed when the strategy is running and receives an
         instrument.
@@ -140,7 +150,7 @@ cdef class EMACross(Strategy):
         """
         pass
 
-    cpdef void on_order_book(self, OrderBook order_book) except *:
+    cpdef void on_order_book(self, OrderBook order_book):
         """
         Actions to be performed when the strategy is running and receives an order book.
 
@@ -153,7 +163,7 @@ cdef class EMACross(Strategy):
         # self.log.info(f"Received {order_book}")  # For debugging (must add a subscription)
         pass
 
-    cpdef void on_quote_tick(self, QuoteTick tick) except *:
+    cpdef void on_quote_tick(self, QuoteTick tick):
         """
         Actions to be performed when the strategy is running and receives a quote tick.
 
@@ -166,7 +176,7 @@ cdef class EMACross(Strategy):
         # self.log.info(f"Received {tick}")  # For debugging (must add a subscription)
         pass
 
-    cpdef void on_trade_tick(self, TradeTick tick) except *:
+    cpdef void on_trade_tick(self, TradeTick tick):
         """
         Actions to be performed when the strategy is running and receives a trade tick.
 
@@ -179,7 +189,7 @@ cdef class EMACross(Strategy):
         # self.log.info(f"Received {tick}")  # For debugging (must add a subscription)
         pass
 
-    cpdef void on_bar(self, Bar bar) except *:
+    cpdef void on_bar(self, Bar bar):
         """
         Actions to be performed when the strategy is running and receives a bar.
 
@@ -215,7 +225,7 @@ cdef class EMACross(Strategy):
                 self.close_all_positions(self.instrument_id)
                 self.sell()
 
-    cpdef void buy(self) except *:
+    cpdef void buy(self):
         """
         Users simple buy method (example).
         """
@@ -231,7 +241,7 @@ cdef class EMACross(Strategy):
 
         self.submit_order(order)
 
-    cpdef void sell(self) except *:
+    cpdef void sell(self):
         """
         Users simple sell method (example).
         """
@@ -247,7 +257,7 @@ cdef class EMACross(Strategy):
 
         self.submit_order(order)
 
-    cpdef void on_data(self, Data data) except *:
+    cpdef void on_data(self, Data data):
         """
         Actions to be performed when the strategy is running and receives generic data.
 
@@ -259,7 +269,7 @@ cdef class EMACross(Strategy):
         """
         pass
 
-    cpdef void on_event(self, Event event) except *:
+    cpdef void on_event(self, Event event):
         """
         Actions to be performed when the strategy is running and receives an event.
 
@@ -271,7 +281,7 @@ cdef class EMACross(Strategy):
         """
         pass
 
-    cpdef void on_stop(self) except *:
+    cpdef void on_stop(self):
         """
         Actions to be performed when the strategy is stopped.
 
@@ -279,7 +289,7 @@ cdef class EMACross(Strategy):
         self.cancel_all_orders(self.instrument_id)
         self.close_all_positions(self.instrument_id)
 
-    cpdef void on_reset(self) except *:
+    cpdef void on_reset(self):
         """
         Actions to be performed when the strategy is reset.
         """
@@ -301,7 +311,7 @@ cdef class EMACross(Strategy):
         """
         return {}
 
-    cpdef void on_load(self, dict state) except *:
+    cpdef void on_load(self, dict state):
         """
         Actions to be performed when the strategy is loaded.
 
@@ -315,7 +325,7 @@ cdef class EMACross(Strategy):
         """
         pass
 
-    cpdef void on_dispose(self) except *:
+    cpdef void on_dispose(self):
         """
         Actions to be performed when the strategy is disposed.
 

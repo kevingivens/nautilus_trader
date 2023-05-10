@@ -415,7 +415,7 @@ cdef class PositionStatusReport(ExecutionReport):
         self.venue_position_id = venue_position_id
         self.position_side = position_side
         self.quantity = quantity
-        self.net_qty = -self.quantity.as_f64_c() if position_side == PositionSide.SHORT else self.quantity.as_f64_c()
+        self.signed_decimal_qty = -self.quantity.as_decimal() if position_side == PositionSide.SHORT else self.quantity.as_decimal()
         self.ts_last = ts_last
 
     def __repr__(self) -> str:
@@ -426,7 +426,7 @@ cdef class PositionStatusReport(ExecutionReport):
             f"venue_position_id={self.venue_position_id}, "  # Can be None
             f"position_side={position_side_to_str(self.position_side)}, "
             f"quantity={self.quantity.to_str()}, "
-            f"net_qty={self.net_qty}, "
+            f"signed_decimal_qty={self.signed_decimal_qty}, "
             f"report_id={self.id}, "
             f"ts_last={self.ts_last}, "
             f"ts_init={self.ts_init})"
@@ -518,7 +518,7 @@ cdef class ExecutionMassStatus(Document):
         """
         return self._position_reports.copy()
 
-    cpdef void add_order_reports(self, list reports) except *:
+    cpdef void add_order_reports(self, list reports):
         """
         Add the order reports to the mass status.
 
@@ -539,7 +539,7 @@ cdef class ExecutionMassStatus(Document):
         for report in reports:
             self._order_reports[report.venue_order_id] = report
 
-    cpdef void add_trade_reports(self, list reports) except *:
+    cpdef void add_trade_reports(self, list reports):
         """
         Add the trade reports to the mass status.
 
@@ -563,7 +563,7 @@ cdef class ExecutionMassStatus(Document):
                 self._trade_reports[report.venue_order_id] = []
             self._trade_reports[report.venue_order_id].append(report)
 
-    cpdef void add_position_reports(self, list reports) except *:
+    cpdef void add_position_reports(self, list reports):
         """
         Add the position status reports to the mass status.
 

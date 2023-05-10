@@ -13,9 +13,11 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
+import pytest
+
 from nautilus_trader.indicators.macd import MovingAverageConvergenceDivergence
 from nautilus_trader.model.enums import PriceType
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
@@ -115,7 +117,7 @@ class TestMovingAverageConvergenceDivergence:
         self.macd.update_raw(3.00000)
 
         # Act, Assert
-        assert self.macd.value == 0.7376033057851243
+        assert self.macd.value == pytest.approx(0.7376033057851243, rel=1e-9)
 
     def test_value_with_more_inputs_expected_value(self):
         # Arrange

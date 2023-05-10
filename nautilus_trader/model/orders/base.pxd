@@ -38,6 +38,7 @@ from nautilus_trader.model.events.order cimport OrderTriggered
 from nautilus_trader.model.events.order cimport OrderUpdated
 from nautilus_trader.model.identifiers cimport AccountId
 from nautilus_trader.model.identifiers cimport ClientOrderId
+from nautilus_trader.model.identifiers cimport ExecAlgorithmId
 from nautilus_trader.model.identifiers cimport InstrumentId
 from nautilus_trader.model.identifiers cimport OrderListId
 from nautilus_trader.model.identifiers cimport PositionId
@@ -70,9 +71,9 @@ cdef class Order:
     cdef readonly ClientOrderId client_order_id
     """The client order ID.\n\n:returns: `ClientOrderId`"""
     cdef readonly VenueOrderId venue_order_id
-    """The venue assigned order ID.\n\n:returns: `VenueOrderId`"""
+    """The venue assigned order ID.\n\n:returns: `VenueOrderId` or ``None``"""
     cdef readonly PositionId position_id
-    """The position ID associated with the order.\n\n:returns: `PositionId`"""
+    """The position ID associated with the order.\n\n:returns: `PositionId` or ``None``"""
     cdef readonly AccountId account_id
     """The account ID associated with the order.\n\n:returns: `AccountId` or ``None``"""
     cdef readonly TradeId last_trade_id
@@ -109,6 +110,12 @@ cdef class Order:
     """The orders linked client order ID(s).\n\n:returns: `list[ClientOrderId]` or ``None``"""
     cdef readonly ClientOrderId parent_order_id
     """The parent client order ID.\n\n:returns: `ClientOrderId` or ``None``"""
+    cdef readonly ExecAlgorithmId exec_algorithm_id
+    """The execution algorithm ID for the order.\n\n:returns: `ExecAlgorithmId` or ``None``"""
+    cdef readonly dict exec_algorithm_params
+    """The execution algorithm parameters for the order.\n\n:returns: `dict[str, Any]` or ``None``"""
+    cdef readonly ClientOrderId exec_spawn_id
+    """The execution algorithm spawning client order ID.\n\n:returns: `ClientOrderId` or ``None``"""
     cdef readonly str tags
     """The order custom user tags.\n\n:returns: `str` or ``None``"""
     cdef readonly UUID4 init_id
@@ -121,57 +128,58 @@ cdef class Order:
     cpdef str info(self)
     cpdef dict to_dict(self)
 
-    cdef void set_triggered_price_c(self, Price triggered_price) except *
+    cdef void set_triggered_price_c(self, Price triggered_price)
     cdef Price get_triggered_price_c(self)
-    cdef OrderStatus status_c(self) except *
+    cdef OrderStatus status_c(self)
     cdef OrderInitialized init_event_c(self)
     cdef OrderEvent last_event_c(self)
     cdef list events_c(self)
     cdef list venue_order_ids_c(self)
     cdef list trade_ids_c(self)
-    cdef int event_count_c(self) except *
+    cdef int event_count_c(self)
     cdef str status_string_c(self)
     cdef str type_string_c(self)
     cdef str side_string_c(self)
     cdef str tif_string_c(self)
-    cdef bint has_price_c(self) except *
-    cdef bint has_trigger_price_c(self) except *
-    cdef bint is_buy_c(self) except *
-    cdef bint is_sell_c(self) except *
-    cdef bint is_passive_c(self) except *
-    cdef bint is_aggressive_c(self) except *
-    cdef bint is_emulated_c(self) except *
-    cdef bint is_contingency_c(self) except *
-    cdef bint is_parent_order_c(self) except *
-    cdef bint is_child_order_c(self) except *
-    cdef bint is_open_c(self) except *
-    cdef bint is_canceled_c(self) except *
-    cdef bint is_closed_c(self) except *
-    cdef bint is_inflight_c(self) except *
-    cdef bint is_pending_update_c(self) except *
-    cdef bint is_pending_cancel_c(self) except *
+    cdef bint has_price_c(self)
+    cdef bint has_trigger_price_c(self)
+    cdef bint is_buy_c(self)
+    cdef bint is_sell_c(self)
+    cdef bint is_passive_c(self)
+    cdef bint is_aggressive_c(self)
+    cdef bint is_emulated_c(self)
+    cdef bint is_contingency_c(self)
+    cdef bint is_parent_order_c(self)
+    cdef bint is_child_order_c(self)
+    cdef bint is_open_c(self)
+    cdef bint is_canceled_c(self)
+    cdef bint is_closed_c(self)
+    cdef bint is_inflight_c(self)
+    cdef bint is_pending_update_c(self)
+    cdef bint is_pending_cancel_c(self)
 
     @staticmethod
-    cdef OrderSide opposite_side_c(OrderSide side) except *
+    cdef OrderSide opposite_side_c(OrderSide side)
 
     @staticmethod
-    cdef OrderSide closing_side_c(PositionSide position_side) except *
+    cdef OrderSide closing_side_c(PositionSide position_side)
 
-    cpdef bint would_reduce_only(self, PositionSide position_side, Quantity position_qty) except *
+    cpdef signed_decimal_qty(self)
+    cpdef bint would_reduce_only(self, PositionSide position_side, Quantity position_qty)
 
-    cpdef void apply(self, OrderEvent event) except *
+    cpdef void apply(self, OrderEvent event)
 
-    cdef void _denied(self, OrderDenied event) except *
-    cdef void _submitted(self, OrderSubmitted event) except *
-    cdef void _rejected(self, OrderRejected event) except *
-    cdef void _accepted(self, OrderAccepted event) except *
-    cdef void _updated(self, OrderUpdated event) except *
-    cdef void _triggered(self, OrderTriggered event) except *
-    cdef void _canceled(self, OrderCanceled event) except *
-    cdef void _expired(self, OrderExpired event) except *
-    cdef void _filled(self, OrderFilled event) except *
+    cdef void _denied(self, OrderDenied event)
+    cdef void _submitted(self, OrderSubmitted event)
+    cdef void _rejected(self, OrderRejected event)
+    cdef void _accepted(self, OrderAccepted event)
+    cdef void _updated(self, OrderUpdated event)
+    cdef void _triggered(self, OrderTriggered event)
+    cdef void _canceled(self, OrderCanceled event)
+    cdef void _expired(self, OrderExpired event)
+    cdef void _filled(self, OrderFilled event)
     cdef double _calculate_avg_px(self, double last_qty, double last_px)
-    cdef void _set_slippage(self) except *
+    cdef void _set_slippage(self)
 
     @staticmethod
-    cdef void _hydrate_initial_events(Order original, Order transformed) except *
+    cdef void _hydrate_initial_events(Order original, Order transformed)

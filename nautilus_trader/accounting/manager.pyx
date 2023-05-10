@@ -93,7 +93,7 @@ cdef class AccountsManager:
 
         # Determine any position
         cdef PositionId position_id = fill.position_id
-        if fill.position_id is None:
+        if position_id is None:
             # Check for open positions
             positions_open = self._cache.positions_open(
                 venue=None,  # Faster query filtering
@@ -107,6 +107,8 @@ cdef class AccountsManager:
         # *** position could still be None here ***
 
         cdef list pnls = account.calculate_pnls(instrument, fill, position)
+        if not self._log.is_bypassed:
+            self._log.debug(f"Calculated PnLs: {pnls}")
 
         # Calculate final PnL including commissions
         cdef Money pnl
@@ -292,8 +294,8 @@ cdef class AccountsManager:
             Order order
             double margin_init
         for order in orders_open:
-            assert order.instrument_id == instrument.id
-            assert order.is_open_c()
+            assert order.instrument_id == instrument.id, f"order not for instrument {instrument}"
+            assert order.is_open_c(), f"order not open {repr(order)}"
 
             if not order.has_price_c() and not order.has_trigger_price_c():
                 continue
@@ -332,7 +334,7 @@ cdef class AccountsManager:
         cdef Money margin_init_money = Money(total_margin_init, currency)
         account.update_margin_init(instrument.id, margin_init_money)
 
-        # self._log.info(f"{instrument.id} margin_init={margin_init_money.to_str()}")
+        self._log.info(f"{instrument.id} margin_init={margin_init_money.to_str()}")
 
         return self._generate_account_state(
             account=account,
@@ -436,7 +438,7 @@ cdef class AccountsManager:
         Account account,
         OrderFilled fill,
         Money pnl,
-    ) except *:
+    ):
         cdef Money commission = fill.commission
         cdef list balances = []
         cdef double xrate
@@ -502,7 +504,7 @@ cdef class AccountsManager:
         Account account,
         OrderFilled fill,
         list pnls,
-    ) except *:
+    ):
         cdef list balances = []
 
         cdef Money commission = fill.commission
@@ -622,7 +624,7 @@ cdef class AccountsManager:
         Account account,
         Instrument instrument,
         OrderSide side,
-    ) except *:
+    ):
         if account.base_currency is None:
             return 1.0  # No conversion needed
         else:

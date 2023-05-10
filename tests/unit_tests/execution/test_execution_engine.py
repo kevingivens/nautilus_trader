@@ -13,8 +13,9 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+import pytest
+
 from nautilus_trader.accounting.accounts.cash import CashAccount
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import TestClock
 from nautilus_trader.common.enums import LogLevel
@@ -22,6 +23,7 @@ from nautilus_trader.common.factories import OrderFactory
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.config import ExecEngineConfig
 from nautilus_trader.config import StrategyConfig
+from nautilus_trader.config.error import InvalidConfiguration
 from nautilus_trader.core.uuid import UUID4
 from nautilus_trader.data.engine import DataEngine
 from nautilus_trader.execution.engine import ExecutionEngine
@@ -39,6 +41,7 @@ from nautilus_trader.model.events.order import OrderCanceled
 from nautilus_trader.model.events.order import OrderUpdated
 from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import ClientOrderId
+from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import OrderListId
 from nautilus_trader.model.identifiers import PositionId
 from nautilus_trader.model.identifiers import StrategyId
@@ -53,6 +56,7 @@ from nautilus_trader.portfolio.portfolio import Portfolio
 from nautilus_trader.risk.engine import RiskEngine
 from nautilus_trader.test_kit.mocks.cache_database import MockCacheDatabase
 from nautilus_trader.test_kit.mocks.exec_clients import MockExecutionClient
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.events import TestEventStubs
 from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 from nautilus_trader.trading.strategy import Strategy
@@ -205,6 +209,85 @@ class TestExecutionEngine:
             exec_client.id,
             self.exec_client.id,
         ]
+
+    def test_register_strategy_with_external_order_claims_when_claim(self):
+        # Arrange
+        config = StrategyConfig(external_order_claims=["ETHUSDT-PERP.DYDX"])
+        strategy = Strategy(config=config)
+        strategy.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        expected_instrument_id = InstrumentId.from_str("ETHUSDT-PERP.DYDX")
+
+        # Act
+        self.exec_engine.register_external_order_claims(strategy)
+        claim = self.exec_engine.get_external_order_claim(expected_instrument_id)
+
+        # Assert
+        assert claim == strategy.id
+
+    def test_register_strategy_with_external_order_claims_when_no_claim(self):
+        # Arrange
+        strategy = Strategy()
+        strategy.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        instrument_id = InstrumentId.from_str("ETHUSDT-PERP.DYDX")
+
+        # Act
+        self.exec_engine.register_external_order_claims(strategy)
+        claim = self.exec_engine.get_external_order_claim(instrument_id)
+
+        # Assert
+        assert claim is None
+
+    def test_register_external_order_claims_conflict(self):
+        # Arrange
+        config1 = StrategyConfig(
+            order_id_tag="000",
+            external_order_claims=["ETHUSDT-PERP.DYDX"],
+        )
+        strategy1 = Strategy(config=config1)
+        strategy1.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        config2 = StrategyConfig(
+            order_id_tag="001",
+            external_order_claims=["ETHUSDT-PERP.DYDX"],  # <-- Already claimed
+        )
+        strategy2 = Strategy(config=config2)
+        strategy2.register(
+            trader_id=self.trader_id,
+            portfolio=self.portfolio,
+            msgbus=self.msgbus,
+            cache=self.cache,
+            clock=self.clock,
+            logger=self.logger,
+        )
+
+        self.exec_engine.register_external_order_claims(strategy1)
+
+        # Act, Assert
+        with pytest.raises(InvalidConfiguration):
+            self.exec_engine.register_external_order_claims(strategy2)
 
     def test_deregister_client_removes_client(self):
         # Arrange, Act
@@ -481,199 +564,7 @@ class TestExecutionEngine:
         assert entry.status == OrderStatus.SUBMITTED  # Did not invalidate originals
         assert stop_loss.status == OrderStatus.SUBMITTED  # Did not invalidate originals
         assert take_profit.status == OrderStatus.SUBMITTED  # Did not invalidate originals
-        assert self.exec_engine.command_count == 1
-
-    def test_submit_order_list_with_duplicate_take_profit_client_order_id_logs_does_not_submit(
-        self,
-    ):
-        # Arrange
-        self.exec_engine.start()
-
-        strategy = Strategy()
-        strategy.register(
-            trader_id=self.trader_id,
-            portfolio=self.portfolio,
-            msgbus=self.msgbus,
-            cache=self.cache,
-            clock=self.clock,
-            logger=self.logger,
-        )
-
-        entry1 = strategy.order_factory.market(
-            AUDUSD_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100_000),
-        )
-
-        stop_loss1 = strategy.order_factory.stop_market(
-            AUDUSD_SIM.id,
-            OrderSide.SELL,
-            Quantity.from_int(100_000),
-            Price.from_str("0.50000"),
-        )
-
-        take_profit1 = strategy.order_factory.limit(
-            AUDUSD_SIM.id,
-            OrderSide.SELL,
-            Quantity.from_int(100_000),
-            Price.from_str("1.00000"),
-        )
-
-        bracket1 = OrderList(
-            order_list_id=OrderListId("1"),
-            orders=[entry1, stop_loss1, take_profit1],
-        )
-
-        submit_order_list1 = SubmitOrderList(
-            self.trader_id,
-            strategy.id,
-            bracket1,
-            UUID4(),
-            self.clock.timestamp_ns(),
-        )
-
-        entry2 = strategy.order_factory.market(
-            AUDUSD_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100_000),
-        )
-
-        stop_loss2 = strategy.order_factory.stop_market(
-            AUDUSD_SIM.id,
-            OrderSide.SELL,
-            Quantity.from_int(100_000),
-            Price.from_str("0.50000"),
-        )
-
-        bracket2 = OrderList(
-            order_list_id=OrderListId("2"),
-            orders=[
-                entry2,
-                stop_loss2,
-                take_profit1,  # Duplicate
-            ],
-        )
-
-        submit_bracket2 = SubmitOrderList(
-            self.trader_id,
-            strategy.id,
-            bracket2,
-            UUID4(),
-            self.clock.timestamp_ns(),
-        )
-
-        # Act
-        self.risk_engine.execute(submit_order_list1)
-        self.exec_engine.process(TestEventStubs.order_submitted(entry1))
-        self.exec_engine.process(TestEventStubs.order_accepted(entry1))
-        self.exec_engine.process(TestEventStubs.order_submitted(stop_loss1))
-        self.exec_engine.process(TestEventStubs.order_accepted(stop_loss1))
-        self.exec_engine.process(TestEventStubs.order_submitted(take_profit1))
-        self.exec_engine.process(TestEventStubs.order_accepted(take_profit1))
-        self.risk_engine.execute(submit_bracket2)  # SL and TP
-
-        # Assert
-        assert entry2.status == OrderStatus.DENIED
-        assert entry1.status == OrderStatus.ACCEPTED
-        assert stop_loss1.status == OrderStatus.ACCEPTED
-        assert take_profit1.status == OrderStatus.ACCEPTED  # Did not invalidate original
-
-    def test_submit_bracket_order_with_duplicate_stop_loss_client_order_id_logs_does_not_submit(
-        self,
-    ):
-        # Arrange
-        self.exec_engine.start()
-        self.risk_engine.start()
-
-        strategy = Strategy()
-        strategy.register(
-            trader_id=self.trader_id,
-            portfolio=self.portfolio,
-            msgbus=self.msgbus,
-            cache=self.cache,
-            clock=self.clock,
-            logger=self.logger,
-        )
-
-        entry1 = strategy.order_factory.market(
-            AUDUSD_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100_000),
-        )
-
-        stop_loss1 = strategy.order_factory.stop_market(
-            AUDUSD_SIM.id,
-            OrderSide.SELL,
-            Quantity.from_int(100_000),
-            Price.from_str("0.50000"),
-        )
-
-        take_profit1 = strategy.order_factory.limit(
-            AUDUSD_SIM.id,
-            OrderSide.SELL,
-            Quantity.from_int(100_000),
-            Price.from_str("1.00000"),
-        )
-
-        bracket1 = OrderList(
-            order_list_id=OrderListId("1"),
-            orders=[entry1, stop_loss1, take_profit1],
-        )
-
-        submit_bracket1 = SubmitOrderList(
-            self.trader_id,
-            strategy.id,
-            bracket1,
-            UUID4(),
-            self.clock.timestamp_ns(),
-        )
-
-        entry2 = strategy.order_factory.market(
-            AUDUSD_SIM.id,
-            OrderSide.BUY,
-            Quantity.from_int(100_000),
-        )
-
-        take_profit2 = strategy.order_factory.limit(
-            AUDUSD_SIM.id,
-            OrderSide.SELL,
-            Quantity.from_int(100_000),
-            Price.from_str("1.00000"),
-        )
-
-        bracket2 = OrderList(
-            order_list_id=OrderListId("1"),
-            orders=[
-                entry2,
-                stop_loss1,  # Duplicate
-                take_profit2,
-            ],
-        )
-
-        submit_bracket2 = SubmitOrderList(
-            self.trader_id,
-            strategy.id,
-            bracket2,
-            UUID4(),
-            self.clock.timestamp_ns(),
-        )
-
-        # Act
-        self.risk_engine.execute(submit_bracket1)
-        self.exec_engine.process(TestEventStubs.order_submitted(entry1))
-        self.exec_engine.process(TestEventStubs.order_accepted(entry1))
-        self.exec_engine.process(TestEventStubs.order_submitted(stop_loss1))
-        self.exec_engine.process(TestEventStubs.order_accepted(stop_loss1))
-        self.exec_engine.process(TestEventStubs.order_submitted(take_profit1))
-        self.exec_engine.process(TestEventStubs.order_accepted(take_profit1))
-        self.risk_engine.execute(submit_bracket2)  # SL and TP
-
-        # Assert
-        assert entry2.status == OrderStatus.DENIED
-        assert entry1.status == OrderStatus.ACCEPTED  # Did not invalidate original
-        assert stop_loss1.status == OrderStatus.ACCEPTED  # Did not invalidate original
-        assert take_profit1.status == OrderStatus.ACCEPTED  # Did not invalidate original
-        assert take_profit2.status == OrderStatus.DENIED
+        assert self.exec_engine.command_count == 2
 
     def test_submit_order(self):
         # Arrange
@@ -1249,7 +1140,7 @@ class TestExecutionEngine:
             ),
         )
 
-        expected_position_id = PositionId("P-19700101-000-None-1")
+        expected_position_id = PositionId("P-19700101-0000-000-None-1")
 
         # Assert
         assert self.cache.position_exists(expected_position_id)
@@ -1301,7 +1192,7 @@ class TestExecutionEngine:
         self.exec_engine.process(TestEventStubs.order_accepted(order))
         self.exec_engine.process(TestEventStubs.order_filled(order, AUDUSD_SIM))
 
-        expected_position_id = PositionId("P-19700101-000-None-1")
+        expected_position_id = PositionId("P-19700101-0000-000-None-1")
 
         # Assert
         assert self.cache.position_exists(expected_position_id)
@@ -1351,7 +1242,7 @@ class TestExecutionEngine:
         self.exec_engine.process(TestEventStubs.order_accepted(order))
 
         # Act
-        expected_position_id = PositionId("P-19700101-000-None-1")
+        expected_position_id = PositionId("P-19700101-0000-000-None-1")
 
         self.exec_engine.process(
             TestEventStubs.order_filled(
@@ -1427,7 +1318,7 @@ class TestExecutionEngine:
         self.exec_engine.process(TestEventStubs.order_accepted(order))
         self.exec_engine.process(TestEventStubs.order_filled(order, AUDUSD_SIM))
 
-        expected_id = PositionId("P-19700101-000-None-1")  # Generated inside engine
+        expected_id = PositionId("P-19700101-0000-000-None-1")  # Generated inside engine
 
         # Assert
         assert self.cache.position_exists(expected_id)
@@ -1483,7 +1374,7 @@ class TestExecutionEngine:
         self.exec_engine.process(TestEventStubs.order_accepted(order1))
         self.exec_engine.process(TestEventStubs.order_filled(order1, AUDUSD_SIM))
 
-        expected_position_id = PositionId("P-19700101-000-None-1")
+        expected_position_id = PositionId("P-19700101-0000-000-None-1")
 
         submit_order2 = SubmitOrder(
             trader_id=self.trader_id,
@@ -1858,7 +1749,7 @@ class TestExecutionEngine:
             ts_init=self.clock.timestamp_ns(),
         )
 
-        position_id = PositionId("P-19700101-000-000-1")
+        position_id = PositionId("P-19700101-0000-000-000-1")
 
         self.risk_engine.execute(submit_order1)
         self.exec_engine.process(TestEventStubs.order_submitted(order1))
@@ -1885,11 +1776,11 @@ class TestExecutionEngine:
         )
 
         # Assert
-        position_id_flipped = PositionId("P-19700101-000-None-1F")
+        position_id_flipped = PositionId("P-19700101-0000-000-None-1F")
         position_flipped = self.cache.position(position_id_flipped)
 
-        assert position_flipped.net_qty == -50000
-        assert position_flipped.last_event.last_qty == 50000
+        assert position_flipped.signed_qty == -50_000
+        assert position_flipped.last_event.last_qty == 50_000
         assert self.cache.position_exists(position_id)
         assert self.cache.position_exists(position_id_flipped)
         assert self.cache.is_position_closed(position_id)
@@ -1937,7 +1828,7 @@ class TestExecutionEngine:
             ts_init=self.clock.timestamp_ns(),
         )
 
-        position_id = PositionId("P-19700101-000-None-1")
+        position_id = PositionId("P-19700101-0000-000-None-1")
 
         self.risk_engine.execute(submit_order1)
         self.exec_engine.process(TestEventStubs.order_submitted(order1))
@@ -1964,11 +1855,11 @@ class TestExecutionEngine:
         )
 
         # Assert
-        position_id_flipped = PositionId("P-19700101-000-None-1F")
+        position_id_flipped = PositionId("P-19700101-0000-000-None-1F")
         position_flipped = self.cache.position(position_id_flipped)
 
-        assert position_flipped.net_qty == 50000
-        assert position_flipped.last_event.last_qty == 50000
+        assert position_flipped.signed_qty == 50_000
+        assert position_flipped.last_event.last_qty == 50_000
         assert self.cache.position_exists(position_id)
         assert self.cache.position_exists(position_id_flipped)
         assert self.cache.is_position_closed(position_id)
@@ -2022,7 +1913,7 @@ class TestExecutionEngine:
             ts_init=self.clock.timestamp_ns(),
         )
 
-        position_id = PositionId("P-19700101-000-001-1")
+        position_id = PositionId("P-19700101-0000-000-001-1")
 
         self.risk_engine.execute(submit_order1)
         self.exec_engine.process(TestEventStubs.order_submitted(order1))
@@ -2058,7 +1949,7 @@ class TestExecutionEngine:
         self.exec_engine.process(
             TestEventStubs.order_filled(order2, AUDUSD_SIM, position_id=position_id),
         )
-        assert position.net_qty == 0
+        assert position.signed_qty == 0
 
         # Reuse same position_id
         self.risk_engine.execute(submit_order3)
@@ -2102,7 +1993,7 @@ class TestExecutionEngine:
             ts_init=self.clock.timestamp_ns(),
         )
 
-        position_id = PositionId("P-19700101-000-001-1")
+        position_id = PositionId("P-19700101-0000-000-001-1")
 
         self.risk_engine.execute(submit_order1)
         self.exec_engine.process(TestEventStubs.order_submitted(order1))

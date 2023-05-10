@@ -57,8 +57,8 @@ cdef class Position:
     """The position entry order side.\n\n:returns: `OrderSide`"""
     cdef readonly PositionSide side
     """The current position side.\n\n:returns: `PositionSide`"""
-    cdef readonly double net_qty
-    """The current net quantity (positive for position side ``LONG``, negative for ``SHORT``).\n\n:returns: `double`"""
+    cdef readonly double signed_qty
+    """The current signed quantity (positive for position side ``LONG``, negative for ``SHORT``).\n\n:returns: `double`"""
     cdef readonly Quantity quantity
     """The current open quantity.\n\n:returns: `Quantity`"""
     cdef readonly Quantity peak_qty
@@ -105,17 +105,18 @@ cdef class Position:
     cdef list events_c(self)
     cdef OrderFilled last_event_c(self)
     cdef TradeId last_trade_id_c(self)
-    cdef int event_count_c(self) except *
-    cdef bint is_long_c(self) except *
-    cdef bint is_short_c(self) except *
-    cdef bint is_open_c(self) except *
-    cdef bint is_closed_c(self) except *
+    cdef int event_count_c(self)
+    cdef bint is_long_c(self)
+    cdef bint is_short_c(self)
+    cdef bint is_open_c(self)
+    cdef bint is_closed_c(self)
 
     @staticmethod
-    cdef PositionSide side_from_order_side_c(OrderSide side) except *
-    cpdef bint is_opposite_side(self, OrderSide side) except *
+    cdef PositionSide side_from_order_side_c(OrderSide side)
+    cpdef signed_decimal_qty(self)
+    cpdef bint is_opposite_side(self, OrderSide side)
 
-    cpdef void apply(self, OrderFilled fill) except *
+    cpdef void apply(self, OrderFilled fill)
 
     cpdef Money notional_value(self, Price last)
     cpdef Money calculate_pnl(self, double avg_px_open, double avg_px_close, Quantity quantity)
@@ -123,8 +124,8 @@ cdef class Position:
     cpdef Money total_pnl(self, Price last)
     cpdef list commissions(self)
 
-    cdef void _handle_buy_order_fill(self, OrderFilled fill) except *
-    cdef void _handle_sell_order_fill(self, OrderFilled fill) except *
+    cdef void _handle_buy_order_fill(self, OrderFilled fill)
+    cdef void _handle_sell_order_fill(self, OrderFilled fill)
     cdef double _calculate_avg_px(self, double avg_px, double qty, double last_px, double last_qty)
     cdef double _calculate_avg_px_open_px(self, double last_px, double last_qty)
     cdef double _calculate_avg_px_close_px(self, double last_px, double last_qty)

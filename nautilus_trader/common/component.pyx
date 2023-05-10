@@ -24,9 +24,9 @@ from nautilus_trader.common.enums import component_trigger_to_str
 from nautilus_trader.common.clock cimport Clock
 from nautilus_trader.common.enums_c cimport ComponentState
 from nautilus_trader.common.enums_c cimport ComponentTrigger
-from nautilus_trader.common.events.system cimport ComponentStateChanged
 from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.common.logging cimport LoggerAdapter
+from nautilus_trader.common.messages cimport ComponentStateChanged
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.fsm cimport FiniteStateMachine
 from nautilus_trader.core.fsm cimport InvalidStateTrigger
@@ -284,17 +284,17 @@ cdef class Component:
         """
         return self._fsm.state == ComponentState.FAULTED
 
-    cdef void _change_clock(self, Clock clock) except *:
+    cdef void _change_clock(self, Clock clock):
         Condition.not_none(clock, "clock")
 
         self._clock = clock
 
-    cdef void _change_logger(self, Logger logger) except *:
+    cdef void _change_logger(self, Logger logger):
         Condition.not_none(logger, "logger")
 
         self._log = LoggerAdapter(component_name=self.id.value, logger=logger)
 
-    cdef void _change_msgbus(self, MessageBus msgbus) except *:
+    cdef void _change_msgbus(self, MessageBus msgbus):
         # As an additional system wiring check: if a message bus is being added
         # here, then there should not be an existing trader ID or message bus.
         Condition.not_none(msgbus, "msgbus")
@@ -307,37 +307,37 @@ cdef class Component:
 
 # -- ABSTRACT METHODS -----------------------------------------------------------------------------
 
-    cpdef void _start(self) except *:
+    cpdef void _start(self):
         # Optionally override in subclass
         pass
 
-    cpdef void _stop(self) except *:
+    cpdef void _stop(self):
         # Optionally override in subclass
         pass
 
-    cpdef void _resume(self) except *:
+    cpdef void _resume(self):
         # Optionally override in subclass
         pass
 
-    cpdef void _reset(self) except *:
+    cpdef void _reset(self):
         # Optionally override in subclass
         pass
 
-    cpdef void _dispose(self) except *:
+    cpdef void _dispose(self):
         # Optionally override in subclass
         pass
 
-    cpdef void _degrade(self) except *:
+    cpdef void _degrade(self):
         # Optionally override in subclass
         pass
 
-    cpdef void _fault(self) except *:
+    cpdef void _fault(self):
         # Optionally override in subclass
         pass
 
 # -- COMMANDS -------------------------------------------------------------------------------------
 
-    cdef void _initialize(self) except *:
+    cdef void _initialize(self):
         # This is a protected method dependent on registration of a message bus
         try:
             self._trigger_fsm(
@@ -349,7 +349,7 @@ cdef class Component:
             self._log.exception(f"{repr(self)}: Error on initialize", e)
             raise
 
-    cpdef void start(self) except *:
+    cpdef void start(self):
         """
         Start the component.
 
@@ -380,7 +380,7 @@ cdef class Component:
             action=None,
         )
 
-    cpdef void stop(self) except *:
+    cpdef void stop(self):
         """
         Stop the component.
 
@@ -411,7 +411,7 @@ cdef class Component:
             action=None,
         )
 
-    cpdef void resume(self) except *:
+    cpdef void resume(self):
         """
         Resume the component.
 
@@ -442,7 +442,7 @@ cdef class Component:
             action=None,
         )
 
-    cpdef void reset(self) except *:
+    cpdef void reset(self):
         """
         Reset the component.
 
@@ -475,7 +475,7 @@ cdef class Component:
             action=None,
         )
 
-    cpdef void dispose(self) except *:
+    cpdef void dispose(self):
         """
         Dispose of the component.
 
@@ -506,7 +506,7 @@ cdef class Component:
             action=None,
         )
 
-    cpdef void degrade(self) except *:
+    cpdef void degrade(self):
         """
         Degrade the component.
 
@@ -537,7 +537,7 @@ cdef class Component:
             action=None,
         )
 
-    cpdef void fault(self) except *:
+    cpdef void fault(self):
         """
         Fault the component.
 
@@ -578,7 +578,7 @@ cdef class Component:
         ComponentTrigger trigger,
         bint is_transitory,
         action: Optional[Callable[[None], None]] = None,
-    ) except *:
+    ):
         try:
             self._fsm.trigger(trigger)
         except InvalidStateTrigger as e:
@@ -593,7 +593,7 @@ cdef class Component:
         if self._fsm == ComponentState.PRE_INITIALIZED:
             return  # Cannot publish event
 
-        cdef uint64_t now = self._clock.timestamp_ns()
+        cdef uint64_t ts_now = self._clock.timestamp_ns()
         cdef ComponentStateChanged event = ComponentStateChanged(
             trader_id=self.trader_id,
             component_id=self.id,
@@ -601,8 +601,8 @@ cdef class Component:
             state=self._fsm.state,
             config=self._config,
             event_id=UUID4(),
-            ts_event=now,
-            ts_init=now,
+            ts_event=ts_now,
+            ts_init=ts_now,
         )
 
         self._msgbus.publish(

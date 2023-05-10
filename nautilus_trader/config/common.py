@@ -109,7 +109,7 @@ class NautilusConfig(msgspec.Struct, kw_only=True, frozen=True):
 
 class CacheConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``Cache`` instances.
+    Configuration for a ``Cache`` instance.
 
     Parameters
     ----------
@@ -125,7 +125,7 @@ class CacheConfig(NautilusConfig, frozen=True):
 
 class CacheDatabaseConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``CacheDatabase`` instances.
+    Configuration for a ``CacheDatabase`` instance.
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ class CacheDatabaseConfig(NautilusConfig, frozen=True):
 
 class InstrumentProviderConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``InstrumentProvider`` instances.
+    Configuration for an ``InstrumentProvider`` instance.
 
     Parameters
     ----------
@@ -192,7 +192,7 @@ class InstrumentProviderConfig(NautilusConfig, frozen=True):
 
 class DataEngineConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``DataEngine`` instances.
+    Configuration for a ``DataEngine`` instance.
 
     Parameters
     ----------
@@ -215,14 +215,12 @@ class DataEngineConfig(NautilusConfig, frozen=True):
 
 class RiskEngineConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``RiskEngine`` instances.
+    Configuration for a ``RiskEngine`` instance.
 
     Parameters
     ----------
     bypass : bool, default False
         If True then will bypass all pre-trade risk checks and rate limits (will still check for duplicate IDs).
-    deny_modify_pending_update : bool, default True
-        If deny `ModifyOrder` commands when an order is in a `PENDING_UPDATE` state.
     max_order_submit_rate : str, default 100/00:00:01
         The maximum rate of submit order commands per timedelta.
     max_order_modify_rate : str, default 100/00:00:01
@@ -235,7 +233,6 @@ class RiskEngineConfig(NautilusConfig, frozen=True):
     """
 
     bypass: bool = False
-    deny_modify_pending_update: bool = True
     max_order_submit_rate: str = "100/00:00:01"
     max_order_modify_rate: str = "100/00:00:01"
     max_notional_per_order: dict[str, int] = {}
@@ -244,7 +241,7 @@ class RiskEngineConfig(NautilusConfig, frozen=True):
 
 class ExecEngineConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``ExecutionEngine`` instances.
+    Configuration for an ``ExecutionEngine`` instance.
 
     Parameters
     ----------
@@ -263,7 +260,7 @@ class ExecEngineConfig(NautilusConfig, frozen=True):
 
 class OrderEmulatorConfig(NautilusConfig, frozen=True):
     """
-    Configuration for ``OrderEmulator`` instances.
+    Configuration for an ``OrderEmulator`` instance.
     """
 
 
@@ -304,6 +301,28 @@ class StreamingConfig(NautilusConfig, frozen=True):
         )
 
 
+class DataCatalogConfig(NautilusConfig, frozen=True):
+    """
+    Configuration for a data catalog.
+
+    Parameters
+    ----------
+    path : str
+        The path to the data catalog.
+    fs_protocol : str, optional
+        The fsspec file system protocol for the data catalog.
+    fs_storage_options : dict, optional
+        The fsspec storage options for the data catalog.
+    use_rust : bool, default False
+        If queries will be for Rust schema versions (when implemented).
+    """
+
+    path: str
+    fs_protocol: Optional[str] = None
+    fs_storage_options: Optional[dict] = None
+    use_rust: bool = False
+
+
 class ActorConfig(NautilusConfig, kw_only=True, frozen=True):
     """
     The base model for all actor configurations.
@@ -313,7 +332,6 @@ class ActorConfig(NautilusConfig, kw_only=True, frozen=True):
     component_id : str, optional
         The component ID. If ``None`` then the identifier will be taken from
         `type(self).__name__`.
-
     """
 
     component_id: Optional[str] = None
@@ -321,7 +339,7 @@ class ActorConfig(NautilusConfig, kw_only=True, frozen=True):
 
 class ImportableActorConfig(NautilusConfig, frozen=True):
     """
-    Represents an actor configuration for one specific backtest run.
+    Configuration for an actor instance.
 
     Parameters
     ----------
@@ -330,7 +348,7 @@ class ImportableActorConfig(NautilusConfig, frozen=True):
     config_path : str
         The fully qualified name of the Actor Config class.
     config : dict
-        The actor configuration
+        The actor configuration.
     """
 
     actor_path: str
@@ -383,16 +401,19 @@ class StrategyConfig(NautilusConfig, kw_only=True, frozen=True):
     oms_type : OmsType, optional
         The order management system type for the strategy. This will determine
         how the `ExecutionEngine` handles position IDs (see docs).
+    external_order_claims : list[str], optional
+        The external order claim instrument IDs.
     """
 
     strategy_id: Optional[str] = None
     order_id_tag: Optional[str] = None
     oms_type: Optional[str] = None
+    external_order_claims: Optional[list[str]] = None
 
 
 class ImportableStrategyConfig(NautilusConfig, frozen=True):
     """
-    Represents a trading strategy configuration for one specific backtest run.
+    Configuration for a trading strategy instance.
 
     Parameters
     ----------
@@ -401,7 +422,7 @@ class ImportableStrategyConfig(NautilusConfig, frozen=True):
     config_path : str
         The fully qualified name of the config class.
     config : dict[str, Any]
-        The strategy configuration
+        The strategy configuration.
     """
 
     strategy_path: str
@@ -440,9 +461,109 @@ class StrategyFactory:
         return strategy_cls(config=config_cls(**config.config))
 
 
+class ExecAlgorithmConfig(NautilusConfig, kw_only=True, frozen=True):
+    """
+    The base model for all execution algorithm configurations.
+
+    Parameters
+    ----------
+    exec_algorithm_id : str, optional
+        The unique ID for the execution algorithm.
+        If not ``None`` then will become the execution algorithm ID.
+    """
+
+    exec_algorithm_id: Optional[str] = None
+
+
+class ImportableExecAlgorithmConfig(NautilusConfig, frozen=True):
+    """
+    Configuration for an execution algorithm instance.
+
+    Parameters
+    ----------
+    exec_algorithm_path : str
+        The fully qualified name of the execution algorithm class.
+    config_path : str
+        The fully qualified name of the config class.
+    config : dict[str, Any]
+        The execution algorithm configuration.
+    """
+
+    exec_algorithm_path: str
+    config_path: str
+    config: dict[str, Any]
+
+
+class ExecAlgorithmFactory:
+    """
+    Provides execution algorithm creation from importable configurations.
+    """
+
+    @staticmethod
+    def create(config: ImportableExecAlgorithmConfig):
+        """
+        Create an execution algorithm from the given configuration.
+
+        Parameters
+        ----------
+        config : ImportableExecAlgorithmConfig
+            The configuration for the building step.
+
+        Returns
+        -------
+        ExecAlgorithm
+
+        Raises
+        ------
+        TypeError
+            If `config` is not of type `ImportableExecAlgorithmConfig`.
+
+        """
+        PyCondition.type(config, ImportableExecAlgorithmConfig, "config")
+        exec_algorithm_cls = resolve_path(config.exec_algorithm_path)
+        config_cls = resolve_path(config.config_path)
+        return exec_algorithm_cls(config=config_cls(**config.config))
+
+
+class LoggingConfig(NautilusConfig, frozen=True):
+    """
+    Configuration for standard output and file logging for a ``NautilusKernel`` instance.
+
+    Parameters
+    ----------
+    log_level : str, default "INFO"
+        The minimum log level to write to stdout.
+        Will always write ERROR level logs to stderr (unless `bypass_logging` is True).
+    log_level_file : str, optional
+        The minimum log level to write to a log file.
+        If ``None`` then no file logging will occur.
+    log_directory : str, optional
+        The path to the log file directory.
+        If ``None`` then will write to the current working directory.
+    log_file_name : str, optional
+        The custom log file name (will use a '.log' suffix for plain text or '.json' for JSON).
+        This will override automatic naming, and no daily file rotation will occur.
+    log_file_format : str { 'JSON' }, optional
+        The log file format. If ``None`` (default) then will log in plain text.
+    log_component_levels : dict[str, LogLevel]
+        The additional per component log level filters, where keys are component
+        IDs (e.g. actor/strategy IDs) and values are log levels.
+    bypass_logging : bool, default False
+        If all logging should be bypassed.
+    """
+
+    log_level: str = "INFO"
+    log_level_file: Optional[str] = None
+    log_directory: Optional[str] = None
+    log_file_name: Optional[str] = None
+    log_file_format: Optional[str] = None
+    log_component_levels: Optional[dict[str, str]] = None
+    bypass_logging: bool = False
+
+
 class NautilusKernelConfig(NautilusConfig, frozen=True):
     """
-    Configuration for core system ``NautilusKernel`` instances.
+    Configuration for a ``NautilusKernel`` core system instance.
 
     Parameters
     ----------
@@ -462,6 +583,8 @@ class NautilusKernelConfig(NautilusConfig, frozen=True):
         The live execution engine configuration.
     streaming : StreamingConfig, optional
         The configuration for streaming to feather files.
+    catalog : DataCatalogConfig, optional
+        The data catalog config.
     actors : list[ImportableActorConfig]
         The actor configurations for the kernel.
     strategies : list[ImportableStrategyConfig]
@@ -472,12 +595,6 @@ class NautilusKernelConfig(NautilusConfig, frozen=True):
         If trading strategy state should be saved to the database on stop.
     loop_debug : bool, default False
         If the asyncio event loop should be in debug mode.
-    log_level : str, default "INFO"
-        The stdout log level for the node.
-    log_rate_limit : int, default 100_000
-        The maximum messages per second which can be flushed to stdout or stderr.
-    bypass_logging : bool, default False
-        If logging to stdout should be bypassed.
     """
 
     environment: Environment
@@ -489,19 +606,19 @@ class NautilusKernelConfig(NautilusConfig, frozen=True):
     risk_engine: Optional[RiskEngineConfig] = None
     exec_engine: Optional[ExecEngineConfig] = None
     streaming: Optional[StreamingConfig] = None
+    catalog: Optional[DataCatalogConfig] = None
     actors: list[ImportableActorConfig] = []
     strategies: list[ImportableStrategyConfig] = []
+    exec_algorithms: list[ImportableExecAlgorithmConfig] = []
     load_state: bool = False
     save_state: bool = False
     loop_debug: bool = False
-    log_level: str = "INFO"
-    log_rate_limit: int = 100_000
-    bypass_logging: bool = False
+    logging: Optional[LoggingConfig] = None
 
 
 class ImportableFactoryConfig(NautilusConfig, frozen=True):
     """
-    Represents an importable (json) Factory config.
+    Represents an importable (JSON) factory config.
     """
 
     path: str
@@ -513,7 +630,7 @@ class ImportableFactoryConfig(NautilusConfig, frozen=True):
 
 class ImportableConfig(NautilusConfig, frozen=True):
     """
-    Represents an importable (typically live data client or live execution client) configuration.
+    Represents an importable configuration (typically live data client or live execution client).
     """
 
     path: str

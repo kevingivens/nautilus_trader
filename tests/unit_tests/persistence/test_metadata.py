@@ -12,22 +12,23 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
+
 import fsspec
 
-from nautilus_trader.backtest.data.providers import TestInstrumentProvider
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.persistence.external.core import write_objects
 from nautilus_trader.persistence.external.metadata import load_mappings
 from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 
 
 class TestPersistenceBatching:
-    def setup(self):
+    def setup(self) -> None:
         self.catalog = data_catalog_setup(protocol="memory")
         self.fs: fsspec.AbstractFileSystem = self.catalog.fs
 
-    def test_metadata_multiple_instruments(self):
+    def test_metadata_multiple_instruments(self) -> None:
         # Arrange
         audusd = TestInstrumentProvider.default_fx_ccy("AUD/USD", Venue("OANDA"))
         gbpusd = TestInstrumentProvider.default_fx_ccy("GBP/USD", Venue("OANDA"))

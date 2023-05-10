@@ -25,19 +25,16 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from nautilus_trader.core.data import Data
-from nautilus_trader.core.nautilus_pyo3.persistence import ParquetReader
-from nautilus_trader.core.nautilus_pyo3.persistence import ParquetReaderType
 from nautilus_trader.model.data.tick import QuoteTick
 from nautilus_trader.model.data.tick import TradeTick
 from nautilus_trader.model.identifiers import InstrumentId
-from nautilus_trader.persistence.external.util import py_type_to_parquet_type
 from nautilus_trader.serialization.arrow.serializer import ParquetSerializer
 
 
 def _generate_batches_within_time_range(
     batches: Generator[list[Data], None, None],
-    start_nanos: int = None,
-    end_nanos: int = None,
+    start_nanos: Optional[int] = None,
+    end_nanos: Optional[int] = None,
 ) -> Generator[list[Data], None, None]:
     if start_nanos is None and end_nanos is None:
         yield from batches
@@ -84,30 +81,34 @@ def _generate_batches_rust(
 ) -> Generator[list[Union[QuoteTick, TradeTick]], None, None]:
     assert cls in (QuoteTick, TradeTick)
 
-    files = sorted(files, key=lambda x: Path(x).stem)
-    for file in files:
-        reader = ParquetReader(
-            file,
-            batch_size,
-            py_type_to_parquet_type(cls),
-            ParquetReaderType.File,
-        )
-        for capsule in reader:
-            # PyCapsule > List
-            if cls == QuoteTick:
-                objs = QuoteTick.list_from_capsule(capsule)
-            elif cls == TradeTick:
-                objs = TradeTick.list_from_capsule(capsule)
-
-            yield objs
+    # TODO: Replace with new Rust datafusion backend
+    yield []
+    # files = sorted(files, key=lambda x: Path(x).stem)
+    # for file in files:
+    #     reader = ParquetReader(
+    #         file,
+    #         batch_size,
+    #         py_type_to_parquet_type(cls),
+    #         ParquetReaderType.File,
+    #     )
+    #     for capsule in reader:
+    #         # PyCapsule > List
+    #         if cls == QuoteTick:
+    #             objs = QuoteTick.list_from_capsule(capsule)
+    #         elif cls == TradeTick:
+    #             objs = TradeTick.list_from_capsule(capsule)
+    #         else:
+    #             raise RuntimeError(f"Data type {cls} unsupported for Rust.")
+    #
+    #         yield objs
 
 
 def generate_batches_rust(
     files: list[str],
     cls: type,
     batch_size: int = 10_000,
-    start_nanos: int = None,
-    end_nanos: int = None,
+    start_nanos: Optional[int] = None,
+    end_nanos: Optional[int] = None,
 ) -> Generator[list[Data], None, None]:
     batches = _generate_batches_rust(files=files, cls=cls, batch_size=batch_size)
     yield from _generate_batches_within_time_range(batches, start_nanos, end_nanos)
@@ -117,7 +118,7 @@ def _generate_batches(
     files: list[str],
     cls: type,
     fs: fsspec.AbstractFileSystem,
-    instrument_id: Optional[InstrumentId] = None,  # should be stored in metadata of parquet file?
+    instrument_id: Optional[InstrumentId] = None,  # Should be stored in metadata of parquet file?
     batch_size: int = 10_000,
 ) -> Generator[list[Data], None, None]:
     files = sorted(files, key=lambda x: Path(x).stem)
@@ -143,8 +144,8 @@ def generate_batches(
     fs: fsspec.AbstractFileSystem,
     instrument_id: Optional[InstrumentId] = None,
     batch_size: int = 10_000,
-    start_nanos: int = None,
-    end_nanos: int = None,
+    start_nanos: Optional[int] = None,
+    end_nanos: Optional[int] = None,
 ) -> Generator[list[Data], None, None]:
     batches = _generate_batches(
         files=files,
