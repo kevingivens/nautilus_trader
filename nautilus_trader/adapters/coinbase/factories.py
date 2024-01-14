@@ -105,7 +105,7 @@ def get_cached_binance_http_client(
 
 @lru_cache(1)
 def get_cached_binance_spot_instrument_provider(
-    client: BinanceHttpClient,
+    client: CoinbaseHttpClient,
     logger: Logger,
     clock: LiveClock,
     account_type: CoinbaseAccountType,
