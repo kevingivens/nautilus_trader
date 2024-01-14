@@ -16,15 +16,15 @@
 import asyncio
 from typing import Any, Callable, Optional
 
-from nautilus_trader.adapters.binance.common.schemas.symbol import BinanceSymbol
+from nautilus_trader.adapters.coinbase.common.schemas.symbol import CoinbaseSymbol
 from nautilus_trader.common.clock import LiveClock
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.network.websocket import WebSocketClient
 
 
-class BinanceWebSocketClient(WebSocketClient):
+class CoinbaseWebSocketClient(WebSocketClient):
     """
-    Provides a `Binance` streaming WebSocket client.
+    Provides a `Coinbase` streaming WebSocket client.
     """
 
     def __init__(
@@ -104,7 +104,7 @@ class BinanceWebSocketClient(WebSocketClient):
         Update Speed: Real-time
 
         """
-        self._add_stream(f"{BinanceSymbol(symbol).lower()}@aggTrade")
+        self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@aggTrade")
 
     def subscribe_trades(self, symbol: str) -> None:
         """
@@ -115,7 +115,7 @@ class BinanceWebSocketClient(WebSocketClient):
         Update Speed: Real-time
 
         """
-        self._add_stream(f"{BinanceSymbol(symbol).lower()}@trade")
+        self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@trade")
 
     def subscribe_bars(
         self,
@@ -147,7 +147,7 @@ class BinanceWebSocketClient(WebSocketClient):
         Update Speed: 2000ms
 
         """
-        self._add_stream(f"{BinanceSymbol(symbol).lower()}@kline_{interval}")
+        self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@kline_{interval}")
 
     def subscribe_mini_ticker(
         self,
@@ -166,7 +166,7 @@ class BinanceWebSocketClient(WebSocketClient):
         if symbol is None:
             self._add_stream("!miniTicker@arr")
         else:
-            self._add_stream(f"{BinanceSymbol(symbol).lower()}@miniTicker")
+            self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@miniTicker")
 
     def subscribe_ticker(
         self,
@@ -185,7 +185,7 @@ class BinanceWebSocketClient(WebSocketClient):
         if symbol is None:
             self._add_stream("!ticker@arr")
         else:
-            self._add_stream(f"{BinanceSymbol(symbol).lower()}@ticker")
+            self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@ticker")
 
     def subscribe_book_ticker(
         self,
@@ -203,7 +203,7 @@ class BinanceWebSocketClient(WebSocketClient):
         if symbol is None:
             self._add_stream("!bookTicker")
         else:
-            self._add_stream(f"{BinanceSymbol(symbol).lower()}@bookTicker")
+            self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@bookTicker")
 
     def subscribe_partial_book_depth(
         self,
@@ -219,7 +219,7 @@ class BinanceWebSocketClient(WebSocketClient):
         Update Speed: 1000ms or 100ms
 
         """
-        self._add_stream(f"{BinanceSymbol(symbol).lower()}@depth{depth}@{speed}ms")
+        self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@depth{depth}@{speed}ms")
 
     def subscribe_diff_book_depth(
         self,
@@ -234,7 +234,7 @@ class BinanceWebSocketClient(WebSocketClient):
         Order book price and quantity depth updates used to locally manage an order book.
 
         """
-        self._add_stream(f"{BinanceSymbol(symbol).lower()}@depth@{speed}ms")
+        self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@depth@{speed}ms")
 
     def subscribe_mark_price(
         self,
@@ -253,4 +253,4 @@ class BinanceWebSocketClient(WebSocketClient):
         if symbol is None:
             self._add_stream("!markPrice@arr")
         else:
-            self._add_stream(f"{BinanceSymbol(symbol).lower()}@markPrice@{int(speed / 1000)}s")
+            self._add_stream(f"{CoinbaseSymbol(symbol).lower()}@markPrice@{int(speed / 1000)}s")

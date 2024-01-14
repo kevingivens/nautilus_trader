@@ -44,14 +44,6 @@ class CoinbaseBar(Bar):
         The bars close price.
     volume : Quantity
         The bars volume.
-    quote_volume : Decimal
-        The bars quote asset volume.
-    count : int
-        The number of trades for the bar.
-    taker_buy_base_volume : Decimal
-        The liquidity taker volume on the buy side for the base asset.
-    taker_buy_quote_volume : Decimal
-        The liquidity taker volume on the buy side for the quote asset.
     ts_event : uint64_t
         The UNIX timestamp (nanoseconds) when the data event occurred.
     ts_init : uint64_t
@@ -59,22 +51,16 @@ class CoinbaseBar(Bar):
 
     References
     ----------
-    https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
-    https://binance-docs.github.io/apidocs/futures/en/#kline-candlestick-data
+    https://docs.cloud.coinbase.com/exchange/reference/exchangerestapi_getproductcandles
     """
 
     def __init__(
         self,
-        bar_type: BarType,
         open: Price,
         high: Price,
         low: Price,
         close: Price,
         volume: Quantity,
-        quote_volume: Decimal,
-        count: int,
-        taker_buy_base_volume: Decimal,
-        taker_buy_quote_volume: Decimal,
         ts_event: int,
         ts_init: int,
     ):

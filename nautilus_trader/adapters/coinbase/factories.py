@@ -18,16 +18,16 @@ import os
 from functools import lru_cache
 from typing import Optional, Union
 
-from nautilus_trader.adapters.binance.common.enums import BinanceAccountType
-from nautilus_trader.adapters.binance.config import BinanceDataClientConfig
-from nautilus_trader.adapters.binance.config import BinanceExecClientConfig
-from nautilus_trader.adapters.binance.futures.data import BinanceFuturesDataClient
-from nautilus_trader.adapters.binance.futures.execution import BinanceFuturesExecutionClient
-from nautilus_trader.adapters.binance.futures.providers import BinanceFuturesInstrumentProvider
-from nautilus_trader.adapters.binance.http.client import BinanceHttpClient
-from nautilus_trader.adapters.binance.spot.data import BinanceSpotDataClient
-from nautilus_trader.adapters.binance.spot.execution import BinanceSpotExecutionClient
-from nautilus_trader.adapters.binance.spot.providers import BinanceSpotInstrumentProvider
+from nautilus_trader.adapters.coinbase.common.enums import CoinbaseAccountType
+from nautilus_trader.adapters.coinbase.config import CoinbaseDataClientConfig
+from nautilus_trader.adapters.coinbase.config import BinanceExecClientConfig
+# from nautilus_trader.adapters.coinbase.futures.data import BinanceFuturesDataClient
+# from nautilus_trader.adapters.coinbase.futures.execution import BinanceFuturesExecutionClient
+# from nautilus_trader.adapters.coinbase.futures.providers import BinanceFuturesInstrumentProvider
+from nautilus_trader.adapters.coinbase.http.client import CoinbaseHttpClient
+# from nautilus_trader.adapters.coinbase.spot.data import BinanceSpotDataClient
+# from nautilus_trader.adapters.coinbase.spot.execution import BinanceSpotExecutionClient
+# from nautilus_trader.adapters.coinbase.spot.providers import BinanceSpotInstrumentProvider
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.clock import LiveClock
 from nautilus_trader.common.logging import Logger
@@ -37,22 +37,22 @@ from nautilus_trader.live.factories import LiveExecClientFactory
 from nautilus_trader.msgbus.bus import MessageBus
 
 
-BINANCE_HTTP_CLIENTS: dict[str, BinanceHttpClient] = {}
+COINBASE_HTTP_CLIENTS: dict[str, CoinbaseHttpClient] = {}
 
 
 def get_cached_binance_http_client(
     loop: asyncio.AbstractEventLoop,
     clock: LiveClock,
     logger: Logger,
-    account_type: BinanceAccountType,
+    account_type: CoinbaseAccountType,
     key: Optional[str] = None,
     secret: Optional[str] = None,
     base_url: Optional[str] = None,
     is_testnet: bool = False,
     is_us: bool = False,
-) -> BinanceHttpClient:
+) -> CoinbaseHttpClient:
     """
-    Cache and return a Binance HTTP client with the given key and secret.
+    Cache and return a Coinbase HTTP client with the given key and secret.
 
     If a cached client with matching key and secret already exists, then that
     cached client will be returned.
@@ -65,7 +65,7 @@ def get_cached_binance_http_client(
         The clock for the client.
     logger : Logger
         The logger for the client.
-    account_type : BinanceAccountType
+    account_type : CoinbaseAccountType
         The account type for the client.
     key : str, optional
         The API key for the client.
@@ -76,22 +76,22 @@ def get_cached_binance_http_client(
     is_testnet : bool, default False
         If the client is connecting to the testnet API.
     is_us : bool, default False
-        If the client is connecting to Binance US.
+        If the client is connecting to Coinbase US.
 
     Returns
     -------
     BinanceHttpClient
 
     """
-    global BINANCE_HTTP_CLIENTS
+    global COINBASE_HTTP_CLIENTS
 
     key = key or _get_api_key(account_type, is_testnet)
     secret = secret or _get_api_secret(account_type, is_testnet)
     default_http_base_url = _get_http_base_url(account_type, is_testnet, is_us)
 
     client_key: str = "|".join((key, secret))
-    if client_key not in BINANCE_HTTP_CLIENTS:
-        client = BinanceHttpClient(
+    if client_key not in COINBASE_HTTP_CLIENTS:
+        client = CoinbaseHttpClient(
             loop=loop,
             clock=clock,
             logger=logger,
@@ -99,8 +99,8 @@ def get_cached_binance_http_client(
             secret=secret,
             base_url=base_url or default_http_base_url,
         )
-        BINANCE_HTTP_CLIENTS[client_key] = client
-    return BINANCE_HTTP_CLIENTS[client_key]
+        COINBASE_HTTP_CLIENTS[client_key] = client
+    return COINBASE_HTTP_CLIENTS[client_key]
 
 
 @lru_cache(1)
@@ -108,7 +108,7 @@ def get_cached_binance_spot_instrument_provider(
     client: BinanceHttpClient,
     logger: Logger,
     clock: LiveClock,
-    account_type: BinanceAccountType,
+    account_type: CoinbaseAccountType,
     config: InstrumentProviderConfig,
 ) -> BinanceSpotInstrumentProvider:
     """
@@ -131,10 +131,10 @@ def get_cached_binance_spot_instrument_provider(
 
     Returns
     -------
-    BinanceSpotInstrumentProvider
+    CoinbaseSpotInstrumentProvider
 
     """
-    return BinanceSpotInstrumentProvider(
+    return CoinbaseSpotInstrumentProvider(
         client=client,
         logger=logger,
         clock=clock,
@@ -145,12 +145,12 @@ def get_cached_binance_spot_instrument_provider(
 
 @lru_cache(1)
 def get_cached_binance_futures_instrument_provider(
-    client: BinanceHttpClient,
+    client: CoinbaseHttpClient,
     logger: Logger,
     clock: LiveClock,
-    account_type: BinanceAccountType,
+    account_type: CoinbaseAccountType,
     config: InstrumentProviderConfig,
-) -> BinanceFuturesInstrumentProvider:
+) -> CoinbaseFuturesInstrumentProvider:
     """
     Cache and return an instrument provider for the `Binance Futures` exchange.
 
@@ -174,7 +174,7 @@ def get_cached_binance_futures_instrument_provider(
     BinanceFuturesInstrumentProvider
 
     """
-    return BinanceFuturesInstrumentProvider(
+    return CoinbaseFuturesInstrumentProvider(
         client=client,
         logger=logger,
         clock=clock,
@@ -192,14 +192,14 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
     def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
-        config: BinanceDataClientConfig,
+        config: CoinbaseDataClientConfig,
         msgbus: MessageBus,
         cache: Cache,
         clock: LiveClock,
         logger: Logger,
-    ) -> Union[BinanceSpotDataClient, BinanceFuturesDataClient]:
+    ) -> Union[CoinbaseSpotDataClient, CoinbaseFuturesDataClient]:
         """
-        Create a new Binance data client.
+        Create a new Coinbase data client.
 
         Parameters
         ----------
@@ -207,7 +207,7 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
             The event loop for the client.
         name : str
             The client name.
-        config : BinanceDataClientConfig
+        config : CoinbaseDataClientConfig
             The client configuration.
         msgbus : MessageBus
             The message bus for the client.
@@ -220,16 +220,16 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
 
         Returns
         -------
-        BinanceSpotDataClient or BinanceFuturesDataClient
+        CoinbaseSpotDataClient or CoinbaseFuturesDataClient
 
         Raises
         ------
         ValueError
-            If `config.account_type` is not a valid `BinanceAccountType`.
+            If `config.account_type` is not a valid `CoinbaseAccountType`.
 
         """
         # Get HTTP client singleton
-        client: BinanceHttpClient = get_cached_binance_http_client(
+        client: CoinbaseHttpClient = get_cached_coinbase_http_client(
             loop=loop,
             clock=clock,
             logger=logger,
@@ -247,7 +247,7 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
             is_us=config.us,
         )
 
-        provider: Union[BinanceSpotInstrumentProvider, BinanceFuturesInstrumentProvider]
+        provider: Union[CoinbaseSpotInstrumentProvider, BinanceFuturesInstrumentProvider]
         if config.account_type.is_spot_or_margin:
             # Get instrument provider singleton
             provider = get_cached_binance_spot_instrument_provider(
@@ -259,7 +259,7 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
             )
 
             # Create client
-            return BinanceSpotDataClient(
+            return CoinbaseSpotDataClient(
                 loop=loop,
                 client=client,
                 msgbus=msgbus,
@@ -273,7 +273,7 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
             )
         else:
             # Get instrument provider singleton
-            provider = get_cached_binance_futures_instrument_provider(
+            provider = get_cached_coinbase_futures_instrument_provider(
                 client=client,
                 logger=logger,
                 clock=clock,
@@ -282,7 +282,7 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
             )
 
             # Create client
-            return BinanceFuturesDataClient(
+            return CoinbaseFuturesDataClient(
                 loop=loop,
                 client=client,
                 msgbus=msgbus,
@@ -296,23 +296,23 @@ class BinanceLiveDataClientFactory(LiveDataClientFactory):
             )
 
 
-class BinanceLiveExecClientFactory(LiveExecClientFactory):
+class CoinbaseLiveExecClientFactory(LiveExecClientFactory):
     """
-    Provides a `Binance` live execution client factory.
+    Provides a `Coinbase` live execution client factory.
     """
 
     @staticmethod
     def create(  # type: ignore
         loop: asyncio.AbstractEventLoop,
         name: str,
-        config: BinanceExecClientConfig,
+        config: CoinbaseExecClientConfig,
         msgbus: MessageBus,
         cache: Cache,
         clock: LiveClock,
         logger: Logger,
-    ) -> Union[BinanceSpotExecutionClient, BinanceFuturesExecutionClient]:
+    ) -> Union[CoinbaseSpotExecutionClient, CoinbaseFuturesExecutionClient]:
         """
-        Create a new Binance execution client.
+        Create a new Coinbase execution client.
 
         Parameters
         ----------
@@ -320,7 +320,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
             The event loop for the client.
         name : str
             The client name.
-        config : BinanceExecClientConfig
+        config : CoinbaseExecClientConfig
             The configuration for the client.
         msgbus : MessageBus
             The message bus for the client.
@@ -342,7 +342,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
 
         """
         # Get HTTP client singleton
-        client: BinanceHttpClient = get_cached_binance_http_client(
+        client: CoinbaseHttpClient = get_cached_coinbase_http_client(
             loop=loop,
             clock=clock,
             logger=logger,
@@ -360,10 +360,10 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
             is_us=config.us,
         )
 
-        provider: Union[BinanceSpotInstrumentProvider, BinanceFuturesInstrumentProvider]
+        provider: Union[CoinbaseSpotInstrumentProvider, CoinbaseFuturesInstrumentProvider]
         if config.account_type.is_spot or config.account_type.is_margin:
             # Get instrument provider singleton
-            provider = get_cached_binance_spot_instrument_provider(
+            provider = get_cached_coinbase_spot_instrument_provider(
                 client=client,
                 logger=logger,
                 clock=clock,
@@ -372,7 +372,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
             )
 
             # Create client
-            return BinanceSpotExecutionClient(
+            return CoinbaseSpotExecutionClient(
                 loop=loop,
                 client=client,
                 msgbus=msgbus,
@@ -386,7 +386,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
             )
         else:
             # Get instrument provider singleton
-            provider = get_cached_binance_futures_instrument_provider(
+            provider = get_cached_coinbase_futures_instrument_provider(
                 client=client,
                 logger=logger,
                 clock=clock,
@@ -395,7 +395,7 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
             )
 
             # Create client
-            return BinanceFuturesExecutionClient(
+            return CoinbaseFuturesExecutionClient(
                 loop=loop,
                 client=client,
                 msgbus=msgbus,
@@ -409,40 +409,40 @@ class BinanceLiveExecClientFactory(LiveExecClientFactory):
             )
 
 
-def _get_api_key(account_type: BinanceAccountType, is_testnet: bool) -> str:
+def _get_api_key(account_type: CoinbaseAccountType, is_testnet: bool) -> str:
     if is_testnet:
         if account_type.is_spot_or_margin:
-            return os.environ["BINANCE_TESTNET_API_KEY"]
+            return os.environ["COINBASE_TESTNET_API_KEY"]
         else:
-            return os.environ["BINANCE_FUTURES_TESTNET_API_KEY"]
+            return os.environ["COINBASE_FUTURES_TESTNET_API_KEY"]
 
     if account_type.is_spot_or_margin:
-        return os.environ["BINANCE_API_KEY"]
+        return os.environ["COINBASE_API_KEY"]
     else:
-        return os.environ["BINANCE_FUTURES_API_KEY"]
+        return os.environ["COINBASE_FUTURES_API_KEY"]
 
 
-def _get_api_secret(account_type: BinanceAccountType, is_testnet: bool) -> str:
+def _get_api_secret(account_type: CoinbaseAccountType, is_testnet: bool) -> str:
     if is_testnet:
         if account_type.is_spot_or_margin:
-            return os.environ["BINANCE_TESTNET_API_SECRET"]
+            return os.environ["COINBASE_TESTNET_API_SECRET"]
         else:
-            return os.environ["BINANCE_FUTURES_TESTNET_API_SECRET"]
+            return os.environ["COINBASE_FUTURES_TESTNET_API_SECRET"]
 
     if account_type.is_spot_or_margin:
-        return os.environ["BINANCE_API_SECRET"]
+        return os.environ["COINBASE_API_SECRET"]
     else:
-        return os.environ["BINANCE_FUTURES_API_SECRET"]
+        return os.environ["COINBASE_FUTURES_API_SECRET"]
 
 
-def _get_http_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us: bool) -> str:
+def _get_http_base_url(account_type: CoinbaseAccountType, is_testnet: bool, is_us: bool) -> str:
     # Testnet base URLs
     if is_testnet:
         if account_type.is_spot_or_margin:
             return "https://testnet.binance.vision"
-        elif account_type == BinanceAccountType.FUTURES_USDT:
+        elif account_type == CoinbaseAccountType.FUTURES_USDT:
             return "https://testnet.binancefuture.com"
-        elif account_type == BinanceAccountType.FUTURES_COIN:
+        elif account_type == CoinbaseAccountType.FUTURES_COIN:
             return "https://testnet.binancefuture.com"
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
@@ -455,9 +455,9 @@ def _get_http_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us
         return f"https://api.binance.{top_level_domain}"
     elif account_type.is_margin:
         return f"https://sapi.binance.{top_level_domain}"
-    elif account_type == BinanceAccountType.FUTURES_USDT:
+    elif account_type == CoinbaseAccountType.FUTURES_USDT:
         return f"https://fapi.binance.{top_level_domain}"
-    elif account_type == BinanceAccountType.FUTURES_COIN:
+    elif account_type == CoinbaseAccountType.FUTURES_COIN:
         return f"https://dapi.binance.{top_level_domain}"
     else:
         raise RuntimeError(  # pragma: no cover (design-time error)
@@ -465,14 +465,14 @@ def _get_http_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us
         )
 
 
-def _get_ws_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us: bool) -> str:
+def _get_ws_base_url(account_type: CoinbaseAccountType, is_testnet: bool, is_us: bool) -> str:
     # Testnet base URLs
     if is_testnet:
         if account_type.is_spot_or_margin:
             return "wss://testnet.binance.vision"
-        elif account_type == BinanceAccountType.FUTURES_USDT:
+        elif account_type == CoinbaseAccountType.FUTURES_USDT:
             return "wss://stream.binancefuture.com"
-        elif account_type == BinanceAccountType.FUTURES_COIN:
+        elif account_type == CoinbaseAccountType.FUTURES_COIN:
             raise ValueError("no testnet for COIN-M futures")
         else:
             raise RuntimeError(  # pragma: no cover (design-time error)
@@ -483,9 +483,9 @@ def _get_ws_base_url(account_type: BinanceAccountType, is_testnet: bool, is_us: 
     top_level_domain: str = "us" if is_us else "com"
     if account_type.is_spot_or_margin:
         return f"wss://stream.binance.{top_level_domain}:9443"
-    elif account_type == BinanceAccountType.FUTURES_USDT:
+    elif account_type == CoinbaseAccountType.FUTURES_USDT:
         return f"wss://fstream.binance.{top_level_domain}"
-    elif account_type == BinanceAccountType.FUTURES_COIN:
+    elif account_type == CoinbaseAccountType.FUTURES_COIN:
         return f"wss://dstream.binance.{top_level_domain}"
     else:
         raise RuntimeError(

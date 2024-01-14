@@ -21,7 +21,7 @@ import msgspec
 ################################################################################
 
 
-class BinanceListenKey(msgspec.Struct):
-    """HTTP response from creating a new `Binance` user listen key."""
+class CoinbaseListenKey(msgspec.Struct):
+    """HTTP response from creating a new `Coinbase` user listen key."""
 
     listenKey: str

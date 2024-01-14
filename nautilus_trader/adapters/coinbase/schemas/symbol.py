@@ -16,7 +16,7 @@
 import json
 from typing import Optional
 
-from nautilus_trader.adapters.binance.common.enums import BinanceAccountType
+from nautilus_trader.adapters.coinbase.common.enums import CoinbaseAccountType
 
 
 ################################################################################
@@ -24,8 +24,8 @@ from nautilus_trader.adapters.binance.common.enums import BinanceAccountType
 ################################################################################
 
 
-class BinanceSymbol(str):
-    """Binance compatible symbol."""
+class CoinbaseSymbol(str):
+    """Coinbase compatible symbol."""
 
     def __new__(cls, symbol: Optional[str]):
         if symbol is not None:
@@ -35,7 +35,7 @@ class BinanceSymbol(str):
                 symbol.upper().replace(" ", "").replace("/", "").replace("-PERP", ""),
             )
 
-    def parse_binance_to_internal(self, account_type: BinanceAccountType) -> str:
+    def parse_coinbase_to_internal(self, account_type: CoinbaseAccountType) -> str:
         if account_type.is_spot_or_margin:
             return str(self)
 
@@ -48,14 +48,14 @@ class BinanceSymbol(str):
             return str(self) + "-PERP"
 
 
-class BinanceSymbols(str):
-    """Binance compatible list of symbols."""
+class CoinbaseSymbols(str):
+    """Coinbase compatible list of symbols."""
 
     def __new__(cls, symbols: Optional[list[str]]):
         if symbols is not None:
-            binance_symbols: list[BinanceSymbol] = [BinanceSymbol(symbol) for symbol in symbols]
-            return super().__new__(cls, json.dumps(binance_symbols).replace(" ", ""))
+            coinbase_symbols: list[CoinbaseSymbol] = [CoinbaseSymbol(symbol) for symbol in symbols]
+            return super().__new__(cls, json.dumps(coinbase_symbols).replace(" ", ""))
 
-    def parse_str_to_list(self) -> list[BinanceSymbol]:
-        binance_symbols: list[BinanceSymbol] = json.loads(self)
+    def parse_str_to_list(self) -> list[CoinbaseSymbol]:
+        binance_symbols: list[CoinbaseSymbol] = json.loads(self)
         return binance_symbols
