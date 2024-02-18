@@ -225,7 +225,7 @@ class CoinbaseKline(msgspec.Struct, array_like=True):
     taker_quote_volume: str
     ignore: str
 
-    def parse_to_binance_bar(
+    def parse_to_coinbase_bar(
         self,
         bar_type: BarType,
         ts_init: int,
@@ -360,7 +360,6 @@ class CoinbaseOrderBookData(msgspec.Struct, frozen=True):
 
     T: Optional[int] = None  # FUTURES only, transaction time
     pu: Optional[int] = None  # FUTURES only, previous final update ID
-
     ps: Optional[str] = None  # COIN-M FUTURES only, pair
 
     def parse_to_order_book_deltas(
@@ -624,7 +623,7 @@ class CoinbaseCandlestick(msgspec.Struct, frozen=True):
     Q: str  # Taker buy quote asset volume
     B: str  # Ignore
 
-    def parse_to_binance_bar(
+    def parse_to_coinbase_bar(
         self,
         instrument_id: InstrumentId,
         enum_parser: CoinbaseEnumParser,
@@ -632,7 +631,7 @@ class CoinbaseCandlestick(msgspec.Struct, frozen=True):
     ) -> CoinbaseBar:
         bar_type = BarType(
             instrument_id=instrument_id,
-            bar_spec=enum_parser.parse_binance_kline_interval_to_bar_spec(self.i),
+            bar_spec=enum_parser.parse_coinbase_kline_interval_to_bar_spec(self.i),
             aggregation_source=AggregationSource.EXTERNAL,
         )
         return CoinbaseBar(

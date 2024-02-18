@@ -19,12 +19,11 @@ from typing import Optional
 import msgspec
 
 from nautilus_trader.adapters.coinbase.constants import COINBASE_VENUE
-from nautilus_trader.adapters.coinbase.enums import CoinbaseAccountType
 from nautilus_trader.adapters.coinbase.enums import CoinbaseSymbolFilterType
 from nautilus_trader.adapters.coinbase.schemas.market import CoinbaseSymbolFilter
 from nautilus_trader.adapters.coinbase.schemas.symbol import CoinbaseSymbol
 from nautilus_trader.adapters.coinbase.http.client import CoinbaseHttpClient
-from nautilus_trader.adapters.coinbase.http.error import CoinbaseClientError
+from nautilus_trader.adapters.coinbase.http.errors import CoinbaseClientError
 from nautilus_trader.adapters.coinbase.http.market import CoinbaseMarketHttpAPI
 from nautilus_trader.adapters.coinbase.http.wallet import CoinbasetWalletHttpAPI
 from nautilus_trader.adapters.coinbase.schemas.market import CoinbaseSymbolInfo
