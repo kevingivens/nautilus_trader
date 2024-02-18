@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -52,7 +52,7 @@ config_node = TradingNodeConfig(
     # message_bus=MessageBusConfig(
     #     database=DatabaseConfig(),
     #     encoding="json",
-    #     stream="quoters",
+    #     streams_prefix="quoters",
     #     use_instance_id=False,
     #     timestamps_as_iso8601=True,
     #     # types_filter=[QuoteTick],

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,12 +14,12 @@
 # -------------------------------------------------------------------------------------------------
 
 import copy
-import sys
 from collections import Counter
 
 import pytest
 
 from nautilus_trader.backtest.node import BacktestNode
+from nautilus_trader.backtest.results import BacktestResult
 from nautilus_trader.config import BacktestDataConfig
 from nautilus_trader.config import BacktestEngineConfig
 from nautilus_trader.config import BacktestRunConfig
@@ -39,20 +39,19 @@ from nautilus_trader.test_kit.stubs.persistence import TestPersistenceStubs
 from tests.integration_tests.adapters.betfair.test_kit import BetfairTestStubs
 
 
-@pytest.mark.skipif(sys.platform == "win32", reason="failing on Windows")
 class TestPersistenceStreaming:
     def setup(self) -> None:
         self.catalog: ParquetDataCatalog | None = None
 
-    def _run_default_backtest(self, betfair_catalog):
-        self.catalog = betfair_catalog
+    def _run_default_backtest(self, catalog_betfair: ParquetDataCatalog) -> list[BacktestResult]:
+        self.catalog = catalog_betfair
         instrument = self.catalog.instruments()[0]
         run_config = BetfairTestStubs.betfair_backtest_run_config(
-            catalog_path=betfair_catalog.path,
+            catalog_path=catalog_betfair.path,
             catalog_fs_protocol="file",
             instrument_id=instrument.id,
             flush_interval_ms=5_000,
-            bypass_logging=False,
+            bypass_logging=True,
         )
 
         node = BacktestNode(configs=[run_config])
@@ -62,17 +61,17 @@ class TestPersistenceStreaming:
 
         return backtest_result
 
-    def test_feather_writer(self, betfair_catalog):
+    def test_feather_writer(self, catalog_betfair: ParquetDataCatalog) -> None:
         # Arrange
-        backtest_result = self._run_default_backtest(betfair_catalog)
+        backtest_result = self._run_default_backtest(catalog_betfair)
         instance_id = backtest_result[0].instance_id
 
         # Assert
-        result = betfair_catalog.read_backtest(
+        result = catalog_betfair.read_backtest(
             instance_id=instance_id,
             raise_on_failed_deserialize=True,
         )
-        result = dict(Counter([r.__class__.__name__ for r in result]))
+        result = dict(Counter([r.__class__.__name__ for r in result]))  # type: ignore [assignment]
 
         expected = {
             "AccountState": 398,
@@ -91,12 +90,12 @@ class TestPersistenceStreaming:
 
         assert result == expected
 
-    def test_feather_writer_generic_data(
+    def test_feather_writer_custom_data(
         self,
-        betfair_catalog: ParquetDataCatalog,
+        catalog_betfair: ParquetDataCatalog,
     ) -> None:
         # Arrange
-        self.catalog = betfair_catalog
+        self.catalog = catalog_betfair
         TestPersistenceStubs.setup_news_event_persistence()
 
         # Load news events into catalog
@@ -142,10 +141,10 @@ class TestPersistenceStreaming:
 
     def test_feather_writer_signal_data(
         self,
-        betfair_catalog: ParquetDataCatalog,
+        catalog_betfair: ParquetDataCatalog,
     ) -> None:
         # Arrange
-        self.catalog = betfair_catalog
+        self.catalog = catalog_betfair
         instrument_id = self.catalog.instruments()[0].id
         data_config = BacktestDataConfig(
             catalog_path=self.catalog.path,
@@ -164,7 +163,7 @@ class TestPersistenceStreaming:
                     ImportableStrategyConfig(
                         strategy_path="nautilus_trader.examples.strategies.signal_strategy:SignalStrategy",
                         config_path="nautilus_trader.examples.strategies.signal_strategy:SignalStrategyConfig",
-                        config={"instrument_id": instrument_id},
+                        config={"instrument_id": instrument_id.value},
                     ),
                 ],
             ),
@@ -200,10 +199,10 @@ class TestPersistenceStreaming:
 
     def test_config_write(
         self,
-        betfair_catalog: ParquetDataCatalog,
+        catalog_betfair: ParquetDataCatalog,
     ) -> None:
         # Arrange
-        self.catalog = betfair_catalog
+        self.catalog = catalog_betfair
         instrument_id = self.catalog.instruments()[0].id
         streaming = BetfairTestStubs.streaming_config(
             catalog_path=self.catalog.path,
@@ -222,7 +221,7 @@ class TestPersistenceStreaming:
                     ImportableStrategyConfig(
                         strategy_path="nautilus_trader.examples.strategies.signal_strategy:SignalStrategy",
                         config_path="nautilus_trader.examples.strategies.signal_strategy:SignalStrategyConfig",
-                        config={"instrument_id": instrument_id},
+                        config={"instrument_id": instrument_id.value},
                     ),
                 ],
             ),
@@ -244,10 +243,10 @@ class TestPersistenceStreaming:
     @pytest.mark.skip(reason="Reading backtests appears broken")
     def test_feather_reader_returns_cython_objects(
         self,
-        betfair_catalog: ParquetDataCatalog,
+        catalog_betfair: ParquetDataCatalog,
     ) -> None:
         # Arrange
-        backtest_result = self._run_default_backtest(betfair_catalog)
+        backtest_result = self._run_default_backtest(catalog_betfair)
         instance_id = backtest_result[0].instance_id
 
         # Act
@@ -263,10 +262,10 @@ class TestPersistenceStreaming:
 
     def test_feather_reader_order_book_deltas(
         self,
-        betfair_catalog: ParquetDataCatalog,
+        catalog_betfair: ParquetDataCatalog,
     ) -> None:
         # Arrange
-        backtest_result = self._run_default_backtest(betfair_catalog)
+        backtest_result = self._run_default_backtest(catalog_betfair)
         book = OrderBook(
             instrument_id=InstrumentId.from_str("1.166564490-237491-0.0.BETFAIR"),
             book_type=BookType.L2_MBP,
@@ -288,13 +287,13 @@ class TestPersistenceStreaming:
 
     def test_read_backtest(
         self,
-        betfair_catalog: ParquetDataCatalog,
+        catalog_betfair: ParquetDataCatalog,
     ) -> None:
         # Arrange
-        [backtest_result] = self._run_default_backtest(betfair_catalog)
+        [backtest_result] = self._run_default_backtest(catalog_betfair)
 
         # Act
-        data = betfair_catalog.read_backtest(backtest_result.instance_id)
+        data = catalog_betfair.read_backtest(backtest_result.instance_id)
         counts = dict(Counter([d.__class__.__name__ for d in data]))
 
         # Assert

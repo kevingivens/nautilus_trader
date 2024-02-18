@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -33,10 +33,9 @@ from nautilus_trader.accounting.accounts.base cimport Account
 from nautilus_trader.accounting.factory cimport AccountFactory
 from nautilus_trader.accounting.manager cimport AccountsManager
 from nautilus_trader.cache.base cimport CacheFacade
+from nautilus_trader.common.component cimport LogColor
+from nautilus_trader.common.component cimport Logger
 from nautilus_trader.common.component cimport MessageBus
-from nautilus_trader.common.logging cimport LogColor
-from nautilus_trader.common.logging cimport Logger
-from nautilus_trader.common.logging cimport LoggerAdapter
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.rust.model cimport AccountType
 from nautilus_trader.core.rust.model cimport OrderSide
@@ -88,8 +87,6 @@ cdef class Portfolio(PortfolioFacade):
         The read-only cache for the portfolio.
     clock : Clock
         The clock for the portfolio.
-    logger : Logger
-        The logger for the portfolio.
     """
 
     def __init__(
@@ -97,16 +94,15 @@ cdef class Portfolio(PortfolioFacade):
         MessageBus msgbus not None,
         CacheFacade cache not None,
         Clock clock not None,
-        Logger logger = None,
     ):
         self._clock = clock
-        self._log = LoggerAdapter(component_name=type(self).__name__, logger=logger)
+        self._log = Logger(name=type(self).__name__)
         self._msgbus = msgbus
         self._cache = cache
         self._accounts = AccountsManager(
             cache=cache,
             clock=clock,
-            log=self._log,
+            logger=self._log,
         )
 
         self._venue = None  # Venue for specific portfolio behavior (Interactive Brokers)
@@ -546,14 +542,7 @@ cdef class Portfolio(PortfolioFacade):
 
         self._log.debug(f"Updated {event}.")
 
-    cpdef void reset(self):
-        """
-        Reset the portfolio.
-
-        All stateful fields are reset to their initial value.
-        """
-        self._log.debug(f"Resetting...")
-
+    def _reset(self) -> None:
         self._net_positions.clear()
         self._unrealized_pnls.clear()
         self._pending_calcs.clear()
@@ -561,7 +550,31 @@ cdef class Portfolio(PortfolioFacade):
 
         self.initialized = False
 
-        self._log.info("Reset.")
+    def reset(self) -> None:
+        """
+        Reset the portfolio.
+
+        All stateful fields are reset to their initial value.
+
+        """
+        self._log.debug(f"RESETTING...")
+
+        self._reset()
+
+        self._log.info("READY.")
+
+    def dispose(self) -> None:
+        """
+        Dispose of the portfolio.
+
+        All stateful fields are reset to their initial value.
+
+        """
+        self._log.debug(f"DISPOSING...")
+
+        self._reset()
+
+        self._log.info("DISPOSED.")
 
 # -- QUERIES --------------------------------------------------------------------------------------
 

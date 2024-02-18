@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -23,12 +23,11 @@ from nautilus_trader.backtest.exchange import SimulatedExchange
 from nautilus_trader.backtest.execution_client import BacktestExecClient
 from nautilus_trader.backtest.models import FillModel
 from nautilus_trader.common.actor import Actor
-from nautilus_trader.common.clock import TestClock
 from nautilus_trader.common.component import MessageBus
-from nautilus_trader.common.logging import Logger
+from nautilus_trader.common.component import TestClock
 from nautilus_trader.config import ActorConfig
+from nautilus_trader.config import ExecAlgorithmConfig
 from nautilus_trader.config import StrategyConfig
-from nautilus_trader.config.common import ExecAlgorithmConfig
 from nautilus_trader.data.engine import DataEngine
 from nautilus_trader.examples.strategies.blank import MyStrategy
 from nautilus_trader.examples.strategies.blank import MyStrategyConfig
@@ -60,14 +59,11 @@ class TestTrader:
     def setup(self) -> None:
         # Fixture Setup
         self.clock = TestClock()
-        self.logger = Logger(self.clock, bypass=True)
-
         self.trader_id = TestIdStubs.trader_id()
 
         self.msgbus = MessageBus(
             trader_id=self.trader_id,
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.cache = TestComponentStubs.cache()
@@ -76,14 +72,12 @@ class TestTrader:
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.data_engine = DataEngine(
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.data_engine.process(USDJPY_SIM)
@@ -92,7 +86,6 @@ class TestTrader:
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.exchange = SimulatedExchange(
@@ -110,7 +103,6 @@ class TestTrader:
             modules=[],
             fill_model=FillModel(),
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.data_client = BacktestMarketDataClient(
@@ -118,7 +110,6 @@ class TestTrader:
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.exec_client = BacktestExecClient(
@@ -126,7 +117,6 @@ class TestTrader:
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self.clock,
-            logger=self.logger,
         )
 
         self.risk_engine = RiskEngine(
@@ -134,7 +124,6 @@ class TestTrader:
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self.clock,
-            logger=self.logger,
         )
 
         # Wire up components
@@ -150,7 +139,6 @@ class TestTrader:
             risk_engine=self.risk_engine,
             exec_engine=self.exec_engine,
             clock=self.clock,
-            logger=self.logger,
         )
 
     def test_initialize_trader(self) -> None:

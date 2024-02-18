@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -25,7 +25,7 @@ use indexmap::IndexMap;
 use nautilus_core::uuid::UUID4;
 use nautilus_model::identifiers::trader_id::TraderId;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json;
 use ustr::Ustr;
 
 use crate::{handlers::MessageHandler, redis::handle_messages_with_redis};
@@ -171,10 +171,12 @@ impl MessageBus {
         trader_id: TraderId,
         instance_id: UUID4,
         name: Option<String>,
-        config: Option<HashMap<String, Value>>,
+        config: Option<HashMap<String, serde_json::Value>>,
     ) -> Self {
         let config = config.unwrap_or_default();
-        let has_backing = config.get("database").map_or(false, |v| v != &Value::Null);
+        let has_backing = config
+            .get("database")
+            .map_or(false, |v| v != &serde_json::Value::Null);
         let tx = if has_backing {
             let (tx, rx) = channel::<BusMessage>();
             thread::spawn(move || {
@@ -274,7 +276,7 @@ impl MessageBus {
     /// Deregisters the given `handler` for the `endpoint` address.
     pub fn deregister(&mut self, endpoint: &str) {
         // Removes entry if it exists for endpoint
-        self.endpoints.remove(&Ustr::from(endpoint));
+        self.endpoints.shift_remove(&Ustr::from(endpoint));
     }
 
     /// Subscribes the given `handler` to the `topic`.
@@ -307,7 +309,7 @@ impl MessageBus {
     /// Unsubscribes the given `handler` from the `topic`.
     pub fn unsubscribe(&mut self, topic: &str, handler: MessageHandler) {
         let sub = Subscription::new(Ustr::from(topic), handler, self.subscriptions.len(), None);
-        self.subscriptions.remove(&sub);
+        self.subscriptions.shift_remove(&sub);
     }
 
     /// Returns the handler for the given `endpoint`.
@@ -343,7 +345,7 @@ impl MessageBus {
     /// index.
     #[must_use]
     pub fn response_handler(&mut self, correlation_id: &UUID4) -> Option<MessageHandler> {
-        self.correlation_index.remove(correlation_id)
+        self.correlation_index.shift_remove(correlation_id)
     }
 
     #[must_use]
@@ -404,7 +406,7 @@ impl MessageBus {
         rx: Receiver<BusMessage>,
         trader_id: TraderId,
         instance_id: UUID4,
-        config: HashMap<String, Value>,
+        config: HashMap<String, serde_json::Value>,
     ) {
         let database_config = config
             .get("database")

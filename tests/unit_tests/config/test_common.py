@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,23 +13,102 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-import msgspec.json
+from decimal import Decimal
+
+import msgspec
 import pandas as pd
 import pytest
 
+from nautilus_trader.common.config import CUSTOM_DECODINGS
+from nautilus_trader.common.config import CUSTOM_ENCODINGS
+from nautilus_trader.config import DatabaseConfig
 from nautilus_trader.config import ImportableConfig
-from nautilus_trader.config.common import CUSTOM_DECODINGS
-from nautilus_trader.config.common import CUSTOM_ENCODINGS
-from nautilus_trader.config.common import msgspec_decoding_hook
-from nautilus_trader.config.common import msgspec_encoding_hook
-from nautilus_trader.config.common import register_config_decoding
-from nautilus_trader.config.common import register_config_encoding
+from nautilus_trader.config import ImportableStrategyConfig
+from nautilus_trader.config import InstrumentProviderConfig
+from nautilus_trader.config import StrategyFactory
+from nautilus_trader.config import msgspec_decoding_hook
+from nautilus_trader.config import msgspec_encoding_hook
+from nautilus_trader.config import register_config_decoding
+from nautilus_trader.config import register_config_encoding
 from nautilus_trader.core.uuid import UUID4
+from nautilus_trader.examples.strategies.ema_cross import EMACrossConfig
 from nautilus_trader.model.data import BarType
 from nautilus_trader.model.identifiers import ComponentId
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
+from nautilus_trader.test_kit.providers import TestInstrumentProvider
+
+
+def test_equality_hash_repr() -> None:
+    # Arrange
+    config1 = DatabaseConfig()
+    config2 = DatabaseConfig(username="user")
+
+    # Act, Assert
+    assert config1 == config1
+    assert config1 != config2
+    assert isinstance(hash(config1), int)
+    assert (
+        repr(config1)
+        == "DatabaseConfig(type='redis', host=None, port=None, username=None, password=None, ssl=False)"
+    )
+
+
+def test_config_id() -> None:
+    # Arrange
+    config = DatabaseConfig()
+
+    # Act, Assert
+    assert config.id == "18a63bfe7acf0b0126940542dc4e261c58e326db70194e5c65949e26a2f5bf1b"
+
+
+def test_fully_qualified_name() -> None:
+    # Arrange
+    config = DatabaseConfig()
+
+    # Act, Assert
+    assert config.fully_qualified_name() == "nautilus_trader.common.config:DatabaseConfig"
+
+
+def test_dict() -> None:
+    # Arrange
+    config = DatabaseConfig()
+
+    # Act, Assert
+    assert config.dict() == {
+        "type": "redis",
+        "host": None,
+        "port": None,
+        "username": None,
+        "password": None,
+        "ssl": False,
+    }
+
+
+def test_json() -> None:
+    # Arrange
+    config = DatabaseConfig()
+
+    # Act, Assert
+    assert (
+        config.json()
+        == b'{"type":"redis","host":null,"port":null,"username":null,"password":null,"ssl":false}'
+    )
+
+
+def test_json_primitives() -> None:
+    # Arrange
+    config = InstrumentProviderConfig(load_ids=frozenset([InstrumentId.from_str("ESH4.GLBX")]))
+
+    # Act, Assert
+    assert config.json_primitives() == {
+        "load_all": False,
+        "load_ids": ["ESH4.GLBX"],
+        "filters": None,
+        "filter_callable": None,
+        "log_warnings": True,
+    }
 
 
 def test_importable_config_simple() -> None:
@@ -48,6 +127,29 @@ def test_importable_config_simple() -> None:
 
     # Assert
     assert config.api_key == "abc"
+
+
+def test_importable_strategy_config_typing() -> None:
+    # Arrange
+    AUDUSD_SIM = TestInstrumentProvider.default_fx_ccy("AUD/USD")
+    strategy_config = EMACrossConfig(
+        instrument_id=AUDUSD_SIM.id,
+        bar_type=BarType.from_str("AUD/USD.SIM-1-MINUTE-MID-INTERNAL"),
+        fast_ema_period=10,
+        slow_ema_period=20,
+        trade_size=Decimal(1_000_000),
+    )
+    importable_config = ImportableStrategyConfig(
+        strategy_path="nautilus_trader.examples.strategies.ema_cross:EMACross",
+        config_path="nautilus_trader.examples.strategies.ema_cross:EMACrossConfig",
+        config=strategy_config.json_primitives(),
+    )
+
+    # Act
+    strategy = StrategyFactory.create(importable_config)
+
+    # Assert
+    assert strategy.config == strategy_config
 
 
 def test_register_custom_encodings() -> None:

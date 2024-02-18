@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -40,7 +40,11 @@ from nautilus_trader.model.identifiers import TraderId
 # Configure the trading node
 config_node = TradingNodeConfig(
     trader_id=TraderId("TESTER-001"),
-    logging=LoggingConfig(log_level="INFO"),
+    logging=LoggingConfig(
+        log_level="INFO",
+        # log_level_file="DEBUG",
+        # log_file_format="json",
+    ),
     exec_engine=LiveExecEngineConfig(
         reconciliation=True,
         reconciliation_lookback_mins=1440,
@@ -56,7 +60,7 @@ config_node = TradingNodeConfig(
     #     encoding="json",
     #     timestamps_as_iso8601=True,
     #     buffer_interval_ms=100,
-    #     stream="quoters",
+    #     streams_prefix="quoters",
     #     use_instance_id=False,
     #     # types_filter=[QuoteTick],
     #     autotrim_mins=30,
@@ -65,6 +69,7 @@ config_node = TradingNodeConfig(
     # snapshot_orders=True,
     # snapshot_positions=True,
     # snapshot_positions_interval=5.0,
+    # streaming=StreamingConfig(catalog_path="catalog"),
     data_clients={
         "BINANCE": BinanceDataClientConfig(
             api_key=None,  # 'BINANCE_API_KEY' env var

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,6 +17,7 @@ import pickle
 import sys
 
 import msgspec
+import pandas as pd
 import pytest
 from click.testing import CliRunner
 
@@ -28,9 +29,9 @@ from nautilus_trader.config import BacktestEngineConfig
 from nautilus_trader.config import BacktestRunConfig
 from nautilus_trader.config import BacktestVenueConfig
 from nautilus_trader.config import ImportableActorConfig
-from nautilus_trader.config.common import NautilusConfig
-from nautilus_trader.config.common import msgspec_encoding_hook
-from nautilus_trader.config.common import tokenize_config
+from nautilus_trader.config import NautilusConfig
+from nautilus_trader.config import msgspec_encoding_hook
+from nautilus_trader.config import tokenize_config
 from nautilus_trader.model.data import InstrumentStatus
 from nautilus_trader.model.data import OrderBookDelta
 from nautilus_trader.model.data import QuoteTick
@@ -39,8 +40,8 @@ from nautilus_trader.model.identifiers import ClientId
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.test_kit.mocks.data import NewsEventData
-from nautilus_trader.test_kit.mocks.data import aud_usd_data_loader
-from nautilus_trader.test_kit.mocks.data import data_catalog_setup
+from nautilus_trader.test_kit.mocks.data import load_catalog_with_stub_quote_ticks_audusd
+from nautilus_trader.test_kit.mocks.data import setup_catalog
 from nautilus_trader.test_kit.providers import TestDataProvider
 from nautilus_trader.test_kit.providers import TestInstrumentProvider
 from nautilus_trader.test_kit.stubs.config import TestConfigStubs
@@ -51,8 +52,8 @@ from nautilus_trader.test_kit.stubs.persistence import TestPersistenceStubs
 class TestBacktestConfig:
     def setup(self):
         self.fs_protocol = "file"
-        self.catalog = data_catalog_setup(protocol=self.fs_protocol)
-        aud_usd_data_loader(self.catalog)
+        self.catalog = setup_catalog(protocol=self.fs_protocol)
+        load_catalog_with_stub_quote_ticks_audusd(self.catalog)
         self.venue = Venue("SIM")
         self.instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=self.venue)
         self.backtest_config = TestConfigStubs.backtest_run_config(catalog=self.catalog)
@@ -92,7 +93,7 @@ class TestBacktestConfig:
             "metadata": None,
         }
 
-    def test_backtest_data_config_generic_data(self):
+    def test_backtest_data_config_custom_data(self):
         # Arrange
         TestPersistenceStubs.setup_news_event_persistence()
         data = TestPersistenceStubs.news_events()
@@ -191,7 +192,7 @@ class TestBacktestConfig:
 
 class TestBacktestConfigParsing:
     def setup(self):
-        self.catalog = data_catalog_setup(protocol="memory", path="/.nautilus/")
+        self.catalog = setup_catalog(protocol="memory", path="/.nautilus/")
         self.venue = Venue("SIM")
         self.instrument = TestInstrumentProvider.default_fx_ccy("AUD/USD", venue=self.venue)
         self.backtest_config = TestConfigStubs.backtest_run_config(catalog=self.catalog)
@@ -260,10 +261,7 @@ class TestBacktestConfigParsing:
     def test_backtest_run_config_id(self) -> None:
         token = self.backtest_config.id
         print("token:", token)
-        value: bytes = msgspec.json.encode(
-            self.backtest_config.dict(),
-            enc_hook=msgspec_encoding_hook,
-        )
+        value: bytes = self.backtest_config.json()
         print("token_value:", value.decode())
         assert token == "1d758e23defb5a69e2449ed03216ef7727c50e12c23730cc0309087ee7e71994"  # UNIX
 
@@ -356,7 +354,7 @@ class TestBacktestConfigParsing:
 
     def test_simulation_modules(self) -> None:
         # Arrange
-        interest_rate_data = TestDataProvider().read_csv("short-term-interest.csv")
+        interest_rate_data: pd.DataFrame = TestDataProvider().read_csv("short-term-interest.csv")
         run_config = TestConfigStubs.backtest_run_config(
             catalog=self.catalog,
             instrument_ids=[self.instrument.id],
@@ -367,10 +365,10 @@ class TestBacktestConfigParsing:
                     account_type="MARGIN",
                     starting_balances=["1_000_000 USD"],
                     modules=[
-                        ImportableActorConfig(  # type: ignore
+                        ImportableActorConfig(
                             actor_path=FXRolloverInterestModule.fully_qualified_name(),
                             config_path=FXRolloverInterestConfig.fully_qualified_name(),
-                            config={"rate_data": interest_rate_data},
+                            config={"rate_data": interest_rate_data.to_json()},
                         ),
                     ],
                 ),

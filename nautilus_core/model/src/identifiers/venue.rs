@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -43,6 +43,12 @@ impl Venue {
         Ok(Self {
             value: Ustr::from(s),
         })
+    }
+
+    pub fn from_str_unchecked(s: &str) -> Self {
+        Self {
+            value: Ustr::from(s),
+        }
     }
 
     #[must_use]

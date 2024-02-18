@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -36,7 +36,6 @@ def exec_client(
     msgbus,
     cache,
     clock,
-    logger,
     venue,
 ):
     SandboxExecutionClient.INSTRUMENTS = [instrument]
@@ -46,7 +45,6 @@ def exec_client(
         msgbus=msgbus,
         cache=cache,
         clock=clock,
-        logger=logger,
         venue=venue.value,
         currency="USD",
         balance=100_000,

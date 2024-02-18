@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,7 +15,34 @@
 
 pub mod bar;
 pub mod delta;
+pub mod depth;
 pub mod order;
 pub mod quote;
-pub mod ticker;
 pub mod trade;
+
+use pyo3::{prelude::*, types::PyCapsule};
+
+use crate::data::Data;
+
+/// Creates a Python `PyCapsule` object containing a Rust `Data` instance.
+///
+/// This function takes ownership of the `Data` instance and encapsulates it within
+/// a `PyCapsule` object, allowing the Rust data to be passed into the Python runtime.
+///
+/// # Panics
+///
+/// This function will panic if the `PyCapsule` creation fails, which may occur if
+/// there are issues with memory allocation or if the `Data` instance cannot be
+/// properly encapsulated.
+///
+/// # Safety
+///
+/// This function is safe as long as the `Data` instance does not violate Rust's
+/// safety guarantees (e.g., no invalid memory access). However, users of the
+/// `PyCapsule` in Python must ensure they understand how to extract and use the
+/// encapsulated `Data` safely, especially when converting the capsule back to a
+/// Rust data structure.
+pub fn data_to_pycapsule(py: Python, data: Data) -> PyObject {
+    let capsule = PyCapsule::new(py, data, None).expect("Error creating `PyCapsule`");
+    capsule.into_py(py)
+}

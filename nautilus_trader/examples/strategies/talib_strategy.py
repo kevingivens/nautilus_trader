@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -119,7 +119,6 @@ class TALibStrategy(Strategy):
 
         # Register the indicators for updating
         self.register_indicator_for_bars(self.bar_type, self.indicator_manager)
-        self.indicator_manager.change_logger(self.log.get_logger())
 
         # Subscribe to live data
         self.subscribe_bars(self.bar_type)

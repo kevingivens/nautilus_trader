@@ -10,14 +10,15 @@
 | Branch    | Version                                                                                                                                             | Status                                                                                                                                                                                            |
 | :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `master`  | ![version](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnautechsystems%2Fnautilus_trader%2Fmaster%2Fversion.json)  | [![build](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml)  |
+| `nightly` | ![version](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnautechsystems%2Fnautilus_trader%2Fnightly%2Fversion.json) | [![build](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml/badge.svg?branch=nightly)](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml) |
 | `develop` | ![version](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnautechsystems%2Fnautilus_trader%2Fdevelop%2Fversion.json) | [![build](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/nautechsystems/nautilus_trader/actions/workflows/build.yml) |
 
 | Platform           | Rust    | Python |
 | :----------------- | :------ | :----- |
-| `Linux (x86_64)`   | 1.74.1+ | 3.10+  |
-| `macOS (x86_64)`   | 1.74.1+ | 3.10+  |
-| `macOS (arm64)`    | 1.74.1+ | 3.10+  |
-| `Windows (x86_64)` | 1.74.1+ | 3.10+  |
+| `Linux (x86_64)`   | 1.76.0+ | 3.10+  |
+| `macOS (x86_64)`   | 1.76.0+ | 3.10+  |
+| `macOS (arm64)`    | 1.76.0+ | 3.10+  |
+| `Windows (x86_64)` | 1.76.0+ | 3.10+  |
 
 - **Website:** https://nautilustrader.io
 - **Docs:** https://docs.nautilustrader.io
@@ -103,9 +104,8 @@ written in Cython, however the libraries can be accessed from both Python and Cy
 ## What is Rust?
 
 [Rust](https://www.rust-lang.org/) is a multi-paradigm programming language designed for performance and safety, especially safe
-concurrency. Rust is blazingly fast and memory-efficient (comparable to C and C++) with no runtime or
-garbage collector. It can power mission-critical systems, run on embedded devices, and easily
-integrates with other languages.
+concurrency. Rust is blazingly fast and memory-efficient (comparable to C and C++) with no garbage collector.
+It can power mission-critical systems, run on embedded devices, and easily integrates with other languages.
 
 Rust’s rich type system and ownership model guarantees memory-safety and thread-safety deterministically —
 eliminating many classes of bugs at compile-time.
@@ -139,15 +139,15 @@ NautilusTrader is designed in a modular way to work with 'adapters' which provid
 connectivity to data providers and/or trading venues - converting their raw API
 into a unified interface. The following integrations are currently supported:
 
-| Name                                                      | ID          | Type                    | Status                                                  | Docs                                                              |
-| :-------------------------------------------------------- | :---------- | :---------------------- | :------------------------------------------------------ | :---------------------------------------------------------------- |
-| [Betfair](https://betfair.com)                            | `BETFAIR`   | Sports betting exchange | ![status](https://img.shields.io/badge/beta-yellow)     | [Guide](https://docs.nautilustrader.io/integrations/betfair.html) |
-| [Binance](https://binance.com)                            | `BINANCE`   | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/stable-green)    | [Guide](https://docs.nautilustrader.io/integrations/binance.html) |
-| [Binance US](https://binance.us)                          | `BINANCE`   | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/stable-green)    | [Guide](https://docs.nautilustrader.io/integrations/binance.html) |
-| [Binance Futures](https://www.binance.com/en/futures)     | `BINANCE`   | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/stable-green)    | [Guide](https://docs.nautilustrader.io/integrations/binance.html) |
-| [Bybit](https://www.bybit.com)                            | `BYBIT`     | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/building-orange) |                                                                   |
-| [Databento](https://databento.com)                        | `DATABENTO` | Data provider           | ![status](https://img.shields.io/badge/building-orange) |                                                                   |
-| [Interactive Brokers](https://www.interactivebrokers.com) | `IB`        | Brokerage (multi-venue) | ![status](https://img.shields.io/badge/beta-yellow)     | [Guide](https://docs.nautilustrader.io/integrations/ib.html)      |
+| Name                                                      | ID                    | Type                    | Status                                                  | Docs                                                              |
+| :-------------------------------------------------------- | :-------------------- | :---------------------- | :------------------------------------------------------ | :---------------------------------------------------------------- |
+| [Betfair](https://betfair.com)                            | `BETFAIR`             | Sports betting exchange | ![status](https://img.shields.io/badge/beta-yellow)     | [Guide](https://docs.nautilustrader.io/integrations/betfair.html) |
+| [Binance](https://binance.com)                            | `BINANCE`             | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/stable-green)    | [Guide](https://docs.nautilustrader.io/integrations/binance.html) |
+| [Binance US](https://binance.us)                          | `BINANCE`             | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/stable-green)    | [Guide](https://docs.nautilustrader.io/integrations/binance.html) |
+| [Binance Futures](https://www.binance.com/en/futures)     | `BINANCE`             | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/stable-green)    | [Guide](https://docs.nautilustrader.io/integrations/binance.html) |
+| [Bybit](https://www.bybit.com)                            | `BYBIT`               | Crypto exchange (CEX)   | ![status](https://img.shields.io/badge/building-orange) |                                                                   |
+| [Databento](https://databento.com)                        | `DATABENTO`           | Data provider           | ![status](https://img.shields.io/badge/building-orange) |                                                                   |
+| [Interactive Brokers](https://www.interactivebrokers.com) | `INTERACTIVE_BROKERS` | Brokerage (multi-venue) | ![status](https://img.shields.io/badge/beta-yellow)     | [Guide](https://docs.nautilustrader.io/integrations/ib.html)      |
 
 Refer to the [Integrations](https://docs.nautilustrader.io/integrations/index.html) documentation for further details.
 
@@ -215,6 +215,7 @@ Documentation of these changes in the release notes are made on a best-effort ba
 ### Branches
 
 - `master` branch will always reflect the source code for the latest released version
+- `nightly` branch may contain experimental features and is generally merged from `develop` branch daily, and also when required
 - `develop` branch is normally very active with frequent commits and may contain experimental features. We aim to maintain a stable
   passing build on this branch
 
@@ -231,11 +232,13 @@ A `Makefile` is provided to automate most installation and build tasks for devel
 - `make install-just-deps-all` -- Same as `make install-just-deps` and additionally installs `docs` dependencies
 - `make build` -- Runs the Cython build script in `release` build mode (default)
 - `make build-debug` -- Runs the Cython build script in `debug` build mode
+- `make build-wheel` -- Runs the Poetry build with a wheel format in `release` mode
+- `make build-wheel-debug` -- Runs the Poetry build with a wheel format in `debug` mode
 - `make clean` -- **CAUTION** Cleans all non-source artifacts from the repository
 - `make docs` -- Builds the documentation HTML using Sphinx
 - `make pre-commit` -- Runs the pre-commit checks over all files
-- `make pre-flight` -- Runs pre-commit, makes a clean debug build and runs all tests (except performance tests)
 - `make ruff` -- Runs ruff over all files using the `pyproject.toml` config
+- `make outdated` -- Runs commands to show outdated dependencies for both Rust and Python
 - `make pytest` -- Runs all tests with `pytest` (except performance tests)
 - `make pytest-coverage` -- Same as `make pytest` and additionally runs with test coverage and produces a report
 
@@ -251,11 +254,13 @@ The below are some examples of this:
 
 ## Docker
 
-Docker containers are built using a base `python:3.10-slim` with the following image variant tags:
+Docker containers are built using a base `python:3.11-slim` with the following image variant tags:
 
 - `nautilus_trader:latest` has the latest release version installed
-- `nautilus_trader:develop` has the head of the `develop` branch installed
-- `jupyterlab:develop` has the head of the `develop` branch installed along with `jupyterlab` and an
+- `nautilus_trader:nightly` has the head of the `nightly` branch installed
+- `jupyterlab:latest` has the latest release version installed along with `jupyterlab` and an
+  example backtest notebook with accompanying data
+- `jupyterlab:nightly` has the head of the `nightly` branch installed along with `jupyterlab` and an
   example backtest notebook with accompanying data
 
 The container images can be pulled as follows:
@@ -264,8 +269,8 @@ The container images can be pulled as follows:
 
 You can launch the backtest example container by running:
 
-    docker pull ghcr.io/nautechsystems/jupyterlab:develop --platform linux/amd64
-    docker run -p 8888:8888 ghcr.io/nautechsystems/jupyterlab:develop
+    docker pull ghcr.io/nautechsystems/jupyterlab:nightly --platform linux/amd64
+    docker run -p 8888:8888 ghcr.io/nautechsystems/jupyterlab:nightly
 
 Then open your browser at the following address:
 
@@ -275,7 +280,7 @@ Then open your browser at the following address:
 | :---------------- |
 
 **NautilusTrader currently exceeds the rate limit for Jupyter notebook logging (stdout output),
-this is why `log_level` in the examples is set to "ERROR". If you lower this level to see more
+this is why `log_level` in the examples is set to `ERROR`. If you lower this level to see more
 logging then the notebook will hang during cell execution. A fix is currently
 being investigated which involves either raising the configured rate limits for
 Jupyter, or throttling the log flushing from Nautilus.**
@@ -304,15 +309,15 @@ class EMACross(Strategy):
         super().__init__(config)
 
         # Configuration
-        self.instrument_id = InstrumentId.from_str(config.instrument_id)
-        self.bar_type = BarType.from_str(config.bar_type)
+        self.instrument_id = config.instrument_id
+        self.bar_type = config.bar_type
         self.trade_size = Decimal(config.trade_size)
 
         # Create the indicators for the strategy
         self.fast_ema = ExponentialMovingAverage(config.fast_ema_period)
         self.slow_ema = ExponentialMovingAverage(config.slow_ema_period)
 
-        self.instrument: Optional[Instrument] = None  # Initialized in on_start
+        self.instrument: Instrument | None = None  # Initialized in on_start
 
     def on_start(self) -> None:
         """
@@ -400,6 +405,10 @@ class EMACross(Strategy):
 We aim to provide the most pleasant developer experience possible for this hybrid codebase of Python, Cython and Rust.
 Refer to the [Developer Guide](https://docs.nautilustrader.io/developer_guide/index.html) for helpful information.
 
+[cargo-nextest](https://nexte.st) is the standard Rust test runner for NautilusTrader. You can install it by running:
+
+    cargo install cargo-nextest    
+
 ## Contributing
 
 Thank you for considering contributing to Nautilus Trader! We welcome any and all help to improve
@@ -436,7 +445,7 @@ Nautech Systems is not affiliated with the Rust Foundation, and this project is 
 work of the Rust Foundation.
 For more information, visit https://nautilustrader.io.
 
-Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 
 ![nautechsystems](https://github.com/nautechsystems/nautilus_trader/blob/develop/docs/_images/ns-logo.png?raw=true "nautechsystems")
 <img src="https://github.com/nautechsystems/nautilus_trader/blob/develop/docs/_images/ferris.png" width="128">

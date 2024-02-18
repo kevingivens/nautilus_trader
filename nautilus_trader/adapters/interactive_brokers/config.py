@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,6 +13,8 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+from __future__ import annotations
+
 from typing import Literal
 
 from ibapi.common import MarketDataTypeEnum as IBMarketDataTypeEnum
@@ -21,7 +23,7 @@ from nautilus_trader.adapters.interactive_brokers.common import IBContract
 from nautilus_trader.config import InstrumentProviderConfig
 from nautilus_trader.config import LiveDataClientConfig
 from nautilus_trader.config import LiveExecClientConfig
-from nautilus_trader.config.common import NautilusConfig
+from nautilus_trader.config import NautilusConfig
 
 
 class InteractiveBrokersGatewayConfig(NautilusConfig, frozen=True):
@@ -67,6 +69,12 @@ class InteractiveBrokersInstrumentProviderConfig(InstrumentProviderConfig, froze
 
     Parameters
     ----------
+    strict_symbology : bool, optional
+        Determines the symbology format used for identifying instruments. If set to True,
+        a strict symbology format is used, as provided by InteractiveBrokers where instrument symbols
+        are detailed in the format `localSymbol=secType.exchange` (e.g., `EUR.USD=CASH.IDEALPRO`).
+        If False, a simplified symbology format is applied, using a notation like `EUR/USD.IDEALPRO`.
+        The default value is False, favoring simplified symbology unless specified otherwise.
     build_options_chain: bool (default: None)
         Search for full option chain. Global setting for all applicable instruments.
     build_futures_chain: bool (default: None)
@@ -86,7 +94,9 @@ class InteractiveBrokersInstrumentProviderConfig(InstrumentProviderConfig, froze
 
     """
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, InteractiveBrokersInstrumentProviderConfig):
+            return False
         return (
             self.load_ids == other.load_ids
             and self.load_contracts == other.load_contracts
@@ -96,7 +106,7 @@ class InteractiveBrokersInstrumentProviderConfig(InstrumentProviderConfig, froze
             and self.build_futures_chain == other.build_futures_chain
         )
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(
             (
                 self.load_ids,
@@ -108,6 +118,7 @@ class InteractiveBrokersInstrumentProviderConfig(InstrumentProviderConfig, froze
             ),
         )
 
+    strict_symbology: bool = False
     load_contracts: frozenset[IBContract] | None = None
     build_options_chain: bool | None = None
     build_futures_chain: bool | None = None

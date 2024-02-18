@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,7 +14,7 @@
 # -------------------------------------------------------------------------------------------------
 
 from nautilus_trader.common.actor import Actor
-from nautilus_trader.config.common import ActorConfig
+from nautilus_trader.common.config import ActorConfig
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.trading.strategy import Strategy
 from nautilus_trader.trading.trader import Trader

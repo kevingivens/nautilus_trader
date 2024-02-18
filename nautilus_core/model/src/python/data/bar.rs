@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -16,6 +16,7 @@
 use std::{
     collections::{hash_map::DefaultHasher, HashMap},
     hash::{Hash, Hasher},
+    str::FromStr,
 };
 
 use nautilus_core::{
@@ -26,12 +27,17 @@ use nautilus_core::{
 use pyo3::{prelude::*, pyclass::CompareOp, types::PyDict};
 
 use crate::{
-    data::bar::{Bar, BarSpecification, BarType},
+    data::{
+        bar::{Bar, BarSpecification, BarType},
+        Data,
+    },
     enums::{AggregationSource, BarAggregation, PriceType},
     identifiers::instrument_id::InstrumentId,
     python::PY_MODULE_MODEL,
     types::{price::Price, quantity::Quantity},
 };
+
+use super::data_to_pycapsule;
 
 #[pymethods]
 impl BarSpecification {
@@ -116,6 +122,12 @@ impl BarType {
     fn py_fully_qualified_name() -> String {
         format!("{}:{}", PY_MODULE_MODEL, stringify!(BarType))
     }
+
+    #[staticmethod]
+    #[pyo3(name = "from_str")]
+    fn py_from_str(value: &str) -> PyResult<Self> {
+        BarType::from_str(value).map_err(to_pyvalue_err)
+    }
 }
 
 #[pymethods]
@@ -158,42 +170,50 @@ impl Bar {
     }
 
     #[getter]
-    fn bar_type(&self) -> BarType {
+    #[pyo3(name = "bar_type")]
+    fn py_bar_type(&self) -> BarType {
         self.bar_type
     }
 
     #[getter]
-    fn open(&self) -> Price {
+    #[pyo3(name = "open")]
+    fn py_open(&self) -> Price {
         self.open
     }
 
     #[getter]
-    fn high(&self) -> Price {
+    #[pyo3(name = "high")]
+    fn py_high(&self) -> Price {
         self.high
     }
 
     #[getter]
-    fn low(&self) -> Price {
+    #[pyo3(name = "low")]
+    fn py_low(&self) -> Price {
         self.low
     }
 
     #[getter]
-    fn close(&self) -> Price {
+    #[pyo3(name = "close")]
+    fn py_close(&self) -> Price {
         self.close
     }
 
     #[getter]
-    fn volume(&self) -> Quantity {
+    #[pyo3(name = "volume")]
+    fn py_volume(&self) -> Quantity {
         self.volume
     }
 
     #[getter]
-    fn ts_event(&self) -> UnixNanos {
+    #[pyo3(name = "ts_event")]
+    fn py_ts_event(&self) -> UnixNanos {
         self.ts_event
     }
 
     #[getter]
-    fn ts_init(&self) -> UnixNanos {
+    #[pyo3(name = "ts_init")]
+    fn py_ts_init(&self) -> UnixNanos {
         self.ts_init
     }
 
@@ -201,6 +221,27 @@ impl Bar {
     #[pyo3(name = "fully_qualified_name")]
     fn py_fully_qualified_name() -> String {
         format!("{}:{}", PY_MODULE_MODEL, stringify!(Bar))
+    }
+
+    /// Creates a `PyCapsule` containing a raw pointer to a `Data::Bar` object.
+    ///
+    /// This function takes the current object (assumed to be of a type that can be represented as
+    /// `Data::Bar`), and encapsulates a raw pointer to it within a `PyCapsule`.
+    ///
+    /// # Safety
+    ///
+    /// This function is safe as long as the following conditions are met:
+    /// - The `Data::Delta` object pointed to by the capsule must remain valid for the lifetime of the capsule.
+    /// - The consumer of the capsule must ensure proper handling to avoid dereferencing a dangling pointer.
+    ///
+    /// # Panics
+    ///
+    /// The function will panic if the `PyCapsule` creation fails, which can occur if the
+    /// `Data::Bar` object cannot be converted into a raw pointer.
+    ///
+    #[pyo3(name = "as_pycapsule")]
+    fn py_as_pycapsule(&self, py: Python<'_>) -> PyObject {
+        data_to_pycapsule(py, Data::Bar(*self))
     }
 
     /// Return a dictionary representation of the object.
@@ -282,12 +323,12 @@ mod tests {
     use pyo3::{IntoPy, Python};
     use rstest::rstest;
 
-    use crate::data::bar::{stubs::bar_audusd_sim_minute_bid, Bar};
+    use crate::data::bar::{stubs::stub_bar, Bar};
 
     #[rstest]
-    fn test_as_dict(bar_audusd_sim_minute_bid: Bar) {
+    fn test_as_dict(stub_bar: Bar) {
         pyo3::prepare_freethreaded_python();
-        let bar = bar_audusd_sim_minute_bid;
+        let bar = stub_bar;
 
         Python::with_gil(|py| {
             let dict_string = bar.py_as_dict(py).unwrap().to_string();
@@ -297,9 +338,9 @@ mod tests {
     }
 
     #[rstest]
-    fn test_as_from_dict(bar_audusd_sim_minute_bid: Bar) {
+    fn test_as_from_dict(stub_bar: Bar) {
         pyo3::prepare_freethreaded_python();
-        let bar = bar_audusd_sim_minute_bid;
+        let bar = stub_bar;
 
         Python::with_gil(|py| {
             let dict = bar.py_as_dict(py).unwrap();
@@ -309,9 +350,9 @@ mod tests {
     }
 
     #[rstest]
-    fn test_from_pyobject(bar_audusd_sim_minute_bid: Bar) {
+    fn test_from_pyobject(stub_bar: Bar) {
         pyo3::prepare_freethreaded_python();
-        let bar = bar_audusd_sim_minute_bid;
+        let bar = stub_bar;
 
         Python::with_gil(|py| {
             let bar_pyobject = bar.into_py(py);

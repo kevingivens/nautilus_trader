@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -20,6 +20,8 @@ use pyo3::prelude::*;
 use rust_decimal::Decimal;
 use ustr::Ustr;
 
+use crate::enums::OrderType;
+use crate::identifiers::account_id::AccountId;
 use crate::{
     enums::{ContingencyType, OrderSide, PositionSide, TimeInForce},
     identifiers::{
@@ -134,5 +136,38 @@ impl MarketOrder {
     #[pyo3(name = "commissions")]
     fn py_commissions(&self) -> HashMap<Currency, Money> {
         self.commissions()
+    }
+    #[getter]
+    fn account_id(&self) -> Option<AccountId> {
+        self.account_id
+    }
+    #[getter]
+    fn instrument_id(&self) -> InstrumentId {
+        self.instrument_id
+    }
+    #[getter]
+    fn trader_id(&self) -> TraderId {
+        self.trader_id
+    }
+
+    #[getter]
+    fn client_order_id(&self) -> ClientOrderId {
+        self.client_order_id
+    }
+    #[getter]
+    fn quantity(&self) -> Quantity {
+        self.quantity
+    }
+    #[getter]
+    fn side(&self) -> OrderSide {
+        self.side
+    }
+    #[getter]
+    fn order_type(&self) -> OrderType {
+        self.order_type
+    }
+    #[getter]
+    fn strategy_id(&self) -> StrategyId {
+        self.strategy_id
     }
 }

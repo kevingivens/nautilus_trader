@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -46,7 +46,7 @@ class TestIdProviderPyo3:
 
     @staticmethod
     def position_id() -> PositionId:
-        return PositionId("001")
+        return PositionId("P-123456")
 
     @staticmethod
     def btcusdt_binance_id() -> InstrumentId:

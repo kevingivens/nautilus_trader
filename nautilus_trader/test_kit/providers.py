@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -24,7 +24,6 @@ import numpy as np
 import pandas as pd
 import pytz
 from fsspec.implementations.local import LocalFileSystem
-from pandas.io.parsers.readers import TextFileReader
 
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.core.datetime import dt_to_unix_nanos
@@ -276,9 +275,9 @@ class TestInstrumentProvider:
 
         """
         if activation is None:
-            activation = pd.Timestamp(2021, 12, 25, tz=pytz.utc)
+            activation = pd.Timestamp("2021-12-25", tz=pytz.utc)
         if expiration is None:
-            expiration = pd.Timestamp(2022, 3, 25, tz=pytz.utc)
+            expiration = pd.Timestamp("2022-3-25", tz=pytz.utc)
         return CryptoFuture(
             instrument_id=InstrumentId(
                 symbol=Symbol(f"BTCUSDT_{expiration.strftime('%y%m%d')}"),
@@ -460,8 +459,7 @@ class TestInstrumentProvider:
             currency=USD,
             price_precision=2,
             price_increment=Price.from_str("0.01"),
-            multiplier=Quantity.from_int(1),
-            lot_size=Quantity.from_int(1),
+            lot_size=Quantity.from_int(100),
             isin="US0378331005",
             ts_event=0,
             ts_init=0,
@@ -500,7 +498,7 @@ class TestInstrumentProvider:
 
     @staticmethod
     def future(
-        symbol: str = "ESZ21",
+        symbol: str = "ESZ1",
         underlying: str = "ES",
         venue: str = "GLBX",
     ) -> FuturesContract:
@@ -532,10 +530,10 @@ class TestInstrumentProvider:
             multiplier=Quantity.from_int(100),
             lot_size=Quantity.from_int(1),
             underlying="AAPL",
-            kind=OptionKind.CALL,
+            option_kind=OptionKind.CALL,
             strike_price=Price.from_str("149.00"),
-            activation_ns=pd.Timestamp(2021, 9, 17, tz=pytz.utc).value,
-            expiration_ns=pd.Timestamp(2021, 12, 17, tz=pytz.utc).value,
+            activation_ns=pd.Timestamp("2021-9-17", tz=pytz.utc).value,
+            expiration_ns=pd.Timestamp("2021-12-17", tz=pytz.utc).value,
             ts_event=0,
             ts_init=0,
         )
@@ -693,7 +691,7 @@ class TestDataProvider:
         with fsspec.open(uri) as f:
             return f.read()
 
-    def read_csv(self, path: str, **kwargs: Any) -> TextFileReader:
+    def read_csv(self, path: str, **kwargs: Any) -> pd.DataFrame:
         uri = self._make_uri(path=path)
         with fsspec.open(uri) as f:
             return pd.read_csv(f, **kwargs)

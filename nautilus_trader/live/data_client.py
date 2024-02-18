@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -31,10 +31,10 @@ from typing import Any
 import pandas as pd
 
 from nautilus_trader.cache.cache import Cache
-from nautilus_trader.common.clock import LiveClock
+from nautilus_trader.common.component import LiveClock
 from nautilus_trader.common.component import MessageBus
+from nautilus_trader.common.config import NautilusConfig
 from nautilus_trader.common.enums import LogColor
-from nautilus_trader.common.logging import Logger
 from nautilus_trader.common.providers import InstrumentProvider
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.core.uuid import UUID4
@@ -66,9 +66,7 @@ class LiveDataClient(DataClient):
         The cache for the client.
     clock : LiveClock
         The clock for the client.
-    logger : Logger
-        The logger for the client.
-    config : dict[str, object], optional
+    config : NautilusConfig, optional
         The configuration for the instance.
 
     Warnings
@@ -85,8 +83,7 @@ class LiveDataClient(DataClient):
         msgbus: MessageBus,
         cache: Cache,
         clock: LiveClock,
-        logger: Logger,
-        config: dict[str, Any] | None = None,
+        config: NautilusConfig | None = None,
     ) -> None:
         super().__init__(
             client_id=client_id,
@@ -94,7 +91,6 @@ class LiveDataClient(DataClient):
             msgbus=msgbus,
             cache=cache,
             clock=clock,
-            logger=logger,
             config=config,
         )
 
@@ -280,11 +276,9 @@ class LiveMarketDataClient(MarketDataClient):
         The cache for the client.
     clock : LiveClock
         The clock for the client.
-    logger : Logger
-        The logger for the client.
-    instrument_provider : InstrumentProvider, optional
+    instrument_provider : InstrumentProvider
         The instrument provider for the client.
-    config : dict[str, object], optional
+    config : NautilusConfig, optional
         The configuration for the instance.
 
     Warnings
@@ -301,11 +295,10 @@ class LiveMarketDataClient(MarketDataClient):
         msgbus: MessageBus,
         cache: Cache,
         clock: LiveClock,
-        logger: Logger,
-        instrument_provider: InstrumentProvider | None = None,
-        config: dict[str, Any] | None = None,
+        instrument_provider: InstrumentProvider,
+        config: NautilusConfig | None = None,
     ) -> None:
-        PyCondition.type_or_none(instrument_provider, InstrumentProvider, "instrument_provider")
+        PyCondition.type(instrument_provider, InstrumentProvider, "instrument_provider")
 
         super().__init__(
             client_id=client_id,
@@ -313,7 +306,6 @@ class LiveMarketDataClient(MarketDataClient):
             msgbus=msgbus,
             cache=cache,
             clock=clock,
-            logger=logger,
             config=config,
         )
 
@@ -435,11 +427,6 @@ class LiveMarketDataClient(MarketDataClient):
         )
 
     def subscribe_instruments(self) -> None:
-        if self._instrument_provider is None:
-            raise NotImplementedError(  # pragma: no cover
-                "Override the `subscribe_instruments` method (there was no instrument provider)",  # pragma: no cover
-            )
-
         instrument_ids = list(self._instrument_provider.get_all().keys())
         self.create_task(
             self._subscribe_instruments(),
@@ -490,13 +477,6 @@ class LiveMarketDataClient(MarketDataClient):
             actions=lambda: self._add_subscription_order_book_snapshots(instrument_id),
         )
 
-    def subscribe_ticker(self, instrument_id: InstrumentId) -> None:
-        self.create_task(
-            self._subscribe_ticker(instrument_id),
-            log_msg=f"subscribe: ticker {instrument_id}",
-            actions=lambda: self._add_subscription_ticker(instrument_id),
-        )
-
     def subscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
         self.create_task(
             self._subscribe_quote_ticks(instrument_id),
@@ -542,11 +522,6 @@ class LiveMarketDataClient(MarketDataClient):
         )
 
     def unsubscribe_instruments(self) -> None:
-        if self._instrument_provider is None:
-            raise NotImplementedError(  # pragma: no cover
-                "Override the `unsubscribe_instruments` method (there was no instrument provider)",  # pragma: no cover
-            )
-
         instrument_ids = list(self._instrument_provider.get_all().keys())
         self.create_task(
             self._unsubscribe_instruments(),
@@ -572,13 +547,6 @@ class LiveMarketDataClient(MarketDataClient):
             self._unsubscribe_order_book_snapshots(instrument_id),
             log_msg=f"unsubscribe: order_book_snapshots {instrument_id}",
             actions=lambda: self._remove_subscription_order_book_snapshots(instrument_id),
-        )
-
-    def unsubscribe_ticker(self, instrument_id: InstrumentId) -> None:
-        self.create_task(
-            self._unsubscribe_ticker(instrument_id),
-            log_msg=f"unsubscribe: ticker {instrument_id}",
-            actions=lambda: self._remove_subscription_ticker(instrument_id),
         )
 
     def unsubscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
@@ -771,11 +739,6 @@ class LiveMarketDataClient(MarketDataClient):
             "implement the `_subscribe_order_book_snapshots` coroutine",  # pragma: no cover
         )
 
-    async def _subscribe_ticker(self, instrument_id: InstrumentId) -> None:
-        raise NotImplementedError(  # pragma: no cover
-            "implement the `_subscribe_ticker` coroutine",  # pragma: no cover
-        )
-
     async def _subscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_subscribe_quote_ticks` coroutine",  # pragma: no cover
@@ -824,11 +787,6 @@ class LiveMarketDataClient(MarketDataClient):
     async def _unsubscribe_order_book_snapshots(self, instrument_id: InstrumentId) -> None:
         raise NotImplementedError(  # pragma: no cover
             "implement the `_unsubscribe_order_book_snapshots` coroutine",  # pragma: no cover
-        )
-
-    async def _unsubscribe_ticker(self, instrument_id: InstrumentId) -> None:
-        raise NotImplementedError(  # pragma: no cover
-            "implement the `_unsubscribe_ticker` coroutine",  # pragma: no cover
         )
 
     async def _unsubscribe_quote_ticks(self, instrument_id: InstrumentId) -> None:

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,6 +13,7 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+import msgspec
 import pandas as pd
 import pytz
 
@@ -78,7 +79,7 @@ cdef class SimulationModule(Actor):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method `process` must be implemented in the subclass")  # pragma: no cover
 
-    cpdef void log_diagnostics(self, LoggerAdapter log):
+    cpdef void log_diagnostics(self, Logger logger):
         """Abstract method (implement in subclass)."""
         raise NotImplementedError("method `log_diagnostics` must be implemented in the subclass")  # pragma: no cover
 
@@ -114,6 +115,10 @@ cdef class FXRolloverInterestModule(SimulationModule):
 
     def __init__(self, config: FXRolloverInterestConfig):
         super().__init__(config)
+
+        rate_data = config.rate_data
+        if not isinstance(rate_data, pd.DataFrame):
+            rate_data = pd.read_json(msgspec.json.decode(rate_data))
 
         self._calculator = RolloverInterestCalculator(data=config.rate_data)
         self._rollover_time = None  # Initialized at first rollover
@@ -209,20 +214,20 @@ cdef class FXRolloverInterestModule(SimulationModule):
 
             self.exchange.adjust_account(Money(-rollover, currency))
 
-    cpdef void log_diagnostics(self, LoggerAdapter log):
+    cpdef void log_diagnostics(self, Logger logger):
         """
         Log diagnostics out to the `BacktestEngine` logger.
 
         Parameters
         ----------
-        log : LoggerAdapter
+        logger : Logger
             The logger to log to.
 
         """
         account_balances_starting = ', '.join([b.to_str() for b in self.exchange.starting_balances])
         account_starting_length = len(account_balances_starting)
         rollover_totals = ', '.join([b.to_str() for b in self._rollover_totals.values()])
-        log.info(f"Rollover interest (totals): {rollover_totals}")
+        logger.info(f"Rollover interest (totals): {rollover_totals}")
 
     cpdef void reset(self):
         self._rollover_time = None  # Initialized at first rollover

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -30,8 +30,7 @@ from nautilus_trader.adapters.bybit.schemas.market.server_time import BybitServe
 from nautilus_trader.adapters.bybit.schemas.market.ticker import BybitTickersLinearResponse
 from nautilus_trader.adapters.bybit.schemas.market.ticker import BybitTickersOptionResponse
 from nautilus_trader.adapters.bybit.schemas.market.ticker import BybitTickersSpotResponse
-from nautilus_trader.common.clock import LiveClock
-from nautilus_trader.common.logging import Logger
+from nautilus_trader.common.component import LiveClock
 from nautilus_trader.core.nautilus_pyo3 import HttpClient
 from tests.integration_tests.adapters.bybit.utils.get_mock import get_mock
 
@@ -39,10 +38,8 @@ from tests.integration_tests.adapters.bybit.utils.get_mock import get_mock
 class TestBybitMarketHttpAPI:
     def setup(self):
         clock = LiveClock()
-        logger = Logger(clock=clock)
         self.client = BybitHttpClient(
             clock=clock,
-            logger=logger,
             api_key="SOME_BYBIT_API_KEY",
             api_secret="SOME_BYBIT_API_SECRET",
             base_url="https://api-testnet.bybit.com",

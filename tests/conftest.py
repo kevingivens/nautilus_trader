@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -15,12 +15,25 @@
 
 import pytest
 
+from nautilus_trader.common.component import init_logging
 from nautilus_trader.model.data import QuoteTick
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.instruments import CurrencyPair
 from nautilus_trader.persistence.wranglers import QuoteTickDataWrangler
 from nautilus_trader.test_kit.providers import TestDataProvider
 from nautilus_trader.test_kit.providers import TestInstrumentProvider
+
+
+@pytest.fixture(scope="session", autouse=True)
+def bypass_logging() -> None:
+    """
+    Fixture to bypass logging for all tests.
+
+    `autouse=True` will mean this function is run prior to every test. To disable this
+    to debug specific tests, simply comment this out.
+
+    """
+    init_logging(bypass=True)
 
 
 @pytest.fixture(name="audusd_instrument")

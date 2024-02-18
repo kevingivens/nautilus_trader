@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,9 +13,8 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-
-from nautilus_trader.common.logging import LogColor
-from nautilus_trader.config.common import ExecAlgorithmConfig
+from nautilus_trader.common.component import LogColor
+from nautilus_trader.config import ExecAlgorithmConfig
 from nautilus_trader.execution.algorithm import ExecAlgorithm
 from nautilus_trader.model.identifiers import ExecAlgorithmId
 from nautilus_trader.model.orders import Order
