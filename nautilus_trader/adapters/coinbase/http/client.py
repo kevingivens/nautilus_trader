@@ -21,8 +21,8 @@ from typing import Any
 import msgspec
 
 import nautilus_trader
-from nautilus_trader.adapters.coinbase.http.error import CoinbaseClientError
-from nautilus_trader.adapters.coinbase.http.error import CoinbaseServerError
+from nautilus_trader.adapters.coinbase.http.errors import CoinbaseClientError
+from nautilus_trader.adapters.coinbase.http.errors import CoinbaseServerError
 from nautilus_trader.common.clock import LiveClock
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.common.logging import LoggerAdapter

@@ -66,7 +66,6 @@ class CoinbaseInstrumentProvider(InstrumentProvider):
         client: CoinbaseHttpClient,
         logger: Logger,
         clock: LiveClock,
-        # account_type: CoinbaseAccountType = CoinbaseAccountType.SPOT,
         config: Optional[InstrumentProviderConfig] = None,
     ):
         super().__init__(
@@ -76,15 +75,12 @@ class CoinbaseInstrumentProvider(InstrumentProvider):
         )
 
         self._client = client
-        # self._account_type = account_type
         self._clock = clock
 
         self._http_wallet = CoinbaseWalletHttpAPI(
             self._client,
-            clock=self._clock,
-            # account_type=account_type,
+            clock=self._clock,   
         )
-        #self._http_market = CoinbaseMarketHttpAPI(self._client, account_type=account_type)
         self._http_market = CoinbaseMarketHttpAPI(self._client)
 
         self._log_warnings = config.log_warnings if config else True

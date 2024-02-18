@@ -108,7 +108,6 @@ class CoinbaseCommonDataClient(LiveMarketDataClient):
         clock: LiveClock,
         logger: Logger,
         instrument_provider: InstrumentProvider,
-        # account_type: CoinbaseAccountType,
         base_url_ws: Optional[str] = None,
         use_agg_trade_ticks: bool = False,
     ) -> None:
@@ -123,7 +122,7 @@ class CoinbaseCommonDataClient(LiveMarketDataClient):
             logger=logger,
         )
 
-        # self._binance_account_type = account_type
+        
         self._use_agg_trade_ticks = use_agg_trade_ticks
         # self._log.info(f"Account type: {self._binance_account_type.value}.", LogColor.BLUE)
 
@@ -553,7 +552,7 @@ class CoinbaseCommonDataClient(LiveMarketDataClient):
         if end is not None:
             end_time_ms = secs_to_millis(end.timestamp())
 
-        bars = await self._http_market.request_binance_bars(
+        bars = await self._http_market.request_coinabase_bars(
             bar_type=bar_type,
             interval=interval,
             start_time=start_time_ms,
@@ -574,9 +573,9 @@ class CoinbaseCommonDataClient(LiveMarketDataClient):
 
     def _get_cached_instrument_id(self, symbol: str) -> InstrumentId:
         # Parse instrument ID
-        binance_symbol = CoinbaseSymbol(symbol)
-        assert binance_symbol
-        nautilus_symbol: str = binance_symbol.parse_binance_to_internal(
+        coinbase_symbol = CoinbaseSymbol(symbol)
+        assert coinbase_symbol
+        nautilus_symbol: str = coinbase_symbol.parse_coinbase_to_internal(
             self._binance_account_type,
         )
         instrument_id: Optional[InstrumentId] = self._instrument_ids.get(nautilus_symbol)
@@ -630,7 +629,7 @@ class CoinbaseCommonDataClient(LiveMarketDataClient):
     def _handle_ticker(self, raw: bytes) -> None:
         msg = self._decoder_ticker_msg.decode(raw)
         instrument_id: InstrumentId = self._get_cached_instrument_id(msg.data.s)
-        ticker: CoinbaseTicker = msg.data.parse_to_binance_ticker(
+        ticker: CoinbaseTicker = msg.data.parse_to_coinbase_ticker(
             instrument_id=instrument_id,
             ts_init=self._clock.timestamp_ns(),
         )
@@ -641,7 +640,7 @@ class CoinbaseCommonDataClient(LiveMarketDataClient):
         if not msg.data.k.x:
             return  # Not closed yet
         instrument_id = self._get_cached_instrument_id(msg.data.s)
-        bar: CoinbaseBar = msg.data.k.parse_to_binance_bar(
+        bar: CoinbaseBar = msg.data.k.parse_to_coinbase_bar(
             instrument_id=instrument_id,
             enum_parser=self._enum_parser,
             ts_init=self._clock.timestamp_ns(),

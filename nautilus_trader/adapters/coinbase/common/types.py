@@ -24,9 +24,9 @@ from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
 
 
-class BinanceBar(Bar):
+class CoinbaseBar(Bar):
     """
-    Represents an aggregated `Binance` bar.
+    Represents an aggregated `Coinbase` bar.
 
     This data type includes the raw data provided by `Binance`.
 
@@ -136,9 +136,9 @@ class BinanceBar(Bar):
         )
 
     @staticmethod
-    def from_dict(values: dict[str, Any]) -> "BinanceBar":
+    def from_dict(values: dict[str, Any]) -> "CoinbaseBar":
         """
-        Return a `Binance` bar parsed from the given values.
+        Return a `Coinbase` bar parsed from the given values.
 
         Parameters
         ----------
@@ -150,7 +150,7 @@ class BinanceBar(Bar):
         BinanceBar
 
         """
-        return BinanceBar(
+        return CoinbaseBar(
             bar_type=BarType.from_str(values["bar_type"]),
             open=Price.from_str(values["open"]),
             high=Price.from_str(values["high"]),
@@ -166,7 +166,7 @@ class BinanceBar(Bar):
         )
 
     @staticmethod
-    def to_dict(obj: "BinanceBar") -> dict[str, Any]:
+    def to_dict(obj: "CoinbaseBar") -> dict[str, Any]:
         """
         Return a dictionary representation of this object.
 
@@ -192,9 +192,9 @@ class BinanceBar(Bar):
         }
 
 
-class BinanceTicker(Ticker):
+class CoinbaseTicker(Ticker):
     """
-    Represents a `Binance` 24hr statistics ticker.
+    Represents a `Coinbase` 24hr statistics ticker.
 
     This data type includes the raw data provided by `Binance`.
 
@@ -335,9 +335,9 @@ class BinanceTicker(Ticker):
         )
 
     @staticmethod
-    def from_dict(values: dict[str, Any]) -> "BinanceTicker":
+    def from_dict(values: dict[str, Any]) -> "CoinbaseTicker":
         """
-        Return a `Binance Spot/Margin` ticker parsed from the given values.
+        Return a `Coinbase Spot/Margin` ticker parsed from the given values.
 
         Parameters
         ----------
@@ -346,7 +346,7 @@ class BinanceTicker(Ticker):
 
         Returns
         -------
-        BinanceTicker
+        CoinbaseTicker
 
         """
         prev_close_str: Optional[str] = values.get("prev_close")
@@ -354,7 +354,7 @@ class BinanceTicker(Ticker):
         bid_qty_str: Optional[str] = values.get("bid_qty")
         ask_price_str: Optional[str] = values.get("ask_price")
         ask_qty_str: Optional[str] = values.get("ask_qty")
-        return BinanceTicker(
+        return CoinbaseTicker(
             instrument_id=InstrumentId.from_str(values["instrument_id"]),
             price_change=Decimal(values["price_change"]),
             price_change_percent=Decimal(values["price_change_percent"]),
@@ -381,7 +381,7 @@ class BinanceTicker(Ticker):
         )
 
     @staticmethod
-    def to_dict(obj: "BinanceTicker") -> dict[str, Any]:
+    def to_dict(obj: "CoinbaseTicker") -> dict[str, Any]:
         """
         Return a dictionary representation of this object.
 

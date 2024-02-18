@@ -288,12 +288,12 @@ class CoinbaseExecutionClient(LiveExecutionClient):
 
         try:
             if venue_order_id:
-                binance_order = await self._http_account.query_order(
+                coinbase_order = await self._http_account.query_order(
                     symbol=instrument_id.symbol.value,
                     order_id=venue_order_id.value,
                 )
             else:
-                binance_order = await self._http_account.query_order(
+                coinbase_order = await self._http_account.query_order(
                     symbol=instrument_id.symbol.value,
                     orig_client_order_id=client_order_id.value
                     if client_order_id is not None
@@ -328,13 +328,13 @@ class CoinbaseExecutionClient(LiveExecutionClient):
                     )
             return None  # Error now handled
 
-        if not binance_order:
+        if not coinbase_order:
             # Cannot proceed to generating report
             return None
 
-        report: OrderStatusReport = binance_order.parse_to_order_status_report(
+        report: OrderStatusReport = coinbase_order.parse_to_order_status_report(
             account_id=self.account_id,
-            instrument_id=self._get_cached_instrument_id(binance_order.symbol),
+            instrument_id=self._get_cached_instrument_id(coinbase_order.symbol),
             report_id=UUID4(),
             enum_parser=self._enum_parser,
             ts_init=self._clock.timestamp_ns(),
@@ -354,14 +354,14 @@ class CoinbaseExecutionClient(LiveExecutionClient):
             active_symbols.append(p.instrument_id.symbol.value)
         return active_symbols
 
-    async def _get_binance_position_status_reports(
+    async def _get_coinbase_position_status_reports(
         self,
         symbol: Optional[str] = None,
     ) -> list[str]:
         # Implement in child class
         raise NotImplementedError
 
-    async def _get_binance_active_position_symbols(
+    async def _get_coinbase_active_position_symbols(
         self,
         symbol: Optional[str] = None,
     ) -> list[str]:
@@ -386,20 +386,20 @@ class CoinbaseExecutionClient(LiveExecutionClient):
             for order in binance_open_orders:
                 active_symbols.append(order.symbol)
             # Get all orders for those active symbols
-            binance_orders: list[CoinbaseOrder] = []
+            coinbase_orders: list[CoinbaseOrder] = []
             for symbol in active_symbols:
                 response = await self._http_account.query_all_orders(
                     symbol=symbol,
                     start_time=secs_to_millis(start.timestamp()) if start is not None else None,
                     end_time=secs_to_millis(end.timestamp()) if end is not None else None,
                 )
-                binance_orders.extend(response)
+                coinbase_orders.extend(response)
         except CoinbaseError as e:
             self._log.exception(f"Cannot generate OrderStatusReport: {e.message}", e)
             return []
 
         reports: list[OrderStatusReport] = []
-        for order in binance_orders:
+        for order in coinbase_orders:
             # Apply filter (always report open orders regardless of start, end filter)
             # TODO(cs): Time filter is WIP
             # timestamp = pd.to_datetime(data["time"], utc=True)
