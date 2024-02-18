@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -16,9 +16,8 @@
 from collections import deque
 from decimal import Decimal
 from heapq import heappush
-from typing import Optional
 
-from nautilus_trader.config.error import InvalidConfiguration
+from nautilus_trader.common.config import InvalidConfiguration
 
 from libc.stdint cimport uint64_t
 
@@ -29,8 +28,8 @@ from nautilus_trader.backtest.models cimport FillModel
 from nautilus_trader.backtest.models cimport LatencyModel
 from nautilus_trader.backtest.modules cimport SimulationModule
 from nautilus_trader.cache.base cimport CacheFacade
-from nautilus_trader.common.clock cimport TestClock
-from nautilus_trader.common.logging cimport Logger
+from nautilus_trader.common.component cimport Logger
+from nautilus_trader.common.component cimport TestClock
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.rust.model cimport AccountType
 from nautilus_trader.core.rust.model cimport BookType
@@ -93,8 +92,6 @@ cdef class SimulatedExchange:
         The latency model for the exchange.
     clock : TestClock
         The clock for the exchange.
-    logger : Logger
-        The logger for the exchange.
     book_type : BookType
         The order book type for the exchange.
     frozen_account : bool, default False
@@ -137,7 +134,7 @@ cdef class SimulatedExchange:
         OmsType oms_type,
         AccountType account_type,
         list starting_balances not None,
-        Currency base_currency: Optional[Currency],
+        Currency base_currency: Currency | None,
         default_leverage not None: Decimal,
         leverages not None: dict[InstrumentId, Decimal],
         list instruments not None,
@@ -146,7 +143,6 @@ cdef class SimulatedExchange:
         MessageBus msgbus not None,
         CacheFacade cache not None,
         TestClock clock not None,
-        Logger logger not None,
         FillModel fill_model not None,
         LatencyModel latency_model = None,
         BookType book_type = BookType.L1_MBP,
@@ -169,10 +165,7 @@ cdef class SimulatedExchange:
             Condition.true(account_type == AccountType.MARGIN, "leverages defined when account type is not `MARGIN`")
 
         self._clock = clock
-        self._log = LoggerAdapter(
-            component_name=f"{type(self).__name__}({venue})",
-            logger=logger,
-        )
+        self._log = Logger(name=f"{type(self).__name__}({venue})")
 
         self.id = venue
         self.oms_type = oms_type
@@ -212,7 +205,6 @@ cdef class SimulatedExchange:
                 msgbus=msgbus,
                 cache=cache,
                 clock=clock,
-                logger=logger,
             )
             self.modules.append(module)
             self._log.info(f"Loaded {module}.")
@@ -341,7 +333,6 @@ cdef class SimulatedExchange:
             msgbus=self.msgbus,
             cache=self.cache,
             clock=self._clock,
-            logger=self._log.get_logger(),
             bar_execution=self.bar_execution,
             reject_stop_orders=self.reject_stop_orders,
             support_gtd_orders=self.support_gtd_orders,

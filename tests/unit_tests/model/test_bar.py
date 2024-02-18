@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -29,6 +29,7 @@ from nautilus_trader.model.identifiers import Symbol
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Price
 from nautilus_trader.model.objects import Quantity
+from nautilus_trader.test_kit.rust.data_pyo3 import TestDataProviderPyo3
 from nautilus_trader.test_kit.stubs.data import TestDataStubs
 from nautilus_trader.test_kit.stubs.identifiers import TestIdStubs
 
@@ -608,6 +609,27 @@ class TestBar:
 
         # Assert
         assert result == bar
+
+    def test_from_pyo3(self):
+        # Arrange
+        pyo3_bar = TestDataProviderPyo3.bar_5decimal()
+
+        # Act
+        bar = Bar.from_pyo3(pyo3_bar)
+
+        # Assert
+        assert isinstance(bar, Bar)
+
+    def test_from_pyo3_list(self):
+        # Arrange
+        pyo3_bars = [TestDataProviderPyo3.bar_5decimal()] * 1024
+
+        # Act
+        bars = Bar.from_pyo3_list(pyo3_bars)
+
+        # Assert
+        assert len(bars) == 1024
+        assert isinstance(bars[0], Bar)
 
     def test_pickle_bar(self):
         # Arrange

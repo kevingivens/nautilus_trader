@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -61,22 +61,26 @@ impl BookOrder {
     }
 
     #[getter]
-    fn side(&self) -> OrderSide {
+    #[pyo3(name = "side")]
+    fn py_side(&self) -> OrderSide {
         self.side
     }
 
     #[getter]
-    fn price(&self) -> Price {
+    #[pyo3(name = "price")]
+    fn py_price(&self) -> Price {
         self.price
     }
 
     #[getter]
-    fn size(&self) -> Quantity {
+    #[pyo3(name = "size")]
+    fn py_size(&self) -> Quantity {
         self.size
     }
 
     #[getter]
-    fn order_id(&self) -> u64 {
+    #[pyo3(name = "order_id")]
+    fn py_order_id(&self) -> u64 {
         self.order_id
     }
 

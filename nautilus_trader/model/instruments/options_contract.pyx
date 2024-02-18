@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -22,7 +22,7 @@ from libc.stdint cimport uint64_t
 
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.rust.model cimport AssetClass
-from nautilus_trader.core.rust.model cimport AssetType
+from nautilus_trader.core.rust.model cimport InstrumentClass
 from nautilus_trader.core.rust.model cimport OptionKind
 from nautilus_trader.model.functions cimport asset_class_from_str
 from nautilus_trader.model.functions cimport asset_class_to_str
@@ -60,6 +60,8 @@ cdef class OptionsContract(Instrument):
         The rounded lot unit size (standard/board).
     underlying : str
         The underlying asset.
+    option_kind : OptionKind
+        The kind of option (PUT | CALL).
     strike_price : Price
         The option strike price.
     activation_ns : uint64_t
@@ -96,7 +98,7 @@ cdef class OptionsContract(Instrument):
         Quantity multiplier not None,
         Quantity lot_size not None,
         str underlying,
-        OptionKind kind,
+        OptionKind option_kind,
         uint64_t activation_ns,
         uint64_t expiration_ns,
         Price strike_price not None,
@@ -109,7 +111,7 @@ cdef class OptionsContract(Instrument):
             instrument_id=instrument_id,
             raw_symbol=raw_symbol,
             asset_class=asset_class,
-            asset_type=AssetType.OPTION,
+            instrument_class=InstrumentClass.OPTION,
             quote_currency=currency,
             is_inverse=False,
             price_precision=price_precision,
@@ -133,7 +135,7 @@ cdef class OptionsContract(Instrument):
             info=info,
         )
         self.underlying = underlying
-        self.kind = kind
+        self.option_kind = option_kind
         self.activation_ns = activation_ns
         self.expiration_ns = expiration_ns
         self.strike_price = strike_price
@@ -164,6 +166,8 @@ cdef class OptionsContract(Instrument):
         """
         return pd.Timestamp(self.expiration_ns, tz=pytz.utc)
 
+
+
     @staticmethod
     cdef OptionsContract from_dict_c(dict values):
         Condition.not_none(values, "values")
@@ -177,7 +181,7 @@ cdef class OptionsContract(Instrument):
             multiplier=Quantity.from_str(values["multiplier"]),
             lot_size=Quantity.from_str(values["lot_size"]),
             underlying=values["underlying"],
-            kind=option_kind_from_str(values["kind"]),
+            option_kind=option_kind_from_str(values["option_kind"]),
             activation_ns=values["activation_ns"],
             expiration_ns=values["expiration_ns"],
             strike_price=Price.from_str(values["strike_price"]),
@@ -201,7 +205,7 @@ cdef class OptionsContract(Instrument):
             "multiplier": str(obj.multiplier),
             "lot_size": str(obj.lot_size),
             "underlying": str(obj.underlying),
-            "kind": option_kind_to_str(obj.kind),
+            "option_kind": option_kind_to_str(obj.option_kind),
             "activation_ns": obj.activation_ns,
             "expiration_ns": obj.expiration_ns,
             "strike_price": str(obj.strike_price),
@@ -210,6 +214,27 @@ cdef class OptionsContract(Instrument):
             "ts_event": obj.ts_event,
             "ts_init": obj.ts_init,
         }
+
+    @staticmethod
+    cdef OptionsContract from_pyo3_c(pyo3_instrument):
+        Condition.not_none(pyo3_instrument, "pyo3_instrument")
+        return OptionsContract(
+            instrument_id=InstrumentId.from_str_c(pyo3_instrument.id.value),
+            raw_symbol=Symbol(pyo3_instrument.raw_symbol.value),
+            asset_class=asset_class_from_str(str(pyo3_instrument.asset_class)),
+            currency=Currency.from_str_c(pyo3_instrument.currency.code),
+            price_precision=pyo3_instrument.price_precision,
+            price_increment=Price.from_raw_c(pyo3_instrument.price_increment.raw, pyo3_instrument.price_precision),
+            multiplier=Quantity.from_raw_c(pyo3_instrument.multiplier.raw, 0),
+            lot_size=Quantity.from_raw_c(pyo3_instrument.lot_size.raw, 0),
+            underlying=pyo3_instrument.underlying,
+            option_kind=option_kind_from_str(str(pyo3_instrument.option_kind)),
+            activation_ns=pyo3_instrument.activation_ns,
+            expiration_ns=pyo3_instrument.expiration_ns,
+            strike_price=Price.from_raw_c(pyo3_instrument.strike_price.raw, pyo3_instrument.strike_price.precision),
+            ts_event=pyo3_instrument.ts_event,
+            ts_init=pyo3_instrument.ts_init,
+        )
 
     @staticmethod
     def from_dict(dict values) -> OptionsContract:
@@ -239,3 +264,20 @@ cdef class OptionsContract(Instrument):
 
         """
         return OptionsContract.to_dict_c(obj)
+
+    @staticmethod
+    def from_pyo3(pyo3_instrument) -> OptionsContract:
+        """
+        Return legacy Cython options contract instrument converted from the given pyo3 Rust object.
+
+        Parameters
+        ----------
+        pyo3_instrument : nautilus_pyo3.OptionsContract
+            The pyo3 Rust options contract instrument to convert from.
+
+        Returns
+        -------
+        OptionsContract
+
+        """
+        return OptionsContract.from_pyo3_c(pyo3_instrument)

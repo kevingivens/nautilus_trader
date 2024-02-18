@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -23,9 +23,10 @@ from nautilus_trader.adapters.binance.config import BinanceDataClientConfig
 from nautilus_trader.adapters.binance.config import BinanceExecClientConfig
 from nautilus_trader.adapters.binance.factories import BinanceLiveDataClientFactory
 from nautilus_trader.adapters.binance.factories import BinanceLiveExecClientFactory
+from nautilus_trader.common.component import init_logging
+from nautilus_trader.config import InstrumentProviderConfig
 from nautilus_trader.config import LoggingConfig
 from nautilus_trader.config import TradingNodeConfig
-from nautilus_trader.config.common import InstrumentProviderConfig
 from nautilus_trader.live.node import TradingNode
 from nautilus_trader.model.identifiers import StrategyId
 from nautilus_trader.test_kit.functions import ensure_all_tasks_completed
@@ -88,6 +89,10 @@ RAW_CONFIG = msgspec.json.encode(
 
 
 class TestTradingNodeConfiguration:
+    def setup(self):
+        # Pre-initialize logging and bypass to avoid the `InvalidConfiguration` exception
+        init_logging(bypass=True)
+
     def teardown(self):
         ensure_all_tasks_completed()
 
@@ -173,12 +178,12 @@ class TestTradingNodeConfiguration:
         # Mock factories so nothing actually connects
         from nautilus_trader.adapters.binance import factories
 
-        mock_data_factory = (
-            factories.BinanceLiveDataClientFactory.create
-        ) = unittest.mock.MagicMock()
-        mock_exec_factory = (
-            factories.BinanceLiveExecClientFactory.create
-        ) = unittest.mock.MagicMock()
+        mock_data_factory = factories.BinanceLiveDataClientFactory.create = (
+            unittest.mock.MagicMock()
+        )
+        mock_exec_factory = factories.BinanceLiveExecClientFactory.create = (
+            unittest.mock.MagicMock()
+        )
 
         # Act - lazy way of mocking the whole client
         with pytest.raises(TypeError):
@@ -206,6 +211,10 @@ class TestTradingNodeConfiguration:
 
 
 class TestTradingNodeOperation:
+    def setup(self):
+        # Pre-initialize logging and bypass to avoid the `InvalidConfiguration` exception
+        init_logging(bypass=True)
+
     def teardown(self):
         ensure_all_tasks_completed()
 

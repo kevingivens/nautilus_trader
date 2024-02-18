@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,8 +17,8 @@
 from nautilus_trader.adapters.binance.common.enums import BinanceAccountType
 from nautilus_trader.config import LiveDataClientConfig
 from nautilus_trader.config import LiveExecClientConfig
-from nautilus_trader.config.validation import PositiveFloat
-from nautilus_trader.config.validation import PositiveInt
+from nautilus_trader.config import PositiveFloat
+from nautilus_trader.config import PositiveInt
 
 
 class BinanceDataClientConfig(LiveDataClientConfig, frozen=True):

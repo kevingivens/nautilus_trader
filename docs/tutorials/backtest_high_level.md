@@ -14,7 +14,6 @@ We'll start with all of our imports for the remainder of this tutorial:
 
 ```python
 import datetime
-import os
 import shutil
 from decimal import Decimal
 from pathlib import Path
@@ -22,11 +21,11 @@ from pathlib import Path
 import fsspec
 import pandas as pd
 
+from nautilus_trader.backtest.node import BacktestNode, BacktestVenueConfig, BacktestDataConfig, BacktestRunConfig, BacktestEngineConfig
 from nautilus_trader.core.datetime import dt_to_unix_nanos
+from nautilus_trader.config import ImportableStrategyConfig
 from nautilus_trader.model.data import QuoteTick
 from nautilus_trader.model.objects import Price, Quantity
-from nautilus_trader.backtest.node import BacktestNode, BacktestVenueConfig, BacktestDataConfig, BacktestRunConfig, BacktestEngineConfig
-from nautilus_trader.config.common import ImportableStrategyConfig
 from nautilus_trader.persistence.catalog import ParquetDataCatalog
 from nautilus_trader.persistence.wranglers import QuoteTickDataWrangler
 from nautilus_trader.test_kit.providers import CSVTickDataLoader
@@ -80,12 +79,12 @@ Next, we simply instantiate a `ParquetDataCatalog` (passing in a directory where
 We can then write the instrument and tick data to the catalog, it should only take a couple of minutes to load the data (depending on how many months).
 
 ```python
-CATALOG_PATH = os.getcwd() + "/catalog"
+CATALOG_PATH = Path.cwd() / "catalog"
 
 # Clear if it already exists, then create fresh
-if os.path.exists(CATALOG_PATH):
+if CATALOG_PATH.exists():
     shutil.rmtree(CATALOG_PATH)
-os.mkdir(CATALOG_PATH)
+CATALOG_PATH.mkdir(parents=True)
 
 # Create a catalog instance
 catalog = ParquetDataCatalog(CATALOG_PATH)

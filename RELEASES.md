@@ -1,3 +1,136 @@
+# NautilusTrader 1.187.0 Beta
+
+Released on 9th February 2024 (UTC).
+
+### Enhancements
+- Refined logging system module and writers in Rust, thanks @ayush-sb and @twitu
+- Improved Interactive Brokers adapter symbology and parsing with a `strict_symbology` option, thanks @rsmb7z and @fhill2
+
+### Breaking Changes
+- Reorganized configuration objects (separated into a `config` module per subpackage, with re-exports from `nautilus_trader.config`)
+
+### Fixes
+- Fixed `BacktestEngine` and `Trader` disposal (now properly releasing resources), thanks for reporting @davidsblom
+- Fixed circular import issues from configuration objects, thanks for reporting @cuberone
+- Fixed unnecessary creation of log files when file logging off
+
+---
+
+# NautilusTrader 1.186.0 Beta
+
+Released on 2nd February 2024 (UTC).
+
+### Enhancements
+None
+
+### Breaking Changes
+None
+
+### Fixes
+- Fixed Interactive Brokers get account positions bug (#1475), thanks @benjaminsingleton
+- Fixed `TimeBarAggregator` handling of interval types on build
+- Fixed `BinanceSpotExecutionClient` non-existent method name, thanks @sunlei
+- Fixed unused `psutil` import, thanks @sunlei
+
+---
+
+# NautilusTrader 1.185.0 Beta
+
+Released on 26th January 2024 (UTC).
+
+### Enhancements
+- Add warning log when `bypass_logging` is set true for a `LIVE` context
+- Improved `register_serializable object` to also add type to internal `_EXTERNAL_PUBLIHSABLE_TYPES`
+- Improved Interactive Brokers expiration contract parsing, thanks @fhill2
+
+### Breaking Changes
+- Changed `StreamingConfig.include_types` type from `tuple[str]` to `list[type]` (better alignment with other type filters)
+- Consolidated `clock` module into `component` module (reduce binary wheel size)
+- Consolidated `logging` module into `component` module (reduce binary wheel size)
+
+### Fixes
+- Fixed Arrow serialization of `OrderUpdated` (`trigger_price` type was incorrect), thanks @benjaminsingleton
+- Fixed `StreamingConfig.include_types` behavior (was not being honored for instrument writers), thanks for reporting @doublier1
+- Fixed `ImportableStrategyConfig` type assignment in `StrategyFactory` (#1470), thanks @rsmb7z
+
+---
+
+# NautilusTrader 1.184.0 Beta
+
+Released on 22nd January 2024 (UTC).
+
+### Enhancements
+- Added `LogLevel.OFF` (matches the Rust `tracing` log levels)
+- Added `init_logging` function with sensible defaults to initialize the Rust implemented logging system
+- Updated Binance Futures enum members for `BinanceFuturesContractType` and `BinanceFuturesPositionUpdateReason`
+- Improved log header using the `sysinfo` crate (adds swap space metrics and a PID identifier)
+- Removed Python dependency on `psutil`
+
+### Breaking Changes
+- Removed `clock` parameter from `Logger` (no dependency on `Clock` anymore)
+- Renamed `LoggerAdapter` to `Logger` (and removed old `Logger` class)
+- Renamed `Logger` `component_name` parameter to `name` (matches Python built-in `logging` API)
+- Renamed `OptionKind` `kind` parameter and property to `option_kind` (better clarity)
+- Renamed `OptionsContract` Arrow schema field `kind` to `option_kind`
+- Changed `level_file` log level to `OFF` (file logging is off by default)
+
+### Fixes
+- Fixed memory leak for catalog queries (#1430), thanks @twitu
+- Fixed `DataEngine` order book snapshot timer names (could not parse instrument IDs with hyphens), thanks for reporting @x-zho14 and @dimitar-petrov
+- Fixed `LoggingConfig` parsing of `WARNING` log level (was not being recognized), thanks for reporting @davidsblom
+- Fixed Binance Futures `QuoteTick` parsing to capture event time for `ts_event`, thanks for reporting @x-zho14
+
+---
+
+# NautilusTrader 1.183.0 Beta
+
+Released on 12th January 2024 (UTC).
+
+### Enhancements
+- Added `NautilusConfig.json_primitives` to convert object to Python dictionary with JSON primitive values
+- Added `InstrumentClass.BOND`
+- Added `MessageBusConfig` `use_trader_prefix` and `use_trader_id` options (provides more control over stream names)
+- Added `CacheConfig.drop_instruments_on_reset` (default true to retain current behavior)
+- Implemented core logging interface via the `log` crate, thanks @twitu
+- Implemented global atomic clock in Rust (improves performance and ensures properly monotonic timestamps in real-time), thanks @twitu
+- Improved Interactive Brokers adapter raising docker `RuntimeError` only when needed (not when using TWS), thanks @rsmb7z
+- Upgraded core HTTP client to latest `hyper` and `reqwest`, thanks @ayush-sb
+- Optimized Arrow encoding (resulting in ~100x faster writes for the Parquet data catalog)
+
+### Breaking Changes
+- Changed `ParquetDataCatalog` custom data prefix from `geneticdata_` to `custom_` (you will need to rename any catalog subdirs)
+- Changed `ComponentStateChanged` Arrow schema for `config` from `string` to `binary`
+- Changed `OrderInitialized` Arrow schema for `options` from `string` to `binary`
+- Changed `OrderBookDeltas` dictionary representation of `deltas` field from JSON `bytes` to a list of `dict` (standardize with all other data types)
+- Changed external message publishing stream name keys to be `trader-{trader_id}-{instance_id}-streams` (with options allows many traders to publish to the same streams)
+- Renamed all version 2 data wrangler classes with a `V2` suffix for clarity
+- Renamed `GenericData` to `CustomData` (more accurately reflects the nature of the type)
+- Renamed `DataClient.subscribed_generic_data` to `.subscribed_custom_data`
+- Renamed `MessageBusConfig.stream` to `.streams_prefix` (more accurate)
+- Renamed `ParquetDataCatalog.generic_data` to `.custom_data`
+- Renamed `TradeReport` to `FillReport` (more conventional terminology, and more clearly separates market data from user execution reports)
+- Renamed `asset_type` to `instrument_class` across the codebase (more conventional terminology)
+- Renamed `AssetType` enum to `InstrumentClass` (more conventional terminology)
+- Renamed `AssetClass.BOND` to `AssetClass.DEBT` (more conventional terminology)
+- Removed `AssetClass.METAL` (not strictly an asset class, more a futures category)
+- Removed `AssetClass.ENERGY` (not strictly an asset class, more a futures category)
+- Removed `multiplier` param from `Equity` constructor (not applicable)
+- Removed `size_precision`, `size_increment`, and `multiplier` fields from `Equity` dictionary representation (not applicable)
+- Removed `TracingConfig` (now redundant with new logging implementation)
+- Removed `Ticker` data type and associated methods (not a type which can be practically normalized and so becomes adapter specific generic data)
+- Moved `AssetClass.SPORTS_BETTING` to `InstrumentClass.SPORTS_BETTING`
+
+### Fixes
+- Fixed logger thread leak, thanks @twitu
+- Fixed handling of configuration objects to work with `StreamingFeatherWriter`
+- Fixed `BinanceSpotInstrumentProvider` fee loading key error for partial instruments load, thanks for reporting @doublier1
+- Fixed Binance API key configuration parsing for testnet (was falling through to non-testnet env vars)
+- Fixed TWAP execution algorithm scheduled size handling when first order should be for the entire size, thanks for reporting @pcgm-team
+- Added `BinanceErrorCode.SERVER_BUSY` (-1008), also added to the retry error codes
+- Added `BinanceOrderStatus.EXPIRED_IN_MATCH` which is when an order was canceled by the exchange due self-trade prevention (STP), thanks for reporting @doublier1
+
+---
+
 # NautilusTrader 1.182.0 Beta
 
 Released on 23rd December 2023 (UTC).
@@ -158,7 +291,7 @@ This will be the final release with support for Python 3.9.
 - Moved `manage_gtd_expiry` from `Strategy.submit_order(...)` and `Strategy.submit_order_list(...)` to `StrategyConfig` (simpler and allows re-activiting any GTD timers on start)
 
 ### Fixes
-- Fixed `LimitIfTouchedOrder.create` (exec_algorithm_params were not being passed in)
+- Fixed `LimitIfTouchedOrder.create` (`exec_algorithm_params` were not being passed in)
 - Fixed `OrderEmulator` start-up processing of OTO contingent orders (when position from parent is open)
 - Fixed `SandboxExecutionClientConfig` `kw_only=True` to allow importing without initializing
 - Fixed `OrderBook` pickling (did not include all attributes), thanks @limx0
@@ -233,7 +366,7 @@ this change.
 Released on 31st July 2023 (UTC).
 
 ### Enhancements
-- Implemented string interning with the [ustr](https://github.com/anderslanglands/ustr) library, thanks @twitu
+- Implemented string interning with the [ustr](https://github.com/anderslanglands/ustr) crate, thanks @twitu
 - Added `SyntheticInstrument` capability, including dynamic derivation formulas
 - Added `Order.commissions()` convenience method (also added to state snapshot dictionaries)
 - Added `Cache` position and order state snapshots (configure via `CacheConfig`)
@@ -402,7 +535,7 @@ Released on 30th April 2023 (UTC).
 - Defined public API for instruments, can now import directly from `nautilus_trader.model.instruments` (denest namespace)
 - Defined public API for orders, can now import directly from `nautilus_trader.model.orders` (denest namespace)
 - Defined public API for order book, can now import directly from `nautilus_trader.model.orderbook` (denest namespace)
-- Now stripping debug symbols after build (reduced binary sizes)
+- Now stripping debug symbols after build (reduced binary wheel size)
 - Refined build and added additional `debug` Makefile convenience targets
 
 ### Fixes

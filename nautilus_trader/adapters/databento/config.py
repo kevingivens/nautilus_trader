@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -30,6 +30,10 @@ class DatabentoDataClientConfig(LiveDataClientConfig, frozen=True):
         The historical HTTP client gateway override.
     live_gateway : str, optional
         The live client gateway override.
+    parent_symbols : dict[str, set[str]], optional
+        The Databento parent symbols to subscribe to instrument definitions for on start.
+        This is a map of Databento dataset keys -> to a sequence of the parent symbols,
+        e.g. {'GLBX.MDP3', ['ES.FUT', 'ES.OPT']} (for all E-mini S&P 500 futures and options products).
     instrument_ids : list[InstrumentId], optional
         The instrument IDs to request instrument definitions for on start.
     timeout_initial_load : float, default 5.0
@@ -45,5 +49,6 @@ class DatabentoDataClientConfig(LiveDataClientConfig, frozen=True):
     http_gateway: str | None = None
     live_gateway: str | None = None
     instrument_ids: list[InstrumentId] | None = None
+    parent_symbols: dict[str, set[str]] | None = None
     timeout_initial_load: float | None = 5.0
     mbo_subscriptions_delay: float | None = 3.0

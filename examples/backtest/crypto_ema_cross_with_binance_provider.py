@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -25,8 +25,7 @@ from nautilus_trader.adapters.binance.factories import get_cached_binance_http_c
 from nautilus_trader.adapters.binance.futures.providers import BinanceFuturesInstrumentProvider
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.engine import BacktestEngineConfig
-from nautilus_trader.common.clock import LiveClock
-from nautilus_trader.common.logging import Logger
+from nautilus_trader.common.component import LiveClock
 from nautilus_trader.config import InstrumentProviderConfig
 from nautilus_trader.config import LoggingConfig
 from nautilus_trader.examples.strategies.ema_cross_trailing_stop import EMACrossTrailingStop
@@ -36,6 +35,7 @@ from nautilus_trader.model.enums import AccountType
 from nautilus_trader.model.enums import OmsType
 from nautilus_trader.model.identifiers import InstrumentId
 from nautilus_trader.model.identifiers import Symbol
+from nautilus_trader.model.identifiers import TraderId
 from nautilus_trader.model.identifiers import Venue
 from nautilus_trader.model.objects import Money
 from nautilus_trader.persistence.wranglers import QuoteTickDataWrangler
@@ -47,11 +47,9 @@ async def create_provider():
     Create a provider to load all instrument data from live exchange.
     """
     clock = LiveClock()
-    log = Logger(clock=clock)
 
     client = get_cached_binance_http_client(
         clock=clock,
-        logger=log,
         account_type=BinanceAccountType.USDT_FUTURE,
         is_testnet=True,
     )
@@ -59,7 +57,6 @@ async def create_provider():
     binance_provider = BinanceFuturesInstrumentProvider(
         client=client,
         clock=clock,
-        logger=log,
         config=InstrumentProviderConfig(load_all=True, log_warnings=False),
     )
 
@@ -70,7 +67,7 @@ async def create_provider():
 if __name__ == "__main__":
     # Configure backtest engine
     config = BacktestEngineConfig(
-        trader_id="BACKTESTER-001",
+        trader_id=TraderId("BACKTESTER-001"),
         logging=LoggingConfig(log_level="INFO"),
     )
 

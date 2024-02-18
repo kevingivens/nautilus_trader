@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-//  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+//  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 //  https://nautechsystems.io
 //
 //  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -32,5 +32,6 @@ pub fn indicators(_: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<crate::ratio::efficiency_ratio::EfficiencyRatio>()?;
     // momentum
     m.add_class::<crate::momentum::rsi::RelativeStrengthIndex>()?;
+    m.add_class::<crate::momentum::aroon::AroonOscillator>()?;
     Ok(())
 }

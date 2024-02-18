@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,9 +13,8 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
+from pathlib import Path
 from typing import Final
-
-import pandas as pd
 
 from nautilus_trader.model.identifiers import ClientId
 
@@ -25,4 +24,4 @@ DATABENTO_CLIENT_ID: Final[ClientId] = ClientId(DATABENTO)
 
 ALL_SYMBOLS: Final[str] = "ALL_SYMBOLS"
 
-ONE_DAY: Final[pd.Timedelta] = pd.Timedelta(days=1)
+PUBLISHERS_PATH: Final[Path] = (Path(__file__).resolve().parent / "publishers.json").resolve()

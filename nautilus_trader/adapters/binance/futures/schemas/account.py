@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -86,7 +86,9 @@ class BinanceFuturesAccountInfo(msgspec.Struct, kw_only=True, frozen=True):
     canDeposit: bool  # if can transfer in asset
     canWithdraw: bool  # if can transfer out asset
     updateTime: int
-    totalInitialMargin: str | None = None  # total initial margin required with current mark price (useless with isolated positions), only for USDT
+    totalInitialMargin: str | None = (
+        None  # total initial margin required with current mark price (useless with isolated positions), only for USDT
+    )
     totalMaintMargin: str | None = None  # total maintenance margin required, only for USDT asset
     totalWalletBalance: str | None = None  # total wallet balance, only for USDT asset
     totalUnrealizedProfit: str | None = None  # total unrealized profit, only for USDT asset

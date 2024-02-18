@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -14,10 +14,11 @@
 # -------------------------------------------------------------------------------------------------
 """
 Defines tradable asset/contract instruments with specific properties dependent on the
-asset class and asset type.
+asset class and instrument class.
 """
 
 from nautilus_trader.model.instruments.base import Instrument
+from nautilus_trader.model.instruments.base import instruments_from_pyo3
 from nautilus_trader.model.instruments.betting import BettingInstrument
 from nautilus_trader.model.instruments.crypto_future import CryptoFuture
 from nautilus_trader.model.instruments.crypto_perpetual import CryptoPerpetual
@@ -38,4 +39,5 @@ __all__ = [
     "FuturesContract",
     "OptionsContract",
     "SyntheticInstrument",
+    "instruments_from_pyo3",
 ]

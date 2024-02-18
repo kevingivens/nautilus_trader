@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -13,25 +13,23 @@
 #  limitations under the License.
 # -------------------------------------------------------------------------------------------------
 
-from typing import Optional
-
-from nautilus_trader.config.common import OrderEmulatorConfig
+from nautilus_trader.common.config import OrderEmulatorConfig
 
 from libc.stdint cimport uint8_t
 from libc.stdint cimport uint64_t
 
 from nautilus_trader.cache.cache cimport Cache
 from nautilus_trader.common.actor cimport Actor
-from nautilus_trader.common.clock cimport Clock
+from nautilus_trader.common.component cimport CMD
+from nautilus_trader.common.component cimport EVT
+from nautilus_trader.common.component cimport RECV
+from nautilus_trader.common.component cimport SENT
+from nautilus_trader.common.component cimport Clock
+from nautilus_trader.common.component cimport LogColor
 from nautilus_trader.common.component cimport MessageBus
-from nautilus_trader.common.logging cimport CMD
-from nautilus_trader.common.logging cimport EVT
-from nautilus_trader.common.logging cimport RECV
-from nautilus_trader.common.logging cimport SENT
-from nautilus_trader.common.logging cimport LogColor
-from nautilus_trader.common.logging cimport Logger
 from nautilus_trader.core.correctness cimport Condition
 from nautilus_trader.core.message cimport Event
+from nautilus_trader.core.rust.common cimport logging_is_initialized
 from nautilus_trader.core.rust.model cimport ContingencyType
 from nautilus_trader.core.rust.model cimport OrderSide
 from nautilus_trader.core.rust.model cimport OrderStatus
@@ -92,8 +90,6 @@ cdef class OrderEmulator(Actor):
         The cache for the order emulator.
     clock : Clock
         The clock for the order emulator.
-    logger : Logger
-        The logger for the order emulator.
     config : OrderEmulatorConfig, optional
         The configuration for the order emulator.
 
@@ -105,8 +101,7 @@ cdef class OrderEmulator(Actor):
         MessageBus msgbus not None,
         Cache cache not None,
         Clock clock not None,
-        Logger logger not None,
-        config: Optional[OrderEmulatorConfig] = None,
+        config: OrderEmulatorConfig | None = None,
     ):
         if config is None:
             config = OrderEmulatorConfig()
@@ -118,12 +113,10 @@ cdef class OrderEmulator(Actor):
             msgbus=msgbus,
             cache=cache,
             clock=clock,
-            logger=logger,
         )
 
         self._manager = OrderManager(
             clock=clock,
-            logger=logger,
             msgbus=msgbus,
             cache=cache,
             component_name=type(self).__name__,
@@ -186,7 +179,7 @@ cdef class OrderEmulator(Actor):
         """
         return self._manager.get_submit_order_commands()
 
-    def get_matching_core(self, InstrumentId instrument_id) -> Optional[MatchingCore]:
+    def get_matching_core(self, InstrumentId instrument_id) -> MatchingCore | None:
         """
         Return the emulators matching core for the given instrument ID.
 
@@ -801,7 +794,7 @@ cdef class OrderEmulator(Actor):
             self._manager.send_exec_command(command)
 
     cpdef void on_quote_tick(self, QuoteTick tick):
-        if not self._log.is_bypassed:
+        if logging_is_initialized():
             self._log.debug(f"Processing {repr(tick)}...", LogColor.CYAN)
 
         cdef MatchingCore matching_core = self._matching_cores.get(tick.instrument_id)
@@ -815,7 +808,7 @@ cdef class OrderEmulator(Actor):
         self._iterate_orders(matching_core)
 
     cpdef void on_trade_tick(self, TradeTick tick):
-        if not self._log.is_bypassed:
+        if logging_is_initialized():
             self._log.debug(f"Processing {repr(tick)}...", LogColor.CYAN)
 
         cdef MatchingCore matching_core = self._matching_cores.get(tick.instrument_id)

@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -17,14 +17,14 @@ from decimal import Decimal
 
 import pandas as pd
 
+from nautilus_trader.backtest.config import BacktestDataConfig
+from nautilus_trader.backtest.config import BacktestRunConfig
+from nautilus_trader.backtest.config import BacktestVenueConfig
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.engine import BacktestEngineConfig
 from nautilus_trader.backtest.results import BacktestResult
-from nautilus_trader.config import ActorFactory
-from nautilus_trader.config import BacktestDataConfig
-from nautilus_trader.config import BacktestRunConfig
-from nautilus_trader.config import BacktestVenueConfig
-from nautilus_trader.config.error import InvalidConfiguration
+from nautilus_trader.common.config import ActorFactory
+from nautilus_trader.common.config import InvalidConfiguration
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.core.datetime import dt_to_unix_nanos
 from nautilus_trader.core.inspect import is_nautilus_class
@@ -289,9 +289,9 @@ class BacktestNode:
                 bar_type = None
             session = catalog.backend_session(
                 data_cls=config.data_type,
-                instrument_ids=[config.instrument_id]
-                if config.instrument_id and not bar_type
-                else [],
+                instrument_ids=(
+                    [config.instrument_id] if config.instrument_id and not bar_type else []
+                ),
                 bar_types=[bar_type] if bar_type else [],
                 start=config.start_time,
                 end=config.end_time,
@@ -322,26 +322,26 @@ class BacktestNode:
         # Load data
         for config in data_configs:
             t0 = pd.Timestamp.now()
-            engine._log.info(
+            engine.logger.info(
                 f"Reading {config.data_type} data for instrument={config.instrument_id}.",
             )
             result: CatalogDataResult = self.load_data_config(config)
             if config.instrument_id and result.instrument is None:
-                engine._log.warning(
+                engine.logger.warning(
                     f"Requested instrument_id={result.instrument} from data_config not found in catalog",
                 )
                 continue
             if not result.data:
-                engine._log.warning(f"No data found for {config}")
+                engine.logger.warning(f"No data found for {config}")
                 continue
 
             t1 = pd.Timestamp.now()
-            engine._log.info(
+            engine.logger.info(
                 f"Read {len(result.data):,} events from parquet in {pd.Timedelta(t1 - t0)}s.",
             )
             self._load_engine_data(engine=engine, result=result)
             t2 = pd.Timestamp.now()
-            engine._log.info(f"Engine load took {pd.Timedelta(t2 - t1)}s")
+            engine.logger.info(f"Engine load took {pd.Timedelta(t2 - t1)}s")
 
         engine.run(run_config_id=run_config_id)
         engine.dispose()

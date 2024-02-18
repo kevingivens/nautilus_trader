@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
+import datetime
 import itertools
 import os
 import platform
 import shutil
 import subprocess
 import sysconfig
-from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -154,15 +154,23 @@ def _build_extensions() -> list[Extension]:
         extra_link_args += [
             "AdvAPI32.Lib",
             "bcrypt.lib",
+            "Crypt32.lib",
+            "Iphlpapi.lib",
             "Kernel32.lib",
+            "ncrypt.lib",
+            "Netapi32.lib",
             "ntdll.lib",
+            "Ole32.lib",
+            "OleAut32.lib",
+            "Pdh.lib",
+            "PowrProf.lib",
+            "Psapi.lib",
+            "schannel.lib",
+            "secur32.lib",
+            "Shell32.lib",
             "User32.Lib",
             "UserEnv.Lib",
             "WS2_32.Lib",
-            "Crypt32.lib",
-            "secur32.lib",
-            "schannel.lib",
-            "ncrypt.lib",
         ]
 
     print("Creating C extension modules...")
@@ -342,7 +350,7 @@ if __name__ == "__main__":
     print(f"PYO3_ONLY={PYO3_ONLY}\n")
 
     print("Starting build...")
-    ts_start = datetime.utcnow()
+    ts_start = datetime.datetime.now(datetime.timezone.utc)
     build()
-    print(f"Build time: {datetime.utcnow() - ts_start}")
+    print(f"Build time: {datetime.datetime.now(datetime.timezone.utc) - ts_start}")
     print("\033[32m" + "Build completed" + "\033[0m")

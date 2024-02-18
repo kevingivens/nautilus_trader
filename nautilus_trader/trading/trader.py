@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -30,11 +30,10 @@ import pandas as pd
 from nautilus_trader.analysis.reporter import ReportProvider
 from nautilus_trader.cache.cache import Cache
 from nautilus_trader.common.actor import Actor
-from nautilus_trader.common.clock import Clock
-from nautilus_trader.common.clock import LiveClock
+from nautilus_trader.common.component import Clock
 from nautilus_trader.common.component import Component
+from nautilus_trader.common.component import LiveClock
 from nautilus_trader.common.component import MessageBus
-from nautilus_trader.common.logging import Logger
 from nautilus_trader.core.correctness import PyCondition
 from nautilus_trader.data.engine import DataEngine
 from nautilus_trader.execution.algorithm import ExecAlgorithm
@@ -72,12 +71,10 @@ class Trader(Component):
         The execution engine for the trader.
     clock : Clock
         The clock for the trader.
-    logger : Logger
-        The logger for the trader.
+    has_controller : bool, default False
+        If the trader has a controller.
     loop : asyncio.AbstractEventLoop, optional
         The event loop for the trader.
-    config : dict[str, Any]
-        The configuration for the trader.
 
     Raises
     ------
@@ -102,18 +99,13 @@ class Trader(Component):
         risk_engine: RiskEngine,
         exec_engine: ExecutionEngine,
         clock: Clock,
-        logger: Logger,
+        has_controller: bool = False,
         loop: asyncio.AbstractEventLoop | None = None,
-        config: dict | None = None,
     ) -> None:
-        if config is None:
-            config = {}
         super().__init__(
             clock=clock,
-            logger=logger,
             component_id=trader_id,
             msgbus=msgbus,
-            config=config,
         )
 
         self._loop = loop
@@ -126,7 +118,7 @@ class Trader(Component):
         self._actors: dict[ComponentId, Actor] = {}
         self._strategies: dict[StrategyId, Strategy] = {}
         self._exec_algorithms: dict[ExecAlgorithmId, ExecAlgorithm] = {}
-        self._has_controller: bool = config.get("has_controller", False)
+        self._has_controller: bool = has_controller
 
     def actors(self) -> list[Actor]:
         """
@@ -271,14 +263,9 @@ class Trader(Component):
         self._portfolio.reset()
 
     def _dispose(self) -> None:
-        for actor in self._actors.values():
-            actor.dispose()
-
-        for strategy in self._strategies.values():
-            strategy.dispose()
-
-        for exec_algorithm in self._exec_algorithms.values():
-            exec_algorithm.dispose()
+        self.clear_actors()
+        self.clear_strategies()
+        self.clear_exec_algorithms()
 
     # --------------------------------------------------------------------------------------------------
 
@@ -323,7 +310,6 @@ class Trader(Component):
             msgbus=self._msgbus,
             cache=self._cache,
             clock=clock,  # Clock per component
-            logger=self._log.get_logger(),
         )
 
         self._actors[actor.id] = actor
@@ -409,7 +395,6 @@ class Trader(Component):
             msgbus=self._msgbus,
             cache=self._cache,
             clock=clock,  # Clock per strategy
-            logger=self._log.get_logger(),
         )
 
         self._exec_engine.register_oms_type(strategy)
@@ -481,7 +466,6 @@ class Trader(Component):
             msgbus=self._msgbus,
             cache=self._cache,
             clock=clock,  # Clock per algorithm
-            logger=self._log.get_logger(),
         )
 
         self._exec_algorithms[exec_algorithm.id] = exec_algorithm

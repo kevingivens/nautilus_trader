@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -44,11 +44,10 @@ def logger():
 
 
 @pytest_asyncio.fixture(name="actor_executor")
-async def fixture_actor_executor(loop, logger):
+async def fixture_actor_executor(loop):
     executor = ActorExecutor(
         loop=loop,
         executor=ThreadPoolExecutor(),
-        logger=logger,
     )
     yield executor
     await executor.shutdown()
@@ -153,10 +152,7 @@ async def test_queue_for_executor_execution(actor_executor: ActorExecutor) -> No
 
 
 @pytest.mark.asyncio
-async def test_function_exception(
-    actor_executor: ActorExecutor,
-    logger: Mock,
-) -> None:
+async def test_function_exception(actor_executor: ActorExecutor) -> None:
     # Arrange
     def func():
         raise ValueError("Test Exception")
@@ -170,7 +166,6 @@ async def test_function_exception(
 
     # Assert
     assert future.exception() is not None
-    logger.error.assert_called_once()
 
 
 @pytest.mark.asyncio

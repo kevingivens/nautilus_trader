@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------------------------------
-#  Copyright (C) 2015-2023 Nautech Systems Pty Ltd. All rights reserved.
+#  Copyright (C) 2015-2024 Nautech Systems Pty Ltd. All rights reserved.
 #  https://nautechsystems.io
 #
 #  Licensed under the GNU Lesser General Public License Version 3.0 (the "License");
@@ -31,3 +31,6 @@ cdef class FuturesContract(Instrument):
 
     @staticmethod
     cdef dict to_dict_c(FuturesContract obj)
+
+    @staticmethod
+    cdef FuturesContract from_pyo3_c(pyo3_instrument)
