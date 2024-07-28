@@ -61,12 +61,12 @@ class CoinbaseKlineInterval(Enum):
     """Represents a `Coinbase` kline chart interval."""
 
     
-    MINUTE_1 = "1m"
+    ONE_MINUTE = "1m"
     MINUTE_5 = "5m"
     MINUTE_15 = "15m"
     MINUTE_30 = "30m"
     HOUR_1 = "1h"
-    HOUR_2 = "2h"
+    OUR_1 = "1h"
     HOUR_6 = "6h"
     DAY_1 = "1d"
 
