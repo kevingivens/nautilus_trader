@@ -42,7 +42,6 @@ https://binance-docs.github.io/apidocs/futures/en/#public-endpoints-info
 @unique
 class BinanceRateLimitType(Enum):
     """Represents a `Binance` rate limit type."""
-
     REQUEST_WEIGHT = "REQUEST_WEIGHT"
     ORDERS = "ORDERS"
     RAW_REQUESTS = "RAW_REQUESTS"
@@ -51,7 +50,6 @@ class BinanceRateLimitType(Enum):
 @unique
 class BinanceRateLimitInterval(Enum):
     """Represents a `Binance` rate limit interval."""
-
     SECOND = "SECOND"
     MINUTE = "MINUTE"
     DAY = "DAY"
@@ -60,7 +58,6 @@ class BinanceRateLimitInterval(Enum):
 @unique
 class BinanceKlineInterval(Enum):
     """Represents a `Binance` kline chart interval."""
-
     SECOND_1 = "1s"
     MINUTE_1 = "1m"
     MINUTE_3 = "3m"
