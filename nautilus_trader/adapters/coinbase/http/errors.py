@@ -36,7 +36,7 @@ class CoinbaseServerError(CoinbaseError):
 
 class CoinbaseClientError(CoinbaseError):
     """
-    Represents an `Coinbasr` specific 400 series HTTP error.
+    Represents an `Coinbase` specific 400 series HTTP error.
     """
 
     def __init__(self, status, message, headers):
