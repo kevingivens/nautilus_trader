@@ -23,6 +23,7 @@ import msgspec
 import nautilus_trader
 from nautilus_trader.adapters.coinbase.http.errors import CoinbaseClientError
 from nautilus_trader.adapters.coinbase.http.errors import CoinbaseServerError
+from nautilus_trader.adapters.coinbase.jwt_generator import build_rest_jwt
 from nautilus_trader.common.clock import LiveClock
 from nautilus_trader.common.logging import Logger
 from nautilus_trader.common.logging import LoggerAdapter
@@ -74,7 +75,6 @@ class CoinbaseHttpClient:
         self._headers: dict[str, Any] = {
             "Content-Type": "application/json",
             "User-Agent": "nautilus-trader/" + nautilus_trader.__version__,
-            "X-MBX-APIKEY": key,
         }
         self._client = HttpClient(
             keyed_quotas=ratelimiter_quotas or [],
@@ -121,9 +121,9 @@ class CoinbaseHttpClient:
         # Encode a dict into a URL query string
         return urllib.parse.urlencode(params)
 
-    def _get_sign(self, data: str) -> str:
-        m = hmac.new(self._secret.encode(), data.encode(), hashlib.sha256)
-        return m.hexdigest()
+    #def _get_sign(self, data: str) -> str:
+    #    m = hmac.new(self._secret.encode(), data.encode(), hashlib.sha256)
+    #    return m.hexdigest()
 
     async def sign_request(
         self,
@@ -135,13 +135,15 @@ class CoinbaseHttpClient:
         if payload is None:
             payload = {}
         query_string = self._prepare_params(payload)
-        signature = self._get_sign(query_string)
-        payload["signature"] = signature
+        jw_token = build_rest_jwt(url_path, self._key, self._secret)
+        # signature = self._get_sign(query_string)
+        # payload["signature"] = signature
         return await self.send_request(
             http_method,
             url_path,
             payload=payload,
             ratelimiter_keys=ratelimiter_keys,
+            headers = {**self._headers, "Authorization": f"Bearer {jw_token}"} 
         )
 
     async def send_request(
@@ -150,6 +152,7 @@ class CoinbaseHttpClient:
         url_path: str,
         payload: dict[str, str] | None = None,
         ratelimiter_keys: list[str] | None = None,
+        headers = dict[str, str] | None = None,
     ) -> bytes:
         if payload:
             url_path += "?" + urllib.parse.urlencode(payload)
@@ -158,7 +161,7 @@ class CoinbaseHttpClient:
         response: HttpResponse = await self._client.request(
             http_method,
             url=self._base_url + url_path,
-            headers=self._headers,
+            headers=headers,
             body=msgspec.json.encode(payload) if payload else None,
             keys=ratelimiter_keys,
         )

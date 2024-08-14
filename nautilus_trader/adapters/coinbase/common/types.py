@@ -28,7 +28,7 @@ class CoinbaseBar(Bar):
     """
     Represents an aggregated `Coinbase` bar.
 
-    This data type includes the raw data provided by `Binance`.
+    This data type includes the raw data provided by `Coinbase`.
 
     Parameters
     ----------
@@ -59,8 +59,7 @@ class CoinbaseBar(Bar):
 
     References
     ----------
-    https://binance-docs.github.io/apidocs/spot/en/#kline-candlestick-data
-    https://binance-docs.github.io/apidocs/futures/en/#kline-candlestick-data
+    https://docs.cdp.coinbase.com/advanced-trade/reference/retailbrokerageapi_getcandles
     """
 
     def __init__(

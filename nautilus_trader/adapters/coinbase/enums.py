@@ -41,7 +41,7 @@ https://docs.cloud.coinbase.com/advanced-trade-api/reference
 @unique
 class CoinbaseRateLimitType(Enum):
     """Represents a `Coinbase` rate limit type."""
-
+    
     REQUEST_WEIGHT = "REQUEST_WEIGHT"
     ORDERS = "ORDERS"
     RAW_REQUESTS = "RAW_REQUESTS"
@@ -50,7 +50,7 @@ class CoinbaseRateLimitType(Enum):
 @unique
 class CoinbaseRateLimitInterval(Enum):
     """Represents a `Coinbase` rate limit interval."""
-
+    
     SECOND = "SECOND"
     MINUTE = "MINUTE"
     DAY = "DAY"
@@ -59,14 +59,13 @@ class CoinbaseRateLimitInterval(Enum):
 @unique
 class CoinbaseKlineInterval(Enum):
     """Represents a `Coinbase` kline chart interval."""
-
     
     ONE_MINUTE = "1m"
     MINUTE_5 = "5m"
     MINUTE_15 = "15m"
     MINUTE_30 = "30m"
     HOUR_1 = "1h"
-    OUR_1 = "1h"
+    HOUR_2 = "2h"
     HOUR_6 = "6h"
     DAY_1 = "1d"
 
@@ -74,7 +73,7 @@ class CoinbaseKlineInterval(Enum):
 @unique
 class CoinbaseExchangeFilterType(Enum):
     """Represents a `Coinbase` exchange filter type."""
-
+    
     EXCHANGE_MAX_NUM_ORDERS = "EXCHANGE_MAX_NUM_ORDERS"
     EXCHANGE_MAX_NUM_ALGO_ORDERS = "EXCHANGE_MAX_NUM_ALGO_ORDERS"
 
@@ -82,7 +81,7 @@ class CoinbaseExchangeFilterType(Enum):
 @unique
 class CoinbaseSymbolFilterType(Enum):
     """Represents a `Coinbase` symbol filter type."""
-
+    
     PRICE_FILTER = "PRICE_FILTER"
     PERCENT_PRICE = "PERCENT_PRICE"
     PERCENT_PRICE_BY_SIDE = "PERCENT_PRICE_BY_SIDE"
@@ -138,7 +137,7 @@ class CoinbaseSymbolFilterType(Enum):
 @unique
 class CoinbaseOrderSide(Enum):
     """Represents a `Coinbase` order side."""
-
+    
     BUY = "BUY"
     SELL = "SELL"
 
@@ -146,7 +145,7 @@ class CoinbaseOrderSide(Enum):
 @unique
 class CoinbaseExecutionType(Enum):
     """Represents a `Coinbase` execution type."""
-
+    
     NEW = "NEW"
     CANCELED = "CANCELED"
     CALCULATED = "CALCULATED"  # Liquidation Execution
@@ -158,7 +157,7 @@ class CoinbaseExecutionType(Enum):
 @unique
 class CoinbaseOrderStatus(Enum):
     """Represents a `Coinbase` order status."""
-
+    
     NEW = "NEW"
     PARTIALLY_FILLED = "PARTIALLY_FILLED"
     FILLED = "FILLED"
@@ -171,7 +170,7 @@ class CoinbaseOrderStatus(Enum):
 @unique
 class CoinbaseTimeInForce(Enum):
     """Represents a `Coinbase` order time in force."""
-
+    
     GTC = "GTC"
     IOC = "IOC"
     FOK = "FOK"
@@ -182,7 +181,7 @@ class CoinbaseTimeInForce(Enum):
 @unique
 class CoinbaseOrderType(Enum):
     """Represents a `Coinbase` order type."""
-
+    
     LIMIT = "LIMIT"
     MARKET = "MARKET"
     STOP = "STOP"
@@ -201,7 +200,7 @@ class CoinbaseOrderType(Enum):
 @unique
 class CoinbaseSecurityType(Enum):
     """Represents a `Coinbase` endpoint security type."""
-
+    
     NONE = "NONE"
     TRADE = "TRADE"
     MARGIN = "MARGIN"  # SPOT/MARGIN only
@@ -213,7 +212,7 @@ class CoinbaseSecurityType(Enum):
 @unique
 class CoinbaseMethodType(Enum):
     """Represents a `Coinbase` endpoint method type."""
-
+    
     GET = "GET"
     POST = "POST"
     PUT = "PUT"
@@ -225,7 +224,7 @@ class CoinbaseNewOrderRespType(Enum):
     """
     Represents a `Coinbase` newOrderRespType.
     """
-
+    
     ACK = "ACK"
     RESULT = "RESULT"
     FULL = "FULL"

@@ -17,7 +17,6 @@ from typing import Optional
 
 import msgspec
 
-from nautilus_trader.adapters.coinbase.enums import CoinbaseAccountType
 from nautilus_trader.adapters.coinbase.enums import CoinbaseKlineInterval
 from nautilus_trader.adapters.coinbase.enums import CoinbaseMethodType
 from nautilus_trader.adapters.coinbase.enums import CoinbaseSecurityType
@@ -74,33 +73,33 @@ from nautilus_trader.model.orderbook.data import OrderBookSnapshot
 #        return self._get_resp_decoder.decode(raw)
 
 
-#class CoinbaseTimeHttp(CoinbaseHttpEndpoint):
-#    """
-#    Endpoint for testing connectivity to the REST API and receiving current server time.
-#
-#    `GET /api/v3/time`
-#
-#    References
-#    ----------
-#    https://binance-docs.github.io/apidocs/spot/en/#check-server-time
-#    """
-#
-#    def __init__(
-#        self,
-#        client: CoinbaseHttpClient,
-#        base_endpoint: str,
-#    ):
-#        methods = {
-#            CoinbaseMethodType.GET: CoinbaseSecurityType.NONE,
-#        }
-#        url_path = base_endpoint + "time"
-#        super().__init__(client, methods, url_path)
-#        self._get_resp_decoder = msgspec.json.Decoder(CoinbaseTime)
-#
-#    async def _get(self) -> CoinbaseTime:
-#        method_type = CoinbaseMethodType.GET
-#        raw = await self._method(method_type, None)
-#        return self._get_resp_decoder.decode(raw)
+class CoinbaseTimeHttp(CoinbaseHttpEndpoint):
+    """
+    Endpoint for testing connectivity to the REST API and receiving current server time.
+
+    `GET api/v3/brokerage/time
+
+    References
+    ----------
+    https://docs.cdp.coinbase.com/advanced-trade/reference/retailbrokerageapi_getservertime
+    """
+
+    def __init__(
+        self,
+        client: CoinbaseHttpClient,
+        base_endpoint: str,
+    ):
+        methods = {
+            CoinbaseMethodType.GET: CoinbaseSecurityType.NONE,
+        }
+        url_path = base_endpoint + "time"
+        super().__init__(client, methods, url_path)
+        self._get_resp_decoder = msgspec.json.Decoder(CoinbaseTime)
+
+    async def _get(self) -> CoinbaseTime:
+        method_type = CoinbaseMethodType.GET
+        raw = await self._method(method_type, None)
+        return self._get_resp_decoder.decode(raw)
 
 
 #class CoinbaseDepthHttp(CoinbaseHttpEndpoint):
@@ -318,14 +317,14 @@ class CoinbaseAggTradesHttp(CoinbaseHttpEndpoint):
 
 class CoinbaseCandlesHttp(CoinbaseHttpEndpoint):
     """
-    Endpoint of Candlestick bars for a symbol.
+    Endpoint of Candlestick bars (Klines) for a symbol.
     Klines are uniquely identified by their open time.
 
     `GET /api/v3/brokerage/products/{product_id}/candles`
 
     References
     ----------
-    https://docs.cloud.coinbase.com/advanced-trade-api/reference/retailbrokerageapi_getcandles
+    https://docs.cdp.coinbase.com/advanced-trade/reference/retailbrokerageapi_getcandles
     """
 
     def __init__(
@@ -336,7 +335,6 @@ class CoinbaseCandlesHttp(CoinbaseHttpEndpoint):
         methods = {
             CoinbaseMethodType.GET: CoinbaseSecurityType.NONE,
         }
-        # url_path = base_endpoint + "klines"
         url_path = base_endpoint + f"products/{product_id}/candles"
 
         super().__init__(
@@ -571,21 +569,12 @@ class CoinbaseMarketHttpAPI:
         PyCondition.not_none(client, "client")
         self.client = client
 
-        if account_type.is_spot_or_margin:
-            self.base_endpoint = "/api/v3/"
-        elif account_type == CoinbaseAccountType.FUTURES_USDT:
-            self.base_endpoint = "/fapi/v1/"
-        elif account_type == CoinbaseAccountType.FUTURES_COIN:
-            self.base_endpoint = "/dapi/v1/"
-        else:
-            raise RuntimeError(  # pragma: no cover (design-time error)
-                f"invalid `CoinbaseAccountType`, was {account_type}",  # pragma: no cover
-            )
+        self.base_endpoint = "/api/v3/brokerage"
 
         # Create Endpoints
         #self._endpoint_ping = CoinbasePingHttp(client, self.base_endpoint)
-        #self._endpoint_time = CoinbaseTimeHttp(client, self.base_endpoint)
-        self._endpoint_depth = CoinbaseDepthHttp(client, self.base_endpoint)
+        self._endpoint_time = CoinbaseTimeHttp(client, self.base_endpoint)
+        # self._endpoint_depth = CoinbaseDepthHttp(client, self.base_endpoint)
         self._endpoint_trades = CoinbaseTradesHttp(client, self.base_endpoint)
         self._endpoint_historical_trades = CoinbaseHistoricalTradesHttp(client, self.base_endpoint)
         self._endpoint_agg_trades = CoinbaseAggTradesHttp(client, self.base_endpoint)

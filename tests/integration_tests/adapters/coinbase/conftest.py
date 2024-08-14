@@ -17,8 +17,8 @@ import asyncio
 
 import pytest
 
-from nautilus_trader.adapters.binance.common.constants import COINBASE_VENUE
-from nautilus_trader.adapters.binance.http.client import CoinbaseHttpClient
+from nautilus_trader.adapters.coinbase.common.constants import COINBASE_VENUE
+from nautilus_trader.adapters.coinbase.http.client import CoinbaseHttpClient
 from nautilus_trader.common.component import LiveClock
 from nautilus_trader.common.component import Logger
 from nautilus_trader.model.identifiers import Venue
